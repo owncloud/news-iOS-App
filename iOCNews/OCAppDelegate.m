@@ -7,12 +7,14 @@
 //
 
 #import "OCAppDelegate.h"
+#import "AFNetworking.h"
 
 @implementation OCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    self.window.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     return YES;
 }
 							
