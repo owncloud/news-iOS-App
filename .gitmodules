@@ -4,3 +4,18 @@
 [submodule "KeychainItemWrapper"]
 	path = KeychainItemWrapper
 	url = git://gist.github.com/1170641.git
+[submodule "iPhoneMK"]
+	path = iPhoneMK
+	url = /Users/peter/Projects/iOCNews/iPhoneMK
+[submodule "MCSegmentedControl"]
+	path = MCSegmentedControl
+	url = /Users/peter/Projects/iOCNews/MCSegmentedControl
+[submodule "TUSafariActivity"]
+	path = TUSafariActivity
+	url = /Users/peter/Projects/iOCNews/TUSafariActivity
+[submodule "UILabel-VerticalAlignment"]
+	path = UILabel-VerticalAlignment
+	url = /Users/peter/Projects/iOCNews/UILabel-VerticalAlignment
+[submodule "ViewDeck"]
+	path = ViewDeck
+	url = /Users/peter/Projects/iOCNews/ViewDeck
