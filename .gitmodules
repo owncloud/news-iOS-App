@@ -6,16 +6,19 @@
 	url = git://gist.github.com/1170641.git
 [submodule "iPhoneMK"]
 	path = iPhoneMK
-	url = /Users/peter/Projects/iOCNews/iPhoneMK
+	url = git@github.com:phedlund/iPhoneMK.git
 [submodule "MCSegmentedControl"]
 	path = MCSegmentedControl
-	url = /Users/peter/Projects/iOCNews/MCSegmentedControl
+	url = https://github.com/oettam/MCSegmentedControl.git
 [submodule "TUSafariActivity"]
 	path = TUSafariActivity
-	url = /Users/peter/Projects/iOCNews/TUSafariActivity
+	url = https://github.com/davbeck/TUSafariActivity.git
 [submodule "UILabel-VerticalAlignment"]
 	path = UILabel-VerticalAlignment
-	url = /Users/peter/Projects/iOCNews/UILabel-VerticalAlignment
+	url = https://github.com/ecentinela/UILabel-VerticalAlignment
 [submodule "ViewDeck"]
 	path = ViewDeck
-	url = /Users/peter/Projects/iOCNews/ViewDeck
+	url = https://github.com/Inferis/ViewDeck.git
+[submodule "Objective-C-HTML-Parser"]
+	path = Objective-C-HTML-Parser
+	url = git://github.com/tresni/Objective-C-HMTL-Parser.git
