@@ -98,7 +98,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="KNh-ch-HsP">
-                            <rect key="frame" x="0.0" y="271" width="540" height="250"/>
+                            <rect key="frame" x="0.0" y="240" width="540" height="318"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="iOCNews" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="rCW-bO-Cfx">
@@ -131,20 +131,34 @@
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                 </textView>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Currently not connected to an OwnCloud News server." lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="460" translatesAutoresizingMaskIntoConstraints="NO" id="zDJ-Ip-i6b">
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="70" id="FWv-Cm-R13"/>
+                                        <constraint firstAttribute="width" constant="460" id="WH9-Um-ndU"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </label>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PV1-Gd-hNc"/>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="fav-re-vvs" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="27L-jR-Dxo"/>
                                 <constraint firstItem="lFp-sS-I4l" firstAttribute="top" secondItem="rCW-bO-Cfx" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="3ok-Zg-u9t"/>
                                 <constraint firstItem="rCW-bO-Cfx" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="6pQ-TV-pRF"/>
-                                <constraint firstItem="PBB-QX-w4M" firstAttribute="top" secondItem="fav-re-vvs" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="7FE-pU-PIP"/>
                                 <constraint firstItem="rCW-bO-Cfx" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="8I4-WQ-lNt"/>
+                                <constraint firstItem="PV1-Gd-hNc" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" constant="40" id="9JN-B6-q8j"/>
                                 <constraint firstAttribute="bottom" secondItem="PBB-QX-w4M" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="9WS-yA-Cot"/>
                                 <constraint firstItem="PBB-QX-w4M" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="9se-uE-Cyp"/>
+                                <constraint firstAttribute="bottom" secondItem="fav-re-vvs" secondAttribute="bottom" constant="71" id="B6R-J6-yc0"/>
+                                <constraint firstItem="zDJ-Ip-i6b" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="cyg-LH-Qiu"/>
+                                <constraint firstItem="zDJ-Ip-i6b" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" type="default" id="fDp-i0-aTU"/>
                                 <constraint firstItem="lFp-sS-I4l" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="gNZ-9S-z1W"/>
+                                <constraint firstAttribute="bottom" secondItem="lFp-sS-I4l" secondAttribute="bottom" constant="99" id="hPE-T3-Als"/>
                                 <constraint firstItem="lFp-sS-I4l" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="hge-aG-VGh"/>
                                 <constraint firstItem="fav-re-vvs" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="rHP-qE-D35"/>
-                                <constraint firstItem="fav-re-vvs" firstAttribute="top" secondItem="lFp-sS-I4l" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="tQf-fz-4TR"/>
+                                <constraint firstItem="PV1-Gd-hNc" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" constant="20" symbolic="YES" type="default" id="sds-xB-Ujh"/>
                                 <constraint firstItem="PBB-QX-w4M" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="tVw-cp-Fjh"/>
                             </constraints>
                         </view>
@@ -247,7 +261,6 @@
                                         </view>
                                         <constraints>
                                             <constraint firstItem="7fz-fA-oAA" firstAttribute="leading" secondItem="F4A-va-Uxa" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="JiI-xc-Kfd"/>
-                                            <constraint firstItem="F4A-va-Uxa" firstAttribute="top" secondItem="VbD-d4-aaZ" secondAttribute="top" constant="11" id="SGv-lC-LZ7"/>
                                             <constraint firstItem="7fz-fA-oAA" firstAttribute="centerY" secondItem="VbD-d4-aaZ" secondAttribute="centerY" type="default" id="aWT-tW-kIa"/>
                                             <constraint firstItem="F4A-va-Uxa" firstAttribute="leading" secondItem="VbD-d4-aaZ" secondAttribute="leading" constant="51" id="ogA-N1-mZQ"/>
                                             <constraint firstItem="F4A-va-Uxa" firstAttribute="baseline" secondItem="7fz-fA-oAA" secondAttribute="baseline" type="default" id="zWj-Gl-Juu"/>
@@ -255,7 +268,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="Cuurently not connected to an OwnCloud server" id="9Dy-HL-CVj">
+                            <tableViewSection id="9Dy-HL-CVj">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="cpf-I8-348">
                                         <rect key="frame" x="0.0" y="184" width="540" height="46"/>
@@ -296,8 +309,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="connectionActivityIndicator" destination="PV1-Gd-hNc" id="whp-uD-nKY"/>
                         <outlet property="passwordTextField" destination="7fz-fA-oAA" id="2DS-m2-lCQ"/>
                         <outlet property="serverTextField" destination="RmU-IS-n75" id="WQy-Cb-XeK"/>
+                        <outlet property="statusLabel" destination="zDJ-Ip-i6b" id="GzM-IL-FeT"/>
                         <outlet property="usernameTextField" destination="oJg-hA-ega" id="OeR-Hh-sEM"/>
                         <outlet property="versionLabel" destination="lFp-sS-I4l" id="zLg-FT-VxY"/>
                     </connections>
@@ -516,8 +531,10 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/OCLoginController.h"/>
             <relationships>
                 <relationship kind="action" name="doDone:"/>
+                <relationship kind="outlet" name="connectionActivityIndicator" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="serverTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="usernameTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="versionLabel" candidateClass="UILabel"/>
             </relationships>

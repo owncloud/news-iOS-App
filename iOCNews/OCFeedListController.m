@@ -140,6 +140,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
     
     int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
+    NSLog(@"Server status: %i", status);
     
     IIViewDeckController *topDeckController = (IIViewDeckController *)self.viewDeckController.centerController;
     UINavigationController *navController = (UINavigationController*)topDeckController.leftController;

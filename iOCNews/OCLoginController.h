@@ -18,6 +18,8 @@
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextField;
 
 @property (strong, nonatomic) IBOutlet UILabel *versionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *statusLabel;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *connectionActivityIndicator;
 
 - (IBAction)doDone:(id)sender;
 

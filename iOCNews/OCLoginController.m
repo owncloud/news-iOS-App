@@ -45,6 +45,14 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     self.serverTextField.text = [prefs stringForKey:@"Server"];
     self.usernameTextField.text = [self.keychain objectForKey:(__bridge id)(kSecAttrAccount)];
     self.passwordTextField.text = [self.keychain objectForKey:(__bridge id)(kSecValueData)];
+    
+    NSString *status;
+    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+        status = [NSString stringWithFormat:@"Connected to an OwnCloud News server at \"%@\".", [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"]];
+    } else {
+        status = @"Currently not connected to an OwnCloud News server";
+    }
+    self.statusLabel.text = status;
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,44 +74,33 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
             ![self.usernameTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecAttrAccount)]] ||
             ![self.passwordTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecValueData)]]) {
             
+            [self.connectionActivityIndicator startAnimating];
             AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
             [client setAuthorizationHeaderWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
             
-            [client getPath:@"version" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"Connection successful");
+            NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:@"version" parameters:nil];
+            
+            AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                
+                NSLog(@"Version: %@", JSON);
+                NSDictionary *jsonDict = (NSDictionary *) JSON;
+                NSString *version = [jsonDict valueForKey:@"version"];
+                
                 [prefs setObject:self.serverTextField.text forKey:@"Server"];
                 [self.keychain setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
                 [self.keychain setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
                 [OCAPIClient setSharedClient:nil];
-                [tableView reloadData];
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Failure to connect");
+                self.statusLabel.text = [NSString stringWithFormat:@"Connected to an OwnCloud News server at \"%@\" running version %@.", self.serverTextField.text, version];
+                
+                [self.connectionActivityIndicator stopAnimating];
+                
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                self.statusLabel.text = @"Failed to connect to a server. Check your settings";
+                [self.connectionActivityIndicator stopAnimating];
             }];
-
+            [client enqueueHTTPRequestOperation:operation];
         }
     }
-    
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    NSString *result = @"";
-
-    if (section == 1) {
-        if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
-            result = [NSString stringWithFormat:@"Connected to \"%@\".", [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"]];
-        } else {
-            result = @"Currently not connected to an OwnCloud News server";
-        }
-    }
-    return result;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    CGFloat result = 0.0f;
-    if (section == 1) {
-        result = 50.0f;
-    }
-    return result;
 }
 
 - (KeychainItemWrapper *)keychain {
