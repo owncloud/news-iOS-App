@@ -1,6 +1,6 @@
 //
 //  WebController.m
-//  FeedDeck
+//  iOCNews
 //
 
 /************************************************************************
@@ -120,7 +120,7 @@
                         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:detail.item.link]
                                                                                     cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                                                 timeoutInterval:60];
-                        [request setValue:@"FeedDeck" forHTTPHeaderField:@"User-Agent"];
+                        [request setValue:@"iOCNews" forHTTPHeaderField:@"User-Agent"];
                         
                         NSURLResponse *response = nil;
                         NSError *error = nil;

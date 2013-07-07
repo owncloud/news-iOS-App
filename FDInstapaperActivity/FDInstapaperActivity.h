@@ -1,6 +1,6 @@
 //
 //  FDInstapaperActivity.h
-//  FeedDeck
+//  iOCNews
 //
 //  Created by Peter Hedlund on 2/24/13.
 //

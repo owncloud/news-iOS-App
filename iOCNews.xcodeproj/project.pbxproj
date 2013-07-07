@@ -69,7 +69,6 @@
 		D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */; };
 		D0BCAC2A1780E02600C965F4 /* OCArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC291780E02500C965F4 /* OCArticleCell.xib */; };
 		D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC301780E97200C965F4 /* OCArticleImage.m */; };
-		D0BCAC64178104FC00C965F4 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC39178104FC00C965F4 /* about.html */; };
 		D0BCAC65178104FC00C965F4 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC3A178104FC00C965F4 /* back.png */; };
 		D0BCAC66178104FC00C965F4 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC3B178104FC00C965F4 /* back@2x.png */; };
 		D0BCAC67178104FC00C965F4 /* background1.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC3C178104FC00C965F4 /* background1.png */; };
@@ -142,10 +141,10 @@
 		D0BCAA511779065500C965F4 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait@2x~ipad.png"; path = "../Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		D0BCAA531779066600C965F4 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "../Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		D0BCAA551779067500C965F4 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x~ipad.png"; path = "../Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
-		D0BCAA57177907D300C965F4 /* OCBottomDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCBottomDeckController.h; sourceTree = "<group>"; };
-		D0BCAA58177907D300C965F4 /* OCBottomDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCBottomDeckController.m; sourceTree = "<group>"; };
-		D0BCAA59177907D300C965F4 /* OCTopDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTopDeckController.h; sourceTree = "<group>"; };
-		D0BCAA5A177907D300C965F4 /* OCTopDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTopDeckController.m; sourceTree = "<group>"; };
+		D0BCAA57177907D300C965F4 /* OCBottomDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCBottomDeckController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA58177907D300C965F4 /* OCBottomDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCBottomDeckController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA59177907D300C965F4 /* OCTopDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCTopDeckController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA5A177907D300C965F4 /* OCTopDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCTopDeckController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA5E177907FD00C965F4 /* IISideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IISideController.h; sourceTree = "<group>"; };
 		D0BCAA5F177907FD00C965F4 /* IISideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IISideController.m; sourceTree = "<group>"; };
 		D0BCAA60177907FD00C965F4 /* IIViewDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIViewDeckController.h; sourceTree = "<group>"; };
@@ -153,16 +152,16 @@
 		D0BCAA62177907FD00C965F4 /* IIWrapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIWrapController.h; sourceTree = "<group>"; };
 		D0BCAA63177907FD00C965F4 /* IIWrapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIWrapController.m; sourceTree = "<group>"; };
 		D0BCAA671779091000C965F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		D0BCAA69177909A500C965F4 /* OCArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCArticleCell.h; sourceTree = "<group>"; };
-		D0BCAA6A177909A500C965F4 /* OCArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCArticleCell.m; sourceTree = "<group>"; };
-		D0BCAA6B177909A500C965F4 /* OCArticleListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCArticleListController.h; sourceTree = "<group>"; };
-		D0BCAA6C177909A500C965F4 /* OCArticleListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCArticleListController.m; sourceTree = "<group>"; };
-		D0BCAA6D177909A600C965F4 /* OCFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFeedCell.h; sourceTree = "<group>"; };
-		D0BCAA6E177909A600C965F4 /* OCFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFeedCell.m; sourceTree = "<group>"; };
-		D0BCAA6F177909A600C965F4 /* OCFeedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFeedListController.h; sourceTree = "<group>"; };
-		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFeedListController.m; sourceTree = "<group>"; };
-		D0BCAA71177909A600C965F4 /* OCWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCWebController.h; sourceTree = "<group>"; };
-		D0BCAA72177909A600C965F4 /* OCWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCWebController.m; sourceTree = "<group>"; };
+		D0BCAA69177909A500C965F4 /* OCArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCArticleCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA6A177909A500C965F4 /* OCArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCArticleCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA6B177909A500C965F4 /* OCArticleListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCArticleListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA6C177909A500C965F4 /* OCArticleListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCArticleListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA6D177909A600C965F4 /* OCFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA6E177909A600C965F4 /* OCFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA6F177909A600C965F4 /* OCFeedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA71177909A600C965F4 /* OCWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCWebController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA72177909A600C965F4 /* OCWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCWebController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA7917790A9600C965F4 /* MCSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCSegmentedControl.h; sourceTree = "<group>"; };
 		D0BCAA7A17790A9600C965F4 /* MCSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCSegmentedControl.m; sourceTree = "<group>"; };
 		D0BCAA7D17790B1E00C965F4 /* MKNumberBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNumberBadgeView.h; sourceTree = "<group>"; };
@@ -170,18 +169,18 @@
 		D0BCAAA217790C1E00C965F4 /* UILabel+VerticalAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+VerticalAlignment.h"; sourceTree = "<group>"; };
 		D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+VerticalAlignment.m"; sourceTree = "<group>"; };
 		D0BCAADA17790C9100C965F4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		D0BCABA817790F6600C965F4 /* FDiCabActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDiCabActivity.h; sourceTree = "<group>"; };
-		D0BCABA917790F6600C965F4 /* FDiCabActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDiCabActivity.m; sourceTree = "<group>"; };
+		D0BCABA817790F6600C965F4 /* FDiCabActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FDiCabActivity.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCABA917790F6600C965F4 /* FDiCabActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FDiCabActivity.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCABAA17790F6600C965F4 /* icab-activity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icab-activity.png"; sourceTree = "<group>"; };
 		D0BCABAB17790F6600C965F4 /* icab-activity@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icab-activity@2x.png"; sourceTree = "<group>"; };
-		D0BCABAD17790F6600C965F4 /* FDInstapaperActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDInstapaperActivity.h; sourceTree = "<group>"; };
-		D0BCABAE17790F6600C965F4 /* FDInstapaperActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDInstapaperActivity.m; sourceTree = "<group>"; };
+		D0BCABAD17790F6600C965F4 /* FDInstapaperActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FDInstapaperActivity.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCABAE17790F6600C965F4 /* FDInstapaperActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FDInstapaperActivity.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCABAF17790F6600C965F4 /* instapaper-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instapaper-ipad.png"; sourceTree = "<group>"; };
 		D0BCABB017790F6600C965F4 /* instapaper-ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instapaper-ipad@2x.png"; sourceTree = "<group>"; };
 		D0BCABB117790F6600C965F4 /* instapaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instapaper.png; sourceTree = "<group>"; };
 		D0BCABB217790F6600C965F4 /* instapaper@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instapaper@2x.png"; sourceTree = "<group>"; };
-		D0BCABB417790F6700C965F4 /* FDReadabilityActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDReadabilityActivity.h; sourceTree = "<group>"; };
-		D0BCABB517790F6700C965F4 /* FDReadabilityActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDReadabilityActivity.m; sourceTree = "<group>"; };
+		D0BCABB417790F6700C965F4 /* FDReadabilityActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FDReadabilityActivity.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCABB517790F6700C965F4 /* FDReadabilityActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FDReadabilityActivity.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCABB617790F6700C965F4 /* Readability-activity-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Readability-activity-iPad.png"; sourceTree = "<group>"; };
 		D0BCABB717790F6700C965F4 /* Readability-activity-iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Readability-activity-iPad@2x.png"; sourceTree = "<group>"; };
 		D0BCABB817790F6700C965F4 /* Readability-activity-iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Readability-activity-iPhone.png"; sourceTree = "<group>"; };
@@ -236,7 +235,6 @@
 		D0BCAC291780E02500C965F4 /* OCArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OCArticleCell.xib; sourceTree = "<group>"; };
 		D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCArticleImage.h; sourceTree = "<group>"; };
 		D0BCAC301780E97200C965F4 /* OCArticleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCArticleImage.m; sourceTree = "<group>"; };
-		D0BCAC39178104FC00C965F4 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = about.html; sourceTree = "<group>"; };
 		D0BCAC3A178104FC00C965F4 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		D0BCAC3B178104FC00C965F4 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		D0BCAC3C178104FC00C965F4 /* background1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background1.png; sourceTree = "<group>"; };
@@ -541,7 +539,6 @@
 			children = (
 				D0F1814017862B3900F719D9 /* gear.png */,
 				D0F1814117862B3900F719D9 /* gear@2x.png */,
-				D0BCAC39178104FC00C965F4 /* about.html */,
 				D0BCAC3A178104FC00C965F4 /* back.png */,
 				D0BCAC3B178104FC00C965F4 /* back@2x.png */,
 				D0BCAC3C178104FC00C965F4 /* background1.png */,
@@ -710,7 +707,6 @@
 				D0BCABFF17791F3400C965F4 /* Safari@2x~ipad.png in Resources */,
 				D0BCAC0017791F3400C965F4 /* Safari~ipad.png in Resources */,
 				D0BCAC2A1780E02600C965F4 /* OCArticleCell.xib in Resources */,
-				D0BCAC64178104FC00C965F4 /* about.html in Resources */,
 				D0BCAC65178104FC00C965F4 /* back.png in Resources */,
 				D0BCAC66178104FC00C965F4 /* back@2x.png in Resources */,
 				D0BCAC67178104FC00C965F4 /* background1.png in Resources */,

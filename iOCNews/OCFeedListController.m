@@ -1,6 +1,6 @@
 //
 //  FeedListController.m
-//  FeedDeck
+//  iOCNews
 //
 
 /************************************************************************
@@ -374,7 +374,7 @@
         myFrame = CGRectMake(0, 0, 768, 1004);
     }
     AppDelegate* myDelegate = (((AppDelegate*) [UIApplication sharedApplication].delegate));
-    FDAboutPanel *aboutPanel = [[FDAboutPanel alloc] initWithFrame:myFrame title:@"About FeedDeck"];
+    FDAboutPanel *aboutPanel = [[FDAboutPanel alloc] initWithFrame:myFrame title:@"About iOCNews"];
     [myDelegate.window.rootViewController.view addSubview:aboutPanel];
 	[aboutPanel showFromPoint:CGPointMake(250, 30)];
      */
@@ -543,7 +543,7 @@
     [root addChild:head];
     [root addChild:body];
     
-    DDXMLElement* title =[DDXMLNode elementWithName:@"title" stringValue:@"FeedDeck.opml"];
+    DDXMLElement* title =[DDXMLNode elementWithName:@"title" stringValue:@"iOCNews.opml"];
     [head addChild:title];
 
     for (NSDictionary *feedObject in self.feeds) {
@@ -566,9 +566,9 @@
     
     mailViewController.mailComposeDelegate = self;
     [mailViewController setToRecipients:[NSArray arrayWithObject:@"support@peterandlinda.com"]];
-    [mailViewController setSubject:@"FeedDeck Support Request"];
+    [mailViewController setSubject:@"iOCNews Support Request"];
     [mailViewController setMessageBody:@"<Please state your problem here>\n\n\nI have attached my current subscriptions." isHTML:NO ];
-    [mailViewController addAttachmentData:[self createOPML] mimeType:@"text/xml" fileName:@"FeedDeck.opml"];
+    [mailViewController addAttachmentData:[self createOPML] mimeType:@"text/xml" fileName:@"iOCNews.opml"];
     mailViewController.modalPresentationStyle = UIModalPresentationPageSheet;
     
     [self presentViewController:mailViewController animated:YES completion:nil];
