@@ -37,11 +37,10 @@
 @interface OCArticleListController : UITableViewController
 
 @property (strong, nonatomic) OCWebController *detailViewController;
-@property (strong, nonatomic) id detailItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *markBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 @property (nonatomic, strong) NSMutableDictionary *feed;
-@property (strong, nonatomic) NSMutableArray *articles;
+@property (strong, nonatomic) NSMutableArray *items;
 
 - (IBAction) doRefresh:(id)sender;
 - (IBAction) doMarkRead:(id)sender;

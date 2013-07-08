@@ -58,7 +58,8 @@
 
 @synthesize markBarButtonItem;
 @synthesize feedRefreshControl;
-@synthesize feed, articles;
+@synthesize feed = _feed;
+@synthesize items = _items;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -79,77 +80,34 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(id)newDetailItem
+- (void)setFeed:(NSMutableDictionary *)feed
 {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
+    if (_feed != feed) {
+        _feed = feed;
 
         [self configureView];
+    }
+}
+
+- (void)setItems:(NSMutableArray *)items
+{
+    if (_items != items) {
+        _items = items;
     }
 }
 
 - (void)configureView
 {
     // Update the user interface for the detail item.
-    
-    NSDictionary *detail = (NSDictionary *) self.detailItem;
-    self.navigationItem.title = [detail objectForKey:@"title"];
-    self.articles = [NSMutableArray new];
+    self.navigationItem.title = [self.feed objectForKey:@"title"];
     [self.tableView reloadData];
-/*
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSURL *docDir = [paths objectAtIndex:0];
-    docDir = [docDir URLByAppendingPathComponent:[detail objectForKey:@"GUID"] isDirectory:NO];
-    docDir = [docDir URLByAppendingPathExtension:@"plist"];
-    NSString *archivePath = [docDir path];
-
-    if ([fm fileExistsAtPath:archivePath]) {
-        self.feed = [NSKeyedUnarchiver unarchiveObjectWithFile:archivePath];
-    } else { */
-        //Shouldn't really happen, but just to be safe
-        self.feed = [NSMutableDictionary dictionaryWithDictionary:self.detailItem];
-        //self.feed.title = [detail objectForKey:@"Title"];
-        //self.feed.url = [NSURL URLWithString:[detail objectForKey:@"XMLUrl"]];
-        //self.feed.guid = [detail objectForKey:@"GUID"];
-/*    }
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-        [self.feedRefreshControl performSelectorOnMainThread:@selector(endRefreshing) withObject:nil waitUntilDone:YES];
-        [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
-        [self performSelectorOnMainThread:@selector(scrollToTop) withObject:nil waitUntilDone:NO];
-    });
-*/
-    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        OCAPIClient *client = [OCAPIClient sharedClient];
-        NSString *feedId = [self.feed objectForKey:@"id"];
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:150], @"batchSize",
-                                [NSNumber numberWithInt:0], @"offset",
-                                [NSNumber numberWithInt:0], @"type",
-                                feedId, @"id",
-                                @"true", @"getRead", nil];
-        
-        NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:@"items" parameters:params];
-        
-        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            
-            NSLog(@"Feeds: %@", JSON);
-            NSDictionary *jsonDict = (NSDictionary *) JSON;
-            
-            self.articles = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-            [self.refreshControl endRefreshing];
-            [self.tableView reloadData];
-            [self scrollToTop];
-            
-        } failure:nil];
-        [client enqueueHTTPRequestOperation:operation];
-    }
+    [self scrollToTop];
 }
 
 - (void) scrollToTop {
     int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
     self.markBarButtonItem.enabled = (unreadCount > 0);
-    if (self.articles.count > 0) {
+    if (self.items.count > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
@@ -211,8 +169,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.articles.count > 0) {
-        return self.articles.count;
+    if (self.items.count > 0) {
+        return self.items.count;
     } else {
         return 0;
     }
@@ -222,7 +180,7 @@
 {
     OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
 
-    NSDictionary *article = [self.articles objectAtIndex:indexPath.row];
+    NSDictionary *article = [self.items objectAtIndex:indexPath.row];
 
     cell.titleLabel.text = [[article objectForKey:@"title"] stringByConvertingHTMLToPlainText];
     [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
@@ -291,39 +249,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     currentIndex = indexPath.row;
-    NSDictionary *object = (NSDictionary*)[self.articles objectAtIndex:indexPath.row];
+    NSDictionary *object = (NSDictionary*)[self.items objectAtIndex:indexPath.row];
     self.detailViewController.feedTitle = [self.feed valueForKey:@"title"];
     self.detailViewController.detailItem = object;
     [self.viewDeckController closeLeftView];
     NSNumber *read = [object valueForKey:@"unread"];
     if ([read intValue] == 1) {
-        if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-            
-            NSString *myId = [object valueForKey:@"id"];
-            
-            OCAPIClient *client = [OCAPIClient sharedClient];
-            
-            NSMutableURLRequest *request = [client requestWithMethod:@"PUT" path:[NSString stringWithFormat:@"items/%@/read", myId] parameters:nil];
-            
-            AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-            
-            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSMutableDictionary *updatedArticle = [NSMutableDictionary dictionaryWithDictionary:object];
-                [updatedArticle setValue:[NSNumber numberWithInt:0] forKey:@"unread"];
-                [self.articles replaceObjectAtIndex:[indexPath row] withObject:updatedArticle];
-                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                
-                int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
-                --unreadCount;
-                [self.feed setValue:[NSNumber numberWithInt:unreadCount] forKey:@"unreadCount"];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:[NSDictionary dictionaryWithObject:self.feed forKey:@"Feed"]];
-                NSLog(@"Success");
-            } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Failure");
-            }];
-            [client enqueueHTTPRequestOperation:operation];
-        }
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
+                              [NSMutableArray arrayWithObject:[object valueForKey:@"id"]], @"itemIds", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
+        [self.tableView reloadData];
     }
 }
 
@@ -351,34 +286,22 @@
 - (IBAction)doMarkRead:(id)sender {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
         
-        __block int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+        int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
         
         if (unreadCount > 0) {
-            if (self.articles.count > 0) {
-                
-                NSMutableIndexSet *indicesForObjectsToReplace = [NSMutableIndexSet new];
-                NSMutableArray *objectsToReplace = [NSMutableArray new];
+            if (self.items.count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
                 
-                [self.articles enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
+                [self.items enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
                     NSNumber *unread = [article valueForKey:@"unread"];
                     if ([unread intValue] == 1) {
-                        [indicesForObjectsToReplace addIndex:idx];
-                        
-                        NSMutableDictionary *updatedArticle = [NSMutableDictionary dictionaryWithDictionary:article];
-                        [updatedArticle setValue:[NSNumber numberWithInt:0] forKey:@"unread"];
-                        [objectsToReplace addObject:updatedArticle];
                         [idsToMarkRead addObject:[article valueForKey:@"id"]];
                     }
                 }];
-                [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:idsToMarkRead forKey:@"items"] success:nil failure:nil];
-                
-                
-                [self.articles replaceObjectsAtIndexes:indicesForObjectsToReplace
-                                           withObjects:objectsToReplace];
-                
-                [self.feed setValue:[NSNumber numberWithInt:0] forKey:@"unreadCount"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearNewCount" object:self userInfo:[NSDictionary dictionaryWithObject:self.feed forKey:@"Feed"]];
+
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
+                                      idsToMarkRead, @"itemIds", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearNewCount" object:self userInfo:info];
                 [self.tableView reloadData];
                 self.markBarButtonItem.enabled = NO;
             }
@@ -392,53 +315,37 @@
 - (void) markRowsRead {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
 
-        __block int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+        int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
         
         if (unreadCount > 0) {
             NSArray * vCells = self.tableView.indexPathsForVisibleRows;
             __block int row = 0;
-            NSMutableArray *updatedIndexes;
+
             if (vCells.count > 0) {
                 NSIndexPath *topCell = [vCells objectAtIndex:0];
                 row = topCell.row;
                 NSLog(@"Top row: %d", row);
             }
             
-            if (self.articles.count > 0) {
-                updatedIndexes = [[NSMutableArray alloc] init];
-                
-                NSMutableIndexSet *indicesForObjectsToReplace = [NSMutableIndexSet new];
-                NSMutableArray *objectsToReplace = [NSMutableArray new];
+            if (self.items.count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
                 
-                [self.articles enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
+                [self.items enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
                     if (idx >= row) {
                         *stop = YES;
                     }
                     NSNumber *unread = [article valueForKey:@"unread"];
-                    if ([unread intValue] == 1) {
-                        --unreadCount;
-                        [indicesForObjectsToReplace addIndex:idx];
-                        
-                        NSMutableDictionary *updatedArticle = [NSMutableDictionary dictionaryWithDictionary:article];
-                        [updatedArticle setValue:[NSNumber numberWithInt:0] forKey:@"unread"];
-                        [objectsToReplace addObject:updatedArticle];
-                        
-                        NSIndexPath * path = [NSIndexPath indexPathForRow:idx inSection:0];
-                        [updatedIndexes addObject:path];
-                        
+                    if ([unread intValue] == 1) {                        
                         [idsToMarkRead addObject:[article valueForKey:@"id"]];
                     }
                 }];
-                [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:idsToMarkRead forKey:@"items"] success:nil failure:nil];
-                
-                
-                [self.articles replaceObjectsAtIndexes:indicesForObjectsToReplace
-                                           withObjects:objectsToReplace];
-                
-                [self.feed setValue:[NSNumber numberWithInt:unreadCount] forKey:@"unreadCount"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:[NSDictionary dictionaryWithObject:self.feed forKey:@"Feed"]];
-                [self.tableView reloadRowsAtIndexPaths:updatedIndexes withRowAnimation:UITableViewRowAnimationNone];
+
+                unreadCount = unreadCount - [idsToMarkRead count];
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
+                                      idsToMarkRead, @"itemIds", nil];
+
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
+                [self.tableView reloadData];
                 self.markBarButtonItem.enabled = (unreadCount > 0);
             }
         }

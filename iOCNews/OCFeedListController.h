@@ -38,6 +38,7 @@
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
 @property (strong, nonatomic) NSMutableArray *feeds;
+@property (strong, nonatomic) NSMutableArray *items;
 
 @property (nonatomic, strong, readonly) UIBarButtonItem *addBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *infoBarButtonItem;

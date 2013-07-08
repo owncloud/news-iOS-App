@@ -41,10 +41,13 @@
 @interface OCFeedListController () {
     int parserCount;
     int currentIndex;
+    BOOL haveSyncData;
 }
 
 //- (NSString *)createUUID;
 - (void) writeFeeds;
+- (void) updateItems;
+- (void) writeItems;
 //- (void) showRenameForIndex:(int) index;
 - (void) decreaseNewCount:(NSNotification*)n;
 - (void) clearNewCount:(NSNotification*)n;
@@ -57,6 +60,7 @@
 @implementation OCFeedListController
 
 @synthesize feeds = _feeds;
+@synthesize items = _items;
 @synthesize addBarButtonItem;
 @synthesize infoBarButtonItem;
 @synthesize editBarButtonItem;
@@ -65,26 +69,37 @@
 
 - (NSMutableArray *) feeds {
     if (!_feeds) {
-        //NSFileManager *fm = [NSFileManager defaultManager];
-        //NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-        //NSURL *docDir = [paths objectAtIndex:0];
-        //docDir = [docDir URLByAppendingPathComponent:@"feeds.plist" isDirectory:NO];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+        NSURL *docDir = [paths objectAtIndex:0];
+        docDir = [docDir URLByAppendingPathComponent:@"feeds.plist" isDirectory:NO];
         NSMutableArray *theFeeds;
-        //if ([fm fileExistsAtPath:[docDir path]]) {
-        //    theFeeds = [NSMutableArray arrayWithContentsOfURL:docDir];
-        //} else {
+        if ([fm fileExistsAtPath:[docDir path]]) {
+            theFeeds = [NSKeyedUnarchiver unarchiveObjectWithFile:[docDir path]];
+            haveSyncData = YES;
+        } else {
             theFeeds = [[NSMutableArray alloc] init];
-        //}
-        //for (int i = 0; i < theFeeds.count; ++i) {
-        //    NSMutableDictionary *dict = [theFeeds objectAtIndex:i];
-        //    [dict setValue:[NSNumber numberWithBool:NO] forKey:@"Updating"];
-        //    [dict setValue:[NSNumber numberWithBool:NO] forKey:@"Failure"];
-            //[dict setValue:[NSNumber numberWithInt:0] forKey:@"NewCount"];
-        //}
-        self.feeds = theFeeds;
-        //[self.tableView reloadData];
+            haveSyncData = NO;
+        }
+        _feeds = theFeeds;
+        [self.tableView reloadData];
     }
     return _feeds;
+}
+
+- (NSMutableArray *) items {
+    if (!_items) {
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+        NSURL *docDir = [paths objectAtIndex:0];
+        docDir = [docDir URLByAppendingPathComponent:@"items.plist" isDirectory:NO];
+        if ([fm fileExistsAtPath:[docDir path]]) {
+            _items = [NSKeyedUnarchiver unarchiveObjectWithFile:[docDir path]];
+        } else {
+            _items = [NSMutableArray new];
+        }
+    }
+    return _items;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -141,6 +156,8 @@
     
     int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
     NSLog(@"Server status: %i", status);
+    
+    haveSyncData = NO;
     
     IIViewDeckController *topDeckController = (IIViewDeckController *)self.viewDeckController.centerController;
     UINavigationController *navController = (UINavigationController*)topDeckController.leftController;
@@ -271,7 +288,7 @@
         
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             [self.feeds removeObjectAtIndex:indexPath.row];
-            //[self writeFeeds];
+            [self writeFeeds];
             // Delete the row from the data source
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
@@ -315,7 +332,11 @@
         //[self showRenameForIndex:indexPath.row];
     } else {
         NSData *object = [self.feeds objectAtIndex:indexPath.row];
-        self.detailViewController.detailItem = object;
+        NSString *feedId = [object valueForKey:@"id"];
+        NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
+        NSLog(@"FeedId: %@; Count: %i", feedId, feedItems.count);
+        self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
+        self.detailViewController.feed = (NSMutableDictionary *)object;
         [self.viewDeckController closeLeftView];
     }
 
@@ -356,6 +377,7 @@
             NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
             NSDictionary *newFeed = [newFeeds objectAtIndex:0];
             [self.feeds addObject:newFeed];
+            [self writeFeeds];
             [self.tableView reloadData];
 
         } failure:nil];
@@ -420,8 +442,19 @@
             NSLog(@"Feeds: %@", JSON);
             NSDictionary *jsonDict = (NSDictionary *) JSON;
             
-            self.feeds = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
-            [self.refreshControl endRefreshing];
+            NSArray *newFeeds = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
+            
+            NSMutableArray *mutableArray = [newFeeds mutableCopy];
+            
+            [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
+                [mutableArray replaceObjectAtIndex:idx withObject:[feed mutableCopy]];
+            }];
+            
+            self.feeds = mutableArray;
+
+            [self writeFeeds];
+            [self updateItems];
+            //[self.refreshControl endRefreshing];
             [self.tableView reloadData];
             
         } failure:nil];
@@ -440,31 +473,90 @@
 
 }
 
-#pragma mark - Parser delegate
+#pragma mark - Feeds maintenance
 
 - (void) writeFeeds {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSURL *docDir = [paths objectAtIndex:0];
     NSURL *saveURL = [docDir URLByAppendingPathComponent:@"feeds.plist" isDirectory:NO];
-    [self.feeds writeToURL:saveURL atomically:YES];
+    [NSKeyedArchiver archiveRootObject:self.feeds toFile:[saveURL path]];
+}
+
+- (void) updateItems {
+    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
+        OCAPIClient *client = [OCAPIClient sharedClient];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"LastModified"], @"lastModified",
+                                [NSNumber numberWithInt:3], @"type",
+                                [NSNumber numberWithInt:0], @"id", nil];
+        
+        NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:@"items/updated" parameters:params];
+        
+        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            
+            //NSLog(@"Updated Items: %@", JSON);
+            NSDictionary *jsonDict = (NSDictionary *) JSON;
+            NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+            
+            NSDictionary *newestItem = [newItems objectAtIndex:0];
+            [[NSUserDefaults standardUserDefaults] setObject:[newestItem valueForKey:@"lastModified"] forKey:@"LastModified"];
+            
+            NSMutableArray *mutableArray = [newItems mutableCopy];
+            
+            [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+                [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
+            }];
+
+            
+            
+            [mutableArray addObjectsFromArray:self.items];
+            self.items = mutableArray;
+            [self.refreshControl endRefreshing];
+            [self writeItems];
+            
+        } failure:nil];
+        [client enqueueHTTPRequestOperation:operation];
+    }
+
+}
+
+- (void) writeItems {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSURL *docDir = [paths objectAtIndex:0];
+    NSURL *saveURL = [docDir URLByAppendingPathComponent:@"items.plist" isDirectory:NO];
+    [NSKeyedArchiver archiveRootObject:self.items toFile:[saveURL path]];
 }
 
 - (void) decreaseNewCount:(NSNotification*)n {
-    //FDFeed *feed = [n.userInfo objectForKey:@"Feed"];
-    [self.feeds replaceObjectAtIndex:currentIndex withObject:[n.userInfo objectForKey:@"Feed"]];
-    //NSDictionary *dict = [_feeds objectAtIndex:currentIndex];
-    //[dict setValue:[NSNumber numberWithInt:feed.newCount] forKey:@"NewCount"];
-    //if (feed.error) {
-    //    [dict setValue:[NSNumber numberWithBool:YES] forKey:@"Failure"];
-    //} else {
-    //    [dict setValue:[NSNumber numberWithBool:NO] forKey:@"Failure"];
-    //}
+    NSString *feedId = [n.userInfo valueForKey:@"feedId"];
+    NSArray *itemIds = [n.userInfo valueForKey:@"itemIds"];
+        
+    NSArray *a = [self.feeds valueForKey:@"id"];
+    NSInteger index = [a indexOfObject:feedId];
+    int unreadCount = [(NSNumber*)[[self.feeds objectAtIndex:index] valueForKey:@"unreadCount"] intValue];
+    unreadCount = unreadCount - itemIds.count;
+    [[self.feeds objectAtIndex:index] setValue:[NSNumber numberWithInt:unreadCount] forKey:@"unreadCount"];
     [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:currentIndex inSection:0] waitUntilDone:NO];
-    //NSInvocationOperation *invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeFeed:) object:feed];
-    //[self.updateOperations.updateQueue addOperation:invOp];
-    //invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeFeeds) object:nil];
-    //[self.updateOperations.updateQueue addOperation:invOp];
+
+    NSInvocationOperation *invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeFeeds) object:nil];
+    [invOp start];
+    
+    a = [self.items valueForKey:@"id"];
+    
+    for (int i = 0; i < itemIds.count; ++i) {
+        index = [a indexOfObject:[itemIds objectAtIndex:i]];
+        NSMutableDictionary *item = [NSMutableDictionary dictionaryWithDictionary:[self.items objectAtIndex:index]];
+        NSNumber *unread = [item valueForKey:@"unread"];
+        if ([unread intValue] == 1) {
+            [[self.items objectAtIndex:index] setValue:[NSNumber numberWithInt:0] forKey:@"unread"];
+        }
+
+    }
+    [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:nil failure:nil];
+
+    NSInvocationOperation *invOp2 = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeItems) object:nil];
+    [invOp2 start];
 }
 
 - (void) clearNewCount:(NSNotification*)n {
