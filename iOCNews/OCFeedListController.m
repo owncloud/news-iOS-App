@@ -50,6 +50,7 @@
 - (void) writeItems;
 //- (void) showRenameForIndex:(int) index;
 - (void) decreaseNewCount:(NSNotification*)n;
+- (void) processUnreadCountChange:(NSNotification*)n;
 - (void) clearNewCount:(NSNotification*)n;
 - (void) feedRefreshed:(NSNotification*)n;
 - (void) feedRefreshedWithError:(NSNotification*)n;
@@ -529,6 +530,14 @@
 }
 
 - (void) decreaseNewCount:(NSNotification*)n {
+    NSInvocationOperation *invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(processUnreadCountChange:) object:n];
+    [invOp setCompletionBlock:^ {
+        [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[n.userInfo valueForKey:@"itemIds"] forKey:@"items"] success:nil failure:nil];
+    }];
+    [[OCAPIClient sharedClient].operationQueue addOperation:invOp];
+}
+
+- (void) processUnreadCountChange:(NSNotification *)n {
     NSString *feedId = [n.userInfo valueForKey:@"feedId"];
     NSArray *itemIds = [n.userInfo valueForKey:@"itemIds"];
         
@@ -539,8 +548,7 @@
     [[self.feeds objectAtIndex:index] setValue:[NSNumber numberWithInt:unreadCount] forKey:@"unreadCount"];
     [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:currentIndex inSection:0] waitUntilDone:NO];
 
-    NSInvocationOperation *invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeFeeds) object:nil];
-    [invOp start];
+    [self writeFeeds];
     
     a = [self.items valueForKey:@"id"];
     
@@ -553,10 +561,8 @@
         }
 
     }
-    [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:nil failure:nil];
-
-    NSInvocationOperation *invOp2 = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeItems) object:nil];
-    [invOp2 start];
+    [self.detailViewController.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    [self writeItems];
 }
 
 - (void) clearNewCount:(NSNotification*)n {

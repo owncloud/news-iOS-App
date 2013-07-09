@@ -258,7 +258,7 @@
         NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
                               [NSMutableArray arrayWithObject:[object valueForKey:@"id"]], @"itemIds", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
-        [self.tableView reloadData];
+        //[self.tableView reloadData];
     }
 }
 
@@ -302,7 +302,7 @@
                 NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
                                       idsToMarkRead, @"itemIds", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearNewCount" object:self userInfo:info];
-                [self.tableView reloadData];
+                //[self.tableView reloadData];
                 self.markBarButtonItem.enabled = NO;
             }
         }
@@ -345,7 +345,7 @@
                                       idsToMarkRead, @"itemIds", nil];
 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
-                [self.tableView reloadData];
+                //[self.tableView reloadData];
                 self.markBarButtonItem.enabled = (unreadCount > 0);
             }
         }
