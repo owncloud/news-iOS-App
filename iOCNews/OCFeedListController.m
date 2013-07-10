@@ -227,7 +227,7 @@
     
     BOOL haveIcon = NO;
     NSString *faviconLink = [object objectForKey:@"faviconLink"];
-    NSLog(@"faviconLink: %@", faviconLink);
+    //NSLog(@"faviconLink: %@", faviconLink);
     if (![faviconLink isKindOfClass:[NSNull class]]) {
         
         if ([faviconLink hasPrefix:@"http"]) {
@@ -442,9 +442,7 @@
             
             NSLog(@"Feeds: %@", JSON);
             NSDictionary *jsonDict = (NSDictionary *) JSON;
-            
             NSArray *newFeeds = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
-            
             NSMutableArray *mutableArray = [newFeeds mutableCopy];
             
             [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
@@ -499,21 +497,23 @@
             NSDictionary *jsonDict = (NSDictionary *) JSON;
             NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
             
-            NSDictionary *newestItem = [newItems objectAtIndex:0];
-            [[NSUserDefaults standardUserDefaults] setObject:[newestItem valueForKey:@"lastModified"] forKey:@"LastModified"];
+            if (newItems.count > 0) {
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.lastModified == %@.@max.lastModified", newItems];
+                NSString *lastModified = [[[newItems filteredArrayUsingPredicate:predicate] objectAtIndex:0] valueForKey:@"lastModified"];
+                //NSDictionary *newestItem = [newItems objectAtIndex:0];
+                [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
+            }
             
             NSMutableArray *mutableArray = [newItems mutableCopy];
             
             [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                 [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
             }];
-
-            
             
             [mutableArray addObjectsFromArray:self.items];
             self.items = mutableArray;
-            [self.refreshControl endRefreshing];
             [self writeItems];
+            [self.refreshControl endRefreshing];
             
         } failure:nil];
         [client enqueueHTTPRequestOperation:operation];
@@ -540,29 +540,29 @@
 - (void) processUnreadCountChange:(NSNotification *)n {
     NSString *feedId = [n.userInfo valueForKey:@"feedId"];
     NSArray *itemIds = [n.userInfo valueForKey:@"itemIds"];
-        
-    NSArray *a = [self.feeds valueForKey:@"id"];
-    NSInteger index = [a indexOfObject:feedId];
-    int unreadCount = [(NSNumber*)[[self.feeds objectAtIndex:index] valueForKey:@"unreadCount"] intValue];
-    unreadCount = unreadCount - itemIds.count;
-    [[self.feeds objectAtIndex:index] setValue:[NSNumber numberWithInt:unreadCount] forKey:@"unreadCount"];
-    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:currentIndex inSection:0] waitUntilDone:NO];
 
-    [self writeFeeds];
+    __block NSArray *a = [self.items valueForKey:@"id"];
     
-    a = [self.items valueForKey:@"id"];
-    
-    for (int i = 0; i < itemIds.count; ++i) {
-        index = [a indexOfObject:[itemIds objectAtIndex:i]];
-        NSMutableDictionary *item = [NSMutableDictionary dictionaryWithDictionary:[self.items objectAtIndex:index]];
-        NSNumber *unread = [item valueForKey:@"unread"];
+    [itemIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSInteger index = [a indexOfObject:obj];
+        NSNumber *unread = [[self.items objectAtIndex:index] valueForKey:@"unread"];
         if ([unread intValue] == 1) {
             [[self.items objectAtIndex:index] setValue:[NSNumber numberWithInt:0] forKey:@"unread"];
         }
+    }];
 
-    }
     [self.detailViewController.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     [self writeItems];
+    
+    NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
+    NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread = 1"]];
+    a = [self.feeds valueForKey:@"id"];
+    NSInteger index = [a indexOfObject:feedId];
+    [[self.feeds objectAtIndex:index] setValue:[NSNumber numberWithInt:[unreadItems count]] forKey:@"unreadCount"];
+    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:currentIndex inSection:0] waitUntilDone:NO];
+    
+    [self writeFeeds];
+
 }
 
 - (void) clearNewCount:(NSNotification*)n {
