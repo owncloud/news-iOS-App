@@ -351,11 +351,16 @@
         if (indexPath.row == 0) {
             NSArray *unreadCounts = [self.feeds valueForKey:@"unreadCount"];
             int totalUnread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
-            NSMutableDictionary *allFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"All Articles", @"title", [NSNumber numberWithInt:-2], @"id", [NSNumber numberWithInt:totalUnread], @"unreadCount", nil];
+            NSMutableDictionary *allFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"All Articles", @"title", [NSNumber numberWithInt:totalUnread], @"unreadCount", nil];
             self.detailViewController.items = self.items;
             self.detailViewController.feed = allFeed;
         } else if (indexPath.row == 1) {
-            //
+            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred = 1"]];
+            NSArray *unreadCounts = [feedItems valueForKey:@"unread"];
+            int unread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
+            NSMutableDictionary *starredFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Starred", @"title", [NSNumber numberWithInt:unread], @"unreadCount", nil];
+            self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
+            self.detailViewController.feed = (NSMutableDictionary *)starredFeed;
         } else {
             NSData *object = [self.feeds objectAtIndex:indexPath.row - 2];
             NSString *feedId = [object valueForKey:@"id"];
