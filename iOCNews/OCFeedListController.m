@@ -223,44 +223,60 @@
     }
     cell.tag = indexPath.row;
     // Configure the cell...
-    NSDictionary *object = [self.feeds objectAtIndex:indexPath.row];
+    cell.accessoryView = cell.countBadge;
     
-    BOOL haveIcon = NO;
-    NSString *faviconLink = [object objectForKey:@"faviconLink"];
-    //NSLog(@"faviconLink: %@", faviconLink);
-    if (![faviconLink isKindOfClass:[NSNull class]]) {
+    if (indexPath.row == 0) {
+        cell.textLabel.text = @"All Articles";
+        [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
+        NSArray *unreadCounts = [self.feeds valueForKey:@"unreadCount"];
+        cell.countBadge.value = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
+    } else if (indexPath.row == 1) {
+        cell.textLabel.text = @"Starred";
+        [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
+        NSArray *starredCounts = [self.items valueForKey:@"starred"];
+        cell.countBadge.value = [[starredCounts valueForKeyPath:@"@sum.self"] integerValue];
+    } else {
+        NSDictionary *object = [self.feeds objectAtIndex:indexPath.row - 2];
         
-        if ([faviconLink hasPrefix:@"http"]) {
-            NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
-            if (faviconURL) {
-                if (cell.tag == indexPath.row) {
-                    haveIcon = YES;
-                    [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+        BOOL haveIcon = NO;
+        NSString *faviconLink = [object objectForKey:@"faviconLink"];
+        //NSLog(@"faviconLink: %@", faviconLink);
+        if (![faviconLink isKindOfClass:[NSNull class]]) {
+            
+            if ([faviconLink hasPrefix:@"http"]) {
+                NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
+                if (faviconURL) {
+                    if (cell.tag == indexPath.row) {
+                        haveIcon = YES;
+                        [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                    }
                 }
             }
         }
-    }
-    if (!haveIcon) {
-        [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
-    }
-
- /*   
-    if ([[object valueForKey:@"Updating"] boolValue] == YES) {
-        cell.accessoryView = cell.activityIndicator;
-        [cell.activityIndicator startAnimating];
-    } else { */
-        cell.accessoryView = cell.countBadge;
+        if (!haveIcon) {
+            [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
+        }
+        
+        /*
+         if ([[object valueForKey:@"Updating"] boolValue] == YES) {
+         cell.accessoryView = cell.activityIndicator;
+         [cell.activityIndicator startAnimating];
+         } else { */
         cell.countBadge.value = [[object valueForKey:@"unreadCount"] integerValue];
         //[cell.activityIndicator stopAnimating];
-/*    }
-    
-    if ([[object valueForKey:@"Failure"] boolValue] == YES) {
-        cell.detailTextLabel.text = @"Failed to update feed";
-    } else {
-        cell.detailTextLabel.text = @"";
+        /*    }
+         
+         if ([[object valueForKey:@"Failure"] boolValue] == YES) {
+         cell.detailTextLabel.text = @"Failed to update feed";
+         } else {
+         cell.detailTextLabel.text = @"";
+         }
+         */
+        cell.textLabel.text = [object valueForKey:@"title"];
+        
     }
- */
-    cell.textLabel.text = [object valueForKey:@"title"];
+    
+    
     return cell;
 }
 
@@ -332,13 +348,24 @@
     if (self.tableView.isEditing) {
         //[self showRenameForIndex:indexPath.row];
     } else {
-        NSData *object = [self.feeds objectAtIndex:indexPath.row];
-        NSString *feedId = [object valueForKey:@"id"];
-        NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
-        NSLog(@"FeedId: %@; Count: %i", feedId, feedItems.count);
-        self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
-        self.detailViewController.feed = (NSMutableDictionary *)object;
+        if (indexPath.row == 0) {
+            NSArray *unreadCounts = [self.feeds valueForKey:@"unreadCount"];
+            int totalUnread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
+            NSMutableDictionary *allFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"All Articles", @"title", [NSNumber numberWithInt:-2], @"id", [NSNumber numberWithInt:totalUnread], @"unreadCount", nil];
+            self.detailViewController.items = self.items;
+            self.detailViewController.feed = allFeed;
+        } else if (indexPath.row == 1) {
+            //
+        } else {
+            NSData *object = [self.feeds objectAtIndex:indexPath.row - 2];
+            NSString *feedId = [object valueForKey:@"id"];
+            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
+            NSLog(@"FeedId: %@; Count: %i", feedId, feedItems.count);
+            self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
+            self.detailViewController.feed = (NSMutableDictionary *)object;
+        }
         [self.viewDeckController closeLeftView];
+            
     }
 
 }
@@ -538,7 +565,7 @@
 }
 
 - (void) processUnreadCountChange:(NSNotification *)n {
-    NSString *feedId = [n.userInfo valueForKey:@"feedId"];
+    NSArray *feedIds = [n.userInfo valueForKey:@"feedIds"];
     NSArray *itemIds = [n.userInfo valueForKey:@"itemIds"];
 
     __block NSArray *a = [self.items valueForKey:@"id"];
@@ -553,14 +580,18 @@
 
     [self.detailViewController.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     [self writeItems];
-    
-    NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
-    NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread = 1"]];
+
     a = [self.feeds valueForKey:@"id"];
-    NSInteger index = [a indexOfObject:feedId];
-    [[self.feeds objectAtIndex:index] setValue:[NSNumber numberWithInt:[unreadItems count]] forKey:@"unreadCount"];
-    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:currentIndex inSection:0] waitUntilDone:NO];
-    
+    [feedIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSInteger index = [a indexOfObject:obj];
+
+        NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", obj]];
+        NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread = 1"]];
+
+        [[self.feeds objectAtIndex:index] setValue:[NSNumber numberWithInt:[unreadItems count]] forKey:@"unreadCount"];
+        [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index + 2 inSection:0] waitUntilDone:NO];
+        [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
+    }];    
     [self writeFeeds];
 
 }

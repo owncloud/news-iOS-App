@@ -249,14 +249,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     currentIndex = indexPath.row;
-    NSDictionary *object = (NSDictionary*)[self.items objectAtIndex:indexPath.row];
+    NSDictionary *item = (NSDictionary*)[self.items objectAtIndex:indexPath.row];
     self.detailViewController.feedTitle = [self.feed valueForKey:@"title"];
-    self.detailViewController.detailItem = object;
+    self.detailViewController.detailItem = item;
     [self.viewDeckController closeLeftView];
-    NSNumber *read = [object valueForKey:@"unread"];
+    NSNumber *read = [item valueForKey:@"unread"];
     if ([read intValue] == 1) {
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
-                              [NSMutableArray arrayWithObject:[object valueForKey:@"id"]], @"itemIds", nil];
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableSet setWithObject:[item valueForKey:@"feedId"]], @"feedIds",
+                              [NSMutableArray arrayWithObject:[item valueForKey:@"id"]], @"itemIds", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
         //[self.tableView reloadData];
     }
@@ -291,18 +291,19 @@
         if (unreadCount > 0) {
             if (self.items.count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                NSMutableSet *feedsToUpdate = [NSMutableSet new];
                 
                 [self.items enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
                     NSNumber *unread = [article valueForKey:@"unread"];
                     if ([unread intValue] == 1) {
                         [idsToMarkRead addObject:[article valueForKey:@"id"]];
+                        [feedsToUpdate addObject:[article valueForKey:@"feedId"]];
                     }
                 }];
 
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:feedsToUpdate, @"feedIds",
                                       idsToMarkRead, @"itemIds", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearNewCount" object:self userInfo:info];
-                //[self.tableView reloadData];
                 self.markBarButtonItem.enabled = NO;
             }
         }
@@ -329,6 +330,7 @@
             
             if (self.items.count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                NSMutableSet *feedsToUpdate = [NSMutableSet new];
                 
                 [self.items enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
                     if (idx >= row) {
@@ -337,15 +339,15 @@
                     NSNumber *unread = [article valueForKey:@"unread"];
                     if ([unread intValue] == 1) {                        
                         [idsToMarkRead addObject:[article valueForKey:@"id"]];
+                        [feedsToUpdate addObject:[article valueForKey:@"feedId"]];
                     }
                 }];
 
                 unreadCount = unreadCount - [idsToMarkRead count];
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[self.feed valueForKey:@"id"], @"feedId",
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:feedsToUpdate, @"feedIds",
                                       idsToMarkRead, @"itemIds", nil];
 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
-                //[self.tableView reloadData];
                 self.markBarButtonItem.enabled = (unreadCount > 0);
             }
         }
