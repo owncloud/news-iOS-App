@@ -44,6 +44,8 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *stopBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *actionBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *textBarButtonItem;
+@property (nonatomic, strong, readonly) UIBarButtonItem *starBarButtonItem;
+@property (nonatomic, strong, readonly) UIBarButtonItem *unstarBarButtonItem;
 @property (nonatomic, strong, readonly) UILongPressGestureRecognizer *tapZoneRecognizer;
 @property (nonatomic, strong, readonly) UILongPressGestureRecognizer *tapZoneRecognizer2;
 @property (nonatomic) BOOL preferWeb;
@@ -55,5 +57,6 @@
 - (IBAction) doStop:(id)sender;
 - (IBAction) doInfo:(id)sender;
 - (IBAction) doText:(id)sender;
+- (IBAction) doStar:(id)sender;
 
 @end

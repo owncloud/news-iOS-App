@@ -53,7 +53,7 @@
 
 @implementation OCWebController
 
-@synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem;
+@synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
 @synthesize preferWeb, preferReader, feedTitle;
 @synthesize tapZoneRecognizer;
 @synthesize tapZoneRecognizer2;
@@ -166,6 +166,7 @@
             [self writeAndLoadHtml:html];
         //}
         [self.viewDeckController closeLeftView];
+        [self updateToolbar];
     }
 }
 
@@ -313,6 +314,18 @@
     [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
 }
 
+- (IBAction)doStar:(id)sender {
+    NSDictionary *detail = (NSDictionary *) self.detailItem;
+    if ([sender isEqual:self.starBarButtonItem]) {
+        [detail setValue:[NSNumber numberWithInt:1] forKey:@"starred"];
+    }
+    if ([sender isEqual:self.unstarBarButtonItem]) {
+        [detail setValue:[NSNumber numberWithInt:0] forKey:@"starred"];
+    }
+    [self updateToolbar];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"StarredChange" object:self userInfo:[NSDictionary dictionaryWithObject:detail forKey:@"item"]];
+}
+
 #pragma mark - UIWebView delegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -395,6 +408,21 @@
     return textBarButtonItem;
 }
 
+- (UIBarButtonItem *)starBarButtonItem {
+    if (!starBarButtonItem) {
+        starBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star_open"] style:UIBarButtonItemStylePlain target:self action:@selector(doStar:)];
+        starBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
+    }
+    return starBarButtonItem;
+}
+
+- (UIBarButtonItem *)unstarBarButtonItem {
+    if (!unstarBarButtonItem) {
+        unstarBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star_filled"] style:UIBarButtonItemStylePlain target:self action:@selector(doStar:)];
+        unstarBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
+    }
+    return unstarBarButtonItem;
+}
 
 #pragma mark - Toolbar
 
@@ -428,8 +456,15 @@
     toolbarLeft.items = itemsLeft;
     toolbarLeft.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarLeft];
+
+    NSDictionary *detail = (NSDictionary *) self.detailItem;
+    UIBarButtonItem *starUnstarBarButtonItem = ([[detail valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
+    refreshStopBarButtonItem.enabled = (self.detailItem != nil);
     
+
     NSArray *itemsRight = [NSArray arrayWithObjects:
+                           fixedSpace,
+                           starUnstarBarButtonItem,
                            fixedSpace,
                            self.textBarButtonItem,
                           fixedSpace,
@@ -437,7 +472,7 @@
                           fixedSpace,
                           nil];
     
-    UIToolbar *toolbarRight = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 85.0, 44.0f)];
+    UIToolbar *toolbarRight = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0, 44.0f)];
     toolbarRight.items = itemsRight;
     toolbarRight.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarRight];
