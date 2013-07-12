@@ -112,6 +112,12 @@
     }
 }
 
+- (void) refresh {
+    [self.tableView reloadData];
+    int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+    self.markBarButtonItem.enabled = (unreadCount > 0);    
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

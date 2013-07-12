@@ -212,7 +212,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.feeds.count;
+    return self.feeds.count + 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -585,9 +585,6 @@
         }
     }];
 
-    [self.detailViewController.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-    [self writeItems];
-
     a = [self.feeds valueForKey:@"id"];
     [feedIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSInteger index = [a indexOfObject:obj];
@@ -599,8 +596,10 @@
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index + 2 inSection:0] waitUntilDone:NO];
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
     }];    
-    [self writeFeeds];
 
+    [self.detailViewController performSelectorOnMainThread:@selector(refresh) withObject:nil waitUntilDone:NO];
+    [self writeItems];
+    [self writeFeeds];
 }
 
 - (void) clearNewCount:(NSNotification*)n {

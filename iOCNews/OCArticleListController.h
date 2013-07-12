@@ -42,6 +42,7 @@
 @property (nonatomic, strong) NSMutableDictionary *feed;
 @property (strong, nonatomic) NSMutableArray *items;
 
+- (void) refresh;
 - (IBAction) doRefresh:(id)sender;
 - (IBAction) doMarkRead:(id)sender;
 
