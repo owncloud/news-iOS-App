@@ -542,6 +542,12 @@
             
             [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                 [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
+                NSString *guidHash = [item valueForKey:@"guidHash"];
+                NSArray *duplicates = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.guidHash == %@", guidHash]];
+                [duplicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL*stop) {
+                    //NSLog(@"Dup: %@ %@", [item valueForKey:@"feedId"], [item valueForKey:@"title"]);
+                    [self.items removeObject:obj];
+                }];
             }];
             
             [mutableArray addObjectsFromArray:self.items];
