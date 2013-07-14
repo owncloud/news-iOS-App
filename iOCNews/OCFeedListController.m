@@ -238,10 +238,10 @@
         NSArray *starredCounts = [self.items valueForKey:@"starred"];
         cell.countBadge.value = [[starredCounts valueForKeyPath:@"@sum.self"] integerValue];
     } else {
-        NSDictionary *object = [self.feeds objectAtIndex:indexPath.row - 2];
+        NSDictionary *feed = [self.feeds objectAtIndex:indexPath.row - 2];
         
         BOOL haveIcon = NO;
-        NSString *faviconLink = [object objectForKey:@"faviconLink"];
+        NSString *faviconLink = [feed objectForKey:@"faviconLink"];
         //NSLog(@"faviconLink: %@", faviconLink);
         if (![faviconLink isKindOfClass:[NSNull class]]) {
             
@@ -264,7 +264,7 @@
          cell.accessoryView = cell.activityIndicator;
          [cell.activityIndicator startAnimating];
          } else { */
-        cell.countBadge.value = [[object valueForKey:@"unreadCount"] integerValue];
+        cell.countBadge.value = [[feed valueForKey:@"unreadCount"] integerValue];
         //[cell.activityIndicator stopAnimating];
         /*    }
          
@@ -274,7 +274,7 @@
          cell.detailTextLabel.text = @"";
          }
          */
-        cell.textLabel.text = [object valueForKey:@"title"];
+        cell.textLabel.text = [feed valueForKey:@"title"];
         
     }
     
@@ -287,30 +287,33 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
+    if (indexPath.row < 2) {
+        return NO;
+    }
     return ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0);
 }
-
 
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSDictionary *object = [self.feeds objectAtIndex:indexPath.row];
-        NSString *myId = [object valueForKey:@"id"];
+        NSDictionary *object = [self.feeds objectAtIndex:indexPath.row - 2];
+        __block NSString *feedId = [object valueForKey:@"id"];
         
         OCAPIClient *client = [OCAPIClient sharedClient];
         
-        NSMutableURLRequest *request = [client requestWithMethod:@"DELETE" path:[NSString stringWithFormat:@"feeds/%@", myId] parameters:nil];
+        NSMutableURLRequest *request = [client requestWithMethod:@"DELETE" path:[NSString stringWithFormat:@"feeds/%@", feedId] parameters:nil];
         
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [self.feeds removeObjectAtIndex:indexPath.row];
+            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
+            [self.items removeObjectsInArray:feedItems];
+            [self.feeds removeObjectAtIndex:indexPath.row - 2];
             [self writeFeeds];
-            // Delete the row from the data source
+            [self writeItems];
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
             NSLog(@"Success");
         } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Failure"); 
@@ -325,7 +328,6 @@
 }
 
 
-
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
@@ -333,12 +335,11 @@
 }
 
 
-
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the item to be re-orderable.
-    return YES;
+    return NO;
 }
 
 
@@ -410,10 +411,43 @@
             NSLog(@"Feeds: %@", JSON);
             NSDictionary *jsonDict = (NSDictionary *) JSON;
             NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
-            NSDictionary *newFeed = [newFeeds objectAtIndex:0];
+            NSMutableDictionary *newFeed = [[newFeeds objectAtIndex:0] mutableCopy];
             [self.feeds addObject:newFeed];
             [self writeFeeds];
             [self.tableView reloadData];
+            
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
+                                                                               [NSNumber numberWithInt:0], @"offset",
+                                                                               [NSNumber numberWithInt:0], @"type",
+                                                                               [newFeed valueForKey:@"id"], @"id",
+                                                                               [NSNumber numberWithInt:1], @"getRead", nil];
+            
+            NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:params];
+            
+            AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                
+                //NSLog(@"Updated Items: %@", JSON);
+                NSDictionary *jsonDict = (NSDictionary *) JSON;
+                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+                NSMutableArray *mutableArray = [newItems mutableCopy];
+                
+                [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+                    [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
+                    NSString *guidHash = [item valueForKey:@"guidHash"];
+                    NSArray *duplicates = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.guidHash == %@", guidHash]];
+                    [duplicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL*stop) {
+                        //NSLog(@"Dup: %@ %@", [item valueForKey:@"feedId"], [item valueForKey:@"title"]);
+                        [self.items removeObject:obj];
+                    }];
+                }];
+                
+                [mutableArray addObjectsFromArray:self.items];
+                self.items = mutableArray;
+                [self writeItems];
+                NSLog(@"Done");
+            } failure:nil];
+            [client enqueueHTTPRequestOperation:operation];
+        
 
         } failure:nil];
         
@@ -587,18 +621,19 @@
         NSInteger index = [a indexOfObject:obj];
         NSNumber *unread = [[self.items objectAtIndex:index] valueForKey:@"unread"];
         if ([unread intValue] == 1) {
-            [[self.items objectAtIndex:index] setValue:[NSNumber numberWithInt:0] forKey:@"unread"];
+            [[self.items objectAtIndex:index] setObject:[NSNumber numberWithInt:0] forKey:@"unread"];
         }
     }];
 
-    a = [self.feeds valueForKey:@"id"];
+    __block NSArray *b = [self.feeds valueForKey:@"id"];
     [feedIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSInteger index = [a indexOfObject:obj];
+        NSInteger index = [b indexOfObject:obj];
 
         NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", obj]];
         NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread = 1"]];
-
-        [[self.feeds objectAtIndex:index] setValue:[NSNumber numberWithInt:[unreadItems count]] forKey:@"unreadCount"];
+        
+        NSMutableDictionary *feed = [self.feeds objectAtIndex:index];
+        [feed setObject:[NSNumber numberWithInt:unreadItems.count] forKey:@"unreadCount"];
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index + 2 inSection:0] waitUntilDone:NO];
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
     }];    
