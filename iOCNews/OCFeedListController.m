@@ -573,15 +573,29 @@
             }
             
             NSMutableArray *mutableArray = [newItems mutableCopy];
-            
+            NSMutableSet *updatedFeeds = [NSMutableSet new];
             [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                 [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
+                [updatedFeeds addObject:[item valueForKey:@"feedId"]];
                 NSString *guidHash = [item valueForKey:@"guidHash"];
                 NSArray *duplicates = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.guidHash == %@", guidHash]];
                 [duplicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL*stop) {
                     //NSLog(@"Dup: %@ %@", [item valueForKey:@"feedId"], [item valueForKey:@"title"]);
                     [self.items removeObject:obj];
                 }];
+            }];
+            
+            [updatedFeeds enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+                NSArray *feedItems = [[self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.feedId == %@", obj]] copy];
+                if (feedItems.count > 200) {
+                    NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
+                    int i = feedItems.count;
+                    while (i > 200) {
+                        //int index = [self.items indexOfObject:[feedItems objectAtIndex:i - 1]];
+                        [self.items removeObject:[feedItems objectAtIndex:i - 1]];
+                        --i;
+                    }
+                }
             }];
             
             [mutableArray addObjectsFromArray:self.items];
