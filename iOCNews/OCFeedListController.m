@@ -591,8 +591,10 @@
                     NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
                     int i = feedItems.count;
                     while (i > 200) {
-                        //int index = [self.items indexOfObject:[feedItems objectAtIndex:i - 1]];
-                        [self.items removeObject:[feedItems objectAtIndex:i - 1]];
+                        NSDictionary *itemToRemove = [feedItems objectAtIndex:i - 1];
+                        if ([[itemToRemove valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:0]]) {
+                            [self.items removeObject:itemToRemove];
+                        }
                         --i;
                     }
                 }
