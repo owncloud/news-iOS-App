@@ -552,63 +552,106 @@
 
 - (void) updateItems {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        OCAPIClient *client = [OCAPIClient sharedClient];
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"LastModified"], @"lastModified",
-                                [NSNumber numberWithInt:3], @"type",
-                                [NSNumber numberWithInt:0], @"id", nil];
-        
-        NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:@"items/updated" parameters:params];
-        
-        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        if (haveSyncData) {
+            OCAPIClient *client = [OCAPIClient sharedClient];
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"LastModified"], @"lastModified",
+                                    [NSNumber numberWithInt:3], @"type",
+                                    [NSNumber numberWithInt:0], @"id", nil];
             
-            //NSLog(@"Updated Items: %@", JSON);
-            NSDictionary *jsonDict = (NSDictionary *) JSON;
-            NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+            NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:@"items/updated" parameters:params];
             
-            if (newItems.count > 0) {
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.lastModified == %@.@max.lastModified", newItems];
-                NSString *lastModified = [[[newItems filteredArrayUsingPredicate:predicate] objectAtIndex:0] valueForKey:@"lastModified"];
-                //NSDictionary *newestItem = [newItems objectAtIndex:0];
-                [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
-            }
-            
-            NSMutableArray *mutableArray = [newItems mutableCopy];
-            NSMutableSet *updatedFeeds = [NSMutableSet new];
-            [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-                [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
-                [updatedFeeds addObject:[item valueForKey:@"feedId"]];
-                NSString *guidHash = [item valueForKey:@"guidHash"];
-                NSArray *duplicates = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.guidHash == %@", guidHash]];
-                [duplicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL*stop) {
-                    //NSLog(@"Dup: %@ %@", [item valueForKey:@"feedId"], [item valueForKey:@"title"]);
-                    [self.items removeObject:obj];
-                }];
-            }];
-            
-            [updatedFeeds enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-                NSArray *feedItems = [[self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.feedId == %@", obj]] copy];
-                if (feedItems.count > 200) {
-                    NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
-                    int i = feedItems.count;
-                    while (i > 200) {
-                        NSDictionary *itemToRemove = [feedItems objectAtIndex:i - 1];
-                        if ([[itemToRemove valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:0]]) {
-                            [self.items removeObject:itemToRemove];
-                        }
-                        --i;
-                    }
+            AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                
+                //NSLog(@"Updated Items: %@", JSON);
+                NSDictionary *jsonDict = (NSDictionary *) JSON;
+                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+                
+                if (newItems.count > 0) {
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.lastModified == %@.@max.lastModified", newItems];
+                    NSString *lastModified = [[[newItems filteredArrayUsingPredicate:predicate] objectAtIndex:0] valueForKey:@"lastModified"];
+                    //NSDictionary *newestItem = [newItems objectAtIndex:0];
+                    [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
                 }
+                
+                NSMutableArray *mutableArray = [newItems mutableCopy];
+                NSMutableSet *updatedFeeds = [NSMutableSet new];
+                [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+                    [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
+                    [updatedFeeds addObject:[item valueForKey:@"feedId"]];
+                    NSString *guidHash = [item valueForKey:@"guidHash"];
+                    NSArray *duplicates = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.guidHash == %@", guidHash]];
+                    [duplicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL*stop) {
+                        //NSLog(@"Dup: %@ %@", [item valueForKey:@"feedId"], [item valueForKey:@"title"]);
+                        [self.items removeObject:obj];
+                    }];
+                }];
+                
+                [updatedFeeds enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+                    NSArray *feedItems = [[self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.feedId == %@", obj]] copy];
+                    if (feedItems.count > 200) {
+                        NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
+                        int i = feedItems.count;
+                        while (i > 200) {
+                            NSDictionary *itemToRemove = [feedItems objectAtIndex:i - 1];
+                            if ([[itemToRemove valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:0]]) {
+                                [self.items removeObject:itemToRemove];
+                            }
+                            --i;
+                        }
+                    }
+                }];
+                
+                [mutableArray addObjectsFromArray:self.items];
+                self.items = mutableArray;
+                [self writeItems];
+                [self.refreshControl endRefreshing];
+                
+            } failure:nil];
+            [client enqueueHTTPRequestOperation:operation];
+        } else { //first time
+            __block NSMutableArray *operations = [NSMutableArray new];
+            __block NSMutableArray *addedItems = [NSMutableArray new];
+            __block OCAPIClient *client = [OCAPIClient sharedClient];
+            [self.feeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop) {
+
+                NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
+                                        [NSNumber numberWithInt:0], @"offset",
+                                        [NSNumber numberWithInt:0], @"type",
+                                        [NSNumber numberWithInt:[[feed valueForKey:@"id"] integerValue]], @"id",
+                                        @"true", @"getRead", nil];
+                
+                NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
+                
+                AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                    
+                    //NSLog(@"New Items: %@", JSON);
+                    NSDictionary *jsonDict = (NSDictionary *) JSON;
+                    NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+                    [addedItems addObjectsFromArray:newItems];
+                } failure:nil];
+                [operations addObject:itemOperation];
             }];
             
-            [mutableArray addObjectsFromArray:self.items];
-            self.items = mutableArray;
-            [self writeItems];
-            [self.refreshControl endRefreshing];
-            
-        } failure:nil];
-        [client enqueueHTTPRequestOperation:operation];
-    }
+            [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
+                NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
+            } completionBlock:^(NSArray *operations) {
+                NSMutableArray *mutableArray = [addedItems mutableCopy];
+                [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+                    [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
+                }];
+                
+                [self.items addObjectsFromArray:mutableArray];
 
+                if (self.items.count > 0) {
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.lastModified == %@.@max.lastModified", self.items];
+                    NSString *lastModified = [[[self.items filteredArrayUsingPredicate:predicate] objectAtIndex:0] valueForKey:@"lastModified"];
+                    [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
+                }
+                [self writeItems];
+                [self.refreshControl endRefreshing];
+            }];
+        }
+    }
 }
 
 - (void) writeItems {
