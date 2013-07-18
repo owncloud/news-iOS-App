@@ -234,7 +234,7 @@
         cell.countBadge.value = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
     } else if (indexPath.row == 1) {
         cell.textLabel.text = @"Starred";
-        [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
+        [cell.imageView setImage:[UIImage imageNamed:@"star_icon"]];
         NSArray *starredCounts = [self.items valueForKey:@"starred"];
         cell.countBadge.value = [[starredCounts valueForKeyPath:@"@sum.self"] integerValue];
     } else {
