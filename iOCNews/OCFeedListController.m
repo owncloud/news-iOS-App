@@ -404,9 +404,12 @@
         
         OCAPIClient *client = [OCAPIClient sharedClient];        
 
-        NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:[NSString stringWithFormat:@"feeds/3"] parameters:[NSDictionary dictionaryWithObjectsAndKeys:newID, @"url", newID, @"folderId", 0, nil]];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:newID, @"url",
+                                                                          [NSNumber numberWithInt:0], @"folderId", nil];
+        
+        NSURLRequest *feedRequest = [client requestWithMethod:@"POST" path:@"feeds" parameters:params];
+        
+        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:feedRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
            
             NSLog(@"Feeds: %@", JSON);
             NSDictionary *jsonDict = (NSDictionary *) JSON;
