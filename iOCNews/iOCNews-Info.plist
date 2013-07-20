@@ -16,6 +16,8 @@
 			<array>
 				<string>icon-72.png</string>
 				<string>icon-144.png</string>
+				<string>icon-57.png</string>
+				<string>icon-114.png</string>
 			</array>
 		</dict>
 	</dict>
@@ -35,13 +37,21 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UIMainStoryboardFile</key>
-	<string>MainStoryboard</string>
+	<string>iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string>iPad</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

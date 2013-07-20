@@ -31,6 +31,12 @@
 		D0968351179A134F00EC6E60 /* NotificationButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968317179A134F00EC6E60 /* NotificationButtonBackground.png */; };
 		D0968352179A134F00EC6E60 /* NotificationButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968318179A134F00EC6E60 /* NotificationButtonBackground@2x.png */; };
 		D0968354179A134F00EC6E60 /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D096831C179A134F00EC6E60 /* TSMessageView.m */; };
+		D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0968361179B3DB300EC6E60 /* iPhone.storyboard */; };
+		D0968365179B3E7D00EC6E60 /* icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968364179B3E7D00EC6E60 /* icon-57.png */; };
+		D0968367179B3E8700EC6E60 /* icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968366179B3E8700EC6E60 /* icon-114.png */; };
+		D0968369179B3F7A00EC6E60 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968368179B3F7A00EC6E60 /* Default.png */; };
+		D096836C179B3FF100EC6E60 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D096836A179B3FAF00EC6E60 /* Default@2x.png */; };
+		D096836E179B40C600EC6E60 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D096836D179B40C600EC6E60 /* Default-568h@2x.png */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -179,6 +185,12 @@
 		D0968318179A134F00EC6E60 /* NotificationButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationButtonBackground@2x.png"; sourceTree = "<group>"; };
 		D096831B179A134F00EC6E60 /* TSMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessageView.h; sourceTree = "<group>"; };
 		D096831C179A134F00EC6E60 /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
+		D0968362179B3DB300EC6E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = iOCNews/en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
+		D0968364179B3E7D00EC6E60 /* icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-57.png"; path = "../icon-57.png"; sourceTree = "<group>"; };
+		D0968366179B3E8700EC6E60 /* icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-114.png"; path = "../icon-114.png"; sourceTree = "<group>"; };
+		D0968368179B3F7A00EC6E60 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
+		D096836A179B3FAF00EC6E60 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
+		D096836D179B40C600EC6E60 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -496,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				D0BCAA48177903F500C965F4 /* iPad.storyboard */,
+				D0968361179B3DB300EC6E60 /* iPhone.storyboard */,
 				D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */,
 				D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */,
 				D0F181271783B12C00F719D9 /* OCLoginController.h */,
@@ -530,12 +543,17 @@
 		D0BCAA2C177900C300C965F4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D096836D179B40C600EC6E60 /* Default-568h@2x.png */,
+				D096836A179B3FAF00EC6E60 /* Default@2x.png */,
+				D0968368179B3F7A00EC6E60 /* Default.png */,
 				D0BCAA551779067500C965F4 /* Default-Landscape@2x~ipad.png */,
 				D0BCAA531779066600C965F4 /* Default-Landscape~ipad.png */,
 				D0BCAA511779065500C965F4 /* Default-Portrait@2x~ipad.png */,
 				D0BCAA4F1779064400C965F4 /* Default-Portrait~ipad.png */,
-				D0BCAA4D1779062500C965F4 /* icon-144.png */,
+				D0968364179B3E7D00EC6E60 /* icon-57.png */,
+				D0968366179B3E8700EC6E60 /* icon-114.png */,
 				D0BCAA4B1779061A00C965F4 /* icon-72.png */,
+				D0BCAA4D1779062500C965F4 /* icon-144.png */,
 				D0BCAA2D177900C300C965F4 /* iOCNews-Info.plist */,
 				D0BCAA2E177900C300C965F4 /* InfoPlist.strings */,
 				D0BCAA31177900C300C965F4 /* main.m */,
@@ -913,6 +931,12 @@
 				D0968350179A134F00EC6E60 /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				D0968351179A134F00EC6E60 /* NotificationButtonBackground.png in Resources */,
 				D0968352179A134F00EC6E60 /* NotificationButtonBackground@2x.png in Resources */,
+				D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */,
+				D0968365179B3E7D00EC6E60 /* icon-57.png in Resources */,
+				D0968367179B3E8700EC6E60 /* icon-114.png in Resources */,
+				D0968369179B3F7A00EC6E60 /* Default.png in Resources */,
+				D096836C179B3FF100EC6E60 /* Default@2x.png in Resources */,
+				D096836E179B40C600EC6E60 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -970,6 +994,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		D0968361179B3DB300EC6E60 /* iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0968362179B3DB300EC6E60 /* en */,
+			);
+			name = iPhone.storyboard;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		D0BCAA2E177900C300C965F4 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1081,6 +1114,7 @@
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1092,6 +1126,7 @@
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
