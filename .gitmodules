@@ -22,3 +22,6 @@
 [submodule "Objective-C-HTML-Parser"]
 	path = Objective-C-HTML-Parser
 	url = git://github.com/tresni/Objective-C-HMTL-Parser.git
+[submodule "TSMessages"]
+	path = TSMessages
+	url = https://github.com/toursprung/TSMessages.git

@@ -37,6 +37,7 @@
 #import "AFNetworking.h"
 #import "OCAPIClient.h"
 #import "OCLoginController.h"
+#import "TSMessage.h"
 
 @interface OCFeedListController () {
     int parserCount;
@@ -316,7 +317,9 @@
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             NSLog(@"Success");
         } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failure"); 
+            NSLog(@"Failure");
+            NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
+            [TSMessage showNotificationInViewController:self withTitle:@"Error Deleting Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
         }];
 
         [client enqueueHTTPRequestOperation:operation];
@@ -388,6 +391,8 @@
         alertTextField.keyboardType = UIKeyboardTypeURL;
         alertTextField.placeholder = @"http://example.com/feed";
         [alert show];
+    } else {
+        [TSMessage showNotificationInViewController:self withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
     }
 }
 
@@ -448,11 +453,17 @@
                 self.items = mutableArray;
                 [self writeItems];
                 NSLog(@"Done");
-            } failure:nil];
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+                [TSMessage showNotificationInViewController:self withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+            }];
             [client enqueueHTTPRequestOperation:operation];
         
 
-        } failure:nil];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+            [TSMessage showNotificationInViewController:self withTitle:@"Error Adding Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+        }];
         
         [client enqueueHTTPRequestOperation:operation];
 
@@ -482,9 +493,9 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
-    if (editing) {
-        self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    } else {
+//    if (editing) {
+//        self.navigationItem.leftBarButtonItem = self.editButtonItem;
+//    } else {
         UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         fixedSpace.width = 2.0f;
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -499,7 +510,7 @@
         toolbar.items = items;
         toolbar.tintColor = self.navigationController.navigationBar.tintColor;
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-    }
+//    }
 }
 
 - (IBAction)doRefresh:(id)sender {
@@ -527,10 +538,14 @@
             //[self.refreshControl endRefreshing];
             [self.tableView reloadData];
             
-        } failure:nil];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+            [TSMessage showNotificationInViewController:self withTitle:@"Error Updating Feeds" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+        }];
         [client enqueueHTTPRequestOperation:operation];
     } else {
         [self.refreshControl endRefreshing];
+        [TSMessage showNotificationInViewController:self withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
     }
     
 }
@@ -609,7 +624,10 @@
                 [self writeItems];
                 [self.refreshControl endRefreshing];
                 
-            } failure:nil];
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+                [TSMessage showNotificationInViewController:self withTitle:@"Error Updating Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+            }];
             [client enqueueHTTPRequestOperation:operation];
         } else { //first time
             __block NSMutableArray *operations = [NSMutableArray new];
@@ -631,7 +649,10 @@
                     NSDictionary *jsonDict = (NSDictionary *) JSON;
                     NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
                     [addedItems addObjectsFromArray:newItems];
-                } failure:nil];
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                    NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+                    [TSMessage showNotificationInViewController:self withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+                }];
                 [operations addObject:itemOperation];
             }];
             
@@ -654,6 +675,8 @@
                 [self.refreshControl endRefreshing];
             }];
         }
+    } else {
+        [TSMessage showNotificationInViewController:self withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
     }
 }
 
