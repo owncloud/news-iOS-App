@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
+		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D096831F179A134F00EC6E60 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09682C0179A134F00EC6E60 /* TSMessage.m */; };
@@ -161,6 +162,7 @@
 /* Begin PBXFileReference section */
 		D06CB21B179C5C1900A1310B /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		D06CB21C179C5C1900A1310B /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
+		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
 		D09682B7179896B200EC6E60 /* star_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_icon.png; sourceTree = "<group>"; };
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D09682BF179A134F00EC6E60 /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 				D0BCAA69177909A500C965F4 /* OCArticleCell.h */,
 				D0BCAA6A177909A500C965F4 /* OCArticleCell.m */,
 				D0BCAC291780E02500C965F4 /* OCArticleCell.xib */,
+				D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */,
 				D0BCAA6B177909A500C965F4 /* OCArticleListController.h */,
 				D0BCAA6C177909A500C965F4 /* OCArticleListController.m */,
 				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
@@ -942,6 +945,7 @@
 				D0968369179B3F7A00EC6E60 /* Default.png in Resources */,
 				D096836C179B3FF100EC6E60 /* Default@2x.png in Resources */,
 				D096836E179B40C600EC6E60 /* Default-568h@2x.png in Resources */,
+				D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

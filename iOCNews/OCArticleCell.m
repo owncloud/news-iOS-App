@@ -55,7 +55,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.articleImage.frame = CGRectMake(0,0,112,112);
+    //self.articleImage.frame = CGRectMake(0,0,112,112);
     self.articleImage.layer.masksToBounds = YES;
     
     self.containerView.layer.borderWidth = 1.0;
@@ -63,12 +63,22 @@
     self.containerView.layer.shadowColor = [[UIColor blackColor] CGColor];
     self.containerView.layer.shadowOpacity = 0.3f;
     self.containerView.layer.shadowOffset = CGSizeMake(0, 4);
-    self.containerView.layer.shadowRadius = 4.0f;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.containerView.layer.shadowRadius = 4.0f;
+    } else {
+        self.containerView.layer.shadowRadius = 2.0f;
+    }
     self.containerView.layer.masksToBounds = NO;
     
     CGSize size = self.containerView.bounds.size;
+    
     CGFloat curlFactor = 10.0f;
     CGFloat shadowDepth = 3.0f;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        curlFactor = 5.0f;
+        shadowDepth = 1.5f;
+    }
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:CGPointMake(0.0f, 0.0f)];
