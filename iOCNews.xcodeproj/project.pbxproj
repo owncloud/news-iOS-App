@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
+		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
+		D06CB224179C977400A1310B /* placeholder@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB222179C977400A1310B /* placeholder@2x~iphone.png */; };
+		D06CB225179C977400A1310B /* placeholder~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB223179C977400A1310B /* placeholder~iphone.png */; };
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D096831F179A134F00EC6E60 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09682C0179A134F00EC6E60 /* TSMessage.m */; };
@@ -163,6 +166,9 @@
 		D06CB21B179C5C1900A1310B /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		D06CB21C179C5C1900A1310B /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
 		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
+		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
+		D06CB222179C977400A1310B /* placeholder@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x~iphone.png"; sourceTree = "<group>"; };
+		D06CB223179C977400A1310B /* placeholder~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder~iphone.png"; sourceTree = "<group>"; };
 		D09682B7179896B200EC6E60 /* star_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_icon.png; sourceTree = "<group>"; };
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D09682BF179A134F00EC6E60 /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
@@ -712,6 +718,7 @@
 				D0BCAC40178104FC00C965F4 /* background3.png */,
 				D0BCAC41178104FC00C965F4 /* background3@2x.png */,
 				D0BCAC42178104FC00C965F4 /* defaults.plist */,
+				D06CB220179C8E7500A1310B /* defaults~iphone.plist */,
 				D0BCAC43178104FC00C965F4 /* edit.png */,
 				D0BCAC44178104FC00C965F4 /* edit@2x.png */,
 				D0BCAC45178104FC00C965F4 /* favicon.png */,
@@ -740,6 +747,8 @@
 				D0BCAC5C178104FC00C965F4 /* mark@2x.png */,
 				D0BCAC5D178104FC00C965F4 /* placeholder.png */,
 				D0BCAC5E178104FC00C965F4 /* placeholder@2x.png */,
+				D06CB222179C977400A1310B /* placeholder@2x~iphone.png */,
+				D06CB223179C977400A1310B /* placeholder~iphone.png */,
 				D0BCAC5F178104FC00C965F4 /* rss.css */,
 				D0BCAC60178104FC00C965F4 /* rss.html */,
 				D0BCAC61178104FC00C965F4 /* script.js */,
@@ -946,6 +955,9 @@
 				D096836C179B3FF100EC6E60 /* Default@2x.png in Resources */,
 				D096836E179B40C600EC6E60 /* Default-568h@2x.png in Resources */,
 				D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */,
+				D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */,
+				D06CB224179C977400A1310B /* placeholder@2x~iphone.png in Resources */,
+				D06CB225179C977400A1310B /* placeholder~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

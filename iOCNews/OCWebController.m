@@ -105,9 +105,11 @@
         self.webView.delegate = self;
         self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [[self view] addSubview:self.webView];
-
-        [self.webView addGestureRecognizer:self.tapZoneRecognizer2];
-        [self.webView addGestureRecognizer:self.tapZoneRecognizer];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.webView addGestureRecognizer:self.tapZoneRecognizer2];
+            [self.webView addGestureRecognizer:self.tapZoneRecognizer];
+        }
         
         NSDictionary *detail = (NSDictionary *) self.detailItem;
         self.navigationItem.title = [detail valueForKey:@"title"];
