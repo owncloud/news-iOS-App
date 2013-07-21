@@ -40,8 +40,12 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    //self.wantsFullScreenLayout = YES;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    UIStoryboard *storyboard;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    } else {
+        storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
+    }
     self.leftController = [storyboard instantiateViewControllerWithIdentifier:@"feed"];
     self.centerController = [storyboard instantiateViewControllerWithIdentifier:@"topDeck"];
     self.sizeMode = IIViewDeckViewSizeMode;

@@ -32,7 +32,7 @@
             </objects>
             <point key="canvasLocation" x="492" y="69"/>
         </scene>
-        <!--Feed List Controller - Root View Controller-->
+        <!--Feed List Controller-->
         <scene sceneID="aQi-mm-TIs">
             <objects>
                 <tableViewController id="5r3-Qf-aSk" customClass="OCFeedListController" sceneMemberID="viewController">
@@ -52,13 +52,13 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="SZ7-2G-vVc"/>
+                    <navigationItem key="navigationItem" id="SZ7-2G-vVc"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZwD-RL-COl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="492" y="751"/>
         </scene>
-        <!--Article List Controller - Root View Controller-->
+        <!--Article List Controller-->
         <scene sceneID="fKJ-8F-xT9">
             <objects>
                 <tableViewController id="Bci-tu-39t" customClass="OCArticleListController" sceneMemberID="viewController">
@@ -78,7 +78,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="Iey-b3-W1O"/>
+                    <navigationItem key="navigationItem" id="Iey-b3-W1O"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i6M-sQ-4Qn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -87,7 +87,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Zyf-9x-HAV">
             <objects>
-                <navigationController definesPresentationContext="YES" id="3UM-2X-gnF" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="web" definesPresentationContext="YES" id="3UM-2X-gnF" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="XjX-lD-rod">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -374,7 +374,7 @@
         <!--Navigation Controller-->
         <scene sceneID="rg7-o8-8S4">
             <objects>
-                <navigationController definesPresentationContext="YES" id="06a-I0-Bs1" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="article" definesPresentationContext="YES" id="06a-I0-Bs1" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ism-mL-tS1">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -389,7 +389,7 @@
         <!--Navigation Controller-->
         <scene sceneID="G7b-Af-hAI">
             <objects>
-                <navigationController definesPresentationContext="YES" id="XZQ-nf-Gf1" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="feed" definesPresentationContext="YES" id="XZQ-nf-Gf1" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mmb-0s-tve">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

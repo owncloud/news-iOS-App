@@ -168,10 +168,8 @@
     UINavigationController *navController = (UINavigationController*)topDeckController.leftController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
     //[self.detailViewController writeCssTemplate];
-    
-    self.viewDeckController.leftSize = 320;
-    [self.viewDeckController openLeftView];
 
+    [self.viewDeckController openLeftView];
     [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
 }
 
@@ -189,17 +187,31 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
-    if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        CGRect frame = self.navigationController.view.frame;
-        frame.size.width = 320;
-        self.navigationController.view.frame = frame;
-        self.viewDeckController.leftSize = 320;
-	} else {
-        CGRect frame = self.navigationController.view.frame;
-        frame.size.width = 320;
-        self.navigationController.view.frame = frame;
-        self.viewDeckController.leftSize = 320;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+        if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+            CGRect frame = self.navigationController.view.frame;
+            frame.size.width = 320;
+            self.navigationController.view.frame = frame;
+            self.viewDeckController.leftSize = 320;
+        } else {
+            CGRect frame = self.navigationController.view.frame;
+            frame.size.width = 320;
+            self.navigationController.view.frame = frame;
+            self.viewDeckController.leftSize = 320;
+        }
+    } else {
+        if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+            CGRect frame = self.navigationController.view.frame;
+            frame.size.width = 300;
+            self.navigationController.view.frame = frame;
+            self.viewDeckController.leftSize = 300;
+        } else {
+            CGRect frame = self.navigationController.view.frame;
+            frame.size.width = 300;
+            self.navigationController.view.frame = frame;
+            self.viewDeckController.leftSize = 300;
+        }
     }
 }
 

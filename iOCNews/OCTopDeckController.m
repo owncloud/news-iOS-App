@@ -40,11 +40,16 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    //self.wantsFullScreenLayout = YES;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    UIStoryboard *storyboard;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    } else {
+        storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
+    }
     self.centerController = [storyboard instantiateViewControllerWithIdentifier:@"web"];
     self.leftController = [storyboard instantiateViewControllerWithIdentifier:@"article"];
     self.sizeMode = IIViewDeckLedgeSizeMode;
+    self.leftSize = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 40 : 20;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
