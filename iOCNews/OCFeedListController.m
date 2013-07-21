@@ -487,7 +487,12 @@
 
 - (IBAction)doEdit:(id)sender {
     //[self setEditing:YES animated:YES];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    UIStoryboard *storyboard;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    } else {
+        storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
+    }
     [self presentViewController: [storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES completion:nil];
 }
 
