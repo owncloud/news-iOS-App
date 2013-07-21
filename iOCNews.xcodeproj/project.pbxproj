@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D096831F179A134F00EC6E60 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09682C0179A134F00EC6E60 /* TSMessage.m */; };
@@ -158,6 +159,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D06CB21B179C5C1900A1310B /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
+		D06CB21C179C5C1900A1310B /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
 		D09682B7179896B200EC6E60 /* star_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_icon.png; sourceTree = "<group>"; };
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D09682BF179A134F00EC6E60 /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
@@ -534,6 +537,8 @@
 				D0BCAA58177907D300C965F4 /* OCBottomDeckController.m */,
 				D0BCAA59177907D300C965F4 /* OCTopDeckController.h */,
 				D0BCAA5A177907D300C965F4 /* OCTopDeckController.m */,
+				D06CB21B179C5C1900A1310B /* TransparentToolbar.h */,
+				D06CB21C179C5C1900A1310B /* TransparentToolbar.m */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
 			);
@@ -988,6 +993,7 @@
 				D096831F179A134F00EC6E60 /* TSMessage.m in Sources */,
 				D096833D179A134F00EC6E60 /* HexColor.m in Sources */,
 				D0968354179A134F00EC6E60 /* TSMessageView.m in Sources */,
+				D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

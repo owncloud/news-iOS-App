@@ -38,6 +38,7 @@
 #import "FDiCabActivity.h"
 #import "FDInstapaperActivity.h"
 #import "IIViewDeckController.h"
+#import "TransparentToolbar.h"
 
 @interface OCWebController () <UIPopoverControllerDelegate> {
     UIPopoverController *_activityPopover;
@@ -452,7 +453,7 @@
                       fixedSpace,
                       nil];
 
-    UIToolbar *toolbarLeft = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0f, 44.0f)];
+    TransparentToolbar *toolbarLeft = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0f, 44.0f)];
     toolbarLeft.items = itemsLeft;
     toolbarLeft.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarLeft];
@@ -472,7 +473,7 @@
                           fixedSpace,
                           nil];
     
-    UIToolbar *toolbarRight = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0, 44.0f)];
+    TransparentToolbar *toolbarRight = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0, 44.0f)];
     toolbarRight.items = itemsRight;
     toolbarRight.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarRight];

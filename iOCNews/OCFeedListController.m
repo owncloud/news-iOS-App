@@ -38,6 +38,7 @@
 #import "OCAPIClient.h"
 #import "OCLoginController.h"
 #import "TSMessage.h"
+#import "TransparentToolbar.h"
 
 @interface OCFeedListController () {
     int parserCount;
@@ -139,7 +140,7 @@
                       
                       nil];
     
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
+    TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
     toolbar.items = items;
     toolbar.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
@@ -511,7 +512,7 @@
                           flexibleSpace,
                           nil];
         
-        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
+        TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
         toolbar.items = items;
         toolbar.tintColor = self.navigationController.navigationBar.tintColor;
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
