@@ -31,14 +31,14 @@
 
 #import "PHPrefViewController.h"
 
-#define MIN_FONT_SIZE 11
+#define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
 
 #define MIN_LINE_HEIGHT 1.2f
 #define MAX_LINE_HEIGHT 2.6f
 
-#define MIN_WIDTH 380
-#define MAX_WIDTH 700
+#define MIN_WIDTH (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 380 : 150)
+#define MAX_WIDTH (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 700 : 300)
 
 @interface PHPrefViewController ()
 

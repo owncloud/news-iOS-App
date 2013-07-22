@@ -42,6 +42,7 @@
 
 @interface OCWebController () <UIPopoverControllerDelegate> {
     UIPopoverController *_activityPopover;
+    PopoverView *_popover;
 }
 
 @property (strong, nonatomic, readonly) UIPopoverController *prefPopoverController;
@@ -256,8 +257,10 @@
 	return YES;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    //
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (_popover) {
+        [_popover dismiss:NO];
+    }
 }
 
 - (IBAction)doGoBack:(id)sender
@@ -314,7 +317,13 @@
 }
 
 - (IBAction)doText:(id)sender {
-    [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
+    } else {
+        UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
+        _popover = [[PopoverView alloc] initWithFrame:self.prefViewController.view.frame];
+        [_popover showAtPoint: CGPointMake(tbar.frame.origin.x + 70, tbar.frame.origin.y) inView:self.view withContentView:self.prefViewController.view] ;
+    }
 }
 
 - (IBAction)doStar:(id)sender {
@@ -634,7 +643,12 @@
 
 - (PHPrefViewController*)prefViewController {
     if (!prefViewController) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+        UIStoryboard *storyboard;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+        } else {
+            storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
+        }
         prefViewController = [storyboard instantiateViewControllerWithIdentifier:@"preferences"];
         prefViewController.delegate = self;
     }
@@ -655,6 +669,10 @@
     if ([self webView] != nil) {
         [self.webView reload];
     }
+}
+
+- (void)popoverViewDidDismiss:(PopoverView *)popoverView {
+    _popover = nil;
 }
 
 @end

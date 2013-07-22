@@ -32,8 +32,9 @@
 
 #import <UIKit/UIKit.h>
 #import "PHPrefViewController.h"
+#import "PopoverView.h"
 
-@interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate>
+@interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, PopoverViewDelegate>
 
 @property (nonatomic, strong) id detailItem;
 @property (nonatomic, strong) NSString* feedTitle;

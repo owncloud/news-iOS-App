@@ -12,6 +12,7 @@
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB224179C977400A1310B /* placeholder@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB222179C977400A1310B /* placeholder@2x~iphone.png */; };
 		D06CB225179C977400A1310B /* placeholder~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB223179C977400A1310B /* placeholder~iphone.png */; };
+		D06CB22A179C9C7000A1310B /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB228179C9C7000A1310B /* PopoverView.m */; };
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D096831F179A134F00EC6E60 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09682C0179A134F00EC6E60 /* TSMessage.m */; };
@@ -169,6 +170,9 @@
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
 		D06CB222179C977400A1310B /* placeholder@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x~iphone.png"; sourceTree = "<group>"; };
 		D06CB223179C977400A1310B /* placeholder~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder~iphone.png"; sourceTree = "<group>"; };
+		D06CB227179C9C7000A1310B /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
+		D06CB228179C9C7000A1310B /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
+		D06CB229179C9C7000A1310B /* PopoverView_Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView_Configuration.h; sourceTree = "<group>"; };
 		D09682B7179896B200EC6E60 /* star_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_icon.png; sourceTree = "<group>"; };
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D09682BF179A134F00EC6E60 /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
@@ -397,6 +401,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D06CB226179C9C7000A1310B /* PopoverView */ = {
+			isa = PBXGroup;
+			children = (
+				D06CB227179C9C7000A1310B /* PopoverView.h */,
+				D06CB228179C9C7000A1310B /* PopoverView.m */,
+				D06CB229179C9C7000A1310B /* PopoverView_Configuration.h */,
+			);
+			name = PopoverView;
+			path = PopoverView/PopoverView;
+			sourceTree = "<group>";
+		};
 		D09682BB179A134F00EC6E60 /* TSMessages */ = {
 			isa = PBXGroup;
 			children = (
@@ -472,6 +487,7 @@
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
+				D06CB226179C9C7000A1310B /* PopoverView */,
 				D09682BB179A134F00EC6E60 /* TSMessages */,
 				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
 				D0F1813A17850C6A00F719D9 /* KeychainItemWrapper */,
@@ -1010,6 +1026,7 @@
 				D096833D179A134F00EC6E60 /* HexColor.m in Sources */,
 				D0968354179A134F00EC6E60 /* TSMessageView.m in Sources */,
 				D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */,
+				D06CB22A179C9C7000A1310B /* PopoverView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

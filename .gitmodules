@@ -25,3 +25,6 @@
 [submodule "TSMessages"]
 	path = TSMessages
 	url = https://github.com/toursprung/TSMessages.git
+[submodule "PopoverView"]
+	path = PopoverView
+	url = git@github.com:phedlund/PopoverView.git
