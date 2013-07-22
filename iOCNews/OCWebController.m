@@ -467,13 +467,14 @@
         self.actionBarButtonItem.enabled = !self.webView.isLoading;
         self.textBarButtonItem.enabled = !self.webView.isLoading;
         self.starBarButtonItem.enabled = !self.webView.isLoading;
+        self.unstarBarButtonItem.enabled = !self.webView.isLoading;
     } else {
         self.actionBarButtonItem.enabled = NO;
         self.textBarButtonItem.enabled = NO;
         self.starBarButtonItem.enabled = NO;
+        self.unstarBarButtonItem.enabled = NO;
     }
-    
-    
+
     UIBarButtonItem *refreshStopBarButtonItem = self.webView.isLoading ? self.stopBarButtonItem : self.refreshBarButtonItem;
     refreshStopBarButtonItem.enabled = (self.detailItem != nil);
     
