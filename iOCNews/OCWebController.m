@@ -261,8 +261,16 @@
     if (_popover) {
         [_popover dismiss:NO];
     }
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+            if (self.detailItem != nil) {
+                self.navigationItem.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+            }
+        } else {
+            self.navigationItem.title = @"";
+        }
+    }
 }
-
 - (IBAction)doGoBack:(id)sender
 {
     if ([[self webView] canGoBack]) {
@@ -363,7 +371,16 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-    self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft) ||
+            ([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeRight)) {
+                self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+        } else {
+            self.navigationItem.title = @"";
+        }
+    } else {
+        self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    }
     [self updateToolbar];
 }
 
@@ -448,8 +465,12 @@
     self.forwardBarButtonItem.enabled = self.webView.canGoForward;
     if ((self.detailItem != nil)) {
         self.actionBarButtonItem.enabled = !self.webView.isLoading;
+        self.textBarButtonItem.enabled = !self.webView.isLoading;
+        self.starBarButtonItem.enabled = !self.webView.isLoading;
     } else {
         self.actionBarButtonItem.enabled = NO;
+        self.textBarButtonItem.enabled = NO;
+        self.starBarButtonItem.enabled = NO;
     }
     
     
