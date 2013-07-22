@@ -303,12 +303,17 @@
     NSArray *activities = @[sa, ia, ipa, ra];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
-	
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
     if (![_activityPopover isPopoverVisible]) {
         _activityPopover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
 		_activityPopover.delegate = self;
 		[_activityPopover presentPopoverFromBarButtonItem:self.actionBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
+    } else {
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
