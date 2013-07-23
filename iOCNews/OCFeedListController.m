@@ -332,7 +332,7 @@
         } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Failure");
             NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self withTitle:@"Error Deleting Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Deleting Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
         }];
 
         [client enqueueHTTPRequestOperation:operation];
@@ -405,7 +405,7 @@
         alertTextField.placeholder = @"http://example.com/feed";
         [alert show];
     } else {
-        [TSMessage showNotificationInViewController:self withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
+        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
     }
 }
 
@@ -468,14 +468,14 @@
                 NSLog(@"Done");
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                 NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-                [TSMessage showNotificationInViewController:self withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+                [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
             }];
             [client enqueueHTTPRequestOperation:operation];
         
 
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self withTitle:@"Error Adding Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Adding Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
         }];
         
         [client enqueueHTTPRequestOperation:operation];
@@ -558,12 +558,12 @@
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self withTitle:@"Error Updating Feeds" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Updating Feeds" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
         }];
         [client enqueueHTTPRequestOperation:operation];
     } else {
         [self.refreshControl endRefreshing];
-        [TSMessage showNotificationInViewController:self withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
+        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
     }
     
 }
@@ -644,7 +644,7 @@
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                 NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-                [TSMessage showNotificationInViewController:self withTitle:@"Error Updating Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+                [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Updating Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
             }];
             [client enqueueHTTPRequestOperation:operation];
         } else { //first time
@@ -669,7 +669,7 @@
                     [addedItems addObjectsFromArray:newItems];
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                     NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-                    [TSMessage showNotificationInViewController:self withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
+                    [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
                 }];
                 [operations addObject:itemOperation];
             }];
@@ -694,7 +694,7 @@
             }];
         }
     } else {
-        [TSMessage showNotificationInViewController:self withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
+        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
     }
 }
 
