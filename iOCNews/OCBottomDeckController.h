@@ -1,5 +1,5 @@
 //
-//  FDBottomDeckController.h
+//  OCBottomDeckController.h
 //  iOCNews
 
 /************************************************************************

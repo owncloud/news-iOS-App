@@ -1,7 +1,8 @@
 //
 //  PHPrefViewController.m
-//  PMC Reader
+//  iOCNews
 //
+
 /************************************************************************
  
  Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com

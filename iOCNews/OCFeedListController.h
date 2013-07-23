@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions

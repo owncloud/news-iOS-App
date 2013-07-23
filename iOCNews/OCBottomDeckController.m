@@ -1,5 +1,5 @@
 //
-//  FDBottomDeckController.m
+//  OCBottomDeckController.m
 //  iOCNews
 
 /************************************************************************
