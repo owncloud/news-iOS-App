@@ -82,7 +82,7 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setFeed:(NSMutableDictionary *)feed
+- (void)setFeed:(Feed *)feed
 {
     if (_feed != feed) {
         _feed = feed;
@@ -101,13 +101,13 @@
 - (void)configureView
 {
     // Update the user interface for the detail item.
-    self.navigationItem.title = [self.feed objectForKey:@"title"];
+    self.navigationItem.title = self.feed.title; // [self.feed objectForKey:@"title"];
     [self.tableView reloadData];
     [self scrollToTop];
 }
 
 - (void) scrollToTop {
-    int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+    int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
     self.markBarButtonItem.enabled = (unreadCount > 0);
     if (self.items.count > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
@@ -116,7 +116,7 @@
 
 - (void) refresh {
     [self.tableView reloadData];
-    int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+    int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
     self.markBarButtonItem.enabled = (unreadCount > 0);    
 }
 
@@ -258,7 +258,7 @@
 {
     currentIndex = indexPath.row;
     NSDictionary *item = (NSDictionary*)[self.items objectAtIndex:indexPath.row];
-    self.detailViewController.feedTitle = [self.feed valueForKey:@"title"];
+    self.detailViewController.feedTitle = self.feed.title; // [self.feed valueForKey:@"title"];
     self.detailViewController.detailItem = item;
     [self.viewDeckController closeLeftView];
     NSNumber *read = [item valueForKey:@"unread"];
@@ -294,7 +294,7 @@
 - (IBAction)doMarkRead:(id)sender {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
         
-        int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+        int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
         
         if (unreadCount > 0) {
             if (self.items.count > 0) {
@@ -326,7 +326,7 @@
 - (void) markRowsRead {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
 
-        int unreadCount = [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+        int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
         
         if (unreadCount > 0) {
             NSArray * vCells = self.tableView.indexPathsForVisibleRows;

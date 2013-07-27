@@ -65,7 +65,6 @@
 
 @implementation OCFeedListController
 
-@synthesize feeds = _feeds;
 @synthesize items = _items;
 @synthesize addBarButtonItem;
 @synthesize infoBarButtonItem;
@@ -73,26 +72,6 @@
 //@synthesize settingsPopover;
 @synthesize feedRefreshControl;
 @synthesize fetchedResultsController;
-
-- (NSMutableArray *) feeds {
-    if (!_feeds) {
-        NSFileManager *fm = [NSFileManager defaultManager];
-        NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-        NSURL *docDir = [paths objectAtIndex:0];
-        docDir = [docDir URLByAppendingPathComponent:@"feeds.plist" isDirectory:NO];
-        NSMutableArray *theFeeds;
-        if ([fm fileExistsAtPath:[docDir path]]) {
-            theFeeds = [NSKeyedUnarchiver unarchiveObjectWithFile:[docDir path]];
-            haveSyncData = YES;
-        } else {
-            theFeeds = [[NSMutableArray alloc] init];
-            haveSyncData = NO;
-        }
-        _feeds = theFeeds;
-        [self.tableView reloadData];
-    }
-    return _feeds;
-}
 
 - (NSMutableArray *) items {
     if (!_items) {
@@ -380,7 +359,8 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//TODO: Handle delete
+/*    if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSDictionary *object = [self.feeds objectAtIndex:indexPath.row - 2];
         __block NSString *feedId = [object valueForKey:@"id"];
         
@@ -409,7 +389,7 @@
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }   */
 }
 
 
@@ -436,26 +416,27 @@
     if (self.tableView.isEditing) {
         //[self showRenameForIndex:indexPath.row];
     } else {
+        Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
         if (indexPath.row == 0) {
-            NSArray *unreadCounts = [self.feeds valueForKey:@"unreadCount"];
-            int totalUnread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
-            NSMutableDictionary *allFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"All Articles", @"title", [NSNumber numberWithInt:totalUnread], @"unreadCount", nil];
+            //NSArray *unreadCounts = [self.feeds valueForKey:@"unreadCount"];
+            //TODO: Use this in OCNewsHelper int totalUnread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
+            //NSMutableDictionary *allFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"All Articles", @"title", [NSNumber numberWithInt:totalUnread], @"unreadCount", nil];
             self.detailViewController.items = self.items;
-            self.detailViewController.feed = allFeed;
+            self.detailViewController.feed = feed;
         } else if (indexPath.row == 1) {
             NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred = 1"]];
-            NSArray *unreadCounts = [feedItems valueForKey:@"unread"];
-            int unread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
-            NSMutableDictionary *starredFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Starred", @"title", [NSNumber numberWithInt:unread], @"unreadCount", nil];
+            //NSArray *unreadCounts = [feedItems valueForKey:@"unread"];
+            //int unread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
+            //NSMutableDictionary *starredFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Starred", @"title", [NSNumber numberWithInt:unread], @"unreadCount", nil];
             self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
-            self.detailViewController.feed = (NSMutableDictionary *)starredFeed;
+            self.detailViewController.feed = feed;
         } else {
-            NSData *object = [self.feeds objectAtIndex:indexPath.row - 2];
-            NSString *feedId = [object valueForKey:@"id"];
-            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
-            NSLog(@"FeedId: %@; Count: %i", feedId, feedItems.count);
+            //NSData *object = [self.feeds objectAtIndex:indexPath.row - 2];
+            //NSString *feedId = [object valueForKey:@"id"];
+            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feed.id]];
+            NSLog(@"FeedId: %@; Count: %i", feed.id, feedItems.count);
             self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
-            self.detailViewController.feed = (NSMutableDictionary *)object;
+            self.detailViewController.feed = feed;
         }
         [self.viewDeckController closeLeftView];
             
@@ -486,26 +467,28 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
+/*    if (buttonIndex == 1) {
         NSString *newID = [[alertView textFieldAtIndex:0] text];
         
         OCAPIClient *client = [OCAPIClient sharedClient];        
 
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:newID, @"url",
-                                                                          [NSNumber numberWithInt:0], @"folderId", nil];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:newID, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
         
         NSURLRequest *feedRequest = [client requestWithMethod:@"POST" path:@"feeds" parameters:params];
         
         AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:feedRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
            
             NSLog(@"Feeds: %@", JSON);
-            NSDictionary *jsonDict = (NSDictionary *) JSON;
-            NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
-            NSMutableDictionary *newFeed = [[newFeeds objectAtIndex:0] mutableCopy];
-            [self.feeds addObject:newFeed];
-            [self writeFeeds];
-            [self.tableView reloadData];
+            //NSDictionary *jsonDict = (NSDictionary *) JSON;
+            //NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
+            //NSMutableDictionary *newFeed = [[newFeeds objectAtIndex:0] mutableCopy];
+            //[self.feeds addObject:newFeed];
+            //[self writeFeeds];
             
+            [[OCNewsHelper sharedHelper] addFeed:JSON];
+            
+            [self.tableView reloadData];
+            //TODO: Handle add, must return the new feed
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
                                                                                [NSNumber numberWithInt:0], @"offset",
                                                                                [NSNumber numberWithInt:0], @"type",
@@ -549,7 +532,7 @@
         
         [client enqueueHTTPRequestOperation:operation];
 
-    }
+    }*/
 }
 
 - (IBAction)doInfo:(id)sender {
@@ -612,18 +595,18 @@
             NSLog(@"Feeds: %@", JSON);
             
             [[OCNewsHelper sharedHelper] updateFeeds:JSON];
-            NSDictionary *jsonDict = (NSDictionary *) JSON;
-            NSArray *newFeeds = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
-            NSMutableArray *mutableArray = [newFeeds mutableCopy];
+            //NSDictionary *jsonDict = (NSDictionary *) JSON;
+            //NSArray *newFeeds = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
+            //NSMutableArray *mutableArray = [newFeeds mutableCopy];
             
-            [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
-                [mutableArray replaceObjectAtIndex:idx withObject:[feed mutableCopy]];
+            //[newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
+            //    [mutableArray replaceObjectAtIndex:idx withObject:[feed mutableCopy]];
                 
-            }];
+            //}];
             
-            self.feeds = mutableArray;
+            //self.feeds = mutableArray;
 
-            [self writeFeeds];
+            //[self writeFeeds];
             [self updateItems];
             //[self.refreshControl endRefreshing];
                         
@@ -656,7 +639,7 @@
     NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSURL *docDir = [paths objectAtIndex:0];
     NSURL *saveURL = [docDir URLByAppendingPathComponent:@"feeds.plist" isDirectory:NO];
-    [NSKeyedArchiver archiveRootObject:self.feeds toFile:[saveURL path]];
+    //TODO: Remove [NSKeyedArchiver archiveRootObject:self.feeds toFile:[saveURL path]];
 }
 
 - (void) updateItems {
@@ -724,12 +707,12 @@
             __block NSMutableArray *operations = [NSMutableArray new];
             __block NSMutableArray *addedItems = [NSMutableArray new];
             __block OCAPIClient *client = [OCAPIClient sharedClient];
-            [self.feeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop) {
+            [self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
 
                 NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
                                         [NSNumber numberWithInt:0], @"offset",
                                         [NSNumber numberWithInt:0], @"type",
-                                        [NSNumber numberWithInt:[[feed valueForKey:@"id"] integerValue]], @"id",
+                                        feed.id, @"id",
                                         @"true", @"getRead", nil];
                 
                 NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
@@ -801,21 +784,21 @@
         }
     }];
 
-    __block NSArray *b = [self.feeds valueForKey:@"id"];
+    //__block NSArray *b = [self.feeds valueForKey:@"id"];
     [feedIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSInteger index = [b indexOfObject:obj];
+        //NSInteger index = [b indexOfObject:obj];
 
         NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", obj]];
         NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread = 1"]];
         
-        NSMutableDictionary *feed = [self.feeds objectAtIndex:index];
-        [feed setObject:[NSNumber numberWithInt:unreadItems.count] forKey:@"unreadCount"];
+        //NSMutableDictionary *feed = [self.feeds objectAtIndex:index];
+        //[feed setObject:[NSNumber numberWithInt:unreadItems.count] forKey:@"unreadCount"];
         
         Feed *myFeed = [[OCNewsHelper sharedHelper] feedWithId:[obj integerValue]];
         myFeed.unreadCountValue = unreadItems.count;
         [[OCNewsHelper sharedHelper] updateTotalUnreadCount];
         
-        [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index + 2 inSection:0] waitUntilDone:NO];
+        //FIXME: [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index + 2 inSection:0] waitUntilDone:NO];
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
     }];    
 

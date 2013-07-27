@@ -871,6 +871,7 @@
 				D0BCAA1E177900C300C965F4 /* Sources */,
 				D0BCAA1F177900C300C965F4 /* Frameworks */,
 				D0BCAA20177900C300C965F4 /* Resources */,
+				D06CB24C17A46A5800A1310B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1050,6 +1051,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd ~/Projects/iOCNews/iOCNews\nmogenerator --template-var arc=true -m News.xcdatamodeld/News.xcdatamodel/";
+		};
+		D06CB24C17A46A5800A1310B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "KEYWORDS=\"TODO:|FIXME:|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

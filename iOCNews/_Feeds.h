@@ -10,13 +10,11 @@ extern const struct FeedsAttributes {
 } FeedsAttributes;
 
 extern const struct FeedsRelationships {
-	__unsafe_unretained NSString *feeds;
 } FeedsRelationships;
 
 extern const struct FeedsFetchedProperties {
 } FeedsFetchedProperties;
 
-@class Feed;
 
 
 
@@ -62,22 +60,10 @@ extern const struct FeedsFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *feeds;
-
-- (NSMutableSet*)feedsSet;
-
-
-
-
 
 @end
 
 @interface _Feeds (CoreDataGeneratedAccessors)
-
-- (void)addFeeds:(NSSet*)value_;
-- (void)removeFeeds:(NSSet*)value_;
-- (void)addFeedsObject:(Feed*)value_;
-- (void)removeFeedsObject:(Feed*)value_;
 
 @end
 
@@ -100,11 +86,6 @@ extern const struct FeedsFetchedProperties {
 - (void)setPrimitiveStarredCountValue:(int32_t)value_;
 
 
-
-
-
-- (NSMutableSet*)primitiveFeeds;
-- (void)setPrimitiveFeeds:(NSMutableSet*)value;
 
 
 @end

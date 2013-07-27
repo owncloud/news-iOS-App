@@ -9,7 +9,6 @@ const struct FeedsAttributes FeedsAttributes = {
 };
 
 const struct FeedsRelationships FeedsRelationships = {
-	.feeds = @"feeds",
 };
 
 const struct FeedsFetchedProperties FeedsFetchedProperties = {
@@ -109,19 +108,6 @@ const struct FeedsFetchedProperties FeedsFetchedProperties = {
 
 
 
-
-@dynamic feeds;
-
-	
-- (NSMutableSet*)feedsSet {
-	[self willAccessValueForKey:@"feeds"];
-  
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"feeds"];
-  
-	[self didAccessValueForKey:@"feeds"];
-	return result;
-}
-	
 
 
 

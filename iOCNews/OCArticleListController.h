@@ -33,13 +33,14 @@
 #import <UIKit/UIKit.h>
 #import "OCWebController.h"
 #import "OCArticleCell.h"
+#import "Feed.h"
 
 @interface OCArticleListController : UITableViewController
 
 @property (strong, nonatomic) OCWebController *detailViewController;
 @property (nonatomic, strong, readonly) UIBarButtonItem *markBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
-@property (nonatomic, strong) NSMutableDictionary *feed;
+@property (nonatomic, strong) Feed *feed;
 @property (strong, nonatomic) NSMutableArray *items;
 
 - (void) refresh;

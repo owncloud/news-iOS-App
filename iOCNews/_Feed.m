@@ -15,7 +15,6 @@ const struct FeedAttributes FeedAttributes = {
 };
 
 const struct FeedRelationships FeedRelationships = {
-	.parent = @"parent",
 };
 
 const struct FeedFetchedProperties FeedFetchedProperties = {
@@ -205,10 +204,6 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 
 
 
-
-@dynamic parent;
-
-	
 
 
 

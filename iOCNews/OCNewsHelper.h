@@ -25,6 +25,7 @@
 
 - (Feed*)feedWithId:(int)id;
 
+- (void)addFeed:(id)JSON;
 - (void)updateFeeds:(id)JSON;
 - (void)updateTotalUnreadCount;
 

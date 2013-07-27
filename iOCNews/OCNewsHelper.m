@@ -92,13 +92,45 @@
 
 #pragma mark - COREDATA -INSERT
 
+- (void)addFeed:(id)JSON {
+    NSDictionary *jsonDict = (NSDictionary *) JSON;
+    NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
+    NSDictionary *feed = [newFeeds lastObject];
+    Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
+    newFeed.id = [feed objectForKey:@"id"];
+    newFeed.url = [feed objectForKey:@"url"];
+    newFeed.title = [feed objectForKey:@"title"];
+    id val = [feed objectForKey:@"faviconLink"];
+    newFeed.faviconLink = (val == [NSNull null] ? @"favicon" : val);
+    newFeed.added = [feed objectForKey:@"added"];
+    newFeed.folderId = [feed objectForKey:@"folderId"];
+    newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
+    newFeed.link = [feed objectForKey:@"link"];
+    
+    [self updateTotalUnreadCount];
+}
+
+
 - (void)updateFeeds:(id)JSON {
     //Remove previous
+    NSFetchRequest *oldFeedsFetcher = [[NSFetchRequest alloc] init];
+    [oldFeedsFetcher setEntity:[NSEntityDescription entityForName:@"Feed" inManagedObjectContext:self.context]];
+    [oldFeedsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+
+    NSError *error = nil;
+    NSArray *oldFeeds = [self.context executeFetchRequest:oldFeedsFetcher error:&error];
+    
+    
+    NSLog(@"Count: %i", oldFeeds.count);
+    
+    for (NSManagedObject *feed in oldFeeds) {
+        [self.context deleteObject:feed];
+    }
+    
     NSFetchRequest *feedsFetcher = [[NSFetchRequest alloc] init];
     [feedsFetcher setEntity:[NSEntityDescription entityForName:@"Feeds" inManagedObjectContext:self.context]];
-    //[oldFeeds setIncludesPropertyValues:NO]; //only fetch the managedObjectID
     
-    NSError *error = nil;
+    error = nil;
     NSArray *feeds = [self.context executeFetchRequest:feedsFetcher error:&error];
     
     //Add the new feeds
@@ -106,14 +138,8 @@
     Feeds *theFeeds = [feeds objectAtIndex:0];
     theFeeds.starredCount = [jsonDict objectForKey:@"starredCount"];
     theFeeds.newestItemId = [jsonDict objectForKey:@"newestItemId"];
-    NSSet *theFeedObjects = theFeeds.feeds;
-    NSLog(@"Count: %i", theFeedObjects.count);
-    
-    for (Feed *feed in theFeedObjects) {
-        [self.context deleteObject:feed];
-    }
 
-    NSMutableSet *feedSet = [NSMutableSet new];
+
     NSArray *newFeeds = [NSArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
 
     Feed *allFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
@@ -123,12 +149,8 @@
     allFeed.faviconLink = @"favicon";
     allFeed.added = [NSNumber numberWithInt:1];
     allFeed.folderId = [NSNumber numberWithInt:0];
-    
-    
     allFeed.unreadCount = [NSNumber numberWithInt:0];
     allFeed.link = @"";
-    allFeed.parent = theFeeds;
-    [feedSet addObject:allFeed];
 
     Feed *starred = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
     starred.id = [NSNumber numberWithInt:-1];
@@ -139,8 +161,6 @@
     starred.folderId = [NSNumber numberWithInt:0];
     starred.unreadCount = theFeeds.starredCount;
     starred.link = @"";
-    starred.parent = theFeeds;
-    [feedSet addObject:starred];
     
     [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
         Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
@@ -153,20 +173,9 @@
         newFeed.folderId = [feed objectForKey:@"folderId"];
         newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
         newFeed.link = [feed objectForKey:@"link"];
-        newFeed.parent = theFeeds;
-        [feedSet addObject:newFeed];
     }];
     
-    theFeeds.feeds = [NSSet setWithSet:feedSet];
-    
     [self updateTotalUnreadCount];
-    
-    NSError *saveError = nil;
-    if ([self.context save:&saveError]) {
-        NSLog(@"Feed saved");
-    } else {
-        NSLog(@"Error occured while saving");
-    }
 }
 
 - (Feed*)feedWithId:(int)id {

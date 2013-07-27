@@ -16,13 +16,11 @@ extern const struct FeedAttributes {
 } FeedAttributes;
 
 extern const struct FeedRelationships {
-	__unsafe_unretained NSString *parent;
 } FeedRelationships;
 
 extern const struct FeedFetchedProperties {
 } FeedFetchedProperties;
 
-@class Feeds;
 
 
 
@@ -142,13 +140,6 @@ extern const struct FeedFetchedProperties {
 
 
 
-@property (nonatomic, strong) Feeds *parent;
-
-//- (BOOL)validateParent:(id*)value_ error:(NSError**)error_;
-
-
-
-
 + (NSArray*)fetchTotalUnreadRequest:(NSManagedObjectContext*)moc_ ;
 + (NSArray*)fetchTotalUnreadRequest:(NSManagedObjectContext*)moc_ error:(NSError**)error_;
 
@@ -227,11 +218,6 @@ extern const struct FeedFetchedProperties {
 - (void)setPrimitiveUrl:(NSString*)value;
 
 
-
-
-
-- (Feeds*)primitiveParent;
-- (void)setPrimitiveParent:(Feeds*)value;
 
 
 @end
