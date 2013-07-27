@@ -754,21 +754,15 @@
         }
     }];
 
-    //__block NSArray *b = [self.feeds valueForKey:@"id"];
     [feedIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        //NSInteger index = [b indexOfObject:obj];
-
         NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", obj]];
         NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread = 1"]];
-        
-        //NSMutableDictionary *feed = [self.feeds objectAtIndex:index];
-        //[feed setObject:[NSNumber numberWithInt:unreadItems.count] forKey:@"unreadCount"];
         
         Feed *myFeed = [[OCNewsHelper sharedHelper] feedWithId:[obj integerValue]];
         myFeed.unreadCountValue = unreadItems.count;
         [[OCNewsHelper sharedHelper] updateTotalUnreadCount];
-        
-        //FIXME: [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index + 2 inSection:0] waitUntilDone:NO];
+        NSInteger index = [self.fetchedResultsController.fetchedObjects indexOfObject:myFeed];
+        [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index inSection:0] waitUntilDone:NO];
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
     }];    
 
