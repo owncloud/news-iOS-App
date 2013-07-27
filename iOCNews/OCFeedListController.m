@@ -48,8 +48,6 @@
     BOOL haveSyncData;
 }
 
-//- (NSString *)createUUID;
-- (void) writeFeeds;
 - (void) updateItems;
 - (void) writeItems;
 //- (void) showRenameForIndex:(int) index;
@@ -359,24 +357,19 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//TODO: Handle delete
-/*    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSDictionary *object = [self.feeds objectAtIndex:indexPath.row - 2];
-        __block NSString *feedId = [object valueForKey:@"id"];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        __block NSString *feedId = [feed.id stringValue];
         
         OCAPIClient *client = [OCAPIClient sharedClient];
-        
         NSMutableURLRequest *request = [client requestWithMethod:@"DELETE" path:[NSString stringWithFormat:@"feeds/%@", feedId] parameters:nil];
-        
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
             [self.items removeObjectsInArray:feedItems];
-            [self.feeds removeObjectAtIndex:indexPath.row - 2];
-            [self writeFeeds];
+            [[OCNewsHelper sharedHelper] deleteFeed:feed];
             [self writeItems];
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             NSLog(@"Success");
         } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Failure");
@@ -389,7 +382,7 @@
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   */
+    }
 }
 
 
@@ -469,11 +462,6 @@
         AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:feedRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
            
             NSLog(@"Feeds: %@", JSON);
-            //NSDictionary *jsonDict = (NSDictionary *) JSON;
-            //NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
-            //NSMutableDictionary *newFeed = [[newFeeds objectAtIndex:0] mutableCopy];
-            //[self.feeds addObject:newFeed];
-            //[self writeFeeds];
             
             int newFeedId = [[OCNewsHelper sharedHelper] addFeed:JSON];
             
@@ -623,14 +611,6 @@
 }
 
 #pragma mark - Feeds maintenance
-
-- (void) writeFeeds {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSURL *docDir = [paths objectAtIndex:0];
-    NSURL *saveURL = [docDir URLByAppendingPathComponent:@"feeds.plist" isDirectory:NO];
-    //TODO: Remove [NSKeyedArchiver archiveRootObject:self.feeds toFile:[saveURL path]];
-}
 
 - (void) updateItems {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
@@ -794,7 +774,6 @@
 
     [self.detailViewController performSelectorOnMainThread:@selector(refresh) withObject:nil waitUntilDone:NO];
     [self writeItems];
-    [self writeFeeds];
 }
 
 - (void) clearNewCount:(NSNotification*)n {

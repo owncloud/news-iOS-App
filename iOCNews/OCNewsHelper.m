@@ -111,6 +111,10 @@
     return newFeed.idValue;
 }
 
+- (void)deleteFeed:(id)feed {
+    [self.context deleteObject:feed];
+    [self updateTotalUnreadCount];
+}
 
 - (void)updateFeeds:(id)JSON {
     //Remove previous
