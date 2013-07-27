@@ -39,6 +39,8 @@
 #import "OCLoginController.h"
 #import "TSMessage.h"
 #import "TransparentToolbar.h"
+#import "OCNewsHelper.h"
+#import "Feed.h"
 
 @interface OCFeedListController () {
     int parserCount;
@@ -70,6 +72,7 @@
 @synthesize editBarButtonItem;
 //@synthesize settingsPopover;
 @synthesize feedRefreshControl;
+@synthesize fetchedResultsController;
 
 - (NSMutableArray *) feeds {
     if (!_feeds) {
@@ -104,6 +107,24 @@
         }
     }
     return _items;
+}
+
+- (NSFetchedResultsController *)fetchedResultsController {
+    if (!fetchedResultsController) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Feed" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
+        [fetchRequest setEntity:entity];
+    
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"id" ascending:YES];
+        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        [fetchRequest setFetchBatchSize:20];
+    
+        fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                        managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
+                                        cacheName:nil];
+        fetchedResultsController.delegate = self;
+    }
+    return fetchedResultsController;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -162,12 +183,18 @@
     int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
     NSLog(@"Server status: %i", status);
     
-    haveSyncData = NO;
+    haveSyncData = YES;
     
     IIViewDeckController *topDeckController = (IIViewDeckController *)self.viewDeckController.centerController;
     UINavigationController *navController = (UINavigationController*)topDeckController.leftController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
     //[self.detailViewController writeCssTemplate];
+    
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
 
     [self.viewDeckController openLeftView];
     [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
@@ -178,6 +205,7 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.fetchedResultsController = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -226,7 +254,47 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.feeds.count + 2;
+    //return self.feeds.count + 2;
+    
+    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
+}
+
+- (void)configureCell:(OCFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+    BOOL haveIcon = NO;
+    NSString *faviconLink = feed.faviconLink;
+    //NSLog(@"faviconLink: %@", faviconLink);
+    if (![faviconLink isKindOfClass:[NSNull class]]) {
+        if ([faviconLink hasPrefix:@"http"]) {
+            NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
+            if (faviconURL) {
+                if (cell.tag == indexPath.row) {
+                    haveIcon = YES;
+                    [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                }
+            }
+        } else {
+            [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
+        }
+    }
+    //if (!haveIcon) {
+    //    [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
+    //}
+    
+    cell.countBadge.value = feed.unreadCountValue;
+    //[cell.activityIndicator stopAnimating];
+    /*    }
+     
+     if ([[object valueForKey:@"Failure"] boolValue] == YES) {
+     cell.detailTextLabel.text = @"Failed to update feed";
+     } else {
+     cell.detailTextLabel.text = @"";
+     }
+     */
+    cell.textLabel.text = feed.title;
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -240,7 +308,8 @@
     cell.tag = indexPath.row;
     // Configure the cell...
     cell.accessoryView = cell.countBadge;
-    
+    [self configureCell:cell atIndexPath:indexPath];
+/*
     if (indexPath.row == 0) {
         cell.textLabel.text = @"All Articles";
         [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
@@ -272,13 +341,13 @@
         if (!haveIcon) {
             [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
         }
-        
+*/        
         /*
          if ([[object valueForKey:@"Updating"] boolValue] == YES) {
          cell.accessoryView = cell.activityIndicator;
          [cell.activityIndicator startAnimating];
          } else { */
-        cell.countBadge.value = [[feed valueForKey:@"unreadCount"] integerValue];
+        ////cell.countBadge.value = [[feed valueForKey:@"unreadCount"] integerValue];
         //[cell.activityIndicator stopAnimating];
         /*    }
          
@@ -288,9 +357,9 @@
          cell.detailTextLabel.text = @"";
          }
          */
-        cell.textLabel.text = [feed valueForKey:@"title"];
+        ////cell.textLabel.text = [feed valueForKey:@"title"];
         
-    }
+    ////}
     
     
     return cell;
@@ -541,12 +610,15 @@
         AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
             
             NSLog(@"Feeds: %@", JSON);
+            
+            [[OCNewsHelper sharedHelper] updateFeeds:JSON];
             NSDictionary *jsonDict = (NSDictionary *) JSON;
             NSArray *newFeeds = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
             NSMutableArray *mutableArray = [newFeeds mutableCopy];
             
             [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
                 [mutableArray replaceObjectAtIndex:idx withObject:[feed mutableCopy]];
+                
             }];
             
             self.feeds = mutableArray;
@@ -554,6 +626,7 @@
             [self writeFeeds];
             [self updateItems];
             //[self.refreshControl endRefreshing];
+                        
             [self.tableView reloadData];
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -737,6 +810,11 @@
         
         NSMutableDictionary *feed = [self.feeds objectAtIndex:index];
         [feed setObject:[NSNumber numberWithInt:unreadItems.count] forKey:@"unreadCount"];
+        
+        Feed *myFeed = [[OCNewsHelper sharedHelper] feedWithId:[obj integerValue]];
+        myFeed.unreadCountValue = unreadItems.count;
+        [[OCNewsHelper sharedHelper] updateTotalUnreadCount];
+        
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index + 2 inSection:0] waitUntilDone:NO];
         [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
     }];    
@@ -929,6 +1007,60 @@
     }
     
     return feedRefreshControl;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    [self.tableView beginUpdates];
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    UITableView *tableView = self.tableView;
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell:(OCFeedCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:[NSArray
+                                               arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:[NSArray
+                                               arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    [self.tableView endUpdates];
 }
 
 @end

@@ -34,11 +34,12 @@
 #import <MessageUI/MessageUI.h>
 #import "OCArticleListController.h"
 
-@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate>
+@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
 @property (strong, nonatomic) NSMutableArray *feeds;
 @property (strong, nonatomic) NSMutableArray *items;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, strong, readonly) UIBarButtonItem *addBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *infoBarButtonItem;

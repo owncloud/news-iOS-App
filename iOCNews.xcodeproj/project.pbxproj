@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		D06CB23D17A2E8F900A1310B /* Mogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D06CB23E17A2E8F900A1310B /* Build configuration list for PBXAggregateTarget "Mogenerator" */;
+			buildPhases = (
+				D06CB24117A2E91D00A1310B /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Mogenerator;
+			productName = Mogenerator;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
@@ -14,6 +28,15 @@
 		D06CB225179C977400A1310B /* placeholder~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB223179C977400A1310B /* placeholder~iphone.png */; };
 		D06CB22A179C9C7000A1310B /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB228179C9C7000A1310B /* PopoverView.m */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
+		D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
+		D06CB23117A073AA00A1310B /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23017A073A900A1310B /* Feed.m */; };
+		D06CB23417A073C500A1310B /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23317A073C400A1310B /* Item.m */; };
+		D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06CB23517A074AA00A1310B /* CoreData.framework */; };
+		D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23817A0A0A900A1310B /* OCNewsHelper.m */; };
+		D06CB23C17A1F88C00A1310B /* Feeds.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23B17A1F88A00A1310B /* Feeds.m */; };
+		D06CB24817A2EA9300A1310B /* _Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24317A2EA8C00A1310B /* _Feed.m */; };
+		D06CB24917A2EA9300A1310B /* _Feeds.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24517A2EA8F00A1310B /* _Feeds.m */; };
+		D06CB24A17A2EA9300A1310B /* _Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24717A2EA9200A1310B /* _Item.m */; };
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D096831F179A134F00EC6E60 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09682C0179A134F00EC6E60 /* TSMessage.m */; };
@@ -173,6 +196,22 @@
 		D06CB227179C9C7000A1310B /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
 		D06CB228179C9C7000A1310B /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
 		D06CB229179C9C7000A1310B /* PopoverView_Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView_Configuration.h; sourceTree = "<group>"; };
+		D06CB22D17A06E4F00A1310B /* News.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = News.xcdatamodel; sourceTree = "<group>"; };
+		D06CB22F17A073A800A1310B /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
+		D06CB23017A073A900A1310B /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
+		D06CB23217A073C300A1310B /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		D06CB23317A073C400A1310B /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
+		D06CB23517A074AA00A1310B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D06CB23717A0A0A800A1310B /* OCNewsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCNewsHelper.h; sourceTree = "<group>"; };
+		D06CB23817A0A0A900A1310B /* OCNewsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCNewsHelper.m; sourceTree = "<group>"; };
+		D06CB23A17A1F88900A1310B /* Feeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feeds.h; sourceTree = "<group>"; };
+		D06CB23B17A1F88A00A1310B /* Feeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feeds.m; sourceTree = "<group>"; };
+		D06CB24217A2EA8B00A1310B /* _Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Feed.h; sourceTree = "<group>"; };
+		D06CB24317A2EA8C00A1310B /* _Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Feed.m; sourceTree = "<group>"; };
+		D06CB24417A2EA8E00A1310B /* _Feeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Feeds.h; sourceTree = "<group>"; };
+		D06CB24517A2EA8F00A1310B /* _Feeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Feeds.m; sourceTree = "<group>"; };
+		D06CB24617A2EA9100A1310B /* _Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Item.h; sourceTree = "<group>"; };
+		D06CB24717A2EA9200A1310B /* _Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Item.m; sourceTree = "<group>"; };
 		D09682B7179896B200EC6E60 /* star_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_icon.png; sourceTree = "<group>"; };
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D09682BF179A134F00EC6E60 /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
@@ -386,6 +425,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */,
 				D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */,
 				D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */,
 				D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */,
@@ -518,6 +558,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D06CB23517A074AA00A1310B /* CoreData.framework */,
 				D0F1813E17850CAF00F719D9 /* Security.framework */,
 				D0F181251782585100F719D9 /* SystemConfiguration.framework */,
 				D0BCABE21779119300C965F4 /* MessageUI.framework */,
@@ -534,8 +575,23 @@
 		D0BCAA2B177900C300C965F4 /* iOCNews */ = {
 			isa = PBXGroup;
 			children = (
+				D06CB24217A2EA8B00A1310B /* _Feed.h */,
+				D06CB24317A2EA8C00A1310B /* _Feed.m */,
+				D06CB24417A2EA8E00A1310B /* _Feeds.h */,
+				D06CB24517A2EA8F00A1310B /* _Feeds.m */,
+				D06CB24617A2EA9100A1310B /* _Item.h */,
+				D06CB24717A2EA9200A1310B /* _Item.m */,
 				D0BCAA48177903F500C965F4 /* iPad.storyboard */,
 				D0968361179B3DB300EC6E60 /* iPhone.storyboard */,
+				D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */,
+				D06CB23717A0A0A800A1310B /* OCNewsHelper.h */,
+				D06CB23817A0A0A900A1310B /* OCNewsHelper.m */,
+				D06CB23A17A1F88900A1310B /* Feeds.h */,
+				D06CB23B17A1F88A00A1310B /* Feeds.m */,
+				D06CB22F17A073A800A1310B /* Feed.h */,
+				D06CB23017A073A900A1310B /* Feed.m */,
+				D06CB23217A073C300A1310B /* Item.h */,
+				D06CB23317A073C400A1310B /* Item.m */,
 				D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */,
 				D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */,
 				D0F181271783B12C00F719D9 /* OCLoginController.h */,
@@ -863,6 +919,7 @@
 			projectRoot = "";
 			targets = (
 				D0BCAA21177900C300C965F4 /* iOCNews */,
+				D06CB23D17A2E8F900A1310B /* Mogenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -980,6 +1037,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D06CB24117A2E91D00A1310B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ~/Projects/iOCNews/iOCNews\nmogenerator --template-var arc=true -m News.xcdatamodeld/News.xcdatamodel/";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D0BCAA1E177900C300C965F4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1027,6 +1100,14 @@
 				D0968354179A134F00EC6E60 /* TSMessageView.m in Sources */,
 				D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */,
 				D06CB22A179C9C7000A1310B /* PopoverView.m in Sources */,
+				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
+				D06CB23117A073AA00A1310B /* Feed.m in Sources */,
+				D06CB23417A073C500A1310B /* Item.m in Sources */,
+				D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */,
+				D06CB23C17A1F88C00A1310B /* Feeds.m in Sources */,
+				D06CB24817A2EA9300A1310B /* _Feed.m in Sources */,
+				D06CB24917A2EA9300A1310B /* _Feeds.m in Sources */,
+				D06CB24A17A2EA9300A1310B /* _Item.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1084,6 +1165,20 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D06CB23F17A2E8F900A1310B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D06CB24017A2E8F900A1310B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		D0BCAA43177900C400C965F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1173,6 +1268,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D06CB23E17A2E8F900A1310B /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D06CB23F17A2E8F900A1310B /* Debug */,
+				D06CB24017A2E8F900A1310B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		D0BCAA1D177900C300C965F4 /* Build configuration list for PBXProject "iOCNews" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1192,6 +1295,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D06CB22D17A06E4F00A1310B /* News.xcdatamodel */,
+			);
+			currentVersion = D06CB22D17A06E4F00A1310B /* News.xcdatamodel */;
+			path = News.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D0BCAA1A177900C300C965F4 /* Project object */;
 }

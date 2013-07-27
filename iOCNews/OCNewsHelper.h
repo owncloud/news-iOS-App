@@ -1,0 +1,37 @@
+//
+//  OCNewsHelper.h
+//  iOCNews
+//
+//  Created by Peter Hedlund on 7/24/13.
+//  Copyright (c) 2013 Peter Hedlund. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import "Feed.h"
+
+@interface OCNewsHelper : NSObject
+
+@property (nonatomic,retain) NSManagedObjectContext *context;
+@property (nonatomic, retain) NSManagedObjectModel *objectModel;
+@property (nonatomic, retain) NSPersistentStoreCoordinator *coordinator;
+
++ (OCNewsHelper *)sharedHelper;
+- (NSManagedObjectContext *)context;
+- (NSURL *)documentsDirectoryURL;
+- (NSManagedObjectModel *)objectModel;
+- (NSPersistentStoreCoordinator *)coordinator;
+- (void)saveContext;
+
+- (Feed*)feedWithId:(int)id;
+
+- (void)updateFeeds:(id)JSON;
+- (void)updateTotalUnreadCount;
+
+/*
+-(void) insertContactInfoName :(NSString *)name Address:(NSString *)address PhoneNo:(NSString *)phoneNO;
+-(void) selectAllContacts;
+-(NSManagedObject *) searchContactInfoByName :(NSString *) name;
+-(void) deleteContactInfoByName:(NSString *) name;
+*/
+@end
