@@ -418,21 +418,13 @@
     } else {
         Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
         if (indexPath.row == 0) {
-            //NSArray *unreadCounts = [self.feeds valueForKey:@"unreadCount"];
-            //TODO: Use this in OCNewsHelper int totalUnread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
-            //NSMutableDictionary *allFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"All Articles", @"title", [NSNumber numberWithInt:totalUnread], @"unreadCount", nil];
             self.detailViewController.items = self.items;
             self.detailViewController.feed = feed;
         } else if (indexPath.row == 1) {
             NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred = 1"]];
-            //NSArray *unreadCounts = [feedItems valueForKey:@"unread"];
-            //int unread = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
-            //NSMutableDictionary *starredFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Starred", @"title", [NSNumber numberWithInt:unread], @"unreadCount", nil];
             self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
             self.detailViewController.feed = feed;
         } else {
-            //NSData *object = [self.feeds objectAtIndex:indexPath.row - 2];
-            //NSString *feedId = [object valueForKey:@"id"];
             NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feed.id]];
             NSLog(@"FeedId: %@; Count: %i", feed.id, feedItems.count);
             self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
@@ -467,13 +459,11 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-/*    if (buttonIndex == 1) {
+    if (buttonIndex == 1) {
         NSString *newID = [[alertView textFieldAtIndex:0] text];
         
-        OCAPIClient *client = [OCAPIClient sharedClient];        
-
+        OCAPIClient *client = [OCAPIClient sharedClient];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:newID, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
-        
         NSURLRequest *feedRequest = [client requestWithMethod:@"POST" path:@"feeds" parameters:params];
         
         AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:feedRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
@@ -485,14 +475,14 @@
             //[self.feeds addObject:newFeed];
             //[self writeFeeds];
             
-            [[OCNewsHelper sharedHelper] addFeed:JSON];
+            int newFeedId = [[OCNewsHelper sharedHelper] addFeed:JSON];
             
             [self.tableView reloadData];
-            //TODO: Handle add, must return the new feed
+            
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
                                                                                [NSNumber numberWithInt:0], @"offset",
                                                                                [NSNumber numberWithInt:0], @"type",
-                                                                               [newFeed valueForKey:@"id"], @"id",
+                                                                               [NSNumber numberWithInt:newFeedId], @"id",
                                                                                [NSNumber numberWithInt:1], @"getRead", nil];
             
             NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:params];
@@ -532,7 +522,7 @@
         
         [client enqueueHTTPRequestOperation:operation];
 
-    }*/
+    }
 }
 
 - (IBAction)doInfo:(id)sender {

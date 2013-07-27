@@ -92,7 +92,7 @@
 
 #pragma mark - COREDATA -INSERT
 
-- (void)addFeed:(id)JSON {
+- (int)addFeed:(id)JSON {
     NSDictionary *jsonDict = (NSDictionary *) JSON;
     NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
     NSDictionary *feed = [newFeeds lastObject];
@@ -108,6 +108,7 @@
     newFeed.link = [feed objectForKey:@"link"];
     
     [self updateTotalUnreadCount];
+    return newFeed.idValue;
 }
 
 
