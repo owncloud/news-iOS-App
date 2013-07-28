@@ -28,6 +28,7 @@
 - (int)addFeed:(id)JSON;
 - (void)deleteFeed:(id)feed;
 - (void)updateFeeds:(id)JSON;
+- (void)updateItems:(NSArray*)items;
 - (void)updateTotalUnreadCount;
 
 /*

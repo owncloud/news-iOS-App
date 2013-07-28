@@ -35,13 +35,14 @@
 #import "OCArticleCell.h"
 #import "Feed.h"
 
-@interface OCArticleListController : UITableViewController
+@interface OCArticleListController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) OCWebController *detailViewController;
 @property (nonatomic, strong, readonly) UIBarButtonItem *markBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 @property (nonatomic, strong) Feed *feed;
 @property (strong, nonatomic) NSMutableArray *items;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 - (void) refresh;
 - (IBAction) doRefresh:(id)sender;

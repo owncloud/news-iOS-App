@@ -39,6 +39,7 @@
 #import "FDInstapaperActivity.h"
 #import "IIViewDeckController.h"
 #import "TransparentToolbar.h"
+#import "OCNewsHelper.h"
 
 @interface OCWebController () <UIPopoverControllerDelegate> {
     UIPopoverController *_activityPopover;
@@ -56,11 +57,12 @@
 @implementation OCWebController
 
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
-@synthesize preferWeb, preferReader, feedTitle;
+@synthesize preferWeb, preferReader;
 @synthesize tapZoneRecognizer;
 @synthesize tapZoneRecognizer2;
 @synthesize prefPopoverController;
 @synthesize prefViewController;
+@synthesize item = _item;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -82,10 +84,10 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(id)newDetailItem
+- (void)setItem:(Item*)newItem
 {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
+    if (_item != newItem) {
+        _item = newItem;
         
         // Update the view.
         [self configureView];
@@ -95,7 +97,7 @@
 
 - (void)configureView
 {
-    if (self.detailItem) {
+    if (self.item) {
         if ([self webView] != nil) {
             [[self webView] removeFromSuperview];
             [self webView].delegate =nil;
@@ -112,8 +114,7 @@
             [self.webView addGestureRecognizer:self.tapZoneRecognizer];
         }
         
-        NSDictionary *detail = (NSDictionary *) self.detailItem;
-        self.navigationItem.title = [detail valueForKey:@"title"];
+        self.navigationItem.title = self.item.title;
         
 /*        if (self.preferWeb) {
             if (self.preferReader) {
@@ -163,8 +164,8 @@
                 [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:detail.item.link]]];
             }
         } else { */
-            NSString *html = [detail valueForKey:@"body"];
-            NSURL *itemURL = [NSURL URLWithString:[detail valueForKey:@"url"]];
+            NSString *html = self.item.body;
+            NSURL *itemURL = [NSURL URLWithString:self.item.url];
             NSString *baseString = [NSString stringWithFormat:@"%@://%@", [itemURL scheme], [itemURL host]];
             html = [self fixRelativeUrl:html baseUrlString:baseString];
             [self writeAndLoadHtml:html];
@@ -177,10 +178,9 @@
 - (void)writeAndLoadHtml:(NSString *)html {
     NSURL *source = [[NSBundle mainBundle] URLForResource:@"rss" withExtension:@"html" subdirectory:nil];
     NSString *objectHtml = [NSString stringWithContentsOfURL:source encoding:NSUTF8StringEncoding error:nil];
-    NSDictionary *detail = (NSDictionary *) self.detailItem;
     
     NSString *dateText = @"";
-    NSNumber *dateNumber = [detail valueForKey:@"pubDate"];
+    NSNumber *dateNumber = self.item.pubDate;
     if (![dateNumber isKindOfClass:[NSNull class]]) {
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dateNumber doubleValue]];
         if (date) {
@@ -191,11 +191,12 @@
         }
     }
     
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$FeedTitle$" withString:self.feedTitle];
+    Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedIdValue];
+    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$FeedTitle$" withString:feed.title];
     objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleDate$" withString:dateText];
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleTitle$" withString:[detail valueForKey:@"title"]];
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleLink$" withString:[detail valueForKey:@"url"]];
-    NSString *author = [detail valueForKey:@"author"];
+    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleTitle$" withString:self.item.title];
+    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleLink$" withString:self.item.url];
+    NSString *author = self.item.author;
     if (![author isKindOfClass:[NSNull class]]) {
         if (author.length > 0) {
             author = [NSString stringWithFormat:@"By %@", author];
@@ -263,7 +264,7 @@
     }
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-            if (self.detailItem != nil) {
+            if (self.item != nil) {
                 self.navigationItem.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
             }
         } else {
@@ -296,10 +297,9 @@
 }
 
 - (IBAction)doInfo:(id)sender {
-    NSDictionary *detail = (NSDictionary *) self.detailItem;
     NSURL *url = self.webView.request.URL;
     if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
-        url = [NSURL URLWithString:[detail valueForKey:@"url"]];
+        url = [NSURL URLWithString:self.item.url];
     }
     
     TUSafariActivity *sa = [[TUSafariActivity alloc] init];
@@ -340,15 +340,14 @@
 }
 
 - (IBAction)doStar:(id)sender {
-    NSDictionary *detail = (NSDictionary *) self.detailItem;
     if ([sender isEqual:self.starBarButtonItem]) {
-        [detail setValue:[NSNumber numberWithInt:1] forKey:@"starred"];
+        self.item.starredValue = 1;
     }
     if ([sender isEqual:self.unstarBarButtonItem]) {
-        [detail setValue:[NSNumber numberWithInt:0] forKey:@"starred"];
+        self.item.starredValue = 0;
     }
     [self updateToolbar];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"StarredChange" object:self userInfo:[NSDictionary dictionaryWithObject:detail forKey:@"item"]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"StarredChange" object:self userInfo:[NSDictionary dictionaryWithObject:self.item forKey:@"item"]];
 }
 
 #pragma mark - UIWebView delegate
@@ -463,7 +462,7 @@
 - (void)updateToolbar {
     self.backBarButtonItem.enabled = self.webView.canGoBack;
     self.forwardBarButtonItem.enabled = self.webView.canGoForward;
-    if ((self.detailItem != nil)) {
+    if ((self.item != nil)) {
         self.actionBarButtonItem.enabled = !self.webView.isLoading;
         self.textBarButtonItem.enabled = !self.webView.isLoading;
         self.starBarButtonItem.enabled = !self.webView.isLoading;
@@ -476,7 +475,7 @@
     }
 
     UIBarButtonItem *refreshStopBarButtonItem = self.webView.isLoading ? self.stopBarButtonItem : self.refreshBarButtonItem;
-    refreshStopBarButtonItem.enabled = (self.detailItem != nil);
+    refreshStopBarButtonItem.enabled = (self.item != nil);
     
     UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     fixedSpace.width = 5.0f;
@@ -496,9 +495,8 @@
     toolbarLeft.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarLeft];
 
-    NSDictionary *detail = (NSDictionary *) self.detailItem;
-    UIBarButtonItem *starUnstarBarButtonItem = ([[detail valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
-    refreshStopBarButtonItem.enabled = (self.detailItem != nil);
+    UIBarButtonItem *starUnstarBarButtonItem = ([self.item.starred isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
+    refreshStopBarButtonItem.enabled = (self.item != nil);
     
 
     NSArray *itemsRight = [NSArray arrayWithObjects:

@@ -41,6 +41,8 @@
 #import "OCArticleImage.h"
 #import "TSMessage.h"
 #import "TransparentToolbar.h"
+#import "OCNewsHelper.h"
+#import "Item.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -62,6 +64,7 @@
 @synthesize feedRefreshControl;
 @synthesize feed = _feed;
 @synthesize items = _items;
+@synthesize fetchedResultsController;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -98,17 +101,54 @@
     }
 }
 
+- (NSFetchedResultsController *)fetchedResultsController {
+    if (!fetchedResultsController) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Item" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
+        [fetchRequest setEntity:entity];
+        
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"id" ascending:YES];
+        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        [fetchRequest setFetchBatchSize:20];
+        
+        fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                       managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
+                                                                                  cacheName:nil];
+        fetchedResultsController.delegate = self;
+    }
+    return fetchedResultsController;
+}
+
 - (void)configureView
 {
     // Update the user interface for the detail item.
     self.navigationItem.title = self.feed.title; // [self.feed objectForKey:@"title"];
+    
+    NSError *error;
+//    NSDictionary *subs = [NSDictionary dictionaryWithObject:self.feed.id forKey:@"FEED_ID"];
+    NSPredicate *fetchPredicate;
+    if (self.feed.idValue == -2) {
+        fetchPredicate = nil;
+    } else if (self.feed.idValue == -1) {
+        fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
+    } else {
+        fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.id];
+    }
+    
+
+    self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
+    
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+
     [self.tableView reloadData];
-    [self scrollToTop];
+    //[self scrollToTop];
 }
 
 - (void) scrollToTop {
-    int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
-    self.markBarButtonItem.enabled = (unreadCount > 0);
+    self.markBarButtonItem.enabled = (self.feed.unreadCountValue > 0);
     if (self.items.count > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
@@ -159,8 +199,8 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.fetchedResultsController = nil;
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -177,23 +217,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.items.count > 0) {
-        return self.items.count;
-    } else {
-        return 0;
-    }
+    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
 
-    NSDictionary *article = [self.items objectAtIndex:indexPath.row];
+- (void)configureCell:(OCArticleCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    cell.titleLabel.text = [[article objectForKey:@"title"] stringByConvertingHTMLToPlainText];
+    cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
     [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
     NSString *dateLabelText = @"";
-    NSString *author = [article objectForKey:@"author"];
+    NSString *author = item.author;
     if (![author isKindOfClass:[NSNull class]]) {
         
         if (author.length > 0) {
@@ -205,7 +240,7 @@
             }
         }
     }
-    NSNumber *dateNumber = [article valueForKey:@"pubDate"];
+    NSNumber *dateNumber = item.pubDate;
     if (![dateNumber isKindOfClass:[NSNull class]]) {
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dateNumber doubleValue]];
         if (date) {
@@ -220,7 +255,7 @@
     }
     cell.dateLabel.text = dateLabelText;
     
-    NSString *summary = [article objectForKey:@"body"];
+    NSString *summary = item.body;
     if ([summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
         if ([summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
             NSRange r;
@@ -232,7 +267,7 @@
     }
     cell.summaryLabel.text = [summary stringByConvertingHTMLToPlainText];
     [cell.summaryLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
-    NSNumber *read = [article valueForKey:@"unread"];
+    NSNumber *read = item.unread;
     if ([read intValue] == 1) {
         cell.summaryLabel.textColor = [UIColor darkTextColor];
         cell.titleLabel.textColor = [UIColor darkTextColor];
@@ -244,11 +279,18 @@
         cell.dateLabel.textColor = UIColorFromRGB(0x696969);
         cell.articleImage.alpha = 0.4f;
     }
-   
+    
     [cell.articleImage setImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
 
-    return cell;
+    
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
+    [self configureCell:cell atIndexPath:indexPath];
+    
+    return cell;
 }
 
 
@@ -257,14 +299,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     currentIndex = indexPath.row;
-    NSDictionary *item = (NSDictionary*)[self.items objectAtIndex:indexPath.row];
-    self.detailViewController.feedTitle = self.feed.title; // [self.feed valueForKey:@"title"];
-    self.detailViewController.detailItem = item;
+    Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.detailViewController.item = selectedItem;
     [self.viewDeckController closeLeftView];
-    NSNumber *read = [item valueForKey:@"unread"];
-    if ([read intValue] == 1) {
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableSet setWithObject:[item valueForKey:@"feedId"]], @"feedIds",
-                              [NSMutableArray arrayWithObject:[item valueForKey:@"id"]], @"itemIds", nil];
+    int read = selectedItem.unreadValue;
+    if (read == 1) {
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableSet setWithObject:selectedItem.feedId], @"feedIds",
+                              [NSMutableArray arrayWithObject:selectedItem.id], @"itemIds", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
         //[self.tableView reloadData];
     }
@@ -410,6 +451,59 @@
     }
     
     return feedRefreshControl;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    UITableView *tableView = self.tableView;
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell:(OCArticleCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:[NSArray
+                                               arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:[NSArray
+                                               arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    [self.tableView endUpdates];
 }
 
 @end

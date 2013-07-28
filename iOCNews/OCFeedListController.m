@@ -414,11 +414,11 @@
             self.detailViewController.items = self.items;
             self.detailViewController.feed = feed;
         } else if (indexPath.row == 1) {
-            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred = 1"]];
+            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == 1"]];
             self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
             self.detailViewController.feed = feed;
         } else {
-            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feed.id]];
+            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.id]];
             NSLog(@"FeedId: %@; Count: %i", feed.id, feedItems.count);
             self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
             self.detailViewController.feed = feed;
@@ -634,7 +634,7 @@
                     //NSDictionary *newestItem = [newItems objectAtIndex:0];
                     [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
                 }
-                
+                [[OCNewsHelper sharedHelper] updateItems:newItems];
                 NSMutableArray *mutableArray = [newItems mutableCopy];
                 NSMutableSet *updatedFeeds = [NSMutableSet new];
                 [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
@@ -703,6 +703,7 @@
             [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
                 NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
             } completionBlock:^(NSArray *operations) {
+                [[OCNewsHelper sharedHelper] updateItems:addedItems];
                 NSMutableArray *mutableArray = [addedItems mutableCopy];
                 [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                     [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];

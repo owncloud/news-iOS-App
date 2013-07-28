@@ -33,11 +33,11 @@
 #import <UIKit/UIKit.h>
 #import "PHPrefViewController.h"
 #import "PopoverView.h"
+#import "Item.h"
 
 @interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, PopoverViewDelegate>
 
-@property (nonatomic, strong) id detailItem;
-@property (nonatomic, strong) NSString* feedTitle;
+@property (nonatomic, strong) Item *item;
 @property (nonatomic, strong) UIWebView* webView;
 @property (nonatomic, strong, readonly) UIBarButtonItem *backBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *forwardBarButtonItem;
