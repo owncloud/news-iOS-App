@@ -341,10 +341,10 @@
 
 - (IBAction)doStar:(id)sender {
     if ([sender isEqual:self.starBarButtonItem]) {
-        self.item.starredValue = 1;
+        self.item.starredValue = YES;
     }
     if ([sender isEqual:self.unstarBarButtonItem]) {
-        self.item.starredValue = 0;
+        self.item.starredValue = NO;
     }
     [self updateToolbar];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"StarredChange" object:self userInfo:[NSDictionary dictionaryWithObject:self.item forKey:@"item"]];

@@ -654,18 +654,17 @@
 }
 
 - (void) starredChange:(NSNotification *)n {
-    NSDictionary *item = [n.userInfo valueForKey:@"item"];
-    NSString *feedId = [item valueForKey:@"feedId"];
-    NSString *guidHash = [item valueForKey:@"guidHash"];
+    Item *item = [n.userInfo valueForKey:@"item"];
     NSString *path;
     if ([[item valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:1]]) {
          ///items/{feedId}/{guidHash}/star
-        path = [NSString stringWithFormat:@"items/%@/%@/star", feedId, guidHash];
+        path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
     } else {
         // /items/{feedId}/{guidHash}/unstar
-        path = [NSString stringWithFormat:@"items/%@/%@/unstar", feedId, guidHash];
+        path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
     }
     [[OCAPIClient sharedClient] putPath:path parameters:nil success:nil failure:nil];
+    [[OCNewsHelper sharedHelper] updateStarredCount];
     [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:1 inSection:0] waitUntilDone:NO];
 }
 

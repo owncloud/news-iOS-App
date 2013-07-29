@@ -347,6 +347,42 @@
     }
 }
 
+- (void)updateStarredCount {
+    NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
+    [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
+    [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"starred == 1"]];
+    
+    NSError *error = nil;
+    NSArray *starredItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+    if (!starredItems || error) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    NSLog(@"Count: %i", starredItems.count);
+    
+    NSFetchRequest *feedsFetcher = [[NSFetchRequest alloc] init];
+    [feedsFetcher setEntity:[NSEntityDescription entityForName:@"Feeds" inManagedObjectContext:self.context]];
+    
+    error = nil;
+    NSArray *feeds = [self.context executeFetchRequest:feedsFetcher error:&error];
+    if (!feeds || error) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+
+    Feeds *theFeeds = [feeds lastObject];
+    theFeeds.starredCountValue = starredItems.count;
+    
+    [[self feedWithId:-1] setUnreadCountValue:starredItems.count];
+    error = nil;
+    if ([self.context save:&error]) {
+        NSLog(@"Feed saved");
+    } else {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
 - (NSURL*) documentsDirectoryURL {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }

@@ -31,6 +31,7 @@
 - (void)updateItems:(NSArray*)items;
 - (void)updateReadItems:(NSArray*)items;
 - (void)updateTotalUnreadCount;
+- (void)updateStarredCount;
 - (int)itemCount;
 
 /*
