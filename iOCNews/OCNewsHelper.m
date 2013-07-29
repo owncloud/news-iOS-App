@@ -98,7 +98,7 @@
     NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
     NSDictionary *feed = [newFeeds lastObject];
     Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-    newFeed.id = [feed objectForKey:@"id"];
+    newFeed.myId = [feed objectForKey:@"id"];
     newFeed.url = [feed objectForKey:@"url"];
     newFeed.title = [feed objectForKey:@"title"];
     id val = [feed objectForKey:@"faviconLink"];
@@ -109,10 +109,20 @@
     newFeed.link = [feed objectForKey:@"link"];
     
     [self updateTotalUnreadCount];
-    return newFeed.idValue;
+    return newFeed.myIdValue;
 }
 
-- (void)deleteFeed:(id)feed {
+- (void)deleteFeed:(Feed*)feed {
+    NSFetchRequest *feedItemsFetcher = [[NSFetchRequest alloc] init];
+    [feedItemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
+    [feedItemsFetcher setIncludesPropertyValues:NO];
+    [feedItemsFetcher setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
+    
+    NSError *error = nil;
+    NSArray *feedItems = [self.context executeFetchRequest:feedItemsFetcher error:&error];
+    for (Item *item in feedItems) {
+        [self.context deleteObject:item];
+    }
     [self.context deleteObject:feed];
     [self updateTotalUnreadCount];
 }
@@ -149,7 +159,7 @@
     NSArray *newFeeds = [NSArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
 
     Feed *allFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-    allFeed.id = [NSNumber numberWithInt:-2];
+    allFeed.myId = [NSNumber numberWithInt:-2];
     allFeed.url = @"";
     allFeed.title = @"All Articles";
     allFeed.faviconLink = @"favicon";
@@ -159,7 +169,7 @@
     allFeed.link = @"";
 
     Feed *starredFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-    starredFeed.id = [NSNumber numberWithInt:-1];
+    starredFeed.myId = [NSNumber numberWithInt:-1];
     starredFeed.url = @"";
     starredFeed.title = @"Starred";
     starredFeed.faviconLink = @"star_icon";
@@ -170,7 +180,7 @@
     
     [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
         Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-        newFeed.id = [feed objectForKey:@"id"];
+        newFeed.myId = [feed objectForKey:@"id"];
         newFeed.url = [feed objectForKey:@"url"];
         newFeed.title = [feed objectForKey:@"title"];
         id val = [feed objectForKey:@"faviconLink"];
@@ -184,28 +194,54 @@
     [self updateTotalUnreadCount];
 }
 
-- (Feed*)feedWithId:(int)id {
-    NSDictionary *subs = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:id] forKey:@"FEED_ID"];
+- (Feed*)feedWithId:(int)anId {
+    NSDictionary *subs = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:anId] forKey:@"FEED_ID"];
     NSArray *myFeeds = [self.context executeFetchRequest:[self.objectModel fetchRequestFromTemplateWithName:@"feedWithIdRequest" substitutionVariables:subs] error:nil];
     return (Feed*)[myFeeds lastObject];
 }
 
-- (void)updateItems:(NSArray*)items {
-    NSFetchRequest *oldItemsFetcher = [[NSFetchRequest alloc] init];
-    [oldItemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-    [oldItemsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+- (int)itemCount {
+    NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
+    [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
+    [itemsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
     
     NSError *error = nil;
-    NSArray *oldItems = [self.context executeFetchRequest:oldItemsFetcher error:&error];
-    
-    
-    NSLog(@"Count: %i", oldItems.count);
-    if (oldItems.count == 0) {
+    NSArray *items = [self.context executeFetchRequest:itemsFetcher error:&error];
+    NSLog(@"Count: %i", items.count);
+    return items.count;
+}
+
+- (void)updateItems:(NSArray*)items {
+    if ([self itemCount] == 0) {
         //first time
         //Add the new items        
         [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
             Item *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:self.context];
-            newItem.id = [item objectForKey:@"id"];
+            newItem.myId = [item objectForKey:@"id"];
+            newItem.guid = [item objectForKey:@"guid"];
+            newItem.guidHash = [item objectForKey:@"guidHash"];
+            newItem.url = [item objectForKey:@"url"];
+            newItem.title = [item objectForKey:@"title"];
+            id val = [item objectForKey:@"author"];
+            newItem.author = (val == [NSNull null] ? @"" : val);
+            val = [item objectForKey:@"pubDate"];
+            newItem.pubDate = (val == [NSNull null] ? nil : val);
+            newItem.body = [item objectForKey:@"body"];
+            val = [item objectForKey:@"enclosureMime"];
+            newItem.enclosureMime = (val == [NSNull null] ? @"" : val);
+            val = [item objectForKey:@"enclosureLink"];
+            newItem.enclosureLink = (val == [NSNull null] ? @"" : val);
+            newItem.feedId = [item objectForKey:@"feedId"];
+            newItem.unread = [item objectForKey:@"unread"];
+            newItem.starred = [item objectForKey:@"starred"];
+            newItem.lastModified = [item objectForKey:@"lastModified"];
+        }];
+
+    } else {
+        //updating
+        [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+            Item *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:self.context];
+            newItem.myId = [item objectForKey:@"id"];
             newItem.guid = [item objectForKey:@"guid"];
             newItem.guidHash = [item objectForKey:@"guidHash"];
             newItem.url = [item objectForKey:@"url"];
@@ -223,11 +259,29 @@
             newItem.starred = [item objectForKey:@"starred"];
             newItem.lastModified = [item objectForKey:@"lastModified"];
         }];
-
-    } else {
-        //updating
     }
     
+    [self updateTotalUnreadCount];
+}
+
+- (void)updateReadItems:(NSArray *)items {
+    NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
+    [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
+    [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", items]];
+
+    NSError *error = nil;
+    NSArray *allItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+    if (!allItems || error) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    NSLog(@"Count: %i", items.count);
+    
+    [allItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+            item.unreadValue = NO;
+            Feed *feed = [self feedWithId:item.feedIdValue];
+            --feed.unreadCountValue;
+    }];
     [self updateTotalUnreadCount];
 }
 
@@ -235,16 +289,17 @@
     NSArray *unreadFeeds = [self.context executeFetchRequest:[self.objectModel fetchRequestTemplateForName:@"totalUnreadRequest"] error:nil];
     __block int i = 0;
     [unreadFeeds enumerateObjectsUsingBlock:^(Feed *obj, NSUInteger idx, BOOL *stop) {
-        if (obj.idValue >= 0) {
+        if (obj.myIdValue >= 0) {
             i = i + obj.unreadCountValue;
         }
     }];
     [[self feedWithId:-2] setUnreadCountValue:i];
-    NSError *saveError = nil;
-    if ([self.context save:&saveError]) {
+    NSError *error = nil;
+    if ([self.context save:&error]) {
         NSLog(@"Feed saved");
     } else {
-        NSLog(@"Error occured while saving");
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
     }
 }
 

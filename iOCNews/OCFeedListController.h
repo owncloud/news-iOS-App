@@ -37,7 +37,6 @@
 @interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
-@property (strong, nonatomic) NSMutableArray *items;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, strong, readonly) UIBarButtonItem *addBarButtonItem;

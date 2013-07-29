@@ -11,8 +11,8 @@ const struct ItemAttributes ItemAttributes = {
 	.feedId = @"feedId",
 	.guid = @"guid",
 	.guidHash = @"guidHash",
-	.id = @"id",
 	.lastModified = @"lastModified",
+	.myId = @"myId",
 	.pubDate = @"pubDate",
 	.starred = @"starred",
 	.title = @"title",
@@ -57,13 +57,13 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"idValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"id"];
+	if ([key isEqualToString:@"lastModifiedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"lastModified"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"lastModifiedValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"lastModified"];
+	if ([key isEqualToString:@"myIdValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"myId"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -157,32 +157,6 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 
 
 
-@dynamic id;
-
-
-
-- (int32_t)idValue {
-	NSNumber *result = [self id];
-	return [result intValue];
-}
-
-- (void)setIdValue:(int32_t)value_ {
-	[self setId:[NSNumber numberWithInt:value_]];
-}
-
-- (int32_t)primitiveIdValue {
-	NSNumber *result = [self primitiveId];
-	return [result intValue];
-}
-
-- (void)setPrimitiveIdValue:(int32_t)value_ {
-	[self setPrimitiveId:[NSNumber numberWithInt:value_]];
-}
-
-
-
-
-
 @dynamic lastModified;
 
 
@@ -203,6 +177,32 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 
 - (void)setPrimitiveLastModifiedValue:(int32_t)value_ {
 	[self setPrimitiveLastModified:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic myId;
+
+
+
+- (int32_t)myIdValue {
+	NSNumber *result = [self myId];
+	return [result intValue];
+}
+
+- (void)setMyIdValue:(int32_t)value_ {
+	[self setMyId:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveMyIdValue {
+	NSNumber *result = [self primitiveMyId];
+	return [result intValue];
+}
+
+- (void)setPrimitiveMyIdValue:(int32_t)value_ {
+	[self setPrimitiveMyId:[NSNumber numberWithInt:value_]];
 }
 
 

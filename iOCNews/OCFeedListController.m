@@ -49,7 +49,6 @@
 }
 
 - (void) updateItems;
-- (void) writeItems;
 //- (void) showRenameForIndex:(int) index;
 - (void) decreaseNewCount:(NSNotification*)n;
 - (void) processUnreadCountChange:(NSNotification*)n;
@@ -63,7 +62,6 @@
 
 @implementation OCFeedListController
 
-@synthesize items = _items;
 @synthesize addBarButtonItem;
 @synthesize infoBarButtonItem;
 @synthesize editBarButtonItem;
@@ -71,28 +69,13 @@
 @synthesize feedRefreshControl;
 @synthesize fetchedResultsController;
 
-- (NSMutableArray *) items {
-    if (!_items) {
-        NSFileManager *fm = [NSFileManager defaultManager];
-        NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-        NSURL *docDir = [paths objectAtIndex:0];
-        docDir = [docDir URLByAppendingPathComponent:@"items.plist" isDirectory:NO];
-        if ([fm fileExistsAtPath:[docDir path]]) {
-            _items = [NSKeyedUnarchiver unarchiveObjectWithFile:[docDir path]];
-        } else {
-            _items = [NSMutableArray new];
-        }
-    }
-    return _items;
-}
-
 - (NSFetchedResultsController *)fetchedResultsController {
     if (!fetchedResultsController) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Feed" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
     
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"id" ascending:YES];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
         [fetchRequest setFetchBatchSize:20];
     
@@ -359,17 +342,14 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        __block NSString *feedId = [feed.id stringValue];
+        __block NSString *feedId = [feed.myId stringValue];
         
         OCAPIClient *client = [OCAPIClient sharedClient];
         NSMutableURLRequest *request = [client requestWithMethod:@"DELETE" path:[NSString stringWithFormat:@"feeds/%@", feedId] parameters:nil];
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", feedId]];
-            [self.items removeObjectsInArray:feedItems];
             [[OCNewsHelper sharedHelper] deleteFeed:feed];
-            [self writeItems];
             NSLog(@"Success");
         } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Failure");
@@ -410,23 +390,9 @@
         //[self showRenameForIndex:indexPath.row];
     } else {
         Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        if (indexPath.row == 0) {
-            self.detailViewController.items = self.items;
-            self.detailViewController.feed = feed;
-        } else if (indexPath.row == 1) {
-            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == 1"]];
-            self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
-            self.detailViewController.feed = feed;
-        } else {
-            NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.id]];
-            NSLog(@"FeedId: %@; Count: %i", feed.id, feedItems.count);
-            self.detailViewController.items = [NSMutableArray arrayWithArray:feedItems];
-            self.detailViewController.feed = feed;
-        }
+        self.detailViewController.feed = feed;
         [self.viewDeckController closeLeftView];
-            
     }
-
 }
 
 #pragma mark - Actions
@@ -480,21 +446,7 @@
                 //NSLog(@"Updated Items: %@", JSON);
                 NSDictionary *jsonDict = (NSDictionary *) JSON;
                 NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                NSMutableArray *mutableArray = [newItems mutableCopy];
-                
-                [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-                    [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
-                    NSString *guidHash = [item valueForKey:@"guidHash"];
-                    NSArray *duplicates = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.guidHash == %@", guidHash]];
-                    [duplicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL*stop) {
-                        //NSLog(@"Dup: %@ %@", [item valueForKey:@"feedId"], [item valueForKey:@"title"]);
-                        [self.items removeObject:obj];
-                    }];
-                }];
-                
-                [mutableArray addObjectsFromArray:self.items];
-                self.items = mutableArray;
-                [self writeItems];
+                [[OCNewsHelper sharedHelper] updateItems:newItems];
                 NSLog(@"Done");
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                 NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -614,7 +566,7 @@
 
 - (void) updateItems {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        if (haveSyncData) {
+        if ([[OCNewsHelper sharedHelper] itemCount] > 0) {
             OCAPIClient *client = [OCAPIClient sharedClient];
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"LastModified"], @"lastModified",
                                     [NSNumber numberWithInt:3], @"type",
@@ -635,37 +587,6 @@
                     [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
                 }
                 [[OCNewsHelper sharedHelper] updateItems:newItems];
-                NSMutableArray *mutableArray = [newItems mutableCopy];
-                NSMutableSet *updatedFeeds = [NSMutableSet new];
-                [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-                    [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
-                    [updatedFeeds addObject:[item valueForKey:@"feedId"]];
-                    NSString *guidHash = [item valueForKey:@"guidHash"];
-                    NSArray *duplicates = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.guidHash == %@", guidHash]];
-                    [duplicates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL*stop) {
-                        //NSLog(@"Dup: %@ %@", [item valueForKey:@"feedId"], [item valueForKey:@"title"]);
-                        [self.items removeObject:obj];
-                    }];
-                }];
-                
-                [updatedFeeds enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-                    NSArray *feedItems = [[self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.feedId == %@", obj]] copy];
-                    if (feedItems.count > 200) {
-                        NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
-                        int i = feedItems.count;
-                        while (i > 200) {
-                            NSDictionary *itemToRemove = [feedItems objectAtIndex:i - 1];
-                            if ([[itemToRemove valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:0]]) {
-                                [self.items removeObject:itemToRemove];
-                            }
-                            --i;
-                        }
-                    }
-                }];
-                
-                [mutableArray addObjectsFromArray:self.items];
-                self.items = mutableArray;
-                [self writeItems];
                 [self.refreshControl endRefreshing];
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -682,7 +603,7 @@
                 NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
                                         [NSNumber numberWithInt:0], @"offset",
                                         [NSNumber numberWithInt:0], @"type",
-                                        feed.id, @"id",
+                                        feed.myId, @"id",
                                         @"true", @"getRead", nil];
                 
                 NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
@@ -704,19 +625,6 @@
                 NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
             } completionBlock:^(NSArray *operations) {
                 [[OCNewsHelper sharedHelper] updateItems:addedItems];
-                NSMutableArray *mutableArray = [addedItems mutableCopy];
-                [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-                    [mutableArray replaceObjectAtIndex:idx withObject:[item mutableCopy]];
-                }];
-                
-                [self.items addObjectsFromArray:mutableArray];
-
-                if (self.items.count > 0) {
-                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.lastModified == %@.@max.lastModified", self.items];
-                    NSString *lastModified = [[[self.items filteredArrayUsingPredicate:predicate] objectAtIndex:0] valueForKey:@"lastModified"];
-                    [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
-                }
-                [self writeItems];
                 [self.refreshControl endRefreshing];
             }];
         }
@@ -725,50 +633,23 @@
     }
 }
 
-- (void) writeItems {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSURL *docDir = [paths objectAtIndex:0];
-    NSURL *saveURL = [docDir URLByAppendingPathComponent:@"items.plist" isDirectory:NO];
-    [NSKeyedArchiver archiveRootObject:self.items toFile:[saveURL path]];
-}
-
 - (void) decreaseNewCount:(NSNotification*)n {
-    NSInvocationOperation *invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(processUnreadCountChange:) object:n];
-    [invOp setCompletionBlock:^ {
+    [self processUnreadCountChange:n];
+    //NSInvocationOperation *invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(processUnreadCountChange:) object:n];
+    //[invOp setCompletionBlock:^ {
         [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[n.userInfo valueForKey:@"itemIds"] forKey:@"items"] success:nil failure:nil];
-    }];
-    [[OCAPIClient sharedClient].operationQueue addOperation:invOp];
+    //}];
+    //[[OCAPIClient sharedClient].operationQueue addOperation:invOp];
 }
 
 - (void) processUnreadCountChange:(NSNotification *)n {
-    NSArray *feedIds = [n.userInfo valueForKey:@"feedIds"];
+    //NSArray *feedIds = [n.userInfo valueForKey:@"feedIds"];
     NSArray *itemIds = [n.userInfo valueForKey:@"itemIds"];
+    [[OCNewsHelper sharedHelper] updateReadItems:itemIds];
 
-    __block NSArray *a = [self.items valueForKey:@"id"];
-    
-    [itemIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSInteger index = [a indexOfObject:obj];
-        NSNumber *unread = [[self.items objectAtIndex:index] valueForKey:@"unread"];
-        if ([unread intValue] == 1) {
-            [[self.items objectAtIndex:index] setObject:[NSNumber numberWithInt:0] forKey:@"unread"];
-        }
-    }];
-
-    [feedIds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSArray *feedItems = [self.items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId = %@", obj]];
-        NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread = 1"]];
-        
-        Feed *myFeed = [[OCNewsHelper sharedHelper] feedWithId:[obj integerValue]];
-        myFeed.unreadCountValue = unreadItems.count;
-        [[OCNewsHelper sharedHelper] updateTotalUnreadCount];
-        NSInteger index = [self.fetchedResultsController.fetchedObjects indexOfObject:myFeed];
-        [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:index inSection:0] waitUntilDone:NO];
-        [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
-    }];    
-
+    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:currentIndex inSection:0] waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
     [self.detailViewController performSelectorOnMainThread:@selector(refresh) withObject:nil waitUntilDone:NO];
-    [self writeItems];
 }
 
 - (void) clearNewCount:(NSNotification*)n {

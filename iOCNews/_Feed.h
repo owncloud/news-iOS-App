@@ -8,8 +8,8 @@ extern const struct FeedAttributes {
 	__unsafe_unretained NSString *added;
 	__unsafe_unretained NSString *faviconLink;
 	__unsafe_unretained NSString *folderId;
-	__unsafe_unretained NSString *id;
 	__unsafe_unretained NSString *link;
+	__unsafe_unretained NSString *myId;
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *unreadCount;
 	__unsafe_unretained NSString *url;
@@ -82,25 +82,25 @@ extern const struct FeedFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* id;
-
-
-
-@property int32_t idValue;
-- (int32_t)idValue;
-- (void)setIdValue:(int32_t)value_;
-
-//- (BOOL)validateId:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSString* link;
 
 
 
 //- (BOOL)validateLink:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* myId;
+
+
+
+@property int32_t myIdValue;
+- (int32_t)myIdValue;
+- (void)setMyIdValue:(int32_t)value_;
+
+//- (BOOL)validateMyId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -184,17 +184,17 @@ extern const struct FeedFetchedProperties {
 
 
 
-- (NSNumber*)primitiveId;
-- (void)setPrimitiveId:(NSNumber*)value;
-
-- (int32_t)primitiveIdValue;
-- (void)setPrimitiveIdValue:(int32_t)value_;
-
-
-
-
 - (NSString*)primitiveLink;
 - (void)setPrimitiveLink:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveMyId;
+- (void)setPrimitiveMyId:(NSNumber*)value;
+
+- (int32_t)primitiveMyIdValue;
+- (void)setPrimitiveMyIdValue:(int32_t)value_;
 
 
 

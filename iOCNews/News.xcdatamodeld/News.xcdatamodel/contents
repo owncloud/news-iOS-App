@@ -4,8 +4,8 @@
         <attribute name="added" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="faviconLink" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="folderId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="myId" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unreadCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
@@ -22,19 +22,19 @@
         <attribute name="feedId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="guidHash" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="lastModified" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="myId" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="pubDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="starred" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unread" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <fetchRequest name="feedWithIdRequest" entity="Feed" predicateString="id == $FEED_ID"/>
+    <fetchRequest name="feedWithIdRequest" entity="Feed" predicateString="myId == $FEED_ID"/>
     <fetchRequest name="totalUnreadRequest" entity="Feed" predicateString="unreadCount > 0"/>
     <elements>
-        <element name="Feed" positionX="-335" positionY="-18" width="128" height="163"/>
-        <element name="Item" positionX="-74" positionY="-10" width="128" height="253"/>
+        <element name="Feed" positionX="-335" positionY="-18" width="128" height="165"/>
         <element name="Feeds" positionX="-612" positionY="-18" width="128" height="73"/>
+        <element name="Item" positionX="-74" positionY="-10" width="128" height="255"/>
     </elements>
 </model>

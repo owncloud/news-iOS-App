@@ -7,8 +7,8 @@ const struct FeedAttributes FeedAttributes = {
 	.added = @"added",
 	.faviconLink = @"faviconLink",
 	.folderId = @"folderId",
-	.id = @"id",
 	.link = @"link",
+	.myId = @"myId",
 	.title = @"title",
 	.unreadCount = @"unreadCount",
 	.url = @"url",
@@ -56,8 +56,8 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"idValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"id"];
+	if ([key isEqualToString:@"myIdValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"myId"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -132,34 +132,34 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 
 
 
-@dynamic id;
-
-
-
-- (int32_t)idValue {
-	NSNumber *result = [self id];
-	return [result intValue];
-}
-
-- (void)setIdValue:(int32_t)value_ {
-	[self setId:[NSNumber numberWithInt:value_]];
-}
-
-- (int32_t)primitiveIdValue {
-	NSNumber *result = [self primitiveId];
-	return [result intValue];
-}
-
-- (void)setPrimitiveIdValue:(int32_t)value_ {
-	[self setPrimitiveId:[NSNumber numberWithInt:value_]];
-}
-
-
-
-
-
 @dynamic link;
 
+
+
+
+
+
+@dynamic myId;
+
+
+
+- (int32_t)myIdValue {
+	NSNumber *result = [self myId];
+	return [result intValue];
+}
+
+- (void)setMyIdValue:(int32_t)value_ {
+	[self setMyId:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveMyIdValue {
+	NSNumber *result = [self primitiveMyId];
+	return [result intValue];
+}
+
+- (void)setPrimitiveMyIdValue:(int32_t)value_ {
+	[self setPrimitiveMyId:[NSNumber numberWithInt:value_]];
+}
 
 
 

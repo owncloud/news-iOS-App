@@ -23,13 +23,15 @@
 - (NSPersistentStoreCoordinator *)coordinator;
 - (void)saveContext;
 
-- (Feed*)feedWithId:(int)id;
+- (Feed*)feedWithId:(int)anId;
 
 - (int)addFeed:(id)JSON;
-- (void)deleteFeed:(id)feed;
+- (void)deleteFeed:(Feed*)feed;
 - (void)updateFeeds:(id)JSON;
 - (void)updateItems:(NSArray*)items;
+- (void)updateReadItems:(NSArray*)items;
 - (void)updateTotalUnreadCount;
+- (int)itemCount;
 
 /*
 -(void) insertContactInfoName :(NSString *)name Address:(NSString *)address PhoneNo:(NSString *)phoneNO;

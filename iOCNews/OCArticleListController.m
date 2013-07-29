@@ -63,7 +63,6 @@
 @synthesize markBarButtonItem;
 @synthesize feedRefreshControl;
 @synthesize feed = _feed;
-@synthesize items = _items;
 @synthesize fetchedResultsController;
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -94,20 +93,13 @@
     }
 }
 
-- (void)setItems:(NSMutableArray *)items
-{
-    if (_items != items) {
-        _items = items;
-    }
-}
-
 - (NSFetchedResultsController *)fetchedResultsController {
     if (!fetchedResultsController) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Item" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
         
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"id" ascending:YES];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
         [fetchRequest setFetchBatchSize:20];
         
@@ -125,17 +117,15 @@
     self.navigationItem.title = self.feed.title; // [self.feed objectForKey:@"title"];
     
     NSError *error;
-//    NSDictionary *subs = [NSDictionary dictionaryWithObject:self.feed.id forKey:@"FEED_ID"];
     NSPredicate *fetchPredicate;
-    if (self.feed.idValue == -2) {
+    if (self.feed.myIdValue == -2) {
         fetchPredicate = nil;
-    } else if (self.feed.idValue == -1) {
+    } else if (self.feed.myIdValue == -1) {
         fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
     } else {
-        fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.id];
+        fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
     }
     
-
     self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
     
     if (![[self fetchedResultsController] performFetch:&error]) {
@@ -144,19 +134,19 @@
     }
 
     [self.tableView reloadData];
-    //[self scrollToTop];
+    [self scrollToTop];
 }
 
 - (void) scrollToTop {
     self.markBarButtonItem.enabled = (self.feed.unreadCountValue > 0);
-    if (self.items.count > 0) {
+    if ([[self.fetchedResultsController fetchedObjects] count] > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
 
 - (void) refresh {
     [self.tableView reloadData];
-    int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+    int unreadCount = self.feed.unreadCountValue;
     self.markBarButtonItem.enabled = (unreadCount > 0);    
 }
 
@@ -281,8 +271,6 @@
     }
     
     [cell.articleImage setImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -302,10 +290,9 @@
     Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.detailViewController.item = selectedItem;
     [self.viewDeckController closeLeftView];
-    int read = selectedItem.unreadValue;
-    if (read == 1) {
+    if (selectedItem.unreadValue) {
         NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableSet setWithObject:selectedItem.feedId], @"feedIds",
-                              [NSMutableArray arrayWithObject:selectedItem.id], @"itemIds", nil];
+                              [NSMutableArray arrayWithObject:selectedItem.myId], @"itemIds", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
         //[self.tableView reloadData];
     }
@@ -334,19 +321,15 @@
 
 - (IBAction)doMarkRead:(id)sender {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        
-        int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
-        
-        if (unreadCount > 0) {
-            if (self.items.count > 0) {
+        if (self.feed.unreadCountValue > 0) {
+            if ([self.fetchedResultsController fetchedObjects].count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
                 NSMutableSet *feedsToUpdate = [NSMutableSet new];
                 
-                [self.items enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
-                    NSNumber *unread = [article valueForKey:@"unread"];
-                    if ([unread intValue] == 1) {
-                        [idsToMarkRead addObject:[article valueForKey:@"id"]];
-                        [feedsToUpdate addObject:[article valueForKey:@"feedId"]];
+                [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                    if (item.unreadValue) {
+                        [idsToMarkRead addObject:item.myId];
+                        [feedsToUpdate addObject:item.feedId];
                     }
                 }];
 
@@ -367,7 +350,7 @@
 - (void) markRowsRead {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
 
-        int unreadCount = self.feed.unreadCountValue; // [(NSNumber*)[self.feed valueForKey:@"unreadCount"] intValue];
+        int unreadCount = self.feed.unreadCountValue;
         
         if (unreadCount > 0) {
             NSArray * vCells = self.tableView.indexPathsForVisibleRows;
@@ -379,18 +362,17 @@
                 NSLog(@"Top row: %d", row);
             }
             
-            if (self.items.count > 0) {
+            if ([self.fetchedResultsController fetchedObjects].count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
                 NSMutableSet *feedsToUpdate = [NSMutableSet new];
                 
-                [self.items enumerateObjectsUsingBlock:^(NSDictionary *article, NSUInteger idx, BOOL *stop) {
+                [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
                     if (idx >= row) {
                         *stop = YES;
                     }
-                    NSNumber *unread = [article valueForKey:@"unread"];
-                    if ([unread intValue] == 1) {                        
-                        [idsToMarkRead addObject:[article valueForKey:@"id"]];
-                        [feedsToUpdate addObject:[article valueForKey:@"feedId"]];
+                    if (item.unreadValue) {
+                        [idsToMarkRead addObject:item.myId];
+                        [feedsToUpdate addObject:item.feedId];
                     }
                 }];
 

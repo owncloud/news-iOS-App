@@ -12,8 +12,8 @@ extern const struct ItemAttributes {
 	__unsafe_unretained NSString *feedId;
 	__unsafe_unretained NSString *guid;
 	__unsafe_unretained NSString *guidHash;
-	__unsafe_unretained NSString *id;
 	__unsafe_unretained NSString *lastModified;
+	__unsafe_unretained NSString *myId;
 	__unsafe_unretained NSString *pubDate;
 	__unsafe_unretained NSString *starred;
 	__unsafe_unretained NSString *title;
@@ -130,20 +130,6 @@ extern const struct ItemFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* id;
-
-
-
-@property int32_t idValue;
-- (int32_t)idValue;
-- (void)setIdValue:(int32_t)value_;
-
-//- (BOOL)validateId:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSNumber* lastModified;
 
 
@@ -153,6 +139,20 @@ extern const struct ItemFetchedProperties {
 - (void)setLastModifiedValue:(int32_t)value_;
 
 //- (BOOL)validateLastModified:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* myId;
+
+
+
+@property int32_t myIdValue;
+- (int32_t)myIdValue;
+- (void)setMyIdValue:(int32_t)value_;
+
+//- (BOOL)validateMyId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -275,20 +275,20 @@ extern const struct ItemFetchedProperties {
 
 
 
-- (NSNumber*)primitiveId;
-- (void)setPrimitiveId:(NSNumber*)value;
-
-- (int32_t)primitiveIdValue;
-- (void)setPrimitiveIdValue:(int32_t)value_;
-
-
-
-
 - (NSNumber*)primitiveLastModified;
 - (void)setPrimitiveLastModified:(NSNumber*)value;
 
 - (int32_t)primitiveLastModifiedValue;
 - (void)setPrimitiveLastModifiedValue:(int32_t)value_;
+
+
+
+
+- (NSNumber*)primitiveMyId;
+- (void)setPrimitiveMyId:(NSNumber*)value;
+
+- (int32_t)primitiveMyIdValue;
+- (void)setPrimitiveMyIdValue:(int32_t)value_;
 
 
 
