@@ -525,18 +525,6 @@
             NSLog(@"Feeds: %@", JSON);
             
             [[OCNewsHelper sharedHelper] updateFeeds:JSON];
-            //NSDictionary *jsonDict = (NSDictionary *) JSON;
-            //NSArray *newFeeds = [NSMutableArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
-            //NSMutableArray *mutableArray = [newFeeds mutableCopy];
-            
-            //[newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
-            //    [mutableArray replaceObjectAtIndex:idx withObject:[feed mutableCopy]];
-                
-            //}];
-            
-            //self.feeds = mutableArray;
-
-            //[self writeFeeds];
             [self updateItems];
             //[self.refreshControl endRefreshing];
                         
@@ -585,8 +573,9 @@
                     NSString *lastModified = [[[newItems filteredArrayUsingPredicate:predicate] objectAtIndex:0] valueForKey:@"lastModified"];
                     //NSDictionary *newestItem = [newItems objectAtIndex:0];
                     [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
+                    [[OCNewsHelper sharedHelper] updateItems:newItems];
                 }
-                [[OCNewsHelper sharedHelper] updateItems:newItems];
+                
                 [self.refreshControl endRefreshing];
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {

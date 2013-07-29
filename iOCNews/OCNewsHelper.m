@@ -239,6 +239,28 @@
 
     } else {
         //updating
+        __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
+        __block NSMutableSet *feedsWithNewItems = [NSMutableSet new];
+        [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+            [possibleDuplicateItems addObject:[item objectForKey:@"id"]];
+            [feedsWithNewItems addObject:[item objectForKey:@"feedId"]];
+        }];
+        
+        NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
+        [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
+        [itemsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+        [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
+
+        NSError *error = nil;
+        NSArray *duplicateItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+        NSLog(@"Count: %i", duplicateItems.count);
+
+        for (NSManagedObject *item in duplicateItems) {
+            [self.context deleteObject:item];
+        }
+        
+
+
         [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
             Item *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:self.context];
             newItem.myId = [item objectForKey:@"id"];
@@ -259,6 +281,28 @@
             newItem.starred = [item objectForKey:@"starred"];
             newItem.lastModified = [item objectForKey:@"lastModified"];
         }];
+        
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
+        [itemsFetcher setSortDescriptors:[NSArray arrayWithObject:sort]];
+
+        [feedsWithNewItems enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+            [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", obj]];
+            
+            NSError *error = nil;
+            NSArray *feedItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+            if (feedItems.count > 200) {
+                NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
+                int i = feedItems.count;
+                while (i > 200) {
+                    Item *itemToRemove = [feedItems objectAtIndex:i - 1];
+                    if (!itemToRemove.starredValue) {
+                        [self.context deleteObject:itemToRemove];
+                    }
+                    --i;
+                }
+            }
+        }];
+
     }
     
     [self updateTotalUnreadCount];
