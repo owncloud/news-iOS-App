@@ -282,7 +282,7 @@
             newItem.lastModified = [item objectForKey:@"lastModified"];
         }];
         
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
         [itemsFetcher setSortDescriptors:[NSArray arrayWithObject:sort]];
 
         [feedsWithNewItems enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
