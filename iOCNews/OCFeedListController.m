@@ -49,12 +49,6 @@
 }
 
 - (void) updateItems;
-//- (void) showRenameForIndex:(int) index;
-- (void) decreaseNewCount:(NSNotification*)n;
-- (void) processUnreadCountChange:(NSNotification*)n;
-- (void) clearNewCount:(NSNotification*)n;
-- (void) feedRefreshed:(NSNotification*)n;
-- (void) feedRefreshedWithError:(NSNotification*)n;
 - (void) emailSupport:(NSNotification*)n;
 
 @end
@@ -620,119 +614,6 @@
     }
 }
 
-- (void) decreaseNewCount:(NSNotification*)n {
-    [self processUnreadCountChange:n];
-    //NSInvocationOperation *invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(processUnreadCountChange:) object:n];
-    //[invOp setCompletionBlock:^ {
-        [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[n.userInfo valueForKey:@"itemIds"] forKey:@"items"] success:nil failure:nil];
-    //}];
-    //[[OCAPIClient sharedClient].operationQueue addOperation:invOp];
-}
-
-- (void) processUnreadCountChange:(NSNotification *)n {
-    //NSArray *feedIds = [n.userInfo valueForKey:@"feedIds"];
-    NSArray *itemIds = [n.userInfo valueForKey:@"itemIds"];
-    [[OCNewsHelper sharedHelper] updateReadItems:itemIds];
-
-    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:currentIndex inSection:0] waitUntilDone:NO];
-    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:0 inSection:0] waitUntilDone:NO];
-    [self.detailViewController performSelectorOnMainThread:@selector(refresh) withObject:nil waitUntilDone:NO];
-}
-
-- (void) clearNewCount:(NSNotification*)n {
-    [self decreaseNewCount:n];
-}
-
-- (void) feedRefreshed:(NSNotification*)n {
-    [self decreaseNewCount:n];
-}
-
-- (void) feedRefreshedWithError:(NSNotification*)n {
-    [self decreaseNewCount:n];
-}
-
-#pragma mark - OPML handling
-
-- (void) loadOPML {
-/*    NSInvocationOperation *invOp;
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSURL *docDir = [paths objectAtIndex:0];
-    
-    //Move files out of the Inbox and remove the Inbox folder
-    NSString *inboxPath  = [[docDir path] stringByAppendingPathComponent:@"Inbox/"];
-    NSDirectoryEnumerator *inboxEnum = [[NSFileManager defaultManager] enumeratorAtPath: inboxPath];
-    NSString *file;
-    while (file = [inboxEnum nextObject]) {
-        NSString *origFilePath = [inboxPath stringByAppendingPathComponent:[file lastPathComponent]];
-
-        NSData *data = [NSData dataWithContentsOfFile:origFilePath];
-    
-        DDXMLDocument *opmlDoc = [[DDXMLDocument alloc] initWithData:data options:0 error:nil];
-        NSArray *outlineNodes = [opmlDoc nodesForXPath:@"//outline[@xmlUrl]" error:nil];
-        for (DDXMLElement *element in outlineNodes) {
-            if ([element attributeForName:@"xmlUrl"].stringValue != nil) {
-                NSLog(@"Feed title: %@", [element attributeForName:@"text"].stringValue);
-
-                FDFeed *newFeed = [[FDFeed alloc] init];
-                newFeed.url = [NSURL URLWithString:[element attributeForName:@"xmlUrl"].stringValue];
-                newFeed.guid = [self createUUID];
-                newFeed.title = [element attributeForName:@"text"].stringValue;
-                
-                NSMutableDictionary *newObject = [NSMutableDictionary dictionaryWithObjectsAndKeys: newFeed.title, @"Title",
-                                                  [element attributeForName:@"htmlUrl"].stringValue, @"FeedLink",
-                                                  [element attributeForName:@"xmlUrl"].stringValue, @"XMLUrl",
-                                                  newFeed.guid, @"GUID",
-                                                  [NSNumber numberWithBool:NO], @"Updating",
-                                                  [NSNumber numberWithBool:NO], @"Failure",
-                                                  [NSNumber numberWithInt:0], @"NewCount",
-                                                  [NSNumber numberWithBool:NO], @"FullArticle",
-                                                  [NSNumber numberWithBool:NO], @"PreferReader", nil];
-                
-                
-                [self.feeds addObject:newObject];
-                invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeFeed:) object:newFeed];
-                [self.updateOperations.updateQueue addOperation:invOp];
-            }
-        }
-    }
-    [[NSFileManager defaultManager] removeItemAtPath:inboxPath error:nil];
-
-    invOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(writeFeeds) object:nil];
-    [self.updateOperations.updateQueue addOperation:invOp];
-
-    [self.tableView reloadData]; */
-}
-
-- (NSData*) createOPML {
-/*
-    DDXMLDocument* document = [[DDXMLDocument alloc] initWithXMLString:@"<opml/>" options:0 error:nil];
-    DDXMLElement* root = [document rootElement];
-    [root addAttribute:[DDXMLNode attributeWithName:@"version" stringValue:@"2.0"]];
-    DDXMLElement* head =[DDXMLNode elementWithName:@"head"];
-    DDXMLElement* body =[DDXMLNode elementWithName:@"body"];
-    
-    [root addChild:head];
-    [root addChild:body];
-    
-    DDXMLElement* title =[DDXMLNode elementWithName:@"title" stringValue:@"iOCNews.opml"];
-    [head addChild:title];
-
-    for (NSDictionary *feedObject in self.feeds) {
-        DDXMLElement* outline =[DDXMLNode elementWithName:@"outline"];
-        [outline addAttribute:[DDXMLNode attributeWithName:@"text" stringValue:[feedObject objectForKey:@"Title"]]];
-        [outline addAttribute:[DDXMLNode attributeWithName:@"type" stringValue:@"rss"]];
-        [outline addAttribute:[DDXMLNode attributeWithName:@"xmlUrl" stringValue:[feedObject objectForKey:@"XMLUrl"]]];
-        if ([feedObject objectForKey:@"FeedLink"]) {
-            [outline addAttribute:[DDXMLNode attributeWithName:@"htmlUrl" stringValue:[feedObject objectForKey:@"FeedLink"]]];
-        }
-        [body addChild:outline];
-    }
-
-    return [document XMLData]; */
-    return nil;
-}
-
 - (void) emailSupport:(NSNotification *)n {
     MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
     
@@ -740,11 +621,9 @@
     [mailViewController setToRecipients:[NSArray arrayWithObject:@"support@peterandlinda.com"]];
     [mailViewController setSubject:@"iOCNews Support Request"];
     [mailViewController setMessageBody:@"<Please state your problem here>\n\n\nI have attached my current subscriptions." isHTML:NO ];
-    [mailViewController addAttachmentData:[self createOPML] mimeType:@"text/xml" fileName:@"iOCNews.opml"];
     mailViewController.modalPresentationStyle = UIModalPresentationPageSheet;
     
     [self presentViewController:mailViewController animated:YES completion:nil];
-
 }
 #pragma mark - MFMailComposeViewControllerDelegate
 

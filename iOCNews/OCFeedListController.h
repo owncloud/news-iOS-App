@@ -51,7 +51,4 @@
 - (IBAction) doRefresh:(id)sender;
 - (IBAction) doEdit:(id)sender;
 
-- (void) loadOPML;
-- (NSData*) createOPML;
-
 @end

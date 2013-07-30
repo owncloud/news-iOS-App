@@ -242,14 +242,14 @@
         __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
         __block NSMutableSet *feedsWithNewItems = [NSMutableSet new];
         [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-            [possibleDuplicateItems addObject:[item objectForKey:@"id"]];
+            [possibleDuplicateItems addObject:[item objectForKey:@"guidHash"]];
             [feedsWithNewItems addObject:[item objectForKey:@"feedId"]];
         }];
         
         NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
         [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
         [itemsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
+        [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"guidHash IN %@", possibleDuplicateItems]];
 
         NSError *error = nil;
         NSArray *duplicateItems = [self.context executeFetchRequest:itemsFetcher error:&error];
@@ -282,7 +282,7 @@
             newItem.lastModified = [item objectForKey:@"lastModified"];
         }];
         
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastModified" ascending:NO];
         [itemsFetcher setSortDescriptors:[NSArray arrayWithObject:sort]];
 
         [feedsWithNewItems enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {

@@ -55,6 +55,7 @@
 - (void) previousArticle:(NSNotification*)n;
 - (void) nextArticle:(NSNotification*)n;
 - (void) articleChangeInFeed:(NSNotification*)n;
+- (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 
 @end
 
@@ -291,10 +292,7 @@
     self.detailViewController.item = selectedItem;
     [self.viewDeckController closeLeftView];
     if (selectedItem.unreadValue) {
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableSet setWithObject:selectedItem.feedId], @"feedIds",
-                              [NSMutableArray arrayWithObject:selectedItem.myId], @"itemIds", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
-        //[self.tableView reloadData];
+        [self updateUnreadCount:[NSArray arrayWithObject:selectedItem.myId]];
     }
 }
 
@@ -324,18 +322,13 @@
         if (self.feed.unreadCountValue > 0) {
             if ([self.fetchedResultsController fetchedObjects].count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                NSMutableSet *feedsToUpdate = [NSMutableSet new];
                 
                 [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
                     if (item.unreadValue) {
                         [idsToMarkRead addObject:item.myId];
-                        [feedsToUpdate addObject:item.feedId];
                     }
                 }];
-
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:feedsToUpdate, @"feedIds",
-                                      idsToMarkRead, @"itemIds", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearNewCount" object:self userInfo:info];
+                [self updateUnreadCount:idsToMarkRead];
                 self.markBarButtonItem.enabled = NO;
             }
         }
@@ -343,9 +336,6 @@
         [TSMessage showNotificationInViewController:self.navigationController withTitle:@"No Internet Connection" withMessage:@"The network connection appears to be offline." withType:TSMessageNotificationTypeWarning];
     }
 }
-
-
-#pragma  mark - Feedparser delegate
 
 - (void) markRowsRead {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
@@ -364,7 +354,6 @@
             
             if ([self.fetchedResultsController fetchedObjects].count > 0) {
                 NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                NSMutableSet *feedsToUpdate = [NSMutableSet new];
                 
                 [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
                     if (idx >= row) {
@@ -372,19 +361,20 @@
                     }
                     if (item.unreadValue) {
                         [idsToMarkRead addObject:item.myId];
-                        [feedsToUpdate addObject:item.feedId];
                     }
                 }];
 
                 unreadCount = unreadCount - [idsToMarkRead count];
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:feedsToUpdate, @"feedIds",
-                                      idsToMarkRead, @"itemIds", nil];
-
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"DecreaseNewCount" object:self userInfo:info];
+                [self updateUnreadCount:idsToMarkRead];
                 self.markBarButtonItem.enabled = (unreadCount > 0);
             }
         }
     }
+}
+
+- (void) updateUnreadCount:(NSArray *)itemsToUpdate {
+    [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemsToUpdate forKey:@"items"] success:nil failure:nil];
+    [[OCNewsHelper sharedHelper] updateReadItems:itemsToUpdate];
 }
 
 #pragma mark - Toolbar buttons
