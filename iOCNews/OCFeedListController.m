@@ -56,7 +56,6 @@
 - (void) feedRefreshed:(NSNotification*)n;
 - (void) feedRefreshedWithError:(NSNotification*)n;
 - (void) emailSupport:(NSNotification*)n;
-- (void) starredChange:(NSNotification*)n;
 
 @end
 
@@ -138,8 +137,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(feedRefreshed:) name:@"FeedRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(feedRefreshedWithError:) name:@"FeedRefreshedWithError" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(starredChange:) name:@"StarredChange" object:nil];
-    
+
     int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
     NSLog(@"Server status: %i", status);
     
@@ -651,21 +649,6 @@
 
 - (void) feedRefreshedWithError:(NSNotification*)n {
     [self decreaseNewCount:n];
-}
-
-- (void) starredChange:(NSNotification *)n {
-    Item *item = [n.userInfo valueForKey:@"item"];
-    NSString *path;
-    if ([[item valueForKey:@"starred"] isEqual:[NSNumber numberWithInt:1]]) {
-         ///items/{feedId}/{guidHash}/star
-        path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
-    } else {
-        // /items/{feedId}/{guidHash}/unstar
-        path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
-    }
-    [[OCAPIClient sharedClient] putPath:path parameters:nil success:nil failure:nil];
-    [[OCNewsHelper sharedHelper] updateStarredCount];
-    [self performSelectorOnMainThread:@selector(reloadRow:) withObject:[NSIndexPath indexPathForRow:1 inSection:0] waitUntilDone:NO];
 }
 
 #pragma mark - OPML handling

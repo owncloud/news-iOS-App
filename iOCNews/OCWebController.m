@@ -39,6 +39,7 @@
 #import "FDInstapaperActivity.h"
 #import "IIViewDeckController.h"
 #import "TransparentToolbar.h"
+#import "OCAPIClient.h"
 #import "OCNewsHelper.h"
 
 @interface OCWebController () <UIPopoverControllerDelegate> {
@@ -340,14 +341,19 @@
 }
 
 - (IBAction)doStar:(id)sender {
+    NSString *path;
     if ([sender isEqual:self.starBarButtonItem]) {
         self.item.starredValue = YES;
+        path = [NSString stringWithFormat:@"items/%@/%@/star", [self.item.feedId stringValue], self.item.guidHash];
     }
     if ([sender isEqual:self.unstarBarButtonItem]) {
         self.item.starredValue = NO;
+        path = [NSString stringWithFormat:@"items/%@/%@/unstar", [self.item.feedId stringValue], self.item.guidHash];
     }
     [self updateToolbar];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"StarredChange" object:self userInfo:[NSDictionary dictionaryWithObject:self.item forKey:@"item"]];
+    
+    [[OCAPIClient sharedClient] putPath:path parameters:nil success:nil failure:nil];
+    [[OCNewsHelper sharedHelper] updateStarredCount];
 }
 
 #pragma mark - UIWebView delegate
