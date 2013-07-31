@@ -142,6 +142,9 @@
                                     <segment title="" image="lineheight1.png"/>
                                     <segment title="" image="lineheight3.png"/>
                                 </segments>
+                                <connections>
+                                    <action selector="doSegmentedValueChanged:" destination="9pi-3l-DN8" eventType="valueChanged" id="7dd-Mv-ZpB"/>
+                                </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="UQK-K3-FuD">
                                 <constraints>
@@ -151,18 +154,27 @@
                                     <segment title="" image="background1.png"/>
                                     <segment title="" image="background2.png"/>
                                 </segments>
+                                <connections>
+                                    <action selector="doSegmentedValueChanged:" destination="9pi-3l-DN8" eventType="valueChanged" id="ffp-bf-rUq"/>
+                                </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="vbH-Jh-vC3" customClass="MCSegmentedControl">
                                 <segments>
                                     <segment title="" image="fontsizes.png"/>
                                     <segment title="" image="fontsizel.png"/>
                                 </segments>
+                                <connections>
+                                    <action selector="doSegmentedValueChanged:" destination="9pi-3l-DN8" eventType="valueChanged" id="wfh-6s-66L"/>
+                                </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="VSw-XR-ZIa" customClass="MCSegmentedControl">
                                 <segments>
                                     <segment title="" image="margin1.png"/>
                                     <segment title="" image="margin3.png"/>
                                 </segments>
+                                <connections>
+                                    <action selector="doSegmentedValueChanged:" destination="9pi-3l-DN8" eventType="valueChanged" id="dVX-n4-Yzl"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -181,6 +193,12 @@
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="backgroundSegmented" destination="UQK-K3-FuD" id="ihm-sC-FFl"/>
+                        <outlet property="fontSizeSegmented" destination="vbH-Jh-vC3" id="Tn8-5M-e36"/>
+                        <outlet property="lineHeightSegmented" destination="Ojj-GB-P8a" id="6xN-0c-1uh"/>
+                        <outlet property="marginSegmented" destination="VSw-XR-ZIa" id="wl2-gl-n7W"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3XF-ux-9Ky" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

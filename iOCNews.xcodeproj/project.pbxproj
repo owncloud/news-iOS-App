@@ -1289,6 +1289,7 @@
 				D06CB24017A2E8F900A1310B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D0BCAA1D177900C300C965F4 /* Build configuration list for PBXProject "iOCNews" */ = {
 			isa = XCConfigurationList;
