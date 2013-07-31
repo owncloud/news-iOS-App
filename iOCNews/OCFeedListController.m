@@ -543,8 +543,10 @@
 - (void) updateItems {
     if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
         if ([[OCNewsHelper sharedHelper] itemCount] > 0) {
+            //NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-86400];
+            //[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[date timeIntervalSince1970]] forKey:@"LastModified"];
             OCAPIClient *client = [OCAPIClient sharedClient];
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"LastModified"], @"lastModified",
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]], @"lastModified",
                                     [NSNumber numberWithInt:3], @"type",
                                     [NSNumber numberWithInt:0], @"id", nil];
             
@@ -557,10 +559,7 @@
                 NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
                 
                 if (newItems.count > 0) {
-                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.lastModified == %@.@max.lastModified", newItems];
-                    NSString *lastModified = [[[newItems filteredArrayUsingPredicate:predicate] objectAtIndex:0] valueForKey:@"lastModified"];
-                    //NSDictionary *newestItem = [newItems objectAtIndex:0];
-                    [[NSUserDefaults standardUserDefaults] setObject:lastModified forKey:@"LastModified"];
+                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
                     [[OCNewsHelper sharedHelper] updateItems:newItems];
                 }
                 

@@ -266,20 +266,21 @@
         __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
         __block NSMutableSet *feedsWithNewItems = [NSMutableSet new];
         [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-            [possibleDuplicateItems addObject:[item objectForKey:@"guidHash"]];
+            [possibleDuplicateItems addObject:[item objectForKey:@"id"]];
             [feedsWithNewItems addObject:[item objectForKey:@"feedId"]];
         }];
-        
+        NSLog(@"Item count: %i; possibleDuplicateItems count: %i", items.count, possibleDuplicateItems.count);
         NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
         [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
         [itemsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-        [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"guidHash IN %@", possibleDuplicateItems]];
+        [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
 
         NSError *error = nil;
         NSArray *duplicateItems = [self.context executeFetchRequest:itemsFetcher error:&error];
-        NSLog(@"Count: %i", duplicateItems.count);
+        NSLog(@"duplicateItems Count: %i", duplicateItems.count);
 
         for (NSManagedObject *item in duplicateItems) {
+            NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
             [self.context deleteObject:item];
         }
         
@@ -294,7 +295,8 @@
             newItem.title = [item objectForKey:@"title"];
             id val = [item objectForKey:@"author"];
             newItem.author = (val == [NSNull null] ? @"" : val);
-            newItem.pubDate = [item objectForKey:@"pubDate"];
+            val = [item objectForKey:@"pubDate"];
+            newItem.pubDate = (val == [NSNull null] ? nil : val);
             newItem.body = [item objectForKey:@"body"];
             val = [item objectForKey:@"enclosureMime"];
             newItem.enclosureMime = (val == [NSNull null] ? @"" : val);
@@ -306,7 +308,7 @@
             newItem.lastModified = [item objectForKey:@"lastModified"];
         }];
         
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastModified" ascending:NO];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
         [itemsFetcher setSortDescriptors:[NSArray arrayWithObject:sort]];
 
         [feedsWithNewItems enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
@@ -320,6 +322,7 @@
                 while (i > 200) {
                     Item *itemToRemove = [feedItems objectAtIndex:i - 1];
                     if (!itemToRemove.starredValue) {
+                        NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
                         [self.context deleteObject:itemToRemove];
                     }
                     --i;
