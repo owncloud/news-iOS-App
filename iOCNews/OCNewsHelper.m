@@ -310,22 +310,24 @@
         
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
         [itemsFetcher setSortDescriptors:[NSArray arrayWithObject:sort]];
-
+        [itemsFetcher setIncludesPropertyValues:YES];
+        
         [feedsWithNewItems enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
             [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", obj]];
             
             NSError *error = nil;
-            NSArray *feedItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+            NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:itemsFetcher error:&error]];
             if (feedItems.count > 200) {
+                NSLog(@"Ids: %@", [feedItems valueForKey:@"myId"]);
                 NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
-                int i = feedItems.count;
-                while (i > 200) {
-                    Item *itemToRemove = [feedItems objectAtIndex:i - 1];
+                //int i = feedItems.count;
+                while (feedItems.count > 200) {
+                    Item *itemToRemove = [feedItems lastObject];
                     if (!itemToRemove.starredValue) {
                         NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
                         [self.context deleteObject:itemToRemove];
+                        [feedItems removeLastObject];
                     }
-                    --i;
                 }
             }
         }];
