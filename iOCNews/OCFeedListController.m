@@ -126,10 +126,6 @@
     self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
     //Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(decreaseNewCount:) name:@"DecreaseNewCount" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearNewCount:) name:@"ClearNewCount" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(feedRefreshed:) name:@"FeedRefreshed" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(feedRefreshedWithError:) name:@"FeedRefreshedWithError" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
 
     int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
