@@ -516,7 +516,7 @@
             [self updateItems];
             //[self.refreshControl endRefreshing];
                         
-            [self.tableView reloadData];
+            //[self.tableView reloadData];
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];

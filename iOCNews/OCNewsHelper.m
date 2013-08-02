@@ -272,9 +272,8 @@
         NSLog(@"Item count: %i; possibleDuplicateItems count: %i", items.count, possibleDuplicateItems.count);
         NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
         [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-        [itemsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
         [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
-
+        
         NSError *error = nil;
         NSArray *duplicateItems = [self.context executeFetchRequest:itemsFetcher error:&error];
         NSLog(@"duplicateItems Count: %i", duplicateItems.count);
@@ -310,7 +309,6 @@
         
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
         [itemsFetcher setSortDescriptors:[NSArray arrayWithObject:sort]];
-        [itemsFetcher setIncludesPropertyValues:YES];
         
         [feedsWithNewItems enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
             [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", obj]];
