@@ -28,3 +28,6 @@
 [submodule "PopoverView"]
 	path = PopoverView
 	url = git@github.com:phedlund/PopoverView.git
+[submodule "SDWebImage"]
+	path = SDWebImage
+	url = https://github.com/rs/SDWebImage.git
