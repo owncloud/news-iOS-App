@@ -216,10 +216,10 @@
                             <rect key="frame" x="0.0" y="220" width="320" height="190"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Currently not connected to an ownCloud News server" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="234" translatesAutoresizingMaskIntoConstraints="NO" id="mz3-gj-rmV">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Currently not connected to an ownCloud News server" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="234" translatesAutoresizingMaskIntoConstraints="NO" id="mz3-gj-rmV">
                                     <constraints>
                                         <constraint firstAttribute="width" constant="234" type="user" id="Dmn-bU-hhl"/>
-                                        <constraint firstAttribute="height" constant="43" id="Vdo-He-zxO"/>
+                                        <constraint firstAttribute="height" constant="90" id="kCU-jz-Puf"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -263,7 +263,6 @@
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="mz3-gj-rmV" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="50H-ig-i3h"/>
                                 <constraint firstAttribute="trailing" secondItem="KuS-ba-Bef" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="6x5-OD-PgM"/>
-                                <constraint firstAttribute="bottom" secondItem="1sW-4l-90b" secondAttribute="bottom" constant="71" id="A6L-BO-MAW"/>
                                 <constraint firstItem="1sW-4l-90b" firstAttribute="leading" secondItem="c3z-xV-ckw" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="B0a-l9-MtG"/>
                                 <constraint firstAttribute="trailing" secondItem="1sW-4l-90b" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="GjO-UN-9OJ"/>
                                 <constraint firstItem="v22-jy-8K1" firstAttribute="top" secondItem="c3z-xV-ckw" secondAttribute="top" constant="7" id="H1o-Lk-rVI"/>
@@ -274,6 +273,7 @@
                                 <constraint firstItem="KuS-ba-Bef" firstAttribute="leading" secondItem="c3z-xV-ckw" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="bLC-eV-586"/>
                                 <constraint firstItem="KuS-ba-Bef" firstAttribute="bottom" secondItem="c3z-xV-ckw" secondAttribute="bottom" type="default" id="bu3-Y7-bDO"/>
                                 <constraint firstAttribute="bottom" secondItem="SX6-Ne-5E4" secondAttribute="bottom" constant="33" id="dig-ar-ON8"/>
+                                <constraint firstItem="1sW-4l-90b" firstAttribute="top" secondItem="mz3-gj-rmV" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="fic-0v-y5Y"/>
                                 <constraint firstItem="mz3-gj-rmV" firstAttribute="leading" secondItem="c3z-xV-ckw" secondAttribute="leading" constant="66" type="user" id="go7-az-34k"/>
                                 <constraint firstItem="v22-jy-8K1" firstAttribute="leading" secondItem="c3z-xV-ckw" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="hYz-fO-icd"/>
                                 <constraint firstAttribute="bottom" secondItem="AGw-mH-0r1" secondAttribute="bottom" constant="52" id="rJp-mb-cJu"/>

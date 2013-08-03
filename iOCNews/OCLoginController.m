@@ -33,6 +33,7 @@
 #import "OCLoginController.h"
 #import "OCAPIClient.h"
 #import "KeychainItemWrapper.h"
+#import "UILabel+VerticalAlignment.h"
 
 static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 
@@ -60,6 +61,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     NSString *version = @"Version ";
     version = [version stringByAppendingString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
 	self.versionLabel.text = version;
+    self.statusLabel.textVerticalAlignment = UITextVerticalAlignmentTop;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,9 +74,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     
     NSString *status;
     if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
-        status = [NSString stringWithFormat:@"Connected to an OwnCloud News server at \"%@\".", [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"]];
+        status = [NSString stringWithFormat:@"Connected to an ownCloud News server at \"%@\".", [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"]];
     } else {
-        status = @"Currently not connected to an OwnCloud News server";
+        status = @"Currently not connected to an ownCloud News server";
     }
     self.statusLabel.text = status;
 }
@@ -114,7 +116,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                 [self.keychain setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
                 [self.keychain setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
                 [OCAPIClient setSharedClient:nil];
-                self.statusLabel.text = [NSString stringWithFormat:@"Connected to an OwnCloud News server at \"%@\" running version %@.", self.serverTextField.text, version];
+                int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
+                NSLog(@"Server status: %i", status);
+                self.statusLabel.text = [NSString stringWithFormat:@"Connected to an ownCloud News server at \"%@\" running version %@.", self.serverTextField.text, version];
                 
                 [self.connectionActivityIndicator stopAnimating];
                 
