@@ -244,6 +244,10 @@
             [self.context deleteObject:feedToRemove];
             [deletedOnServer removeLastObject];
         }
+        [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feedDict, NSUInteger idx, BOOL *stop) {
+            Feed *feed = [self feedWithId:[[feedDict objectForKey:@"id"] integerValue]];
+            feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
+        }];
     }
     [self updateTotalUnreadCount];
 }
