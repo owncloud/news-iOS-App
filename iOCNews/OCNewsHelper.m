@@ -83,10 +83,11 @@
     if (!coordinator) {
         NSURL *storeURL = [self documentsDirectoryURL];
         storeURL = [storeURL URLByAppendingPathComponent:@"News.sqlite"];
-        
+        NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : @YES,
+                                  NSInferMappingModelAutomaticallyOption : @YES };
         NSError *error = nil;
         coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self objectModel]];
-        if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+        if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
             NSLog(@"Error %@, %@", error, [error localizedDescription]);
             abort();
         }

@@ -16,11 +16,13 @@ extern const struct FeedAttributes {
 } FeedAttributes;
 
 extern const struct FeedRelationships {
+	__unsafe_unretained NSString *extra;
 } FeedRelationships;
 
 extern const struct FeedFetchedProperties {
 } FeedFetchedProperties;
 
+@class FeedExtra;
 
 
 
@@ -140,6 +142,13 @@ extern const struct FeedFetchedProperties {
 
 
 
+@property (nonatomic, strong) FeedExtra *extra;
+
+//- (BOOL)validateExtra:(id*)value_ error:(NSError**)error_;
+
+
+
+
 + (NSArray*)fetchTotalUnreadRequest:(NSManagedObjectContext*)moc_ ;
 + (NSArray*)fetchTotalUnreadRequest:(NSManagedObjectContext*)moc_ error:(NSError**)error_;
 
@@ -218,6 +227,11 @@ extern const struct FeedFetchedProperties {
 - (void)setPrimitiveUrl:(NSString*)value;
 
 
+
+
+
+- (FeedExtra*)primitiveExtra;
+- (void)setPrimitiveExtra:(FeedExtra*)value;
 
 
 @end

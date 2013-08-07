@@ -15,6 +15,7 @@ const struct FeedAttributes FeedAttributes = {
 };
 
 const struct FeedRelationships FeedRelationships = {
+	.extra = @"extra",
 };
 
 const struct FeedFetchedProperties FeedFetchedProperties = {
@@ -204,6 +205,10 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 
 
 
+
+@dynamic extra;
+
+	
 
 
 

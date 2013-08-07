@@ -38,7 +38,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIFileSharingEnabled</key>
-	<false/>
+	<true/>
 	<key>UIMainStoryboardFile</key>
 	<string>iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>

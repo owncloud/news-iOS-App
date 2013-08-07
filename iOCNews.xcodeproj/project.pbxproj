@@ -182,6 +182,8 @@
 		D0C66C9717AB3E6300F0EC7C /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C8717AB3E6300F0EC7C /* UIImage+MultiFormat.m */; };
 		D0C66C9817AB3E6300F0EC7C /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C8917AB3E6300F0EC7C /* UIImage+WebP.m */; };
 		D0C66C9917AB3E6300F0EC7C /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C8B17AB3E6300F0EC7C /* UIImageView+WebCache.m */; };
+		D0C66CA217B19C3E00F0EC7C /* _FeedExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C9F17B19C3D00F0EC7C /* _FeedExtra.m */; };
+		D0C66CA317B19C3E00F0EC7C /* FeedExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */; };
 		D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F181251782585100F719D9 /* SystemConfiguration.framework */; };
 		D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F181281783B12C00F719D9 /* OCLoginController.m */; };
 		D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812B178502D500F719D9 /* GTMNSString+HTML.m */; };
@@ -435,6 +437,11 @@
 		D0C66C8917AB3E6300F0EC7C /* UIImage+WebP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+WebP.m"; sourceTree = "<group>"; };
 		D0C66C8A17AB3E6300F0EC7C /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		D0C66C8B17AB3E6300F0EC7C /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
+		D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "News 2.xcdatamodel"; sourceTree = "<group>"; };
+		D0C66C9E17B19C3D00F0EC7C /* _FeedExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _FeedExtra.h; sourceTree = "<group>"; };
+		D0C66C9F17B19C3D00F0EC7C /* _FeedExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _FeedExtra.m; sourceTree = "<group>"; };
+		D0C66CA017B19C3D00F0EC7C /* FeedExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedExtra.h; sourceTree = "<group>"; };
+		D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedExtra.m; sourceTree = "<group>"; };
 		D0F181251782585100F719D9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D0F181271783B12C00F719D9 /* OCLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCLoginController.h; sourceTree = "<group>"; };
 		D0F181281783B12C00F719D9 /* OCLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCLoginController.m; sourceTree = "<group>"; };
@@ -613,23 +620,12 @@
 		D0BCAA2B177900C300C965F4 /* iOCNews */ = {
 			isa = PBXGroup;
 			children = (
-				D06CB24217A2EA8B00A1310B /* _Feed.h */,
-				D06CB24317A2EA8C00A1310B /* _Feed.m */,
-				D06CB24417A2EA8E00A1310B /* _Feeds.h */,
-				D06CB24517A2EA8F00A1310B /* _Feeds.m */,
-				D06CB24617A2EA9100A1310B /* _Item.h */,
-				D06CB24717A2EA9200A1310B /* _Item.m */,
+				D0C66CA417B19C6A00F0EC7C /* DataModel */,
 				D0BCAA48177903F500C965F4 /* iPad.storyboard */,
 				D0968361179B3DB300EC6E60 /* iPhone.storyboard */,
 				D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */,
 				D06CB23717A0A0A800A1310B /* OCNewsHelper.h */,
 				D06CB23817A0A0A900A1310B /* OCNewsHelper.m */,
-				D06CB23A17A1F88900A1310B /* Feeds.h */,
-				D06CB23B17A1F88A00A1310B /* Feeds.m */,
-				D06CB22F17A073A800A1310B /* Feed.h */,
-				D06CB23017A073A900A1310B /* Feed.m */,
-				D06CB23217A073C300A1310B /* Item.h */,
-				D06CB23317A073C400A1310B /* Item.m */,
 				D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */,
 				D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */,
 				D0F181271783B12C00F719D9 /* OCLoginController.h */,
@@ -901,6 +897,29 @@
 			path = SDWebImage/SDWebImage;
 			sourceTree = "<group>";
 		};
+		D0C66CA417B19C6A00F0EC7C /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				D06CB24417A2EA8E00A1310B /* _Feeds.h */,
+				D06CB24517A2EA8F00A1310B /* _Feeds.m */,
+				D06CB24217A2EA8B00A1310B /* _Feed.h */,
+				D06CB24317A2EA8C00A1310B /* _Feed.m */,
+				D0C66C9E17B19C3D00F0EC7C /* _FeedExtra.h */,
+				D0C66C9F17B19C3D00F0EC7C /* _FeedExtra.m */,
+				D06CB24617A2EA9100A1310B /* _Item.h */,
+				D06CB24717A2EA9200A1310B /* _Item.m */,
+				D06CB23A17A1F88900A1310B /* Feeds.h */,
+				D06CB23B17A1F88A00A1310B /* Feeds.m */,
+				D06CB22F17A073A800A1310B /* Feed.h */,
+				D06CB23017A073A900A1310B /* Feed.m */,
+				D0C66CA017B19C3D00F0EC7C /* FeedExtra.h */,
+				D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */,
+				D06CB23217A073C300A1310B /* Item.h */,
+				D06CB23317A073C400A1310B /* Item.m */,
+			);
+			name = DataModel;
+			sourceTree = "<group>";
+		};
 		D0F18130178502E000F719D9 /* HTMLString */ = {
 			isa = PBXGroup;
 			children = (
@@ -1121,7 +1140,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ~/Projects/iOCNews/iOCNews\nmogenerator --template-var arc=true -m News.xcdatamodeld/News.xcdatamodel/";
+			shellScript = "cd ~/Projects/iOCNews/iOCNews\nmogenerator --template-var arc=true -m \"News.xcdatamodeld/News 2.xcdatamodel/\"";
 		};
 		D06CB24C17A46A5800A1310B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1205,6 +1224,8 @@
 				D0C66C9717AB3E6300F0EC7C /* UIImage+MultiFormat.m in Sources */,
 				D0C66C9817AB3E6300F0EC7C /* UIImage+WebP.m in Sources */,
 				D0C66C9917AB3E6300F0EC7C /* UIImageView+WebCache.m in Sources */,
+				D0C66CA217B19C3E00F0EC7C /* _FeedExtra.m in Sources */,
+				D0C66CA317B19C3E00F0EC7C /* FeedExtra.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1400,9 +1421,10 @@
 		D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */,
 				D06CB22D17A06E4F00A1310B /* News.xcdatamodel */,
 			);
-			currentVersion = D06CB22D17A06E4F00A1310B /* News.xcdatamodel */;
+			currentVersion = D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */;
 			path = News.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
