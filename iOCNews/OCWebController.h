@@ -49,8 +49,6 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *unstarBarButtonItem;
 @property (nonatomic, strong, readonly) UILongPressGestureRecognizer *tapZoneRecognizer;
 @property (nonatomic, strong, readonly) UILongPressGestureRecognizer *tapZoneRecognizer2;
-@property (nonatomic) BOOL preferWeb;
-@property (nonatomic) BOOL preferReader;
 
 - (IBAction) doGoBack:(id)sender;
 - (IBAction) doGoForward:(id)sender;

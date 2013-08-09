@@ -58,7 +58,6 @@
 @implementation OCWebController
 
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
-@synthesize preferWeb, preferReader;
 @synthesize tapZoneRecognizer;
 @synthesize tapZoneRecognizer2;
 @synthesize prefPopoverController;
@@ -70,7 +69,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.preferWeb = NO;
     }
     return self;
 }
@@ -117,8 +115,12 @@
         
         self.navigationItem.title = self.item.title;
         
-/*        if (self.preferWeb) {
-            if (self.preferReader) {
+        Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedIdValue];
+        BOOL preferWeb = feed.extra.preferWebValue;
+        BOOL preferReader = feed.extra.useReaderValue;
+        
+        if (preferWeb) {
+ /*           if (self.preferReader) {
                 if (detail.readable) {
                     [self writeAndLoadHtml:detail.readable];
                 }else {
@@ -160,17 +162,17 @@
                         }
                         [self writeAndLoadHtml:html];
                     });
-                }
-            } else {
-                [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:detail.item.link]]];
-            }
-        } else { */
+                } */
+            //} else {
+                [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
+            //}
+        } else {
             NSString *html = self.item.body;
             NSURL *itemURL = [NSURL URLWithString:self.item.url];
             NSString *baseString = [NSString stringWithFormat:@"%@://%@", [itemURL scheme], [itemURL host]];
             html = [self fixRelativeUrl:html baseUrlString:baseString];
             [self writeAndLoadHtml:html];
-        //}
+        }
         [self.viewDeckController closeLeftView];
         [self updateToolbar];
     }
