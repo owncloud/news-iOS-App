@@ -41,11 +41,13 @@
 #import "TransparentToolbar.h"
 #import "OCNewsHelper.h"
 #import "Feed.h"
+#import "FeedExtra.h"
 
 @interface OCFeedListController () {
     int parserCount;
     int currentIndex;
     BOOL haveSyncData;
+    PopoverView *_popover;
 }
 
 - (void) updateItems;
@@ -58,7 +60,7 @@
 @synthesize addBarButtonItem;
 @synthesize infoBarButtonItem;
 @synthesize editBarButtonItem;
-//@synthesize settingsPopover;
+@synthesize settingsPopover;
 @synthesize feedRefreshControl;
 @synthesize fetchedResultsController;
 
@@ -125,6 +127,12 @@
     //self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleTableviewPress:)];
+    //lpgr.minimumPressDuration = 2.0; //seconds
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
+    
     //Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
 
@@ -227,21 +235,14 @@
             [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
         }
     }
-    //if (!haveIcon) {
-    //    [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
-    //}
     
     cell.countBadge.value = feed.unreadCountValue;
-    //[cell.activityIndicator stopAnimating];
-    /*    }
-     
-     if ([[object valueForKey:@"Failure"] boolValue] == YES) {
-     cell.detailTextLabel.text = @"Failed to update feed";
-     } else {
-     cell.detailTextLabel.text = @"";
-     }
-     */
-    cell.textLabel.text = feed.title;
+
+    if (feed.extra) {
+        cell.textLabel.text = feed.extra.displayTitle;
+    } else {
+        cell.textLabel.text = feed.title;
+    }
 
 }
 
@@ -378,6 +379,9 @@
         //[self showRenameForIndex:indexPath.row];
     } else {
         Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        if (!feed.extra) {
+            [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+        }
         self.detailViewController.feed = feed;
         [self.viewDeckController closeLeftView];
     }
@@ -538,6 +542,54 @@
 
 }
 
+- (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer; {
+    //http://stackoverflow.com/a/14364085/2036378 (why it's a good idea to retrieve the cell)
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        
+        CGPoint p = [gestureRecognizer locationInView:self.tableView];
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+        if (indexPath == nil) {
+            NSLog(@"long press on table view but not on a row");
+        } else {
+            if ((indexPath.section == 0) && (indexPath.row > 1)) {
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                if (cell.isHighlighted) {
+                    Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                    NSLog(@"Feed title: %@", feed.title);
+                    if (!feed.extra) {
+                        [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                    }
+                    NSLog(@"Feed title: %@", feed.extra.displayTitle);
+                    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle: nil];
+                        UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
+                        OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
+                        [settingsController loadView];
+                        settingsController.feed = feed;
+                        settingsController.delegate = self;
+                        [self presentViewController:navController animated:YES completion:nil];
+                    } else {
+                        UINavigationController *navController = (UINavigationController *)self.settingsPopover.contentViewController;
+                        OCFeedSettingsController *settingsController = (OCFeedSettingsController *)navController.topViewController;
+                        settingsController.feed = feed;
+                        settingsController.delegate = self;
+                        
+                        [self.settingsPopover presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:[self view] permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (void) feedSettingsUpdate:(OCFeedSettingsController *)settings {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.settingsPopover dismissPopoverAnimated:YES];
+    }
+}
+
+
 #pragma mark - Feeds maintenance
 
 - (void) updateItems {
@@ -680,6 +732,20 @@
     }
     
     return feedRefreshControl;
+}
+
+- (UIPopoverController *) settingsPopover {
+    if (!settingsPopover) {
+
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
+        settingsPopover = [[UIPopoverController alloc] initWithContentViewController:[storyboard instantiateViewControllerWithIdentifier: @"feedextra"]];
+        
+    }
+    return settingsPopover;
+}
+
+- (void)popoverViewDidDismiss:(PopoverView *)popoverView {
+    _popover = nil;
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {

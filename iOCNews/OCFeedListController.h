@@ -33,8 +33,9 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "OCArticleListController.h"
+#import "OCFeedSettingsController.h"
 
-@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, PopoverViewDelegate, OCFeedSettingsDelegate>
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
@@ -44,11 +45,13 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
-//@property (nonatomic, strong, readonly) UIPopoverController *settingsPopover;
+@property (nonatomic, strong, readonly) UIPopoverController *settingsPopover;
 
 - (IBAction) doAdd:(id)sender;
 - (IBAction) doInfo:(id)sender;
 - (IBAction) doRefresh:(id)sender;
 - (IBAction) doEdit:(id)sender;
+
+- (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer;
 
 @end

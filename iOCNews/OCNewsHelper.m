@@ -55,18 +55,12 @@
     if (!self) {
         return nil;
     }
-    
+    //TODO: Is this really needed?
     Feeds *newFeeds = [NSEntityDescription insertNewObjectForEntityForName:@"Feeds" inManagedObjectContext:self.context];
     newFeeds.starredCount = [NSNumber numberWithInt:0];
     newFeeds.newestItemId = [NSNumber numberWithInt:0];
     
-    NSError *saveError = nil;
-    if ([self.context save:&saveError]) {
-        NSLog(@"Feed saved");
-    } else {
-        NSLog(@"Error occured while saving");
-        return nil;
-    }
+    [self saveContext];
 
     return self;
 }
@@ -108,10 +102,12 @@
 
 - (void)saveContext {
     NSError *error = nil;
-    if (context != nil) {
-        if ([context hasChanges] && ![context save:&error]) {
-            NSLog(@"Error %@, %@", error, [error userInfo]);
+    if (self.context != nil) {
+        if ([self.context hasChanges] && ![self.context save:&error]) {
+            NSLog(@"Error saving data %@, %@", error, [error userInfo]);
             //abort();
+        } else {
+            NSLog(@"Data saved");
         }
     }
 }
@@ -132,9 +128,16 @@
     newFeed.folderId = [feed objectForKey:@"folderId"];
     newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
     newFeed.link = [feed objectForKey:@"link"];
-    
+    [self addFeedExtra:newFeed];
     [self updateTotalUnreadCount];
     return newFeed.myIdValue;
+}
+
+- (void)addFeedExtra:(Feed *)feed {
+    FeedExtra *extra = [NSEntityDescription insertNewObjectForEntityForName:@"FeedExtra" inManagedObjectContext:self.context];
+    extra.displayTitle = feed.title;
+    extra.parent = feed;
+    feed.extra = extra;
 }
 
 - (void)deleteFeed:(Feed*)feed {
@@ -212,6 +215,7 @@
             newFeed.folderId = [feed objectForKey:@"folderId"];
             newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
             newFeed.link = [feed objectForKey:@"link"];
+            [self addFeedExtra:newFeed];
         }];
     } else {
         NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
@@ -399,13 +403,7 @@
         }
     }];
     [[self feedWithId:-2] setUnreadCountValue:i];
-    NSError *error = nil;
-    if ([self.context save:&error]) {
-        NSLog(@"Feed saved");
-    } else {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
+    [self saveContext];
 }
 
 - (void)updateStarredCount {
@@ -435,13 +433,7 @@
     theFeeds.starredCountValue = starredItems.count;
     
     [[self feedWithId:-1] setUnreadCountValue:starredItems.count];
-    error = nil;
-    if ([self.context save:&error]) {
-        NSLog(@"Feed saved");
-    } else {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
+    [self saveContext];
 }
 
 - (NSURL*) documentsDirectoryURL {

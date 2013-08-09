@@ -50,6 +50,7 @@
 - (Feed*)feedWithId:(int)anId;
 
 - (int)addFeed:(id)JSON;
+- (void)addFeedExtra:(Feed*)feed;
 - (void)deleteFeed:(Feed*)feed;
 - (void)updateFeeds:(id)JSON;
 - (void)updateItems:(NSArray*)items;
@@ -58,10 +59,4 @@
 - (void)updateStarredCount;
 - (int)itemCount;
 
-/*
--(void) insertContactInfoName :(NSString *)name Address:(NSString *)address PhoneNo:(NSString *)phoneNO;
--(void) selectAllContacts;
--(NSManagedObject *) searchContactInfoByName :(NSString *) name;
--(void) deleteContactInfoByName:(NSString *) name;
-*/
 @end
