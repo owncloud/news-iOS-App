@@ -108,14 +108,18 @@
         self.webView.delegate = self;
         self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [[self view] addSubview:self.webView];
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+                self.navigationItem.title = self.item.title;
+            } else {
+                self.navigationItem.title = @"";
+            }
+        } else {
+            self.navigationItem.title = self.item.title;
             [self.webView addGestureRecognizer:self.tapZoneRecognizer2];
             [self.webView addGestureRecognizer:self.tapZoneRecognizer];
         }
-        
-        self.navigationItem.title = self.item.title;
-        
         Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedIdValue];
         
         if (feed.extra.preferWebValue) {
