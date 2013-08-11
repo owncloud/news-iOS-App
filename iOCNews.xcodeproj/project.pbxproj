@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D01ACAB217B8342D005D1463 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D01ACAAF17B8339D005D1463 /* libpcre.a */; };
+		D01ACADB17B83637005D1463 /* rd_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABA17B83637005D1463 /* rd_list.c */; };
+		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
 		D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
@@ -201,7 +204,30 @@
 		D0FD7083178F49EA00EF1457 /* star_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0FD707F178F49EA00EF1457 /* star_open@2x.png */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D01ACAAE17B8339D005D1463 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01ACAA917B8339C005D1463 /* pcre.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = pcre;
+		};
+		D01ACAB017B833FF005D1463 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01ACAA917B8339C005D1463 /* pcre.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = pcre;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		D01ACAA917B8339C005D1463 /* pcre.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pcre.xcodeproj; path = iOSPorts/ports/devel/pcre/pcre.xcodeproj; sourceTree = "<group>"; };
+		D01ACAB517B83637005D1463 /* khash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = khash.h; sourceTree = "<group>"; };
+		D01ACABA17B83637005D1463 /* rd_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rd_list.c; sourceTree = "<group>"; };
+		D01ACABB17B83637005D1463 /* rd_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rd_list.h; sourceTree = "<group>"; };
+		D01ACABC17B83637005D1463 /* readable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = readable.c; sourceTree = "<group>"; };
+		D01ACABD17B83637005D1463 /* readable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readable.h; sourceTree = "<group>"; };
 		D06CB21B179C5C1900A1310B /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		D06CB21C179C5C1900A1310B /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
 		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
@@ -472,6 +498,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D01ACAB217B8342D005D1463 /* libpcre.a in Frameworks */,
 				D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */,
 				D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */,
 				D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */,
@@ -488,6 +515,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D01ACAAA17B8339C005D1463 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D01ACAAF17B8339D005D1463 /* libpcre.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D01ACAB317B83637005D1463 /* readable */ = {
+			isa = PBXGroup;
+			children = (
+				D01ACAB517B83637005D1463 /* khash.h */,
+				D01ACABA17B83637005D1463 /* rd_list.c */,
+				D01ACABB17B83637005D1463 /* rd_list.h */,
+				D01ACABC17B83637005D1463 /* readable.c */,
+				D01ACABD17B83637005D1463 /* readable.h */,
+			);
+			path = readable;
+			sourceTree = "<group>";
+		};
 		D06CB226179C9C7000A1310B /* PopoverView */ = {
 			isa = PBXGroup;
 			children = (
@@ -574,6 +621,8 @@
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
+				D01ACAA917B8339C005D1463 /* pcre.xcodeproj */,
+				D01ACAB317B83637005D1463 /* readable */,
 				D0C66C6E17AB3E6300F0EC7C /* SDWebImage */,
 				D06CB226179C9C7000A1310B /* PopoverView */,
 				D09682BB179A134F00EC6E60 /* TSMessages */,
@@ -971,6 +1020,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D01ACAB117B833FF005D1463 /* PBXTargetDependency */,
 			);
 			name = iOCNews;
 			productName = iOCNews;
@@ -1012,6 +1062,12 @@
 			mainGroup = D0BCAA19177900C300C965F4;
 			productRefGroup = D0BCAA23177900C300C965F4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D01ACAAA17B8339C005D1463 /* Products */;
+					ProjectRef = D01ACAA917B8339C005D1463 /* pcre.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D0BCAA21177900C300C965F4 /* iOCNews */,
@@ -1019,6 +1075,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D01ACAAF17B8339D005D1463 /* libpcre.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libpcre.a;
+			remoteRef = D01ACAAE17B8339D005D1463 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D0BCAA20177900C300C965F4 /* Resources */ = {
@@ -1232,10 +1298,20 @@
 				D0C66CA217B19C3E00F0EC7C /* _FeedExtra.m in Sources */,
 				D0C66CA317B19C3E00F0EC7C /* FeedExtra.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
+				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
+				D01ACADC17B83637005D1463 /* readable.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D01ACAB117B833FF005D1463 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = pcre;
+			targetProxy = D01ACAB017B833FF005D1463 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D0968361179B3DB300EC6E60 /* iPhone.storyboard */ = {
@@ -1306,7 +1382,7 @@
 		D0BCAA43177900C400C965F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1340,7 +1416,7 @@
 		D0BCAA44177900C400C965F4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1374,6 +1450,7 @@
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1387,6 +1464,7 @@
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

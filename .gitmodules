@@ -31,3 +31,9 @@
 [submodule "SDWebImage"]
 	path = SDWebImage
 	url = https://github.com/rs/SDWebImage.git
+[submodule "iOSPorts"]
+	path = iOSPorts
+	url = https://github.com/bindle/iOSPorts.git
+[submodule "readable"]
+	path = readable
+	url = https://github.com/JanX2/readable.git
