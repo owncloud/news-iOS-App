@@ -87,11 +87,12 @@
 {
     if (_item != newItem) {
         _item = newItem;
-        
+        if (!_item.extra) {
+            [[OCNewsHelper sharedHelper] addItemExtra:_item];
+        }
         // Update the view.
         [self configureView];
     }
-    
 }
 
 - (void)configureView
@@ -119,50 +120,50 @@
         
         if (feed.extra.preferWebValue) {
             if (feed.extra.useReaderValue) {
-                //if (detail.readable) {
-                //    [self writeAndLoadHtml:detail.readable];
-                //}else {
-                
-                OCAPIClient *client = [OCAPIClient sharedClient];
-                NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:self.item.url parameters:nil];
-                AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-                
-                [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSString *html;
-                    NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
-                    if (responseObject) {
-                        html = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                        char *article;
-                        article = readable([html cStringUsingEncoding:NSUTF8StringEncoding],
-                                           [[[operation.response URL] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding],
-                                           "UTF-8",
-                                           READABLE_OPTIONS_DEFAULT);
-                        if (article == NULL) {
+                if (self.item.extra.readable) {
+                    [self writeAndLoadHtml:self.item.extra.readable];
+                } else {
+                    
+                    OCAPIClient *client = [OCAPIClient sharedClient];
+                    NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:self.item.url parameters:nil];
+                    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+                    
+                    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSString *html;
+                        NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+                        if (responseObject) {
+                            html = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                            char *article;
+                            article = readable([html cStringUsingEncoding:NSUTF8StringEncoding],
+                                               [[[operation.response URL] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding],
+                                               "UTF-8",
+                                               READABLE_OPTIONS_DEFAULT);
+                            if (article == NULL) {
+                                html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
+                                html = [html stringByAppendingString:self.item.body];
+                            } else {
+                                html = [NSString stringWithCString:article encoding:NSUTF8StringEncoding];
+                                html = [self fixRelativeUrl:html
+                                              baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", [[operation.response URL] scheme], [[operation.response URL] host], [[operation.response URL] path]]];
+                            }
+                            self.item.extra.readable = html;
+                            [[OCNewsHelper sharedHelper] saveContext];
+                        } else {
                             html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
                             html = [html stringByAppendingString:self.item.body];
-                        } else {
-                            html = [NSString stringWithCString:article encoding:NSUTF8StringEncoding];
-                            html = [self fixRelativeUrl:html
-                                          baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", [[operation.response URL] scheme], [[operation.response URL] host], [[operation.response URL] path]]];
                         }
-                        //detail.readable = html;
-                        //[[NSNotificationCenter defaultCenter] postNotificationName:@"ArticleChangeInFeed" object:self userInfo:[NSDictionary dictionaryWithObject:html forKey:@"ArticleText"]];
-                    } else {
-                        html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
+                        [self writeAndLoadHtml:html];
+                    } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
+                        NSLog(@"Error: %@", error);
+                        NSString *html;
+                        html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
                         html = [html stringByAppendingString:self.item.body];
-                    }
-                    [self writeAndLoadHtml:html];
-                } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
-                    NSLog(@"Error: %@", error);
-                    NSString *html;
-                    html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
-                    html = [html stringByAppendingString:self.item.body];
-                    [self writeAndLoadHtml:html];
-                }];
-                
-                [client enqueueHTTPRequestOperation:operation];
-                
-                //                }
+                        [self writeAndLoadHtml:html];
+                    }];
+                    
+                    [client enqueueHTTPRequestOperation:operation];
+                    
+                }
             } else {
                 [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
             }

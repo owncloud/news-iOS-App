@@ -36,13 +36,19 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unread" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="extra" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="ItemExtra" inverseName="parent" inverseEntity="ItemExtra" syncable="YES"/>
+    </entity>
+    <entity name="ItemExtra" representedClassName="ItemExtra" syncable="YES">
+        <attribute name="readable" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="extra" inverseEntity="Item" syncable="YES"/>
     </entity>
     <fetchRequest name="feedWithIdRequest" entity="Feed" predicateString="myId == $FEED_ID"/>
     <fetchRequest name="totalUnreadRequest" entity="Feed" predicateString="unreadCount > 0"/>
     <elements>
         <element name="Feed" positionX="-335" positionY="-18" width="128" height="178"/>
-        <element name="Feeds" positionX="-612" positionY="-18" width="128" height="73"/>
-        <element name="Item" positionX="-74" positionY="-10" width="128" height="255"/>
         <element name="FeedExtra" positionX="-335" positionY="272" width="128" height="103"/>
+        <element name="Feeds" positionX="-612" positionY="-18" width="128" height="73"/>
+        <element name="Item" positionX="-74" positionY="-10" width="128" height="268"/>
+        <element name="ItemExtra" positionX="-74" positionY="305" width="128" height="73"/>
     </elements>
 </model>

@@ -21,6 +21,7 @@ const struct ItemAttributes ItemAttributes = {
 };
 
 const struct ItemRelationships ItemRelationships = {
+	.extra = @"extra",
 };
 
 const struct ItemFetchedProperties ItemFetchedProperties = {
@@ -300,6 +301,10 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 
 
 
+
+@dynamic extra;
+
+	
 
 
 

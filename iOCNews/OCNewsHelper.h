@@ -33,6 +33,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "Feed.h"
+#import "Item.h"
 
 @interface OCNewsHelper : NSObject
 
@@ -53,6 +54,7 @@
 - (void)addFeedExtra:(Feed*)feed;
 - (void)deleteFeed:(Feed*)feed;
 - (void)updateFeeds:(id)JSON;
+- (void)addItemExtra:(Item*)item;
 - (void)updateItems:(NSArray*)items;
 - (void)updateReadItems:(NSArray*)items;
 - (void)updateTotalUnreadCount;

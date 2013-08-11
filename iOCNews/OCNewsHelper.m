@@ -140,6 +140,12 @@
     feed.extra = extra;
 }
 
+- (void)addItemExtra:(Item *)item {
+    ItemExtra *extra = [NSEntityDescription insertNewObjectForEntityForName:@"ItemExtra" inManagedObjectContext:self.context];
+    extra.parent = item;
+    item.extra = extra;
+}
+
 - (void)deleteFeed:(Feed*)feed {
     NSFetchRequest *feedItemsFetcher = [[NSFetchRequest alloc] init];
     [feedItemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
@@ -236,6 +242,7 @@
                 newFeed.folderId = [feed objectForKey:@"folderId"];
                 newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
                 newFeed.link = [feed objectForKey:@"link"];
+                [self addFeedExtra:newFeed];
             }
         }];
         
@@ -297,6 +304,7 @@
             newItem.unread = [item objectForKey:@"unread"];
             newItem.starred = [item objectForKey:@"starred"];
             newItem.lastModified = [item objectForKey:@"lastModified"];
+            [self addItemExtra:newItem];
         }];
 
     } else {
@@ -343,6 +351,7 @@
             newItem.unread = [item objectForKey:@"unread"];
             newItem.starred = [item objectForKey:@"starred"];
             newItem.lastModified = [item objectForKey:@"lastModified"];
+            [self addItemExtra:newItem];
         }];
         
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];

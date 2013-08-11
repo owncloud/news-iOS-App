@@ -22,11 +22,13 @@ extern const struct ItemAttributes {
 } ItemAttributes;
 
 extern const struct ItemRelationships {
+	__unsafe_unretained NSString *extra;
 } ItemRelationships;
 
 extern const struct ItemFetchedProperties {
 } ItemFetchedProperties;
 
+@class ItemExtra;
 
 
 
@@ -220,6 +222,13 @@ extern const struct ItemFetchedProperties {
 
 
 
+@property (nonatomic, strong) ItemExtra *extra;
+
+//- (BOOL)validateExtra:(id*)value_ error:(NSError**)error_;
+
+
+
+
 
 @end
 
@@ -330,6 +339,11 @@ extern const struct ItemFetchedProperties {
 - (void)setPrimitiveUrl:(NSString*)value;
 
 
+
+
+
+- (ItemExtra*)primitiveExtra;
+- (void)setPrimitiveExtra:(ItemExtra*)value;
 
 
 @end

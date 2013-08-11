@@ -24,6 +24,8 @@
 		D01ACAB217B8342D005D1463 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D01ACAAF17B8339D005D1463 /* libpcre.a */; };
 		D01ACADB17B83637005D1463 /* rd_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABA17B83637005D1463 /* rd_list.c */; };
 		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
+		D01ACAF617B84001005D1463 /* ItemExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAF517B84001005D1463 /* ItemExtra.m */; };
+		D01ACAF917B84035005D1463 /* _ItemExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAF817B84035005D1463 /* _ItemExtra.m */; };
 		D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
@@ -228,6 +230,10 @@
 		D01ACABB17B83637005D1463 /* rd_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rd_list.h; sourceTree = "<group>"; };
 		D01ACABC17B83637005D1463 /* readable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = readable.c; sourceTree = "<group>"; };
 		D01ACABD17B83637005D1463 /* readable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readable.h; sourceTree = "<group>"; };
+		D01ACAF417B84001005D1463 /* ItemExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemExtra.h; sourceTree = "<group>"; };
+		D01ACAF517B84001005D1463 /* ItemExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemExtra.m; sourceTree = "<group>"; };
+		D01ACAF717B84035005D1463 /* _ItemExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _ItemExtra.h; sourceTree = "<group>"; };
+		D01ACAF817B84035005D1463 /* _ItemExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ItemExtra.m; sourceTree = "<group>"; };
 		D06CB21B179C5C1900A1310B /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		D06CB21C179C5C1900A1310B /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
 		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
@@ -954,6 +960,8 @@
 		D0C66CA417B19C6A00F0EC7C /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				D01ACAF717B84035005D1463 /* _ItemExtra.h */,
+				D01ACAF817B84035005D1463 /* _ItemExtra.m */,
 				D06CB24417A2EA8E00A1310B /* _Feeds.h */,
 				D06CB24517A2EA8F00A1310B /* _Feeds.m */,
 				D06CB24217A2EA8B00A1310B /* _Feed.h */,
@@ -970,6 +978,8 @@
 				D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */,
 				D06CB23217A073C300A1310B /* Item.h */,
 				D06CB23317A073C400A1310B /* Item.m */,
+				D01ACAF417B84001005D1463 /* ItemExtra.h */,
+				D01ACAF517B84001005D1463 /* ItemExtra.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -1300,6 +1310,8 @@
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
+				D01ACAF617B84001005D1463 /* ItemExtra.m in Sources */,
+				D01ACAF917B84035005D1463 /* _ItemExtra.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
