@@ -145,3 +145,8 @@ a.footerLink {
     height:50px;
     line-height:1.0em;
 }
+
+img {
+    max-width: 100%;
+    height: auto;
+}
