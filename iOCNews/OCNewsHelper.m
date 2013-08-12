@@ -34,6 +34,14 @@
 #import "Feeds.h"
 #import "Feed.h"
 #import "Item.h"
+#import "NSDictionary+HandleNull.h"
+
+@interface OCNewsHelper ()
+
+- (int)addFeedFromDictionary:(NSDictionary*)dict;
+- (void)addItemFromDictionary:(NSDictionary*)dict;
+
+@end
 
 @implementation OCNewsHelper
 
@@ -114,23 +122,45 @@
 
 #pragma mark - COREDATA -INSERT
 
+- (int)addFeedFromDictionary:(NSDictionary *)dict {
+    Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
+    newFeed.myId = [dict objectForKey:@"id"];
+    newFeed.url = [dict objectForKey:@"url"];
+    newFeed.title = [dict objectForKeyNotNull:@"title" fallback:@""];
+    newFeed.faviconLink = [dict objectForKeyNotNull:@"faviconLink" fallback:@"favicon"];
+    newFeed.added = [dict objectForKey:@"added"];
+    newFeed.folderId = [dict objectForKey:@"folderId"];
+    newFeed.unreadCount = [dict objectForKey:@"unreadCount"];
+    newFeed.link = [dict objectForKey:@"link"];
+    [self addFeedExtra:newFeed];
+    return newFeed.myIdValue;
+}
+
+- (void)addItemFromDictionary:(NSDictionary *)dict {
+    Item *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:self.context];
+    newItem.myId = [dict objectForKey:@"id"];
+    newItem.guid = [dict objectForKey:@"guid"];
+    newItem.guidHash = [dict objectForKey:@"guidHash"];
+    newItem.url = [dict objectForKey:@"url"];
+    newItem.title = [dict objectForKeyNotNull:@"title" fallback:@""];
+    newItem.author = [dict objectForKeyNotNull:@"author" fallback:@""];
+    newItem.pubDate = [dict objectForKeyNotNull:@"pubDate" fallback:nil];
+    newItem.body = [dict objectForKeyNotNull:@"body" fallback:@""];
+    newItem.enclosureMime = [dict objectForKeyNotNull:@"enclosureMime" fallback:@""];
+    newItem.enclosureLink = [dict objectForKeyNotNull:@"enclosureLink" fallback:@""];
+    newItem.feedId = [dict objectForKey:@"feedId"];
+    newItem.unread = [dict objectForKey:@"unread"];
+    newItem.starred = [dict objectForKey:@"starred"];
+    newItem.lastModified = [dict objectForKey:@"lastModified"];
+    [self addItemExtra:newItem];
+}
+
 - (int)addFeed:(id)JSON {
     NSDictionary *jsonDict = (NSDictionary *) JSON;
     NSMutableArray *newFeeds = [jsonDict objectForKey:@"feeds"];
-    NSDictionary *feed = [newFeeds lastObject];
-    Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-    newFeed.myId = [feed objectForKey:@"id"];
-    newFeed.url = [feed objectForKey:@"url"];
-    newFeed.title = [feed objectForKey:@"title"];
-    id val = [feed objectForKey:@"faviconLink"];
-    newFeed.faviconLink = (val == [NSNull null] ? @"favicon" : val);
-    newFeed.added = [feed objectForKey:@"added"];
-    newFeed.folderId = [feed objectForKey:@"folderId"];
-    newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
-    newFeed.link = [feed objectForKey:@"link"];
-    [self addFeedExtra:newFeed];
+    int newFeedId = [self addFeedFromDictionary:[newFeeds lastObject]];
     [self updateTotalUnreadCount];
-    return newFeed.myIdValue;
+    return newFeedId;
 }
 
 - (void)addFeedExtra:(Feed *)feed {
@@ -211,17 +241,7 @@
         starredFeed.link = @"";
         
         [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
-            Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-            newFeed.myId = [feed objectForKey:@"id"];
-            newFeed.url = [feed objectForKey:@"url"];
-            newFeed.title = [feed objectForKey:@"title"];
-            id val = [feed objectForKey:@"faviconLink"];
-            newFeed.faviconLink = (val == [NSNull null] ? @"favicon" : val);
-            newFeed.added = [feed objectForKey:@"added"];
-            newFeed.folderId = [feed objectForKey:@"folderId"];
-            newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
-            newFeed.link = [feed objectForKey:@"link"];
-            [self addFeedExtra:newFeed];
+            [self addFeedFromDictionary:feed];
         }];
     } else {
         NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
@@ -231,18 +251,7 @@
             NSPredicate * predicate = [NSPredicate predicateWithFormat:@"id == %@", obj];
             NSArray * matches = [newFeeds filteredArrayUsingPredicate:predicate];
             if (matches.count > 0) {
-                NSDictionary *feed = [matches lastObject];
-                Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-                newFeed.myId = [feed objectForKey:@"id"];
-                newFeed.url = [feed objectForKey:@"url"];
-                newFeed.title = [feed objectForKey:@"title"];
-                id val = [feed objectForKey:@"faviconLink"];
-                newFeed.faviconLink = (val == [NSNull null] ? @"favicon" : val);
-                newFeed.added = [feed objectForKey:@"added"];
-                newFeed.folderId = [feed objectForKey:@"folderId"];
-                newFeed.unreadCount = [feed objectForKey:@"unreadCount"];
-                newFeed.link = [feed objectForKey:@"link"];
-                [self addFeedExtra:newFeed];
+                [self addFeedFromDictionary:[matches lastObject]];
             }
         }];
         
@@ -285,26 +294,7 @@
         //first time
         //Add the new items        
         [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-            Item *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:self.context];
-            newItem.myId = [item objectForKey:@"id"];
-            newItem.guid = [item objectForKey:@"guid"];
-            newItem.guidHash = [item objectForKey:@"guidHash"];
-            newItem.url = [item objectForKey:@"url"];
-            newItem.title = [item objectForKey:@"title"];
-            id val = [item objectForKey:@"author"];
-            newItem.author = (val == [NSNull null] ? @"" : val);
-            val = [item objectForKey:@"pubDate"];
-            newItem.pubDate = (val == [NSNull null] ? nil : val);
-            newItem.body = [item objectForKey:@"body"];
-            val = [item objectForKey:@"enclosureMime"];
-            newItem.enclosureMime = (val == [NSNull null] ? @"" : val);
-            val = [item objectForKey:@"enclosureLink"];
-            newItem.enclosureLink = (val == [NSNull null] ? @"" : val);
-            newItem.feedId = [item objectForKey:@"feedId"];
-            newItem.unread = [item objectForKey:@"unread"];
-            newItem.starred = [item objectForKey:@"starred"];
-            newItem.lastModified = [item objectForKey:@"lastModified"];
-            [self addItemExtra:newItem];
+            [self addItemFromDictionary:item];
         }];
 
     } else {
@@ -328,30 +318,9 @@
             NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
             [self.context deleteObject:item];
         }
-        
-
 
         [items enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-            Item *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:self.context];
-            newItem.myId = [item objectForKey:@"id"];
-            newItem.guid = [item objectForKey:@"guid"];
-            newItem.guidHash = [item objectForKey:@"guidHash"];
-            newItem.url = [item objectForKey:@"url"];
-            newItem.title = [item objectForKey:@"title"];
-            id val = [item objectForKey:@"author"];
-            newItem.author = (val == [NSNull null] ? @"" : val);
-            val = [item objectForKey:@"pubDate"];
-            newItem.pubDate = (val == [NSNull null] ? nil : val);
-            newItem.body = [item objectForKey:@"body"];
-            val = [item objectForKey:@"enclosureMime"];
-            newItem.enclosureMime = (val == [NSNull null] ? @"" : val);
-            val = [item objectForKey:@"enclosureLink"];
-            newItem.enclosureLink = (val == [NSNull null] ? @"" : val);
-            newItem.feedId = [item objectForKey:@"feedId"];
-            newItem.unread = [item objectForKey:@"unread"];
-            newItem.starred = [item objectForKey:@"starred"];
-            newItem.lastModified = [item objectForKey:@"lastModified"];
-            [self addItemExtra:newItem];
+            [self addItemFromDictionary:item];
         }];
         
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
