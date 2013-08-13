@@ -71,6 +71,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     self.serverTextField.text = [prefs stringForKey:@"Server"];
     self.usernameTextField.text = [self.keychain objectForKey:(__bridge id)(kSecAttrAccount)];
     self.passwordTextField.text = [self.keychain objectForKey:(__bridge id)(kSecValueData)];
+    self.certificateSwitch.on = [prefs boolForKey:@"AllowInvalidSSLCertificate"];
     
     NSString *status;
     if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
@@ -98,7 +99,8 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         if (![self.serverTextField.text isEqualToString:[prefs stringForKey:@"Server"]] ||
             ![self.usernameTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecAttrAccount)]] ||
-            ![self.passwordTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecValueData)]]) {
+            ![self.passwordTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecValueData)]] ||
+            !(self.certificateSwitch.on == [prefs boolForKey:@"AllowInvalidSSLCertificate"])) {
             
             [self.connectionActivityIndicator startAnimating];
             AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
@@ -115,6 +117,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                 [prefs setObject:self.serverTextField.text forKey:@"Server"];
                 [self.keychain setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
                 [self.keychain setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
+                [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
                 [OCAPIClient setSharedClient:nil];
                 int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
                 NSLog(@"Server status: %i", status);

@@ -98,7 +98,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="KNh-ch-HsP">
-                            <rect key="frame" x="0.0" y="240" width="540" height="318"/>
+                            <rect key="frame" x="0.0" y="284" width="540" height="291"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="iOCNews" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="rCW-bO-Cfx">
@@ -145,20 +145,20 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="fav-re-vvs" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="27L-jR-Dxo"/>
-                                <constraint firstItem="lFp-sS-I4l" firstAttribute="top" secondItem="rCW-bO-Cfx" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="3ok-Zg-u9t"/>
+                                <constraint firstAttribute="bottom" secondItem="rCW-bO-Cfx" secondAttribute="bottom" constant="116" id="6gV-9c-8sY"/>
                                 <constraint firstItem="rCW-bO-Cfx" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="6pQ-TV-pRF"/>
                                 <constraint firstItem="rCW-bO-Cfx" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="8I4-WQ-lNt"/>
                                 <constraint firstItem="PV1-Gd-hNc" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" constant="40" id="9JN-B6-q8j"/>
-                                <constraint firstAttribute="bottom" secondItem="PBB-QX-w4M" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="9WS-yA-Cot"/>
                                 <constraint firstItem="PBB-QX-w4M" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="9se-uE-Cyp"/>
-                                <constraint firstAttribute="bottom" secondItem="fav-re-vvs" secondAttribute="bottom" constant="71" id="B6R-J6-yc0"/>
+                                <constraint firstAttribute="bottom" secondItem="fav-re-vvs" secondAttribute="bottom" constant="65" id="M8p-ZV-sgh"/>
+                                <constraint firstItem="PV1-Gd-hNc" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" constant="18" id="Ny7-aZ-MrQ"/>
+                                <constraint firstAttribute="bottom" secondItem="PBB-QX-w4M" secondAttribute="bottom" constant="18" id="csB-JH-xWe"/>
                                 <constraint firstItem="zDJ-Ip-i6b" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="cyg-LH-Qiu"/>
-                                <constraint firstItem="zDJ-Ip-i6b" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" type="default" id="fDp-i0-aTU"/>
+                                <constraint firstItem="zDJ-Ip-i6b" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" constant="10" id="eBp-GU-ftu"/>
                                 <constraint firstItem="lFp-sS-I4l" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="gNZ-9S-z1W"/>
-                                <constraint firstAttribute="bottom" secondItem="lFp-sS-I4l" secondAttribute="bottom" constant="99" id="hPE-T3-Als"/>
                                 <constraint firstItem="lFp-sS-I4l" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="hge-aG-VGh"/>
+                                <constraint firstAttribute="bottom" secondItem="lFp-sS-I4l" secondAttribute="bottom" constant="90" id="mQW-Df-OsQ"/>
                                 <constraint firstItem="fav-re-vvs" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="rHP-qE-D35"/>
-                                <constraint firstItem="PV1-Gd-hNc" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" constant="20" symbolic="YES" type="default" id="sds-xB-Ujh"/>
                                 <constraint firstItem="PBB-QX-w4M" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="tVw-cp-Fjh"/>
                             </constraints>
                         </view>
@@ -234,7 +234,7 @@
                                         </constraints>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="VbD-d4-aaZ">
-                                        <rect key="frame" x="0.0" y="119" width="540" height="45"/>
+                                        <rect key="frame" x="0.0" y="119" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="31" y="0.0" width="478" height="43"/>
@@ -260,10 +260,36 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
+                                            <constraint firstItem="7fz-fA-oAA" firstAttribute="top" secondItem="VbD-d4-aaZ" secondAttribute="top" constant="8" id="A7t-Sp-Fuq"/>
                                             <constraint firstItem="7fz-fA-oAA" firstAttribute="leading" secondItem="F4A-va-Uxa" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="JiI-xc-Kfd"/>
-                                            <constraint firstItem="7fz-fA-oAA" firstAttribute="centerY" secondItem="VbD-d4-aaZ" secondAttribute="centerY" type="default" id="aWT-tW-kIa"/>
                                             <constraint firstItem="F4A-va-Uxa" firstAttribute="leading" secondItem="VbD-d4-aaZ" secondAttribute="leading" constant="51" id="ogA-N1-mZQ"/>
                                             <constraint firstItem="F4A-va-Uxa" firstAttribute="baseline" secondItem="7fz-fA-oAA" secondAttribute="baseline" type="default" id="zWj-Gl-Juu"/>
+                                        </constraints>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="OvP-qV-Dyb">
+                                        <rect key="frame" x="0.0" y="163" width="540" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="31" y="0.0" width="478" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Allow Untrusted SSL Certificate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5e3-EW-kbb">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="256" id="Kmf-eK-cqt"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XzG-y2-lr9"/>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="XzG-y2-lr9" firstAttribute="centerY" secondItem="5e3-EW-kbb" secondAttribute="centerY" type="default" id="Iug-GZ-Xqz"/>
+                                            <constraint firstItem="XzG-y2-lr9" firstAttribute="top" secondItem="OvP-qV-Dyb" secondAttribute="top" constant="8" id="e4p-tl-FHD"/>
+                                            <constraint firstItem="5e3-EW-kbb" firstAttribute="leading" secondItem="OvP-qV-Dyb" secondAttribute="leading" constant="51" id="eDp-QH-LsN"/>
+                                            <constraint firstAttribute="trailing" secondItem="XzG-y2-lr9" secondAttribute="trailing" constant="51" id="fuW-ce-kKL"/>
                                         </constraints>
                                     </tableViewCell>
                                 </cells>
@@ -271,7 +297,7 @@
                             <tableViewSection id="9Dy-HL-CVj">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="cpf-I8-348">
-                                        <rect key="frame" x="0.0" y="184" width="540" height="46"/>
+                                        <rect key="frame" x="0.0" y="228" width="540" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="31" y="1" width="478" height="43"/>
@@ -309,6 +335,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="certificateSwitch" destination="XzG-y2-lr9" id="tAk-d8-C3o"/>
                         <outlet property="connectionActivityIndicator" destination="PV1-Gd-hNc" id="whp-uD-nKY"/>
                         <outlet property="passwordTextField" destination="7fz-fA-oAA" id="2DS-m2-lCQ"/>
                         <outlet property="serverTextField" destination="RmU-IS-n75" id="WQy-Cb-XeK"/>
@@ -692,6 +719,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/OCLoginController.h"/>
             <relationships>
                 <relationship kind="action" name="doDone:"/>
+                <relationship kind="outlet" name="certificateSwitch" candidateClass="UISwitch"/>
                 <relationship kind="outlet" name="connectionActivityIndicator" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="serverTextField" candidateClass="UITextField"/>

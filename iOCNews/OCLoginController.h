@@ -40,6 +40,7 @@
 @property (strong, nonatomic) IBOutlet UITextField *serverTextField;
 @property (strong, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (strong, nonatomic) IBOutlet UISwitch *certificateSwitch;
 
 @property (strong, nonatomic) IBOutlet UILabel *versionLabel;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
