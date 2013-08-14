@@ -100,18 +100,17 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         if (![self.serverTextField.text isEqualToString:[prefs stringForKey:@"Server"]] ||
             ![self.usernameTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecAttrAccount)]] ||
             ![self.passwordTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecValueData)]] ||
-            !(self.certificateSwitch.on == [prefs boolForKey:@"AllowInvalidSSLCertificate"])) {
+            (self.certificateSwitch.on != [prefs boolForKey:@"AllowInvalidSSLCertificate"])) {
             
             [self.connectionActivityIndicator startAnimating];
-            AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
+            OCAPIClient *client = [OCAPIClient clientWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
             [client setAuthorizationHeaderWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
-            
-            NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:@"version" parameters:nil];
-            
-            AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                
-                NSLog(@"Version: %@", JSON);
-                NSDictionary *jsonDict = (NSDictionary *) JSON;
+            BOOL allowInvalid = self.certificateSwitch.on;
+            client.allowsInvalidSSLCertificate = allowInvalid;
+
+            [client getPath:@"version" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"Version: %@", responseObject);
+                NSDictionary *jsonDict = (NSDictionary *) responseObject;
                 NSString *version = [jsonDict valueForKey:@"version"];
                 
                 [prefs setObject:self.serverTextField.text forKey:@"Server"];
@@ -124,12 +123,13 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                 self.statusLabel.text = [NSString stringWithFormat:@"Connected to an ownCloud News server at \"%@\" running version %@.", self.serverTextField.text, version];
                 
                 [self.connectionActivityIndicator stopAnimating];
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                self.statusLabel.text = @"Failed to connect to a server. Check your settings";
+
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Error: %@, response: %d", [error localizedDescription], [operation.response statusCode]);
+                self.statusLabel.text = @"Failed to connect to a server. Check your settings.";
                 [self.connectionActivityIndicator stopAnimating];
+
             }];
-            [client enqueueHTTPRequestOperation:operation];
         }
     }
 }

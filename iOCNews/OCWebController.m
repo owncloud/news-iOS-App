@@ -127,12 +127,7 @@
                 if (self.item.extra.readable) {
                     [self writeAndLoadHtml:self.item.extra.readable];
                 } else {
-                    
-                    OCAPIClient *client = [OCAPIClient sharedClient];
-                    NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:self.item.url parameters:nil];
-                    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-                    
-                    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [[OCAPIClient sharedClient] getPath:self.item.url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         NSString *html;
                         NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
                         if (responseObject) {
@@ -157,16 +152,15 @@
                             html = [html stringByAppendingString:self.item.body];
                         }
                         [self writeAndLoadHtml:html];
-                    } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
+
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                         NSLog(@"Error: %@", error);
                         NSString *html;
                         html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
                         html = [html stringByAppendingString:self.item.body];
                         [self writeAndLoadHtml:html];
-                    }];
-                    
-                    [client enqueueHTTPRequestOperation:operation];
-                    
+
+                    }];                    
                 }
             } else {
                 [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
