@@ -125,13 +125,13 @@
 - (int)addFeedFromDictionary:(NSDictionary *)dict {
     Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
     newFeed.myId = [dict objectForKey:@"id"];
-    newFeed.url = [dict objectForKey:@"url"];
+    newFeed.url = [dict objectForKeyNotNull:@"url" fallback:@""];
     newFeed.title = [dict objectForKeyNotNull:@"title" fallback:@""];
     newFeed.faviconLink = [dict objectForKeyNotNull:@"faviconLink" fallback:@"favicon"];
     newFeed.added = [dict objectForKey:@"added"];
     newFeed.folderId = [dict objectForKey:@"folderId"];
     newFeed.unreadCount = [dict objectForKey:@"unreadCount"];
-    newFeed.link = [dict objectForKey:@"link"];
+    newFeed.link = [dict objectForKeyNotNull:@"link" fallback:@""];
     [self addFeedExtra:newFeed];
     return newFeed.myIdValue;
 }
@@ -141,7 +141,7 @@
     newItem.myId = [dict objectForKey:@"id"];
     newItem.guid = [dict objectForKey:@"guid"];
     newItem.guidHash = [dict objectForKey:@"guidHash"];
-    newItem.url = [dict objectForKey:@"url"];
+    newItem.url = [dict objectForKeyNotNull:@"url" fallback:@""];
     newItem.title = [dict objectForKeyNotNull:@"title" fallback:@""];
     newItem.author = [dict objectForKeyNotNull:@"author" fallback:@""];
     newItem.pubDate = [dict objectForKeyNotNull:@"pubDate" fallback:nil];
