@@ -328,7 +328,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Login Information" id="fS5-GP-BTg">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="B4n-U4-Nf9">
+                        <barButtonItem key="rightBarButtonItem" title="Close" style="done" id="B4n-U4-Nf9">
                             <connections>
                                 <action selector="doDone:" destination="Lfe-mn-rFK" id="h9J-8l-v0R"/>
                             </connections>

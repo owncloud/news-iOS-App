@@ -62,6 +62,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     version = [version stringByAppendingString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
 	self.versionLabel.text = version;
     self.statusLabel.textVerticalAlignment = UITextVerticalAlignmentTop;
+    self.serverTextField.delegate = self;
+    self.usernameTextField.delegate = self;
+    self.passwordTextField.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -140,6 +143,19 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         [keychain setObject:(__bridge id)(kSecAttrAccessibleWhenUnlocked) forKey:(__bridge id)(kSecAttrAccessible)];
     }
     return keychain;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([textField isEqual:self.serverTextField]) {
+        [self.usernameTextField becomeFirstResponder];
+    }
+    if ([textField isEqual:self.usernameTextField]) {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    if ([textField isEqual:self.passwordTextField]) {
+        [textField resignFirstResponder];
+    }
+    return YES;
 }
 
 @end

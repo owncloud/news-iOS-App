@@ -33,7 +33,7 @@
 #import <UIKit/UIKit.h>
 #import "KeychainItemWrapper.h"
 
-@interface OCLoginController : UITableViewController
+@interface OCLoginController : UITableViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong, readonly) KeychainItemWrapper *keychain;
 
