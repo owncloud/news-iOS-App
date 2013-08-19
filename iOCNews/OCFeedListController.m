@@ -32,7 +32,6 @@
 
 #import "OCFeedListController.h"
 #import "IIViewDeckController.h"
-#import "AppDelegate.h"
 #import "OCFeedCell.h"
 #import "AFNetworking.h"
 #import "OCAPIClient.h"
