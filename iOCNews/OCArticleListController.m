@@ -176,8 +176,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
     self.tableView.rowHeight = 132;
 
-    //self.refreshControl = self.feedRefreshControl;
-    UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
+    IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
+    UINavigationController *navController = (UINavigationController*)deckController.centerController;
     self.detailViewController = (OCWebController*)navController.topViewController;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];

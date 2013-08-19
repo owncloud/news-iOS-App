@@ -41,6 +41,7 @@
 #import "TransparentToolbar.h"
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface OCWebController () <UIPopoverControllerDelegate> {
     UIPopoverController *_activityPopover;
@@ -58,8 +59,8 @@
 @implementation OCWebController
 
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
-@synthesize tapZoneRecognizer;
-@synthesize tapZoneRecognizer2;
+@synthesize nextArticleRecognizer;
+@synthesize previousArticleRecognizer;
 @synthesize prefPopoverController;
 @synthesize prefViewController;
 @synthesize item = _item;
@@ -98,17 +99,28 @@
 - (void)configureView
 {
     if (self.item) {
-        if ([self webView] != nil) {
-            [[self webView] removeFromSuperview];
-            [self webView].delegate =nil;
-            self.webView = nil;
-        }
-        self.webView = [[UIWebView alloc]initWithFrame:[self view].frame];
-        self.webView.scalesPageToFit = YES;
-        self.webView.delegate = self;
-        self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [[self view] addSubview:self.webView];
+        [self.view setNeedsDisplay];
+        [UIView transitionWithView:self.view
+                          duration:0.2
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            if ([self webView] != nil) {
+                                [[self webView] removeFromSuperview];
+                                [self webView].delegate =nil;
+                                self.webView = nil;
+                            }
+                            self.webView = [[UIWebView alloc]initWithFrame:[self view].frame];
+                            self.webView.scalesPageToFit = YES;
+                            self.webView.delegate = self;
+                            self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                            [[self view] addSubview:self.webView];
+                            [self.webView addGestureRecognizer:self.nextArticleRecognizer];
+                            [self.webView addGestureRecognizer:self.previousArticleRecognizer];
 
+                            [self.view.layer displayIfNeeded];
+                        }
+                        completion:NULL];
+        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
                 self.navigationItem.title = self.item.title;
@@ -117,8 +129,6 @@
             }
         } else {
             self.navigationItem.title = self.item.title;
-            [self.webView addGestureRecognizer:self.tapZoneRecognizer2];
-            [self.webView addGestureRecognizer:self.tapZoneRecognizer];
         }
         Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedIdValue];
         
@@ -232,7 +242,7 @@
     [self writeCss];
 
     [self updateToolbar];
-
+    self.viewDeckController.panningGestureDelegate = self;
     [self.viewDeckController toggleLeftView];
 }
 
@@ -569,26 +579,22 @@
 
 #pragma mark - Tap zones
 
-- (UILongPressGestureRecognizer *) tapZoneRecognizer {
-    if (!tapZoneRecognizer) {
-        tapZoneRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        //tapZoneRecognizer.numberOfTapsRequired = 1;
-        tapZoneRecognizer.minimumPressDuration = 0.15f;
-        tapZoneRecognizer.delegate = self;
-        [tapZoneRecognizer requireGestureRecognizerToFail:self.tapZoneRecognizer2];
+- (UISwipeGestureRecognizer *)nextArticleRecognizer {
+    if (!nextArticleRecognizer) {
+        nextArticleRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+        nextArticleRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        nextArticleRecognizer.delegate = self;
     }
-    return tapZoneRecognizer;
+    return nextArticleRecognizer;
 }
 
-- (UILongPressGestureRecognizer *) tapZoneRecognizer2 {
-    if (!tapZoneRecognizer2) {
-        tapZoneRecognizer2 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap2:)];
-        //tapZoneRecognizer.numberOfTapsRequired = 1;
-        tapZoneRecognizer2.minimumPressDuration = 0.3f;
-        tapZoneRecognizer2.delegate = self;
-        //[tapZoneRecognizer2 requireGestureRecognizerToFail:self.tapZoneRecognizer];
+- (UISwipeGestureRecognizer *)previousArticleRecognizer {
+    if (!previousArticleRecognizer) {
+        previousArticleRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+        previousArticleRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        previousArticleRecognizer.delegate = self;
     }
-    return tapZoneRecognizer2;
+    return previousArticleRecognizer;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -614,26 +620,47 @@
     //}
 }
 
-- (void)handleTap:(UITapGestureRecognizer *)gesture {
-    if (gesture.state == UIGestureRecognizerStateEnded) {
-        CGPoint loc = [gesture locationInView:self.webView];
-        double w = self.webView.frame.size.width;
-        if (loc.x < 150) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"LeftTapZone" object:self userInfo:nil];
-        }
-        if (loc.x > (w - 150)) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"RightTapZone" object:self userInfo:nil];
-        }
-    }
-}
-
-- (void)handleTap2:(UITapGestureRecognizer *)gesture {
-    //Do Nothing NSLog(@"Gesture 2");
-}
-
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    CGPoint loc = [gestureRecognizer locationInView:self.webView];
+    float h = self.webView.frame.size.height;
+    float q = h / 4;
+    if ([gestureRecognizer isEqual:self.nextArticleRecognizer]) {
+        return YES;
+    }
+    if ([gestureRecognizer isEqual:self.previousArticleRecognizer]) {
+        if (loc.y > q) {
+            if (loc.y < (h - q)) {
+                return YES;
+            }
+        }
+        return NO;
+    }
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        if (loc.y < q) {
+            return YES;
+        }
+        if (loc.y > (3 * q)) {
+            return YES;
+        }
+        return NO;
+    }
+    return NO;
+}
+
+- (void)handleSwipe:(UISwipeGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        if ([gesture isEqual:self.previousArticleRecognizer]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"LeftTapZone" object:self userInfo:nil];
+        }
+        if ([gesture isEqual:self.nextArticleRecognizer]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"RightTapZone" object:self userInfo:nil];
+        }
+    }
 }
 
 #pragma mark - Reader settings

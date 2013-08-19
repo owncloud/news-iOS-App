@@ -86,8 +86,6 @@
 		D0BCAA521779065600C965F4 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA511779065500C965F4 /* Default-Portrait@2x~ipad.png */; };
 		D0BCAA541779066600C965F4 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA531779066600C965F4 /* Default-Landscape~ipad.png */; };
 		D0BCAA561779067500C965F4 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA551779067500C965F4 /* Default-Landscape@2x~ipad.png */; };
-		D0BCAA5B177907D300C965F4 /* OCBottomDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA58177907D300C965F4 /* OCBottomDeckController.m */; };
-		D0BCAA5C177907D300C965F4 /* OCTopDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA5A177907D300C965F4 /* OCTopDeckController.m */; };
 		D0BCAA64177907FD00C965F4 /* IISideController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA5F177907FD00C965F4 /* IISideController.m */; };
 		D0BCAA65177907FD00C965F4 /* IIViewDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA61177907FD00C965F4 /* IIViewDeckController.m */; };
 		D0BCAA66177907FD00C965F4 /* IIWrapController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA63177907FD00C965F4 /* IIWrapController.m */; };
@@ -312,10 +310,6 @@
 		D0BCAA511779065500C965F4 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait@2x~ipad.png"; path = "../Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		D0BCAA531779066600C965F4 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "../Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		D0BCAA551779067500C965F4 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x~ipad.png"; path = "../Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
-		D0BCAA57177907D300C965F4 /* OCBottomDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCBottomDeckController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D0BCAA58177907D300C965F4 /* OCBottomDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCBottomDeckController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D0BCAA59177907D300C965F4 /* OCTopDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCTopDeckController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D0BCAA5A177907D300C965F4 /* OCTopDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCTopDeckController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA5E177907FD00C965F4 /* IISideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IISideController.h; sourceTree = "<group>"; };
 		D0BCAA5F177907FD00C965F4 /* IISideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IISideController.m; sourceTree = "<group>"; };
 		D0BCAA60177907FD00C965F4 /* IIViewDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIViewDeckController.h; sourceTree = "<group>"; };
@@ -708,10 +702,6 @@
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
 				D0BCAA71177909A600C965F4 /* OCWebController.h */,
 				D0BCAA72177909A600C965F4 /* OCWebController.m */,
-				D0BCAA57177907D300C965F4 /* OCBottomDeckController.h */,
-				D0BCAA58177907D300C965F4 /* OCBottomDeckController.m */,
-				D0BCAA59177907D300C965F4 /* OCTopDeckController.h */,
-				D0BCAA5A177907D300C965F4 /* OCTopDeckController.m */,
 				D06CB21B179C5C1900A1310B /* TransparentToolbar.h */,
 				D06CB21C179C5C1900A1310B /* TransparentToolbar.m */,
 				D0F8274E17B2D83400BE84D7 /* OCFeedSettingsController.h */,
@@ -1250,8 +1240,6 @@
 			files = (
 				D0BCAA32177900C400C965F4 /* main.m in Sources */,
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
-				D0BCAA5B177907D300C965F4 /* OCBottomDeckController.m in Sources */,
-				D0BCAA5C177907D300C965F4 /* OCTopDeckController.m in Sources */,
 				D0BCAA64177907FD00C965F4 /* IISideController.m in Sources */,
 				D0BCAA65177907FD00C965F4 /* IIViewDeckController.m in Sources */,
 				D0BCAA66177907FD00C965F4 /* IIWrapController.m in Sources */,

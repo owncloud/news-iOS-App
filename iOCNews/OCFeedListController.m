@@ -141,10 +141,8 @@
     
     haveSyncData = YES;
     
-    IIViewDeckController *topDeckController = (IIViewDeckController *)self.viewDeckController.centerController;
-    UINavigationController *navController = (UINavigationController*)topDeckController.leftController;
+    UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
-    //[self.detailViewController writeCssTemplate];
     
     NSError *error;
     if (![[self fetchedResultsController] performFetch:&error]) {
@@ -190,11 +188,13 @@
             frame.size.width = 300;
             self.navigationController.view.frame = frame;
             self.viewDeckController.leftSize = 300;
+            self.viewDeckController.viewDeckController.leftSize = 20;
         } else {
             CGRect frame = self.navigationController.view.frame;
             frame.size.width = 300;
             self.navigationController.view.frame = frame;
             self.viewDeckController.leftSize = 300;
+            self.viewDeckController.viewDeckController.leftSize = 0;
         }
     }
 }
@@ -464,7 +464,7 @@
     } else {
         storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
     }
-    [self presentViewController: [storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES completion:nil];
+    [self.viewDeckController presentViewController: [storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES completion:nil];
 }
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
