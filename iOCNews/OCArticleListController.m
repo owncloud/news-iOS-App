@@ -349,6 +349,9 @@
             if (vCells.count > 0) {
                 NSIndexPath *topCell = [vCells objectAtIndex:0];
                 row = topCell.row;
+                if (row > 0) {
+                    --row;
+                }
                 NSLog(@"Top row: %d", row);
             }
             
