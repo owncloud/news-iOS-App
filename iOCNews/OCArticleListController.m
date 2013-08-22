@@ -37,7 +37,6 @@
 #import "NSString+HTML.h"
 #import "UILabel+VerticalAlignment.h"
 #import "AFNetworking.h"
-#import "OCAPIClient.h"
 #import "OCArticleImage.h"
 #import "TSMessage.h"
 #import "TransparentToolbar.h"
@@ -318,66 +317,58 @@
 }
 
 - (IBAction)doMarkRead:(id)sender {
-    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        if (self.feed.unreadCountValue > 0) {
-            if ([self.fetchedResultsController fetchedObjects].count > 0) {
-                NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                
-                [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-                    if (item.unreadValue) {
-                        [idsToMarkRead addObject:item.myId];
-                    }
-                }];
-                [self updateUnreadCount:idsToMarkRead];
-                self.markBarButtonItem.enabled = NO;
-            }
+    if (self.feed.unreadCountValue > 0) {
+        if ([self.fetchedResultsController fetchedObjects].count > 0) {
+            NSMutableArray *idsToMarkRead = [NSMutableArray new];
+            
+            [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                if (item.unreadValue) {
+                    [idsToMarkRead addObject:item.myId];
+                }
+            }];
+            [self updateUnreadCount:idsToMarkRead];
+            self.markBarButtonItem.enabled = NO;
         }
-    } else {
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
     }
 }
 
 - (void) markRowsRead {
-    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-
-        int unreadCount = self.feed.unreadCountValue;
+    int unreadCount = self.feed.unreadCountValue;
+    
+    if (unreadCount > 0) {
+        NSArray * vCells = self.tableView.indexPathsForVisibleRows;
+        __block int row = 0;
         
-        if (unreadCount > 0) {
-            NSArray * vCells = self.tableView.indexPathsForVisibleRows;
-            __block int row = 0;
-
-            if (vCells.count > 0) {
-                NSIndexPath *topCell = [vCells objectAtIndex:0];
-                row = topCell.row;
-                if (row > 0) {
-                    --row;
-                }
-                NSLog(@"Top row: %d", row);
+        if (vCells.count > 0) {
+            NSIndexPath *topCell = [vCells objectAtIndex:0];
+            row = topCell.row;
+            if (row > 0) {
+                --row;
             }
+            NSLog(@"Top row: %d", row);
+        }
+        
+        if ([self.fetchedResultsController fetchedObjects].count > 0) {
+            NSMutableArray *idsToMarkRead = [NSMutableArray new];
             
-            if ([self.fetchedResultsController fetchedObjects].count > 0) {
-                NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                
-                [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-                    if (idx >= row) {
-                        *stop = YES;
-                    }
-                    if (item.unreadValue) {
-                        [idsToMarkRead addObject:item.myId];
-                    }
-                }];
-
-                unreadCount = unreadCount - [idsToMarkRead count];
-                [self updateUnreadCount:idsToMarkRead];
-                self.markBarButtonItem.enabled = (unreadCount > 0);
-            }
+            [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                if (idx >= row) {
+                    *stop = YES;
+                }
+                if (item.unreadValue) {
+                    [idsToMarkRead addObject:item.myId];
+                }
+            }];
+            
+            unreadCount = unreadCount - [idsToMarkRead count];
+            [self updateUnreadCount:idsToMarkRead];
+            self.markBarButtonItem.enabled = (unreadCount > 0);
         }
     }
 }
 
 - (void) updateUnreadCount:(NSArray *)itemsToUpdate {
-    [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemsToUpdate forKey:@"items"] success:nil failure:nil];
-    [[OCNewsHelper sharedHelper] updateReadItems:itemsToUpdate];
+    [[OCNewsHelper sharedHelper] markItemsReadOffline:itemsToUpdate];
 }
 
 #pragma mark - Toolbar buttons

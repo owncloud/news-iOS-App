@@ -33,14 +33,13 @@
 #import "OCFeedListController.h"
 #import "IIViewDeckController.h"
 #import "OCFeedCell.h"
-#import "AFNetworking.h"
-#import "OCAPIClient.h"
 #import "OCLoginController.h"
 #import "TSMessage.h"
 #import "TransparentToolbar.h"
 #import "OCNewsHelper.h"
 #import "Feed.h"
 #import "FeedExtra.h"
+#import "UIImageView+WebCache.h"
 
 @interface OCFeedListController () {
     int parserCount;
@@ -49,8 +48,9 @@
     PopoverView *_popover;
 }
 
-- (void) updateItems;
 - (void) emailSupport:(NSNotification*)n;
+- (void) networkSuccess:(NSNotification*)n;
+- (void) networkError:(NSNotification*)n;
 
 @end
 
@@ -134,12 +134,9 @@
     
     //Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
 
-    int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
-    NSLog(@"Server status: %i", status);
-    
-    haveSyncData = YES;
-    
     UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
     
@@ -321,7 +318,7 @@
     if (indexPath.row < 2) {
         return NO;
     }
-    return ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0);
+    return YES;
 }
 
 
@@ -329,17 +326,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        __block NSString *feedId = [feed.myId stringValue];
-        
-        [[OCAPIClient sharedClient] deletePath:[NSString stringWithFormat:@"feeds/%@", feedId] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [[OCNewsHelper sharedHelper] deleteFeed:feed];
-            NSLog(@"Success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failure");
-            NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Deleting Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-        }];        
+        [[OCNewsHelper sharedHelper] deleteFeedOffline:[self.fetchedResultsController objectAtIndexPath:indexPath]];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -382,16 +369,12 @@
 #pragma mark - Actions
 
 - (IBAction)doAdd:(id)sender {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField * alertTextField = [alert textFieldAtIndex:0];
-        alertTextField.keyboardType = UIKeyboardTypeURL;
-        alertTextField.placeholder = @"http://example.com/feed";
-        [alert show];
-    } else {
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
-    }
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField * alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.keyboardType = UIKeyboardTypeURL;
+    alertTextField.placeholder = @"http://example.com/feed";
+    [alert show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -403,40 +386,7 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        NSString *newID = [[alertView textFieldAtIndex:0] text];
-        
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:newID, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
-        
-        [[OCAPIClient sharedClient] postPath:@"feeds" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Feeds: %@", responseObject);
-            
-            int newFeedId = [[OCNewsHelper sharedHelper] addFeed:responseObject];
-            
-            [self.tableView reloadData];
-            
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
-                                    [NSNumber numberWithInt:0], @"offset",
-                                    [NSNumber numberWithInt:0], @"type",
-                                    [NSNumber numberWithInt:newFeedId], @"id",
-                                    [NSNumber numberWithInt:1], @"getRead", nil];
-            
-            [[OCAPIClient sharedClient] getPath:@"items" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                //NSLog(@"Updated Items: %@", JSON);
-                NSDictionary *jsonDict = (NSDictionary *) responseObject;
-                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                [[OCNewsHelper sharedHelper] updateItems:newItems];
-                NSLog(@"Done");
-
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-                [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-
-            }];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Adding Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-
-        }];
+        [[OCNewsHelper sharedHelper] addFeedOffline:[[alertView textFieldAtIndex:0] text]];
     }
 }
 
@@ -489,24 +439,7 @@
 }
 
 - (IBAction)doRefresh:(id)sender {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
-        [[OCAPIClient sharedClient] getPath:@"feeds" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Feeds: %@", responseObject);
-            
-            [[OCNewsHelper sharedHelper] updateFeeds:responseObject];
-            [self updateItems];
-
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Updating Feeds" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-            [self.refreshControl endRefreshing];
-
-        }];
-    } else {
-        [self.refreshControl endRefreshing];
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
-    }
-    
+    [[OCNewsHelper sharedHelper] sync];
 }
 
 - (void) reloadRow:(NSIndexPath*)indexPath {
@@ -568,78 +501,14 @@
 
 #pragma mark - Feeds maintenance
 
-- (void) updateItems {
-    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        if ([[OCNewsHelper sharedHelper] itemCount] > 0) {
-            //NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-86400];
-            //[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[date timeIntervalSince1970]] forKey:@"LastModified"];
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]], @"lastModified",
-                                    [NSNumber numberWithInt:3], @"type",
-                                    [NSNumber numberWithInt:0], @"id", nil];
-            
-            [[OCAPIClient sharedClient] getPath:@"items/updated" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                //NSLog(@"Updated Items: %@", JSON);
-                NSDictionary *jsonDict = (NSDictionary *) responseObject;
-                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                
-                if (newItems.count > 0) {
-                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
-                    [[OCNewsHelper sharedHelper] updateItems:newItems];
-                }
-                
-                [self.refreshControl endRefreshing];
+- (void) networkSuccess:(NSNotification *)n {
+    [self.refreshControl endRefreshing];
+}
 
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-                [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Updating Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-            }];
-        } else { //first time
-            __block NSMutableArray *operations = [NSMutableArray new];
-            __block NSMutableArray *addedItems = [NSMutableArray new];
-            __block OCAPIClient *client = [OCAPIClient sharedClient];
-            [self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+- (void)networkError:(NSNotification *)n {
+    [self.refreshControl endRefreshing];
+    [TSMessage showNotificationInViewController:self.navigationController withTitle:[n.userInfo objectForKey:@"Title"] withMessage:[n.userInfo objectForKey:@"Message"] withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
 
-                NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
-                                        [NSNumber numberWithInt:0], @"offset",
-                                        [NSNumber numberWithInt:0], @"type",
-                                        feed.myId, @"id",
-                                        @"true", @"getRead", nil];
-                
-                NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
-                
-                AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                    
-                    //NSLog(@"New Items: %@", JSON);
-                    NSDictionary *jsonDict = (NSDictionary *) JSON;
-                    NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                    [addedItems addObjectsFromArray:newItems];
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                    NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-                    [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-                }];
-                BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
-                if (allowInvalid) {
-                    [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-                        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-                            [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-                        }
-                        
-                    }];
-                }
-
-                [operations addObject:itemOperation];
-            }];
-            
-            [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
-                NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
-            } completionBlock:^(NSArray *operations) {
-                [[OCNewsHelper sharedHelper] updateItems:addedItems];
-                [self.refreshControl endRefreshing];
-            }];
-        }
-    } else {
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
-    }
 }
 
 - (void) emailSupport:(NSNotification *)n {

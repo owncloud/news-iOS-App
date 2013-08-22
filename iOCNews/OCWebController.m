@@ -352,19 +352,15 @@
 }
 
 - (IBAction)doStar:(id)sender {
-    NSString *path;
     if ([sender isEqual:self.starBarButtonItem]) {
         self.item.starredValue = YES;
-        path = [NSString stringWithFormat:@"items/%@/%@/star", [self.item.feedId stringValue], self.item.guidHash];
+        [[OCNewsHelper sharedHelper] starItemOffline:self.item.myId];
     }
     if ([sender isEqual:self.unstarBarButtonItem]) {
         self.item.starredValue = NO;
-        path = [NSString stringWithFormat:@"items/%@/%@/unstar", [self.item.feedId stringValue], self.item.guidHash];
+        [[OCNewsHelper sharedHelper] unstarItemOffline:self.item.myId];
     }
     [self updateToolbar];
-    
-    [[OCAPIClient sharedClient] putPath:path parameters:nil success:nil failure:nil];
-    [[OCNewsHelper sharedHelper] updateStarredCount];
 }
 
 #pragma mark - UIWebView delegate

@@ -1,4 +1,10 @@
 {
+	ItemsToUnstar = ();
+	ItemsToStar = ();
+	ItemsToMarkUnread = ();
+	ItemsToMarkRead = ();
+	FeedsToDelete = ();
+	FeedsToAdd = ();
 	"AllowInvalidSSLCertificate" = NO;
 	LastModified = 1373159596;
 	Server = "";
