@@ -99,27 +99,41 @@
 - (void)configureView
 {
     if (self.item) {
+        __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        imageView.frame = self.view.frame;
+        imageView.image = [self screenshot];
+        [self.view insertSubview:imageView atIndex:0];
+        
         [self.view setNeedsDisplay];
         [UIView transitionWithView:self.view
-                          duration:0.2
+                          duration:0.3
                            options:UIViewAnimationOptionTransitionCrossDissolve
                         animations:^{
+                            
                             if ([self webView] != nil) {
                                 [[self webView] removeFromSuperview];
                                 [self webView].delegate =nil;
                                 self.webView = nil;
                             }
-                            self.webView = [[UIWebView alloc]initWithFrame:[self view].frame];
+                            
+                            self.webView = [[UIWebView alloc]initWithFrame:self.view.frame];
                             self.webView.scalesPageToFit = YES;
                             self.webView.delegate = self;
                             self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                            [[self view] addSubview:self.webView];
+                            self.webView.scrollView.directionalLockEnabled = YES;
+                            [[self view] insertSubview:self.webView belowSubview:imageView];
                             [self.webView addGestureRecognizer:self.nextArticleRecognizer];
                             [self.webView addGestureRecognizer:self.previousArticleRecognizer];
 
+                            
+                            [imageView removeFromSuperview];
                             [self.view.layer displayIfNeeded];
                         }
-                        completion:NULL];
+                        completion:^(BOOL finished) {
+                            if (finished) {
+                                imageView = nil;
+                            }
+                        }];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
@@ -381,7 +395,7 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft) ||
@@ -592,7 +606,7 @@
     }
     return previousArticleRecognizer;
 }
-
+/*
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     //NSURL *url = self.webView.request.URL;
     //if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
@@ -615,7 +629,7 @@
     //    return false;
     //}
 }
-
+*/
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
@@ -724,6 +738,17 @@
     if ([self webView] != nil) {
         [self.webView reload];
     }
+}
+
+- (UIImage*)screenshot {
+    //CGRect rect = CGRectMake(0, 0, 320, 480);
+    UIGraphicsBeginImageContextWithOptions(self.view.frame.size, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [self.view.layer renderInContext:context];
+    UIImage *capturedScreen = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return capturedScreen;
 }
 
 - (void)popoverViewDidDismiss:(PopoverView *)popoverView {
