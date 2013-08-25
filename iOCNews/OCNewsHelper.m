@@ -439,11 +439,11 @@
         __block NSMutableArray *addedItems = [NSMutableArray new];
         __block OCAPIClient *client = [OCAPIClient sharedClient];
         
-        NSFetchRequest *feedsFetcher = [[NSFetchRequest alloc] init];
-        [feedsFetcher setEntity:[NSEntityDescription entityForName:@"Feeds" inManagedObjectContext:self.context]];
+        NSFetchRequest *feedFetcher = [[NSFetchRequest alloc] init];
+        [feedFetcher setEntity:[NSEntityDescription entityForName:@"Feed" inManagedObjectContext:self.context]];
         
         NSError *error = nil;
-        NSArray *feeds = [self.context executeFetchRequest:feedsFetcher error:&error];
+        NSArray *feeds = [self.context executeFetchRequest:feedFetcher error:&error];
         
         [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
             
