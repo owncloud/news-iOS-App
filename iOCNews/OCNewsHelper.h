@@ -41,6 +41,10 @@
 @property (nonatomic, retain) NSManagedObjectModel *objectModel;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *coordinator;
 
+@property (nonatomic, strong, readonly) NSFetchRequest *feedsRequest;
+@property (nonatomic, strong, readonly) NSFetchRequest *feedRequest;
+@property (nonatomic, strong, readonly) NSFetchRequest *itemRequest;
+
 + (OCNewsHelper *)sharedHelper;
 - (NSManagedObjectContext *)context;
 - (NSURL *)documentsDirectoryURL;

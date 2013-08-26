@@ -56,6 +56,9 @@
 @synthesize context;
 @synthesize objectModel;
 @synthesize coordinator;
+@synthesize feedsRequest;
+@synthesize feedRequest;
+@synthesize itemRequest;
 
 + (OCNewsHelper*)sharedHelper {
     static dispatch_once_t once_token;
@@ -203,13 +206,10 @@
 }
 
 - (void)deleteFeed:(Feed*)feed {
-    NSFetchRequest *feedItemsFetcher = [[NSFetchRequest alloc] init];
-    [feedItemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-    [feedItemsFetcher setIncludesPropertyValues:NO];
-    [feedItemsFetcher setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
+    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
     
     NSError *error = nil;
-    NSArray *feedItems = [self.context executeFetchRequest:feedItemsFetcher error:&error];
+    NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
     for (Item *item in feedItems) {
         [self.context deleteObject:item];
     }
@@ -239,20 +239,14 @@
 
 - (void)updateFeeds:(id)JSON {
     //Remove previous
-    NSFetchRequest *oldFeedsFetcher = [[NSFetchRequest alloc] init];
-    [oldFeedsFetcher setEntity:[NSEntityDescription entityForName:@"Feed" inManagedObjectContext:self.context]];
-
     NSError *error = nil;
-    NSArray *oldFeeds = [self.context executeFetchRequest:oldFeedsFetcher error:&error];
+    NSArray *oldFeeds = [self.context executeFetchRequest:self.feedRequest error:&error];
     NSArray *knownIds = [oldFeeds valueForKey:@"myId"];
     
     NSLog(@"Count: %i", oldFeeds.count);
     
-    NSFetchRequest *feedsFetcher = [[NSFetchRequest alloc] init];
-    [feedsFetcher setEntity:[NSEntityDescription entityForName:@"Feeds" inManagedObjectContext:self.context]];
-    
     error = nil;
-    NSArray *feeds = [self.context executeFetchRequest:feedsFetcher error:&error];
+    NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
     
     //Add the new feeds
     NSDictionary *jsonDict = (NSDictionary *) JSON;
@@ -336,20 +330,15 @@
 }
 
 - (Item*)itemWithId:(NSNumber *)anId {
-    NSFetchRequest *itemFetcher = [[NSFetchRequest alloc] init];
-    [itemFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-    [itemFetcher setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
-    NSArray *myItems = [self.context executeFetchRequest:itemFetcher error:nil];
+    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
+    NSArray *myItems = [self.context executeFetchRequest:self.itemRequest error:nil];
     return (Item*)[myItems lastObject];
 }
 
 - (int)itemCount {
-    NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
-    [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-    [itemsFetcher setIncludesPropertyValues:NO]; //only fetch the managedObjectID
-    
+    [self.itemRequest setPredicate:nil];
     NSError *error = nil;
-    NSArray *items = [self.context executeFetchRequest:itemsFetcher error:&error];
+    NSArray *items = [self.context executeFetchRequest:self.itemRequest error:&error];
     NSLog(@"Count: %i", items.count);
     return items.count;
 }
@@ -376,12 +365,10 @@
                     [feedsWithNewItems addObject:[item objectForKey:@"feedId"]];
                 }];
                 NSLog(@"Item count: %i; possibleDuplicateItems count: %i", newItems.count, possibleDuplicateItems.count);
-                NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
-                [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-                [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
+                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
                 
                 NSError *error = nil;
-                NSArray *duplicateItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+                NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:&error];
                 NSLog(@"duplicateItems Count: %i", duplicateItems.count);
                 
                 for (NSManagedObject *item in duplicateItems) {
@@ -394,13 +381,13 @@
                 }];
                 
                 NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
-                [itemsFetcher setSortDescriptors:[NSArray arrayWithObject:sort]];
+                [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
                 
                 [feedsWithNewItems enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-                    [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", obj]];
+                    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", obj]];
                     
                     NSError *error = nil;
-                    NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:itemsFetcher error:&error]];
+                    NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
                     if (feedItems.count > 200) {
                         NSLog(@"Ids: %@", [feedItems valueForKey:@"myId"]);
                         NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
@@ -439,11 +426,8 @@
         __block NSMutableArray *addedItems = [NSMutableArray new];
         __block OCAPIClient *client = [OCAPIClient sharedClient];
         
-        NSFetchRequest *feedFetcher = [[NSFetchRequest alloc] init];
-        [feedFetcher setEntity:[NSEntityDescription entityForName:@"Feed" inManagedObjectContext:self.context]];
-        
         NSError *error = nil;
-        NSArray *feeds = [self.context executeFetchRequest:feedFetcher error:&error];
+        NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
         
         [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
             
@@ -453,9 +437,9 @@
                                         feed.myId, @"id",
                                         @"true", @"getRead", nil];
             
-            NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
+            NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
             
-            AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                 
                 //NSLog(@"New Items: %@", JSON);
                 NSDictionary *jsonDict = (NSDictionary *) JSON;
@@ -494,12 +478,10 @@
 }
 
 - (void)updateReadItems:(NSArray *)items {
-    NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
-    [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-    [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", items]];
+    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", items]];
 
     NSError *error = nil;
-    NSArray *allItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+    NSArray *allItems = [self.context executeFetchRequest:self.itemRequest error:&error];
     if (!allItems || error) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
@@ -527,23 +509,18 @@
 }
 
 - (void)updateStarredCount {
-    NSFetchRequest *itemsFetcher = [[NSFetchRequest alloc] init];
-    [itemsFetcher setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
-    [itemsFetcher setPredicate:[NSPredicate predicateWithFormat: @"starred == 1"]];
+    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"starred == 1"]];
     
     NSError *error = nil;
-    NSArray *starredItems = [self.context executeFetchRequest:itemsFetcher error:&error];
+    NSArray *starredItems = [self.context executeFetchRequest:self.itemRequest error:&error];
     if (!starredItems || error) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     NSLog(@"Count: %i", starredItems.count);
     
-    NSFetchRequest *feedsFetcher = [[NSFetchRequest alloc] init];
-    [feedsFetcher setEntity:[NSEntityDescription entityForName:@"Feeds" inManagedObjectContext:self.context]];
-    
     error = nil;
-    NSArray *feeds = [self.context executeFetchRequest:feedsFetcher error:&error];
+    NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
     if (!feeds || error) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
@@ -678,6 +655,31 @@
     [self updateStarredCount];
 }
 
+- (NSFetchRequest *)feedsRequest {
+    if (!feedsRequest) {
+        feedsRequest = [[NSFetchRequest alloc] init];
+        [feedsRequest setEntity:[NSEntityDescription entityForName:@"Feeds" inManagedObjectContext:self.context]];
+    }
+    return feedsRequest;
+}
+
+- (NSFetchRequest *)feedRequest {
+    if (!feedRequest) {
+        feedRequest = [[NSFetchRequest alloc] init];
+        [feedRequest setEntity:[NSEntityDescription entityForName:@"Feed" inManagedObjectContext:self.context]];
+        feedRequest.predicate = nil;
+    }
+    return feedRequest;
+}
+
+- (NSFetchRequest *)itemRequest {
+    if (!itemRequest) {
+        itemRequest = [[NSFetchRequest alloc] init];
+        [itemRequest setEntity:[NSEntityDescription entityForName:@"Item" inManagedObjectContext:self.context]];
+        itemRequest.predicate = nil;
+    }
+    return itemRequest;
+}
 - (NSURL*) documentsDirectoryURL {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
