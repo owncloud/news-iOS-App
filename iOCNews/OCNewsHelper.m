@@ -74,9 +74,39 @@
     if (!self) {
         return nil;
     }
-    Feeds *newFeeds = [NSEntityDescription insertNewObjectForEntityForName:@"Feeds" inManagedObjectContext:self.context];
-    newFeeds.starredCount = [NSNumber numberWithInt:0];
-    newFeeds.newestItemId = [NSNumber numberWithInt:0];
+    
+    NSError *error = nil;
+    NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
+    if (!feeds.count) {
+        Feeds *newFeeds = [NSEntityDescription insertNewObjectForEntityForName:@"Feeds" inManagedObjectContext:self.context];
+        newFeeds.starredCount = [NSNumber numberWithInt:0];
+        newFeeds.newestItemId = [NSNumber numberWithInt:0];
+    }
+    
+    error = nil;
+    NSArray *feed = [self.context executeFetchRequest:self.feedRequest error:&error];
+    
+    if (!feed.count) {
+        Feed *allFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
+        allFeed.myId = [NSNumber numberWithInt:-2];
+        allFeed.url = @"";
+        allFeed.title = @"All Articles";
+        allFeed.faviconLink = @"favicon";
+        allFeed.added = [NSNumber numberWithInt:1];
+        allFeed.folderId = [NSNumber numberWithInt:0];
+        allFeed.unreadCount = [NSNumber numberWithInt:0];
+        allFeed.link = @"";
+        
+        Feed *starredFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
+        starredFeed.myId = [NSNumber numberWithInt:-1];
+        starredFeed.url = @"";
+        starredFeed.title = @"Starred";
+        starredFeed.faviconLink = @"star_icon";
+        starredFeed.added = [NSNumber numberWithInt:2];
+        starredFeed.folderId = [NSNumber numberWithInt:0];
+        starredFeed.unreadCount = [NSNumber numberWithInt:0];
+        starredFeed.link = @"";
+    }
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     feedsToAdd = [[prefs arrayForKey:@"FeedsToAdd"] mutableCopy];
@@ -86,6 +116,7 @@
     itemsToStar = [[prefs arrayForKey:@"ItemsToStar"] mutableCopy];
     itemsToUnstar = [[prefs arrayForKey:@"ItemsToUnstar"] mutableCopy];
 
+    [self updateStarredCount];
     [self saveContext];
 
     __unused int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
@@ -258,69 +289,45 @@
     
     NSArray *newIds = [newFeeds valueForKey:@"id"];
     NSLog(@"Known: %@; New: %@", knownIds, newIds);
-
-    if (oldFeeds.count == 0) {
-        Feed *allFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-        allFeed.myId = [NSNumber numberWithInt:-2];
-        allFeed.url = @"";
-        allFeed.title = @"All Articles";
-        allFeed.faviconLink = @"favicon";
-        allFeed.added = [NSNumber numberWithInt:1];
-        allFeed.folderId = [NSNumber numberWithInt:0];
-        allFeed.unreadCount = [NSNumber numberWithInt:0];
-        allFeed.link = @"";
-        
-        Feed *starredFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-        starredFeed.myId = [NSNumber numberWithInt:-1];
-        starredFeed.url = @"";
-        starredFeed.title = @"Starred";
-        starredFeed.faviconLink = @"star_icon";
-        starredFeed.added = [NSNumber numberWithInt:2];
-        starredFeed.folderId = [NSNumber numberWithInt:0];
-        starredFeed.unreadCount = theFeeds.starredCount;
-        starredFeed.link = @"";
-        
-        [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feed, NSUInteger idx, BOOL *stop ) {
-            [self addFeedFromDictionary:feed];
-        }];
-    } else {
-        NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
-        [newOnServer removeObjectsInArray:knownIds];
-        NSLog(@"New on server: %@", newOnServer);
-        [newOnServer enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"id == %@", obj];
-            NSArray * matches = [newFeeds filteredArrayUsingPredicate:predicate];
-            if (matches.count > 0) {
-                [self addFeedFromDictionary:[matches lastObject]];
-            }
-        }];
-        
-        NSMutableArray *deletedOnServer = [NSMutableArray arrayWithArray:knownIds];
-        [deletedOnServer removeObjectsInArray:newIds];
-        [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
-        NSLog(@"Deleted on server: %@", deletedOnServer);
-        while (deletedOnServer.count > 0) {
-            Feed *feedToRemove = [self feedWithId:[[deletedOnServer lastObject] integerValue]];
-            [self.context deleteObject:feedToRemove];
-            [deletedOnServer removeLastObject];
+    
+    NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
+    [newOnServer removeObjectsInArray:knownIds];
+    NSLog(@"New on server: %@", newOnServer);
+    [newOnServer enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"id == %@", obj];
+        NSArray * matches = [newFeeds filteredArrayUsingPredicate:predicate];
+        if (matches.count > 0) {
+            [self addFeedFromDictionary:[matches lastObject]];
         }
-        [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feedDict, NSUInteger idx, BOOL *stop) {
-            Feed *feed = [self feedWithId:[[feedDict objectForKey:@"id"] integerValue]];
-            feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
-        }];
-        
-        for (NSNumber *feedId in feedsToDelete) {
-            Feed *feed = [self feedWithId:[feedId integerValue]];
-            [self deleteFeedOffline:feed]; //the feed will have been readded as new on server
-        }
-        [feedsToDelete removeAllObjects];
-        
-        for (NSString *urlString in feedsToAdd) {
-            [self addFeedOffline:urlString];
-        }
-        [feedsToAdd removeAllObjects];
+    }];
+    
+    NSMutableArray *deletedOnServer = [NSMutableArray arrayWithArray:knownIds];
+    [deletedOnServer removeObjectsInArray:newIds];
+    [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
+    NSLog(@"Deleted on server: %@", deletedOnServer);
+    while (deletedOnServer.count > 0) {
+        Feed *feedToRemove = [self feedWithId:[[deletedOnServer lastObject] integerValue]];
+        [self.context deleteObject:feedToRemove];
+        [deletedOnServer removeLastObject];
     }
+    [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feedDict, NSUInteger idx, BOOL *stop) {
+        Feed *feed = [self feedWithId:[[feedDict objectForKey:@"id"] integerValue]];
+        feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
+    }];
+    
+    for (NSNumber *feedId in feedsToDelete) {
+        Feed *feed = [self feedWithId:[feedId integerValue]];
+        [self deleteFeedOffline:feed]; //the feed will have been readded as new on server
+    }
+    [feedsToDelete removeAllObjects];
+    
+    for (NSString *urlString in feedsToAdd) {
+        [self addFeedOffline:urlString];
+    }
+    [feedsToAdd removeAllObjects];
+
     [self updateTotalUnreadCount];
+    [self updateStarredCount];
 }
 
 - (Feed*)feedWithId:(int)anId {
