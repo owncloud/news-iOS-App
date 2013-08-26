@@ -1,4 +1,5 @@
 {
+	HideRead = NO;
 	ItemsToUnstar = ();
 	ItemsToStar = ();
 	ItemsToMarkUnread = ();

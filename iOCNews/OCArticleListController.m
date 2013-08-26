@@ -106,7 +106,7 @@
         fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                        managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
                                                                                   cacheName:nil];
-        fetchedResultsController.delegate = self;
+        
     }
     return fetchedResultsController;
 }
@@ -123,7 +123,16 @@
     } else if (self.feed.myIdValue == -1) {
         fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
     } else {
-        fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
+            NSArray *predArray = @[pred1, pred2];
+            fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+            fetchedResultsController.delegate = nil;
+        } else {
+            fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+            fetchedResultsController.delegate = self;
+        }
     }
     
     self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
@@ -369,6 +378,7 @@
 
 - (void) updateUnreadCount:(NSArray *)itemsToUpdate {
     [[OCNewsHelper sharedHelper] markItemsReadOffline:itemsToUpdate];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Toolbar buttons

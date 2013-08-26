@@ -40,17 +40,19 @@
 #import "Feed.h"
 #import "FeedExtra.h"
 #import "UIImageView+WebCache.h"
+#import "KxMenu.h"
 
 @interface OCFeedListController () {
     int parserCount;
     int currentIndex;
     BOOL haveSyncData;
-    PopoverView *_popover;
 }
 
 - (void) emailSupport:(NSNotification*)n;
 - (void) networkSuccess:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
+- (void) showMenu;
+- (void) doHideRead;
 
 @end
 
@@ -69,6 +71,14 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Feed" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
     
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
+            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
+            NSArray *predArray = @[pred1, pred2];
+            NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+            NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
+            [fetchRequest setPredicate:pred4];
+        }
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
         [fetchRequest setFetchBatchSize:20];
@@ -99,12 +109,12 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 
     //self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    [self setEditing:NO animated:NO];
+    //[self setEditing:NO animated:NO];
     
     currentIndex = -1;
     
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpace.width = 5.0f;
+    //UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    //fixedSpace.width = 5.0f;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     NSArray *items = [NSArray arrayWithObjects:
@@ -115,7 +125,7 @@
                       
                       nil];
     
-    TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
+    TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
     toolbar.items = items;
     toolbar.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
@@ -368,6 +378,34 @@
 
 #pragma mark - Actions
 
+- (void)showMenu {
+    NSArray *menuItems =
+    @[
+      [KxMenuItem menuItem:@"Log In"
+                     image:nil
+                    target:self
+                    action:@selector(doEdit:)],
+      
+      [KxMenuItem menuItem:@"Add Feed"
+                     image:nil
+                    target:self
+                    action:@selector(doAdd:)],
+      
+      [KxMenuItem menuItem:[[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read"
+                     image:nil
+                    target:self
+                    action:@selector(doHideRead)],
+      ];
+    
+    [KxMenu setTitleFont:[UIFont boldSystemFontOfSize:18]];
+    UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
+
+    [KxMenu showMenuInView:self.viewDeckController.view
+                  fromRect:tbar.frame
+                 menuItems:menuItems];
+}
+
+
 - (IBAction)doAdd:(id)sender {
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -388,6 +426,28 @@
     if (buttonIndex == 1) {
         [[OCNewsHelper sharedHelper] addFeedOffline:[[alertView textFieldAtIndex:0] text]];
     }
+}
+
+- (void)doHideRead {
+    BOOL hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
+    hideRead = !hideRead;
+    [[NSUserDefaults standardUserDefaults] setBool:hideRead forKey:@"HideRead"];
+    if (hideRead) {
+        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
+        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
+        NSArray *predArray = @[pred1, pred2];
+        NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+        NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
+        [[self.fetchedResultsController fetchRequest] setPredicate:pred4];
+    } else{
+        [[self.fetchedResultsController fetchRequest] setPredicate:nil];
+    }
+    NSError *error;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }    
+    [self.tableView reloadData];
 }
 
 - (IBAction)doInfo:(id)sender {
@@ -415,7 +475,7 @@
     }
     [self.viewDeckController presentViewController: [storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES completion:nil];
 }
-
+/*
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
 //    if (editing) {
@@ -437,7 +497,7 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
 //    }
 }
-
+*/
 - (IBAction)doRefresh:(id)sender {
     [[OCNewsHelper sharedHelper] sync];
 }
@@ -536,12 +596,13 @@
 - (UIBarButtonItem *)addBarButtonItem {
     
     if (!addBarButtonItem) {
-        addBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(doAdd:)];
+        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+        addBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     
     return addBarButtonItem;
 }
-
+/*
 - (UIBarButtonItem *)infoBarButtonItem {
     
     if (!infoBarButtonItem) {
@@ -560,7 +621,7 @@
     }
     return editBarButtonItem;
 }
-/*
+
 - (UIPopoverController *) settingsPopover {
     if (!settingsPopover) {
         
@@ -592,10 +653,6 @@
         
     }
     return settingsPopover;
-}
-
-- (void)popoverViewDidDismiss:(PopoverView *)popoverView {
-    _popover = nil;
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
