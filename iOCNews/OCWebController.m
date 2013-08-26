@@ -99,42 +99,58 @@
 - (void)configureView
 {
     if (self.item) {
-        __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-        imageView.frame = self.view.frame;
-        imageView.image = [self screenshot];
-        [self.view insertSubview:imageView atIndex:0];
-        
-        [self.view setNeedsDisplay];
-        [UIView transitionWithView:self.view
-                          duration:0.3
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            
-                            if ([self webView] != nil) {
-                                [[self webView] removeFromSuperview];
-                                [self webView].delegate =nil;
-                                self.webView = nil;
-                            }
-                            
-                            self.webView = [[UIWebView alloc]initWithFrame:self.view.frame];
-                            self.webView.scalesPageToFit = YES;
-                            self.webView.delegate = self;
-                            self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                            self.webView.scrollView.directionalLockEnabled = YES;
-                            [[self view] insertSubview:self.webView belowSubview:imageView];
-                            [self.webView addGestureRecognizer:self.nextArticleRecognizer];
-                            [self.webView addGestureRecognizer:self.previousArticleRecognizer];
+        if ([self.viewDeckController isAnySideOpen]) {
+            if (self.webView != nil) {
+                [self.webView removeFromSuperview];
+                self.webView.delegate =nil;
+                self.webView = nil;
+            }
+            
+            self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+            self.webView.scalesPageToFit = YES;
+            self.webView.delegate = self;
+            self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.webView.scrollView.directionalLockEnabled = YES;
+            [self.view insertSubview:self.webView atIndex:0];
 
-                            
-                            [imageView removeFromSuperview];
-                            [self.view.layer displayIfNeeded];
-                        }
-                        completion:^(BOOL finished) {
-                            if (finished) {
-                                imageView = nil;
+        } else {
+            NSLog(@"Now here");
+            __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+            imageView.frame = self.view.frame;
+            imageView.image = [self screenshot];
+            [self.view insertSubview:imageView atIndex:0];
+            
+            [self.view setNeedsDisplay];
+            [UIView transitionWithView:self.view
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{
+                                
+                                if (self.webView != nil) {
+                                    [self.webView removeFromSuperview];
+                                    self.webView.delegate =nil;
+                                    self.webView = nil;
+                                }
+                                
+                                self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+                                self.webView.scalesPageToFit = YES;
+                                self.webView.delegate = self;
+                                self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                                self.webView.scrollView.directionalLockEnabled = YES;
+                                [self.view insertSubview:self.webView belowSubview:imageView];
+                                [imageView removeFromSuperview];
+                                [self.view.layer displayIfNeeded];
                             }
-                        }];
+                            completion:^(BOOL finished) {
+                                if (finished) {
+                                    imageView = nil;
+                                }
+                            }];
+        }
         
+        [self.webView addGestureRecognizer:self.nextArticleRecognizer];
+        [self.webView addGestureRecognizer:self.previousArticleRecognizer];
+
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
                 self.navigationItem.title = self.item.title;
