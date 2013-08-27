@@ -373,7 +373,7 @@
                                     feed.myId, @"id", nil];
             
             
-            NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
+            NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items/updated" parameters:itemParams];
             
             AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                 
