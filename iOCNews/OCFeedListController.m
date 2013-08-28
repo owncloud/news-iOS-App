@@ -80,7 +80,6 @@
                                         managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
                                         cacheName:nil];
         fetchedResultsController.delegate = self;
-        [self updatePredicate];
     }
     return fetchedResultsController;
 }
@@ -148,13 +147,7 @@
 
     UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
-    
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-
+    [self updatePredicate];
     [self.viewDeckController openLeftView];
     [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
 }
@@ -433,15 +426,6 @@
     BOOL hideRead = [prefs boolForKey:@"HideRead"];
     [prefs setBool:!hideRead forKey:@"HideRead"];
     [prefs synchronize];
-    [self updatePredicate];
-
-    NSError *error;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-
-    [self.tableView reloadData];
 }
 
 - (IBAction)doInfo:(id)sender {
@@ -569,6 +553,13 @@
     } else{
         [[self.fetchedResultsController fetchRequest] setPredicate:nil];
     }
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Feeds maintenance
