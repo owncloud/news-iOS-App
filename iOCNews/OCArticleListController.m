@@ -55,6 +55,7 @@
 - (void) nextArticle:(NSNotification*)n;
 - (void) articleChangeInFeed:(NSNotification*)n;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
+- (void) updatePredicate;
 
 @end
 
@@ -115,34 +116,7 @@
 {
     // Update the user interface for the detail item.
     self.navigationItem.title = self.feed.extra.displayTitle; // [self.feed objectForKey:@"title"];
-    
-    NSError *error;
-    NSPredicate *fetchPredicate;
-    if (self.feed.myIdValue == -2) {
-        fetchPredicate = nil;
-    } else if (self.feed.myIdValue == -1) {
-        fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
-    } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
-            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
-            NSArray *predArray = @[pred1, pred2];
-            fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-            fetchedResultsController.delegate = nil;
-        } else {
-            fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-            fetchedResultsController.delegate = self;
-        }
-    }
-    
-    self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
-    
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-
-    [self.tableView reloadData];
+    [self updatePredicate];
     [self scrollToTop];
 }
 
@@ -191,6 +165,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextArticle:) name:@"RightTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(articleChangeInFeed:) name:@"ArticleChangeInFeed" object:nil];
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"HideRead"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
 }
 
 - (void)viewDidUnload
@@ -199,6 +178,7 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.fetchedResultsController = nil;
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -378,6 +358,44 @@
 
 - (void) updateUnreadCount:(NSArray *)itemsToUpdate {
     [[OCNewsHelper sharedHelper] markItemsReadOffline:itemsToUpdate];
+    [self.tableView reloadData];
+}
+
+- (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
+    if([keyPath isEqual:@"HideRead"]) {
+        [self updatePredicate];
+    }
+}
+
+- (void)updatePredicate {
+    NSError *error;
+    NSPredicate *fetchPredicate;
+    if (self.feed.myIdValue == -1) {
+        fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
+            NSArray *predArray = @[pred1, pred2];
+            fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+            self.fetchedResultsController.delegate = nil;
+        } else {
+            if (self.feed.myIdValue == -2) {
+                fetchPredicate = nil;
+            } else {
+                fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+            }
+            self.fetchedResultsController.delegate = self;
+        }
+    }
+    
+    self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
+    
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
     [self.tableView reloadData];
 }
 

@@ -53,6 +53,7 @@
 - (void) networkError:(NSNotification*)n;
 - (void) showMenu;
 - (void) doHideRead;
+- (void) updatePredicate;
 
 @end
 
@@ -70,15 +71,7 @@
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Feed" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
-    
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
-            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
-            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
-            NSArray *predArray = @[pred1, pred2];
-            NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-            NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
-            [fetchRequest setPredicate:pred4];
-        }
+
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
         [fetchRequest setFetchBatchSize:20];
@@ -87,6 +80,7 @@
                                         managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
                                         cacheName:nil];
         fetchedResultsController.delegate = self;
+        [self updatePredicate];
     }
     return fetchedResultsController;
 }
@@ -146,6 +140,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"HideRead"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
 
     UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
@@ -166,6 +165,7 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.fetchedResultsController = nil;
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -429,24 +429,18 @@
 }
 
 - (void)doHideRead {
-    BOOL hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
-    hideRead = !hideRead;
-    [[NSUserDefaults standardUserDefaults] setBool:hideRead forKey:@"HideRead"];
-    if (hideRead) {
-        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
-        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
-        NSArray *predArray = @[pred1, pred2];
-        NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-        NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
-        [[self.fetchedResultsController fetchRequest] setPredicate:pred4];
-    } else{
-        [[self.fetchedResultsController fetchRequest] setPredicate:nil];
-    }
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    BOOL hideRead = [prefs boolForKey:@"HideRead"];
+    [prefs setBool:!hideRead forKey:@"HideRead"];
+    [prefs synchronize];
+    [self updatePredicate];
+
     NSError *error;
     if (![self.fetchedResultsController performFetch:&error]) {
         // Update to handle the error appropriately.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }    
+    }
+
     [self.tableView reloadData];
 }
 
@@ -558,6 +552,24 @@
     [self.tableView reloadRowsAtIndexPaths:@[[self.fetchedResultsController indexPathForObject:settings.feed]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+- (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
+    if([keyPath isEqual:@"HideRead"]) {
+        [self updatePredicate];
+    }
+}
+
+- (void)updatePredicate {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
+        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
+        NSArray *predArray = @[pred1, pred2];
+        NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+        NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
+        [[self.fetchedResultsController fetchRequest] setPredicate:pred4];
+    } else{
+        [[self.fetchedResultsController fetchRequest] setPredicate:nil];
+    }
+}
 
 #pragma mark - Feeds maintenance
 
