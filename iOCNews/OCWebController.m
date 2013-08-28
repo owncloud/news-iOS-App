@@ -42,8 +42,9 @@
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
+#import "HexColor.h"
 
-@interface OCWebController () <UIPopoverControllerDelegate> {
+@interface OCWebController () <UIPopoverControllerDelegate, IIViewDeckControllerDelegate> {
     UIPopoverController *_activityPopover;
     PopoverView *_popover;
 }
@@ -53,6 +54,7 @@
 
 - (void)configureView;
 - (void) writeAndLoadHtml:(NSString*)html;
+- (UIColor*)myBackgroundColor;
 
 @end
 
@@ -212,7 +214,10 @@
             html = [self fixRelativeUrl:html baseUrlString:baseString];
             [self writeAndLoadHtml:html];
         }
+        if ([self.viewDeckController isAnySideOpen]) {
+        
         [self.viewDeckController closeLeftView];
+        }
         [self updateToolbar];
     }
 }
@@ -273,6 +278,8 @@
 
     [self updateToolbar];
     self.viewDeckController.panningGestureDelegate = self;
+    self.viewDeckController.delegate = self;
+    self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
     [self.viewDeckController toggleLeftView];
 }
 
@@ -661,7 +668,7 @@
     if ([gestureRecognizer isEqual:self.previousArticleRecognizer]) {
         if (loc.y > q) {
             if (loc.y < (h - q)) {
-                return YES;
+                return ![self.viewDeckController isAnySideOpen];
             }
         }
         return NO;
@@ -686,6 +693,20 @@
         if ([gesture isEqual:self.nextArticleRecognizer]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RightTapZone" object:self userInfo:nil];
         }
+    }
+}
+
+- (void)viewDeckController:(IIViewDeckController*)viewDeckController willOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
+    if (self.webView) {
+        [self.webView removeGestureRecognizer:self.nextArticleRecognizer];
+        [self.webView removeGestureRecognizer:self.previousArticleRecognizer];
+    }
+}
+
+- (void)viewDeckController:(IIViewDeckController*)viewDeckController willCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
+    if (self.webView) {
+        [self.webView addGestureRecognizer:self.nextArticleRecognizer];
+        [self.webView addGestureRecognizer:self.previousArticleRecognizer];
     }
 }
 
@@ -726,6 +747,14 @@
     [cssTemplate writeToURL:[docDir URLByAppendingPathComponent:@"rss.css"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
+- (UIColor*)myBackgroundColor {
+    NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
+    int backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
+    NSString *background = [backgrounds objectAtIndex:backgroundIndex];
+    UIColor *backColor = [UIColor colorWithHexString:background];
+    return backColor;
+}
+
 - (PHPrefViewController*)prefViewController {
     if (!prefViewController) {
         UIStoryboard *storyboard;
@@ -751,6 +780,7 @@
 -(void) settingsChanged:(NSString *)setting newValue:(NSUInteger)value {
     //NSLog(@"New Setting: %@ with value %d", setting, value);
     [self writeCss];
+    self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
     if ([self webView] != nil) {
         [self.webView reload];
     }

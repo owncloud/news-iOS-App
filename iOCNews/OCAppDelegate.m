@@ -62,7 +62,6 @@
     secondDeckController.sizeMode = IIViewDeckViewSizeMode;
     deckController.leftSize = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 40 : 10;
 
-    self.window.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     self.window.rootViewController = deckController;
     [self.window makeKeyAndVisible];
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];

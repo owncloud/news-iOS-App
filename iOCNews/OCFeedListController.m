@@ -148,6 +148,7 @@
     UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
     [self updatePredicate];
+    self.viewDeckController.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     [self.viewDeckController openLeftView];
     [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
 }

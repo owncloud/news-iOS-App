@@ -46,9 +46,6 @@
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D096831F179A134F00EC6E60 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D09682C0179A134F00EC6E60 /* TSMessage.m */; };
-		D096833D179A134F00EC6E60 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0968301179A134F00EC6E60 /* HexColor.m */; };
-		D096833E179A134F00EC6E60 /* LICENCE in Resources */ = {isa = PBXBuildFile; fileRef = D0968302179A134F00EC6E60 /* LICENCE */; };
-		D096833F179A134F00EC6E60 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D0968303179A134F00EC6E60 /* README.md */; };
 		D0968342179A134F00EC6E60 /* design.json in Resources */ = {isa = PBXBuildFile; fileRef = D0968307179A134F00EC6E60 /* design.json */; };
 		D0968343179A134F00EC6E60 /* NotificationBackgroundError.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968309179A134F00EC6E60 /* NotificationBackgroundError.png */; };
 		D0968344179A134F00EC6E60 /* NotificationBackgroundError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D096830A179A134F00EC6E60 /* NotificationBackgroundError@2x.png */; };
@@ -198,6 +195,7 @@
 		D0F1814317862B3900F719D9 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0F1814117862B3900F719D9 /* gear@2x.png */; };
 		D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */; };
 		D0FB275217CABA8800FABB09 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FB275117CABA8800FABB09 /* KxMenu.m */; };
+		D0FB275717CE8D3700FABB09 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FB275617CE8D3700FABB09 /* HexColor.m */; };
 		D0FD70791787626100EF1457 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0FD7080178F49EA00EF1457 /* star_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = D0FD707C178F49EA00EF1457 /* star_filled.png */; };
@@ -265,10 +263,6 @@
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D09682BF179A134F00EC6E60 /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
 		D09682C0179A134F00EC6E60 /* TSMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessage.m; sourceTree = "<group>"; };
-		D0968300179A134F00EC6E60 /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColor.h; sourceTree = "<group>"; };
-		D0968301179A134F00EC6E60 /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
-		D0968302179A134F00EC6E60 /* LICENCE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE; sourceTree = "<group>"; };
-		D0968303179A134F00EC6E60 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		D0968307179A134F00EC6E60 /* design.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = design.json; sourceTree = "<group>"; };
 		D0968309179A134F00EC6E60 /* NotificationBackgroundError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundError.png; sourceTree = "<group>"; };
 		D096830A179A134F00EC6E60 /* NotificationBackgroundError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundError@2x.png"; sourceTree = "<group>"; };
@@ -489,6 +483,8 @@
 		D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFeedSettingsController.m; sourceTree = "<group>"; };
 		D0FB275017CABA8800FABB09 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		D0FB275117CABA8800FABB09 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
+		D0FB275517CE8D3700FABB09 /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColor.h; sourceTree = "<group>"; };
+		D0FB275617CE8D3700FABB09 /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
 		D0FD70741787626100EF1457 /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLNode.h; sourceTree = "<group>"; };
 		D0FD70751787626100EF1457 /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
 		D0FD70761787626100EF1457 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
@@ -556,7 +552,6 @@
 			isa = PBXGroup;
 			children = (
 				D09682BE179A134F00EC6E60 /* Classes */,
-				D09682FF179A134F00EC6E60 /* HexColors */,
 				D0968306179A134F00EC6E60 /* Resources */,
 				D096831A179A134F00EC6E60 /* Views */,
 			);
@@ -570,17 +565,6 @@
 				D09682C0179A134F00EC6E60 /* TSMessage.m */,
 			);
 			path = Classes;
-			sourceTree = "<group>";
-		};
-		D09682FF179A134F00EC6E60 /* HexColors */ = {
-			isa = PBXGroup;
-			children = (
-				D0968300179A134F00EC6E60 /* HexColor.h */,
-				D0968301179A134F00EC6E60 /* HexColor.m */,
-				D0968302179A134F00EC6E60 /* LICENCE */,
-				D0968303179A134F00EC6E60 /* README.md */,
-			);
-			path = HexColors;
 			sourceTree = "<group>";
 		};
 		D0968306179A134F00EC6E60 /* Resources */ = {
@@ -628,6 +612,7 @@
 			isa = PBXGroup;
 			children = (
 				D01ACAA917B8339C005D1463 /* pcre.xcodeproj */,
+				D0FB275417CE8D3700FABB09 /* HexColors */,
 				D0FB274F17CABA8800FABB09 /* KxMenu */,
 				D01ACAB317B83637005D1463 /* readable */,
 				D0C66C6E17AB3E6300F0EC7C /* SDWebImage */,
@@ -1013,6 +998,16 @@
 			path = kxmenu/Source;
 			sourceTree = "<group>";
 		};
+		D0FB275417CE8D3700FABB09 /* HexColors */ = {
+			isa = PBXGroup;
+			children = (
+				D0FB275517CE8D3700FABB09 /* HexColor.h */,
+				D0FB275617CE8D3700FABB09 /* HexColor.m */,
+			);
+			name = HexColors;
+			path = HexColors/Classes;
+			sourceTree = "<group>";
+		};
 		D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */ = {
 			isa = PBXGroup;
 			children = (
@@ -1184,8 +1179,6 @@
 				D0FD7083178F49EA00EF1457 /* star_open@2x.png in Resources */,
 				D09682B9179896B200EC6E60 /* star_icon.png in Resources */,
 				D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */,
-				D096833E179A134F00EC6E60 /* LICENCE in Resources */,
-				D096833F179A134F00EC6E60 /* README.md in Resources */,
 				D0968342179A134F00EC6E60 /* design.json in Resources */,
 				D0968343179A134F00EC6E60 /* NotificationBackgroundError.png in Resources */,
 				D0968344179A134F00EC6E60 /* NotificationBackgroundError@2x.png in Resources */,
@@ -1287,7 +1280,6 @@
 				D0FD70791787626100EF1457 /* HTMLNode.m in Sources */,
 				D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */,
 				D096831F179A134F00EC6E60 /* TSMessage.m in Sources */,
-				D096833D179A134F00EC6E60 /* HexColor.m in Sources */,
 				D0968354179A134F00EC6E60 /* TSMessageView.m in Sources */,
 				D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */,
 				D06CB22A179C9C7000A1310B /* PopoverView.m in Sources */,
@@ -1321,6 +1313,7 @@
 				D01ACAF917B84035005D1463 /* _ItemExtra.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
 				D0FB275217CABA8800FABB09 /* KxMenu.m in Sources */,
+				D0FB275717CE8D3700FABB09 /* HexColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
