@@ -47,8 +47,8 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *textBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *starBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *unstarBarButtonItem;
-@property (nonatomic, strong, readonly) UILongPressGestureRecognizer *tapZoneRecognizer;
-@property (nonatomic, strong, readonly) UILongPressGestureRecognizer *tapZoneRecognizer2;
+@property (nonatomic, strong, readonly) UISwipeGestureRecognizer *nextArticleRecognizer;
+@property (nonatomic, strong, readonly) UISwipeGestureRecognizer *previousArticleRecognizer;
 
 - (IBAction) doGoBack:(id)sender;
 - (IBAction) doGoForward:(id)sender;

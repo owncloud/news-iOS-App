@@ -32,26 +32,28 @@
 
 #import "OCFeedListController.h"
 #import "IIViewDeckController.h"
-#import "AppDelegate.h"
 #import "OCFeedCell.h"
-#import "AFNetworking.h"
-#import "OCAPIClient.h"
 #import "OCLoginController.h"
 #import "TSMessage.h"
 #import "TransparentToolbar.h"
 #import "OCNewsHelper.h"
 #import "Feed.h"
 #import "FeedExtra.h"
+#import "UIImageView+WebCache.h"
+#import "KxMenu.h"
 
 @interface OCFeedListController () {
     int parserCount;
     int currentIndex;
     BOOL haveSyncData;
-    PopoverView *_popover;
 }
 
-- (void) updateItems;
 - (void) emailSupport:(NSNotification*)n;
+- (void) networkSuccess:(NSNotification*)n;
+- (void) networkError:(NSNotification*)n;
+- (void) showMenu;
+- (void) doHideRead;
+- (void) updatePredicate;
 
 @end
 
@@ -69,7 +71,7 @@
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Feed" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
-    
+
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
         [fetchRequest setFetchBatchSize:20];
@@ -100,12 +102,12 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 
     //self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    [self setEditing:NO animated:NO];
+    //[self setEditing:NO animated:NO];
     
     currentIndex = -1;
     
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpace.width = 5.0f;
+    //UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    //fixedSpace.width = 5.0f;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     NSArray *items = [NSArray arrayWithObjects:
@@ -116,7 +118,7 @@
                       
                       nil];
     
-    TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
+    TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
     toolbar.items = items;
     toolbar.tintColor = self.navigationController.navigationBar.tintColor;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
@@ -135,23 +137,18 @@
     
     //Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"HideRead"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
 
-    int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
-    NSLog(@"Server status: %i", status);
-    
-    haveSyncData = YES;
-    
-    IIViewDeckController *topDeckController = (IIViewDeckController *)self.viewDeckController.centerController;
-    UINavigationController *navController = (UINavigationController*)topDeckController.leftController;
+    UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
-    //[self.detailViewController writeCssTemplate];
-    
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-
+    [self updatePredicate];
+    self.viewDeckController.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     [self.viewDeckController openLeftView];
     [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
 }
@@ -162,6 +159,7 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.fetchedResultsController = nil;
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -190,11 +188,13 @@
             frame.size.width = 300;
             self.navigationController.view.frame = frame;
             self.viewDeckController.leftSize = 300;
+            self.viewDeckController.viewDeckController.leftSize = 20;
         } else {
             CGRect frame = self.navigationController.view.frame;
             frame.size.width = 300;
             self.navigationController.view.frame = frame;
             self.viewDeckController.leftSize = 300;
+            self.viewDeckController.viewDeckController.leftSize = 0;
         }
     }
 }
@@ -322,7 +322,7 @@
     if (indexPath.row < 2) {
         return NO;
     }
-    return ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0);
+    return YES;
 }
 
 
@@ -330,17 +330,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        __block NSString *feedId = [feed.myId stringValue];
-        
-        [[OCAPIClient sharedClient] deletePath:[NSString stringWithFormat:@"feeds/%@", feedId] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [[OCNewsHelper sharedHelper] deleteFeed:feed];
-            NSLog(@"Success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failure");
-            NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Deleting Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-        }];        
+        [[OCNewsHelper sharedHelper] deleteFeedOffline:[self.fetchedResultsController objectAtIndexPath:indexPath]];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -382,17 +372,41 @@
 
 #pragma mark - Actions
 
+- (void)showMenu {
+    NSArray *menuItems =
+    @[
+      [KxMenuItem menuItem:@"Log In"
+                     image:nil
+                    target:self
+                    action:@selector(doEdit:)],
+      
+      [KxMenuItem menuItem:@"Add Feed"
+                     image:nil
+                    target:self
+                    action:@selector(doAdd:)],
+      
+      [KxMenuItem menuItem:[[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read"
+                     image:nil
+                    target:self
+                    action:@selector(doHideRead)],
+      ];
+    
+    [KxMenu setTitleFont:[UIFont boldSystemFontOfSize:18]];
+    UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
+
+    [KxMenu showMenuInView:self.viewDeckController.view
+                  fromRect:tbar.frame
+                 menuItems:menuItems];
+}
+
+
 - (IBAction)doAdd:(id)sender {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField * alertTextField = [alert textFieldAtIndex:0];
-        alertTextField.keyboardType = UIKeyboardTypeURL;
-        alertTextField.placeholder = @"http://example.com/feed";
-        [alert show];
-    } else {
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
-    }
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField * alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.keyboardType = UIKeyboardTypeURL;
+    alertTextField.placeholder = @"http://example.com/feed";
+    [alert show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -404,41 +418,15 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        NSString *newID = [[alertView textFieldAtIndex:0] text];
-        
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:newID, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
-        
-        [[OCAPIClient sharedClient] postPath:@"feeds" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Feeds: %@", responseObject);
-            
-            int newFeedId = [[OCNewsHelper sharedHelper] addFeed:responseObject];
-            
-            [self.tableView reloadData];
-            
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
-                                    [NSNumber numberWithInt:0], @"offset",
-                                    [NSNumber numberWithInt:0], @"type",
-                                    [NSNumber numberWithInt:newFeedId], @"id",
-                                    [NSNumber numberWithInt:1], @"getRead", nil];
-            
-            [[OCAPIClient sharedClient] getPath:@"items" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                //NSLog(@"Updated Items: %@", JSON);
-                NSDictionary *jsonDict = (NSDictionary *) responseObject;
-                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                [[OCNewsHelper sharedHelper] updateItems:newItems];
-                NSLog(@"Done");
-
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-                [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-
-            }];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Adding Feed" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-
-        }];
+        [[OCNewsHelper sharedHelper] addFeedOffline:[[alertView textFieldAtIndex:0] text]];
     }
+}
+
+- (void)doHideRead {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    BOOL hideRead = [prefs boolForKey:@"HideRead"];
+    [prefs setBool:!hideRead forKey:@"HideRead"];
+    [prefs synchronize];
 }
 
 - (IBAction)doInfo:(id)sender {
@@ -464,9 +452,9 @@
     } else {
         storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
     }
-    [self presentViewController: [storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES completion:nil];
+    [self.viewDeckController presentViewController: [storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES completion:nil];
 }
-
+/*
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
 //    if (editing) {
@@ -488,26 +476,9 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
 //    }
 }
-
+*/
 - (IBAction)doRefresh:(id)sender {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
-        [[OCAPIClient sharedClient] getPath:@"feeds" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Feeds: %@", responseObject);
-            
-            [[OCNewsHelper sharedHelper] updateFeeds:responseObject];
-            [self updateItems];
-
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Updating Feeds" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-            [self.refreshControl endRefreshing];
-
-        }];
-    } else {
-        [self.refreshControl endRefreshing];
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
-    }
-    
+    [[OCNewsHelper sharedHelper] sync];
 }
 
 - (void) reloadRow:(NSIndexPath*)indexPath {
@@ -566,81 +537,42 @@
     [self.tableView reloadRowsAtIndexPaths:@[[self.fetchedResultsController indexPathForObject:settings.feed]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+- (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
+    if([keyPath isEqual:@"HideRead"]) {
+        [self updatePredicate];
+    }
+}
+
+- (void)updatePredicate {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
+        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
+        NSArray *predArray = @[pred1, pred2];
+        NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+        NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
+        [[self.fetchedResultsController fetchRequest] setPredicate:pred4];
+    } else{
+        [[self.fetchedResultsController fetchRequest] setPredicate:nil];
+    }
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+    [self.tableView reloadData];
+}
 
 #pragma mark - Feeds maintenance
 
-- (void) updateItems {
-    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        if ([[OCNewsHelper sharedHelper] itemCount] > 0) {
-            //NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-86400];
-            //[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[date timeIntervalSince1970]] forKey:@"LastModified"];
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]], @"lastModified",
-                                    [NSNumber numberWithInt:3], @"type",
-                                    [NSNumber numberWithInt:0], @"id", nil];
-            
-            [[OCAPIClient sharedClient] getPath:@"items/updated" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                //NSLog(@"Updated Items: %@", JSON);
-                NSDictionary *jsonDict = (NSDictionary *) responseObject;
-                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                
-                if (newItems.count > 0) {
-                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
-                    [[OCNewsHelper sharedHelper] updateItems:newItems];
-                }
-                
-                [self.refreshControl endRefreshing];
+- (void) networkSuccess:(NSNotification *)n {
+    [self.refreshControl endRefreshing];
+}
 
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-                [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Updating Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-            }];
-        } else { //first time
-            __block NSMutableArray *operations = [NSMutableArray new];
-            __block NSMutableArray *addedItems = [NSMutableArray new];
-            __block OCAPIClient *client = [OCAPIClient sharedClient];
-            [self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+- (void)networkError:(NSNotification *)n {
+    [self.refreshControl endRefreshing];
+    [TSMessage showNotificationInViewController:self.navigationController withTitle:[n.userInfo objectForKey:@"Title"] withMessage:[n.userInfo objectForKey:@"Message"] withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
 
-                NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
-                                        [NSNumber numberWithInt:0], @"offset",
-                                        [NSNumber numberWithInt:0], @"type",
-                                        feed.myId, @"id",
-                                        @"true", @"getRead", nil];
-                
-                NSMutableURLRequest *itemRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
-                
-                AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                    
-                    //NSLog(@"New Items: %@", JSON);
-                    NSDictionary *jsonDict = (NSDictionary *) JSON;
-                    NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                    [addedItems addObjectsFromArray:newItems];
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                    NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-                    [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Error Retrieving Items" withMessage:message withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-                }];
-                BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
-                if (allowInvalid) {
-                    [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-                        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-                            [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-                        }
-                        
-                    }];
-                }
-
-                [operations addObject:itemOperation];
-            }];
-            
-            [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
-                NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
-            } completionBlock:^(NSArray *operations) {
-                [[OCNewsHelper sharedHelper] updateItems:addedItems];
-                [self.refreshControl endRefreshing];
-            }];
-        }
-    } else {
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
-    }
 }
 
 - (void) emailSupport:(NSNotification *)n {
@@ -668,12 +600,13 @@
 - (UIBarButtonItem *)addBarButtonItem {
     
     if (!addBarButtonItem) {
-        addBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(doAdd:)];
+        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+        addBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     
     return addBarButtonItem;
 }
-
+/*
 - (UIBarButtonItem *)infoBarButtonItem {
     
     if (!infoBarButtonItem) {
@@ -692,7 +625,7 @@
     }
     return editBarButtonItem;
 }
-/*
+
 - (UIPopoverController *) settingsPopover {
     if (!settingsPopover) {
         
@@ -724,10 +657,6 @@
         
     }
     return settingsPopover;
-}
-
-- (void)popoverViewDidDismiss:(PopoverView *)popoverView {
-    _popover = nil;
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {

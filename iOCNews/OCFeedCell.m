@@ -52,7 +52,7 @@
         countBadge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(0, 0, 65, 40)];
         countBadge.value = 888;
         countBadge.alignment = NSTextAlignmentRight;
-        countBadge.fillColor = [UIColor blueColor];
+        countBadge.fillColor = [UIColor colorWithRed:0.58f green:0.61f blue:0.65f alpha:1.0f];
         countBadge.hideWhenZero = YES;
         countBadge.shadow = NO;
         countBadge.strokeColor = [UIColor lightGrayColor];

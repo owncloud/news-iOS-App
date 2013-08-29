@@ -41,8 +41,10 @@
 #import "TransparentToolbar.h"
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
+#import <QuartzCore/QuartzCore.h>
+#import "HexColor.h"
 
-@interface OCWebController () <UIPopoverControllerDelegate> {
+@interface OCWebController () <UIPopoverControllerDelegate, IIViewDeckControllerDelegate> {
     UIPopoverController *_activityPopover;
     PopoverView *_popover;
 }
@@ -52,14 +54,15 @@
 
 - (void)configureView;
 - (void) writeAndLoadHtml:(NSString*)html;
+- (UIColor*)myBackgroundColor;
 
 @end
 
 @implementation OCWebController
 
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
-@synthesize tapZoneRecognizer;
-@synthesize tapZoneRecognizer2;
+@synthesize nextArticleRecognizer;
+@synthesize previousArticleRecognizer;
 @synthesize prefPopoverController;
 @synthesize prefViewController;
 @synthesize item = _item;
@@ -98,16 +101,57 @@
 - (void)configureView
 {
     if (self.item) {
-        if ([self webView] != nil) {
-            [[self webView] removeFromSuperview];
-            [self webView].delegate =nil;
-            self.webView = nil;
+        if ([self.viewDeckController isAnySideOpen]) {
+            if (self.webView != nil) {
+                [self.webView removeFromSuperview];
+                self.webView.delegate =nil;
+                self.webView = nil;
+            }
+            
+            self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+            self.webView.scalesPageToFit = YES;
+            self.webView.delegate = self;
+            self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.webView.scrollView.directionalLockEnabled = YES;
+            [self.view insertSubview:self.webView atIndex:0];
+
+        } else {
+            NSLog(@"Now here");
+            __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+            imageView.frame = self.view.frame;
+            imageView.image = [self screenshot];
+            [self.view insertSubview:imageView atIndex:0];
+            
+            [self.view setNeedsDisplay];
+            [UIView transitionWithView:self.view
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{
+                                
+                                if (self.webView != nil) {
+                                    [self.webView removeFromSuperview];
+                                    self.webView.delegate =nil;
+                                    self.webView = nil;
+                                }
+                                
+                                self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+                                self.webView.scalesPageToFit = YES;
+                                self.webView.delegate = self;
+                                self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                                self.webView.scrollView.directionalLockEnabled = YES;
+                                [self.view insertSubview:self.webView belowSubview:imageView];
+                                [imageView removeFromSuperview];
+                                [self.view.layer displayIfNeeded];
+                            }
+                            completion:^(BOOL finished) {
+                                if (finished) {
+                                    imageView = nil;
+                                }
+                            }];
         }
-        self.webView = [[UIWebView alloc]initWithFrame:[self view].frame];
-        self.webView.scalesPageToFit = YES;
-        self.webView.delegate = self;
-        self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [[self view] addSubview:self.webView];
+        
+        [self.webView addGestureRecognizer:self.nextArticleRecognizer];
+        [self.webView addGestureRecognizer:self.previousArticleRecognizer];
 
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
@@ -117,8 +161,6 @@
             }
         } else {
             self.navigationItem.title = self.item.title;
-            [self.webView addGestureRecognizer:self.tapZoneRecognizer2];
-            [self.webView addGestureRecognizer:self.tapZoneRecognizer];
         }
         Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedIdValue];
         
@@ -172,7 +214,10 @@
             html = [self fixRelativeUrl:html baseUrlString:baseString];
             [self writeAndLoadHtml:html];
         }
+        if ([self.viewDeckController isAnySideOpen]) {
+        
         [self.viewDeckController closeLeftView];
+        }
         [self updateToolbar];
     }
 }
@@ -232,7 +277,9 @@
     [self writeCss];
 
     [self updateToolbar];
-
+    self.viewDeckController.panningGestureDelegate = self;
+    self.viewDeckController.delegate = self;
+    self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
     [self.viewDeckController toggleLeftView];
 }
 
@@ -342,19 +389,15 @@
 }
 
 - (IBAction)doStar:(id)sender {
-    NSString *path;
     if ([sender isEqual:self.starBarButtonItem]) {
         self.item.starredValue = YES;
-        path = [NSString stringWithFormat:@"items/%@/%@/star", [self.item.feedId stringValue], self.item.guidHash];
+        [[OCNewsHelper sharedHelper] starItemOffline:self.item.myId];
     }
     if ([sender isEqual:self.unstarBarButtonItem]) {
         self.item.starredValue = NO;
-        path = [NSString stringWithFormat:@"items/%@/%@/unstar", [self.item.feedId stringValue], self.item.guidHash];
+        [[OCNewsHelper sharedHelper] unstarItemOffline:self.item.myId];
     }
     [self updateToolbar];
-    
-    [[OCAPIClient sharedClient] putPath:path parameters:nil success:nil failure:nil];
-    [[OCNewsHelper sharedHelper] updateStarredCount];
 }
 
 #pragma mark - UIWebView delegate
@@ -375,7 +418,7 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft) ||
@@ -569,28 +612,24 @@
 
 #pragma mark - Tap zones
 
-- (UILongPressGestureRecognizer *) tapZoneRecognizer {
-    if (!tapZoneRecognizer) {
-        tapZoneRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        //tapZoneRecognizer.numberOfTapsRequired = 1;
-        tapZoneRecognizer.minimumPressDuration = 0.15f;
-        tapZoneRecognizer.delegate = self;
-        [tapZoneRecognizer requireGestureRecognizerToFail:self.tapZoneRecognizer2];
+- (UISwipeGestureRecognizer *)nextArticleRecognizer {
+    if (!nextArticleRecognizer) {
+        nextArticleRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+        nextArticleRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        nextArticleRecognizer.delegate = self;
     }
-    return tapZoneRecognizer;
+    return nextArticleRecognizer;
 }
 
-- (UILongPressGestureRecognizer *) tapZoneRecognizer2 {
-    if (!tapZoneRecognizer2) {
-        tapZoneRecognizer2 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap2:)];
-        //tapZoneRecognizer.numberOfTapsRequired = 1;
-        tapZoneRecognizer2.minimumPressDuration = 0.3f;
-        tapZoneRecognizer2.delegate = self;
-        //[tapZoneRecognizer2 requireGestureRecognizerToFail:self.tapZoneRecognizer];
+- (UISwipeGestureRecognizer *)previousArticleRecognizer {
+    if (!previousArticleRecognizer) {
+        previousArticleRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+        previousArticleRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        previousArticleRecognizer.delegate = self;
     }
-    return tapZoneRecognizer2;
+    return previousArticleRecognizer;
 }
-
+/*
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     //NSURL *url = self.webView.request.URL;
     //if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
@@ -613,27 +652,62 @@
     //    return false;
     //}
 }
+*/
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
 
-- (void)handleTap:(UITapGestureRecognizer *)gesture {
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    CGPoint loc = [gestureRecognizer locationInView:self.webView];
+    float h = self.webView.frame.size.height;
+    float q = h / 4;
+    if ([gestureRecognizer isEqual:self.nextArticleRecognizer]) {
+        return YES;
+    }
+    if ([gestureRecognizer isEqual:self.previousArticleRecognizer]) {
+        if (loc.y > q) {
+            if (loc.y < (h - q)) {
+                return ![self.viewDeckController isAnySideOpen];
+            }
+        }
+        return NO;
+    }
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        if (loc.y < q) {
+            return YES;
+        }
+        if (loc.y > (3 * q)) {
+            return YES;
+        }
+        return NO;
+    }
+    return NO;
+}
+
+- (void)handleSwipe:(UISwipeGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded) {
-        CGPoint loc = [gesture locationInView:self.webView];
-        double w = self.webView.frame.size.width;
-        if (loc.x < 150) {
+        if ([gesture isEqual:self.previousArticleRecognizer]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LeftTapZone" object:self userInfo:nil];
         }
-        if (loc.x > (w - 150)) {
+        if ([gesture isEqual:self.nextArticleRecognizer]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RightTapZone" object:self userInfo:nil];
         }
     }
 }
 
-- (void)handleTap2:(UITapGestureRecognizer *)gesture {
-    //Do Nothing NSLog(@"Gesture 2");
+- (void)viewDeckController:(IIViewDeckController*)viewDeckController willOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
+    if (self.webView) {
+        [self.webView removeGestureRecognizer:self.nextArticleRecognizer];
+        [self.webView removeGestureRecognizer:self.previousArticleRecognizer];
+    }
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
+- (void)viewDeckController:(IIViewDeckController*)viewDeckController willCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
+    if (self.webView) {
+        [self.webView addGestureRecognizer:self.nextArticleRecognizer];
+        [self.webView addGestureRecognizer:self.previousArticleRecognizer];
+    }
 }
 
 #pragma mark - Reader settings
@@ -673,6 +747,14 @@
     [cssTemplate writeToURL:[docDir URLByAppendingPathComponent:@"rss.css"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
+- (UIColor*)myBackgroundColor {
+    NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
+    int backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
+    NSString *background = [backgrounds objectAtIndex:backgroundIndex];
+    UIColor *backColor = [UIColor colorWithHexString:background];
+    return backColor;
+}
+
 - (PHPrefViewController*)prefViewController {
     if (!prefViewController) {
         UIStoryboard *storyboard;
@@ -698,9 +780,21 @@
 -(void) settingsChanged:(NSString *)setting newValue:(NSUInteger)value {
     //NSLog(@"New Setting: %@ with value %d", setting, value);
     [self writeCss];
+    self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
     if ([self webView] != nil) {
         [self.webView reload];
     }
+}
+
+- (UIImage*)screenshot {
+    //CGRect rect = CGRectMake(0, 0, 320, 480);
+    UIGraphicsBeginImageContextWithOptions(self.view.frame.size, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [self.view.layer renderInContext:context];
+    UIImage *capturedScreen = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return capturedScreen;
 }
 
 - (void)popoverViewDidDismiss:(PopoverView *)popoverView {

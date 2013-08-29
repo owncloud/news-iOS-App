@@ -37,7 +37,6 @@
 #import "NSString+HTML.h"
 #import "UILabel+VerticalAlignment.h"
 #import "AFNetworking.h"
-#import "OCAPIClient.h"
 #import "OCArticleImage.h"
 #import "TSMessage.h"
 #import "TransparentToolbar.h"
@@ -56,6 +55,7 @@
 - (void) nextArticle:(NSNotification*)n;
 - (void) articleChangeInFeed:(NSNotification*)n;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
+- (void) updatePredicate;
 
 @end
 
@@ -107,7 +107,7 @@
         fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                        managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
                                                                                   cacheName:nil];
-        fetchedResultsController.delegate = self;
+        
     }
     return fetchedResultsController;
 }
@@ -116,25 +116,7 @@
 {
     // Update the user interface for the detail item.
     self.navigationItem.title = self.feed.extra.displayTitle; // [self.feed objectForKey:@"title"];
-    
-    NSError *error;
-    NSPredicate *fetchPredicate;
-    if (self.feed.myIdValue == -2) {
-        fetchPredicate = nil;
-    } else if (self.feed.myIdValue == -1) {
-        fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
-    } else {
-        fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-    }
-    
-    self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
-    
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-
-    [self.tableView reloadData];
+    [self updatePredicate];
     [self scrollToTop];
 }
 
@@ -176,13 +158,18 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
     self.tableView.rowHeight = 132;
 
-    //self.refreshControl = self.feedRefreshControl;
-    UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
+    IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
+    UINavigationController *navController = (UINavigationController*)deckController.centerController;
     self.detailViewController = (OCWebController*)navController.topViewController;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextArticle:) name:@"RightTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(articleChangeInFeed:) name:@"ArticleChangeInFeed" object:nil];
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"HideRead"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
 }
 
 - (void)viewDidUnload
@@ -191,6 +178,7 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.fetchedResultsController = nil;
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -318,63 +306,97 @@
 }
 
 - (IBAction)doMarkRead:(id)sender {
-    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-        if (self.feed.unreadCountValue > 0) {
-            if ([self.fetchedResultsController fetchedObjects].count > 0) {
-                NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                
-                [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-                    if (item.unreadValue) {
-                        [idsToMarkRead addObject:item.myId];
-                    }
-                }];
-                [self updateUnreadCount:idsToMarkRead];
-                self.markBarButtonItem.enabled = NO;
-            }
+    if (self.feed.unreadCountValue > 0) {
+        if ([self.fetchedResultsController fetchedObjects].count > 0) {
+            NSMutableArray *idsToMarkRead = [NSMutableArray new];
+            
+            [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                if (item.unreadValue) {
+                    [idsToMarkRead addObject:item.myId];
+                }
+            }];
+            [self updateUnreadCount:idsToMarkRead];
+            self.markBarButtonItem.enabled = NO;
         }
-    } else {
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning];
     }
 }
 
 - (void) markRowsRead {
-    if (([[OCAPIClient sharedClient] networkReachabilityStatus] > 0)) {
-
-        int unreadCount = self.feed.unreadCountValue;
+    int unreadCount = self.feed.unreadCountValue;
+    
+    if (unreadCount > 0) {
+        NSArray * vCells = self.tableView.indexPathsForVisibleRows;
+        __block int row = 0;
         
-        if (unreadCount > 0) {
-            NSArray * vCells = self.tableView.indexPathsForVisibleRows;
-            __block int row = 0;
-
-            if (vCells.count > 0) {
-                NSIndexPath *topCell = [vCells objectAtIndex:0];
-                row = topCell.row;
-                NSLog(@"Top row: %d", row);
+        if (vCells.count > 0) {
+            NSIndexPath *topCell = [vCells objectAtIndex:0];
+            row = topCell.row;
+            if (row > 0) {
+                --row;
             }
+            NSLog(@"Top row: %d", row);
+        }
+        
+        if ([self.fetchedResultsController fetchedObjects].count > 0) {
+            NSMutableArray *idsToMarkRead = [NSMutableArray new];
             
-            if ([self.fetchedResultsController fetchedObjects].count > 0) {
-                NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                
-                [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-                    if (idx >= row) {
-                        *stop = YES;
-                    }
-                    if (item.unreadValue) {
-                        [idsToMarkRead addObject:item.myId];
-                    }
-                }];
-
-                unreadCount = unreadCount - [idsToMarkRead count];
-                [self updateUnreadCount:idsToMarkRead];
-                self.markBarButtonItem.enabled = (unreadCount > 0);
-            }
+            [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                if (idx >= row) {
+                    *stop = YES;
+                }
+                if (item.unreadValue) {
+                    [idsToMarkRead addObject:item.myId];
+                }
+            }];
+            
+            unreadCount = unreadCount - [idsToMarkRead count];
+            [self updateUnreadCount:idsToMarkRead];
+            self.markBarButtonItem.enabled = (unreadCount > 0);
         }
     }
 }
 
 - (void) updateUnreadCount:(NSArray *)itemsToUpdate {
-    [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemsToUpdate forKey:@"items"] success:nil failure:nil];
-    [[OCNewsHelper sharedHelper] updateReadItems:itemsToUpdate];
+    [[OCNewsHelper sharedHelper] markItemsReadOffline:itemsToUpdate];
+    [self.tableView reloadData];
+}
+
+- (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
+    if([keyPath isEqual:@"HideRead"]) {
+        [self updatePredicate];
+    }
+}
+
+- (void)updatePredicate {
+    NSError *error;
+    NSPredicate *fetchPredicate;
+    if (self.feed.myIdValue == -1) {
+        fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
+            NSArray *predArray = @[pred1, pred2];
+            fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+            self.fetchedResultsController.delegate = nil;
+        } else {
+            if (self.feed.myIdValue == -2) {
+                fetchPredicate = nil;
+            } else {
+                fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+            }
+            self.fetchedResultsController.delegate = self;
+        }
+    }
+    
+    self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
+    
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Toolbar buttons

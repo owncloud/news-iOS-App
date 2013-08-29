@@ -41,6 +41,10 @@
 @property (nonatomic, retain) NSManagedObjectModel *objectModel;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *coordinator;
 
+@property (nonatomic, strong, readonly) NSFetchRequest *feedsRequest;
+@property (nonatomic, strong, readonly) NSFetchRequest *feedRequest;
+@property (nonatomic, strong, readonly) NSFetchRequest *itemRequest;
+
 + (OCNewsHelper *)sharedHelper;
 - (NSManagedObjectContext *)context;
 - (NSURL *)documentsDirectoryURL;
@@ -48,17 +52,27 @@
 - (NSPersistentStoreCoordinator *)coordinator;
 - (void)saveContext;
 
+- (void)sync;
+
 - (Feed*)feedWithId:(int)anId;
+- (Item*)itemWithId:(NSNumber*)anId;
 
 - (int)addFeed:(id)JSON;
 - (void)addFeedExtra:(Feed*)feed;
 - (void)deleteFeed:(Feed*)feed;
 - (void)updateFeeds:(id)JSON;
 - (void)addItemExtra:(Item*)item;
-- (void)updateItems:(NSArray*)items;
+- (void)updateItems;
 - (void)updateReadItems:(NSArray*)items;
 - (void)updateTotalUnreadCount;
 - (void)updateStarredCount;
 - (int)itemCount;
+
+- (void)addFeedOffline:(NSString*)urlString;
+- (void)deleteFeedOffline:(Feed*)feed;
+- (void)markItemsReadOffline:(NSArray*)itemIds;
+- (void)markItemUnreadOffline:(NSNumber*)itemId;
+- (void)starItemOffline:(NSNumber*)itemId;
+- (void)unstarItemOffline:(NSNumber*)itemId;
 
 @end

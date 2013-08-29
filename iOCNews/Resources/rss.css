@@ -83,7 +83,7 @@ div.header {
 
 div.articleTitle {
     background: $BACKGROUND$;
-    font-size: 200%;
+    font-size: 175%;
     font-family: HelveticaNeue;
     color: $COLOR$;
     margin-top:10px;

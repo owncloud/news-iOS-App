@@ -32,12 +32,38 @@
 
 #import "OCAppDelegate.h"
 #import "AFNetworking.h"
+#import "IIViewDeckController.h"
 
 @implementation OCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    UIStoryboard *storyboard;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    } else {
+        storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
+    }
+    
+    UIViewController *feedController = [storyboard instantiateViewControllerWithIdentifier:@"feed"];
+    UIViewController *articleController = [storyboard instantiateViewControllerWithIdentifier:@"article"];
+    UIViewController *webController = [storyboard instantiateViewControllerWithIdentifier:@"web"];
+    
+    IIViewDeckController* secondDeckController = [[IIViewDeckController alloc] initWithCenterViewController:articleController
+                                                                                          leftViewController:feedController];
+
+    secondDeckController.panningCancelsTouchesInView = YES;
+    
+    IIViewDeckController* deckController = [[IIViewDeckController alloc] initWithCenterViewController:webController
+                                                                                   leftViewController:secondDeckController];
+    deckController.sizeMode = IIViewDeckLedgeSizeMode;
+    secondDeckController.sizeMode = IIViewDeckViewSizeMode;
+    deckController.leftSize = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 40 : 10;
+
+    self.window.rootViewController = deckController;
+    [self.window makeKeyAndVisible];
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     return YES;
 }
