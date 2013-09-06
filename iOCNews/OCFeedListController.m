@@ -597,6 +597,24 @@
 - (void) didBecomeActive:(NSNotification *)n {
     if ([[NSUserDefaults standardUserDefaults] stringForKey:@"Server"].length == 0) {
         [self doEdit:nil];
+    } else {
+        UIPasteboard *board = [UIPasteboard generalPasteboard];
+        if (board.URL) {
+            NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
+            [TSMessage showNotificationInViewController:self.navigationController
+                                              withTitle:@"Add Feed"
+                                            withMessage:message
+                                               withType:TSMessageNotificationTypeMessage
+                                           withDuration:TSMessageNotificationDurationAutomatic
+                                           withCallback:nil
+                                        withButtonTitle:@"Add"
+                                     withButtonCallback:^{
+                                         [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
+                                     }
+                                             atPosition:TSMessageNotificationPositionTop
+                                    canBeDismisedByUser:YES];
+
+        }
     }
 }
 
