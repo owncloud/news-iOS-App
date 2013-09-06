@@ -120,6 +120,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                 [self.keychain setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
                 [self.keychain setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
                 [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
+                [prefs synchronize];
                 [OCAPIClient setSharedClient:nil];
                 int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
                 NSLog(@"Server status: %i", status);

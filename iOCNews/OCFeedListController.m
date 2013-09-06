@@ -41,11 +41,12 @@
 #import "FeedExtra.h"
 #import "UIImageView+WebCache.h"
 #import "KxMenu.h"
+#import "AFNetworking.h"
 
 @interface OCFeedListController () {
     int parserCount;
     int currentIndex;
-    BOOL haveSyncData;
+    BOOL networkHasBeenUnreachable;
 }
 
 - (void) emailSupport:(NSNotification*)n;
@@ -54,6 +55,8 @@
 - (void) showMenu;
 - (void) doHideRead;
 - (void) updatePredicate;
+- (void) reachabilityChanged:(NSNotification *)n;
+- (void) didBecomeActive:(NSNotification *)n;
 
 @end
 
@@ -105,6 +108,7 @@
     //[self setEditing:NO animated:NO];
     
     currentIndex = -1;
+    networkHasBeenUnreachable = NO;
     
     //UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     //fixedSpace.width = 5.0f;
@@ -144,6 +148,16 @@
                                             forKeyPath:@"HideRead"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
+        
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:AFNetworkingReachabilityDidChangeNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 
     UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
@@ -160,6 +174,7 @@
     // e.g. self.myOutlet = nil;
     self.fetchedResultsController = nil;
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -561,6 +576,28 @@
     }
     
     [self.tableView reloadData];
+}
+
+- (void)reachabilityChanged:(NSNotification *)n {
+    NSNumber *s = n.userInfo[AFNetworkingReachabilityNotificationStatusItem];
+    AFNetworkReachabilityStatus status = [s integerValue];
+    
+    if (status == AFNetworkReachabilityStatusNotReachable) {
+        networkHasBeenUnreachable = YES;
+        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning withDuration:TSMessageNotificationDurationAutomatic];
+    }
+    if (status > AFNetworkReachabilityStatusNotReachable) {
+        if (networkHasBeenUnreachable) {
+            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Server Reachable" withMessage:@"The network connection is working properly." withType:TSMessageNotificationTypeSuccess withDuration:TSMessageNotificationDurationAutomatic];
+            networkHasBeenUnreachable = NO;
+        }
+    }
+}
+
+- (void) didBecomeActive:(NSNotification *)n {
+    if ([[NSUserDefaults standardUserDefaults] stringForKey:@"Server"].length == 0) {
+        [self doEdit:nil];
+    }
 }
 
 #pragma mark - Feeds maintenance
