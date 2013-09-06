@@ -374,10 +374,14 @@
         fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
     } else {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
-            NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
-            NSArray *predArray = @[pred1, pred2];
-            fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+            if (self.feed.myIdValue == -2) {
+                fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
+            } else {
+                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
+                NSArray *predArray = @[pred1, pred2];
+                fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+            }
             self.fetchedResultsController.delegate = nil;
         } else {
             if (self.feed.myIdValue == -2) {
