@@ -99,42 +99,35 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 {
     if (indexPath.section == 1) {
         [tableView deselectRowAtIndexPath:indexPath animated:true];
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        if (![self.serverTextField.text isEqualToString:[prefs stringForKey:@"Server"]] ||
-            ![self.usernameTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecAttrAccount)]] ||
-            ![self.passwordTextField.text isEqualToString:[self.keychain objectForKey:(__bridge id)(kSecValueData)]] ||
-            (self.certificateSwitch.on != [prefs boolForKey:@"AllowInvalidSSLCertificate"])) {
+        [self.connectionActivityIndicator startAnimating];
+        OCAPIClient *client = [OCAPIClient clientWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
+        [client setAuthorizationHeaderWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
+        BOOL allowInvalid = self.certificateSwitch.on;
+        client.allowsInvalidSSLCertificate = allowInvalid;
+        
+        [client getPath:@"version" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Version: %@", responseObject);
+            NSDictionary *jsonDict = (NSDictionary *) responseObject;
+            NSString *version = [jsonDict valueForKey:@"version"];
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs setObject:self.serverTextField.text forKey:@"Server"];
+            [self.keychain setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
+            [self.keychain setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
+            [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
+            [prefs synchronize];
+            [OCAPIClient setSharedClient:nil];
+            int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
+            NSLog(@"Server status: %i", status);
+            self.statusLabel.text = [NSString stringWithFormat:@"Connected to an ownCloud News server at \"%@\" running version %@.", self.serverTextField.text, version];
             
-            [self.connectionActivityIndicator startAnimating];
-            OCAPIClient *client = [OCAPIClient clientWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
-            [client setAuthorizationHeaderWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
-            BOOL allowInvalid = self.certificateSwitch.on;
-            client.allowsInvalidSSLCertificate = allowInvalid;
-
-            [client getPath:@"version" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"Version: %@", responseObject);
-                NSDictionary *jsonDict = (NSDictionary *) responseObject;
-                NSString *version = [jsonDict valueForKey:@"version"];
-                
-                [prefs setObject:self.serverTextField.text forKey:@"Server"];
-                [self.keychain setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
-                [self.keychain setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
-                [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
-                [prefs synchronize];
-                [OCAPIClient setSharedClient:nil];
-                int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
-                NSLog(@"Server status: %i", status);
-                self.statusLabel.text = [NSString stringWithFormat:@"Connected to an ownCloud News server at \"%@\" running version %@.", self.serverTextField.text, version];
-                
-                [self.connectionActivityIndicator stopAnimating];
-
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Error: %@, response: %d", [error localizedDescription], [operation.response statusCode]);
-                self.statusLabel.text = @"Failed to connect to a server. Check your settings.";
-                [self.connectionActivityIndicator stopAnimating];
-
-            }];
-        }
+            [self.connectionActivityIndicator stopAnimating];
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@, response: %d", [error localizedDescription], [operation.response statusCode]);
+            self.statusLabel.text = @"Failed to connect to a server. Check your settings.";
+            [self.connectionActivityIndicator stopAnimating];
+            
+        }];
     }
 }
 
