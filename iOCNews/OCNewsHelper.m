@@ -237,15 +237,17 @@
 }
 
 - (void)deleteFeed:(Feed*)feed {
-    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
-    
-    NSError *error = nil;
-    NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
-    for (Item *item in feedItems) {
-        [self.context deleteObject:item];
+    if (feed) {
+        [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
+        
+        NSError *error = nil;
+        NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
+        for (Item *item in feedItems) {
+            [self.context deleteObject:item];
+        }
+        [self.context deleteObject:feed];
+        [self updateTotalUnreadCount];
     }
-    [self.context deleteObject:feed];
-    [self updateTotalUnreadCount];
 }
 
 - (void)sync {
