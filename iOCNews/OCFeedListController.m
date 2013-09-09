@@ -600,20 +600,26 @@
     } else {
         UIPasteboard *board = [UIPasteboard generalPasteboard];
         if (board.URL) {
-            NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
-            [TSMessage showNotificationInViewController:self.navigationController
-                                              withTitle:@"Add Feed"
-                                            withMessage:message
-                                               withType:TSMessageNotificationTypeMessage
-                                           withDuration:TSMessageNotificationDurationAutomatic
-                                           withCallback:nil
-                                        withButtonTitle:@"Add"
-                                     withButtonCallback:^{
-                                         [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
-                                     }
-                                             atPosition:TSMessageNotificationPositionTop
-                                    canBeDismisedByUser:YES];
-
+            if (![board.URL.absoluteString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"PreviousPasteboardURL"]]) {
+                [[NSUserDefaults standardUserDefaults] setObject:board.URL.absoluteString forKey:@"PreviousPasteboardURL"];
+                NSArray *feedURLStrings = [self.fetchedResultsController.fetchedObjects valueForKey:@"url"];
+                NSLog(@"URLs: %@", feedURLStrings);
+                if ([feedURLStrings indexOfObject:[board.URL absoluteString]] == NSNotFound) {
+                    NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
+                    [TSMessage showNotificationInViewController:self.navigationController
+                                                      withTitle:@"Add Feed"
+                                                    withMessage:message
+                                                       withType:TSMessageNotificationTypeMessage
+                                                   withDuration:TSMessageNotificationDurationAutomatic
+                                                   withCallback:nil
+                                                withButtonTitle:@"Add"
+                                             withButtonCallback:^{
+                                                 [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
+                                             }
+                                                     atPosition:TSMessageNotificationPositionTop
+                                            canBeDismisedByUser:YES];
+                }
+            }
         }
     }
 }
