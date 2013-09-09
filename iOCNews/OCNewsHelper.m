@@ -611,7 +611,19 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
             }];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+            NSString *message;
+            switch (operation.response.statusCode) {
+                case 409:
+                    message = @"The feed already exists";
+                    break;
+                case 422:
+                    message = @"The feed could not be read. It most likely contains errors";
+                    break;
+                default:
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    break;
+            }
+            
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Adding Feed", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
