@@ -52,7 +52,7 @@
 - (void) emailSupport:(NSNotification*)n;
 - (void) networkSuccess:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
-- (void) showMenu;
+- (void) showMenu:(UIBarButtonItem*)sender event:(UIEvent*)event;
 - (void) doHideRead;
 - (void) updatePredicate;
 - (void) reachabilityChanged:(NSNotification *)n;
@@ -125,8 +125,16 @@
     TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
     toolbar.items = items;
     toolbar.tintColor = self.navigationController.navigationBar.tintColor;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-
+    
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        // Load resources for iOS 6.1 or earlier
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+    } else {
+        // Load resources for iOS 7 or later
+        self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
+    }
+    
     self.refreshControl = self.feedRefreshControl;
     
     self.navigationItem.title = @"Feeds";
@@ -387,7 +395,7 @@
 
 #pragma mark - Actions
 
-- (void)showMenu {
+- (void)showMenu:(UIBarButtonItem *)sender event:(UIEvent *)event {
     NSArray *menuItems =
     @[
       [KxMenuItem menuItem:@"Log In"
@@ -407,10 +415,11 @@
       ];
     
     [KxMenu setTitleFont:[UIFont boldSystemFontOfSize:18]];
-    UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
-
+    //UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
+    CGPoint touchPoint = [[event.allTouches anyObject] locationInView:self.viewDeckController.view];
+    CGRect rect = self.viewDeckController.view.frame;
     [KxMenu showMenuInView:self.viewDeckController.view
-                  fromRect:tbar.frame
+                  fromRect:CGRectMake(touchPoint.x, touchPoint.y + rect.origin.y, 1, 1)// tbar.frame
                  menuItems:menuItems];
 }
 
@@ -661,7 +670,7 @@
 - (UIBarButtonItem *)addBarButtonItem {
     
     if (!addBarButtonItem) {
-        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu)];
+        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:event:)];
         addBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     

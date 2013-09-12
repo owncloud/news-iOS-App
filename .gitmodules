@@ -43,3 +43,6 @@
 [submodule "HexColors"]
 	path = HexColors
 	url = https://github.com/mRs-/HexColors.git
+[submodule "JCGridMenu"]
+	path = JCGridMenu
+	url = https://github.com/joecarney/JCGridMenu.git

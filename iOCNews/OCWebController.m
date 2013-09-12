@@ -66,6 +66,7 @@
 @synthesize prefPopoverController;
 @synthesize prefViewController;
 @synthesize item = _item;
+@synthesize gmController = _gmController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -107,8 +108,16 @@
                 self.webView.delegate =nil;
                 self.webView = nil;
             }
-            
-            self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+            if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+                // Load resources for iOS 6.1 or earlier
+                self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+            } else {
+                // Load resources for iOS 7 or later
+                CGFloat topBarOffset = self.topLayoutGuide.length;
+                CGRect frame = self.view.frame;
+                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
+                self.automaticallyAdjustsScrollViewInsets = NO;
+            }
             self.webView.scalesPageToFit = YES;
             self.webView.delegate = self;
             self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -133,8 +142,16 @@
                                     self.webView.delegate =nil;
                                     self.webView = nil;
                                 }
-                                
-                                self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+                                if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+                                    // Load resources for iOS 6.1 or earlier
+                                    self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+                                } else {
+                                    // Load resources for iOS 7 or later
+                                    CGFloat topBarOffset = self.topLayoutGuide.length;
+                                    CGRect frame = self.view.frame;
+                                    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
+                                    self.automaticallyAdjustsScrollViewInsets = NO;
+                                }
                                 self.webView.scalesPageToFit = YES;
                                 self.webView.delegate = self;
                                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -275,12 +292,110 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self writeCss];
+    
+    
+    
+    
+    JCGridMenuColumn *searchInput = [[JCGridMenuColumn alloc]
+                                     initWithView:CGRectMake(0, 0, 264, 44)];
+    [searchInput.view setBackgroundColor:[UIColor whiteColor]];
+    
+    JCGridMenuColumn *searchClose = [[JCGridMenuColumn alloc]
+                                     initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                     normal:@"Close"
+                                     selected:@"CloseSelected"
+                                     highlighted:@"CloseSelected"
+                                     disabled:@"Close"];
+    
+    JCGridMenuRow *search = [[JCGridMenuRow alloc]
+                             initWithImages:@"Search"
+                             selected:@"CloseSelected"
+                             highlighted:@"SearchSelected"
+                             disabled:@"Search"];
+    [search.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
+    [search setHideOnExpand:YES];
+    [search setIsModal:YES];
+    [search setHideAlpha:0.0f];
+    [search setIsSeperated:NO];
+    [search setColumns:[[NSMutableArray alloc] initWithObjects:searchInput, searchClose, nil]];
+    
+    
+    // Share
+    
+    JCGridMenuColumn *twitter = [[JCGridMenuColumn alloc]
+                                 initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                 normal:@"Twitter"
+                                 selected:@"TwitterSelected"
+                                 highlighted:@"TwitterSelected"
+                                 disabled:@"Twiiter"];
+    [twitter.button setBackgroundColor:[UIColor blackColor]];
+    
+    JCGridMenuColumn *email = [[JCGridMenuColumn alloc]
+                               initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                               normal:@"Email"
+                               selected:@"EmailSelected"
+                               highlighted:@"EmailSelected"
+                               disabled:@"Email"];
+    [email.button setBackgroundColor:[UIColor blackColor]];
+    
+    JCGridMenuColumn *pocket = [[JCGridMenuColumn alloc]
+                                initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                normal:@"Pocket"
+                                selected:@"PocketSelected"
+                                highlighted:@"PocketSelected"
+                                disabled:@"Pocket"];
+    [pocket.button setBackgroundColor:[UIColor blackColor]];
+    
+    JCGridMenuColumn *facebook = [[JCGridMenuColumn alloc]
+                                  initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                  normal:@"Facebook"
+                                  selected:@"FacebookSelected"
+                                  highlighted:@"FacebookSelected"
+                                  disabled:@"Facebook"];
+    [facebook.button setBackgroundColor:[UIColor blackColor]];
+    
+    JCGridMenuRow *share = [[JCGridMenuRow alloc] initWithImages:@"Share" selected:@"CloseSelected" highlighted:@"ShareSelected" disabled:@"Share"];
+    [share setColumns:[[NSMutableArray alloc] initWithObjects:pocket, twitter, facebook, email, nil]];
+    [share setIsModal:YES];
+    [share.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
+    
+    
+    // Comments
+    
+    JCGridMenuRow *comments = [[JCGridMenuRow alloc] initWithImages:@"Comments" selected:@"CommentsSelected" highlighted:@"CommentsSelected" disabled:@"Comments"];
+    [comments setHideAlpha:1.0f];
+    [comments setIsSeperated:YES];
+    [comments setIsModal:YES];
+    [comments.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
+    
+    
+    // Spam
+    
+    JCGridMenuRow *spam = [[JCGridMenuRow alloc] initWithImages:@"Spam" selected:@"SpamSelected" highlighted:@"SpamSelected" disabled:@"Spam"];
+    [spam setIsSeperated:NO];
+    [spam setIsSelected:YES];
+    [spam setHideAlpha:1.0f];
+    [spam.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
+    
+    
+    // Rows...
+    
+    NSArray *rows1 = [[NSArray alloc] initWithObjects:search, share, comments, spam, nil];
+    _gmController = [[JCGridMenuController alloc] initWithFrame:CGRectMake(0,5,320,(44*[rows1 count])+[rows1 count]) rows:rows1 tag:1002];
+    [_gmController setDelegate:self];
+    [self.view addSubview:_gmController.view];
+    
+
+
+
+
 
     [self updateToolbar];
     self.viewDeckController.panningGestureDelegate = self;
     self.viewDeckController.delegate = self;
     self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
     [self.viewDeckController toggleLeftView];
+    //self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeRight | UIRectEdgeBottom;
 }
 
 - (void)viewDidUnload
@@ -311,6 +426,7 @@
     if (_popover) {
         [_popover dismiss:NO];
     }
+    [_gmController close];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
             if (self.item != nil) {
@@ -379,13 +495,15 @@
 }
 
 - (IBAction)doText:(id)sender {
+    [_gmController open];
+    /*
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
     } else {
         UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
         _popover = [[PopoverView alloc] initWithFrame:self.prefViewController.view.frame];
         [_popover showAtPoint: CGPointMake(tbar.frame.origin.x + 70, tbar.frame.origin.y) inView:self.view withContentView:self.prefViewController.view] ;
-    }
+    }*/
 }
 
 - (IBAction)doStar:(id)sender {
@@ -437,6 +555,73 @@
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [self updateToolbar];
 }
+
+
+#pragma mark - JCGridMenuController Delegate
+
+- (void)jcGridMenuRowSelected:(NSInteger)indexTag indexRow:(NSInteger)indexRow isExpand:(BOOL)isExpand
+{
+    if (isExpand) {
+        NSLog(@"jcGridMenuRowSelected %i %i isExpand", indexTag, indexRow);
+    } else {
+        NSLog(@"jcGridMenuRowSelected %i %i !isExpand", indexTag, indexRow);
+    }
+    
+    if (indexTag==1002) {
+        JCGridMenuRow *rowSelected = (JCGridMenuRow *)[_gmController.rows objectAtIndex:indexRow];
+        
+        if ([rowSelected.columns count]==0) {
+            // If there are no more columns, we can use this button as an on/off switch
+            [[rowSelected button] setSelected:![rowSelected button].selected];
+        } else {
+            
+            if (isExpand) {
+                
+                switch (indexRow) {
+                    case 0: // Search
+                        [[rowSelected button] setSelected:YES];
+                        //[self searchInput:YES];
+                        break;
+                    case 1: // Share
+                        [[rowSelected button] setSelected:YES];
+                        break;
+                }
+                
+            } else {
+                
+                switch (indexRow) {
+                    case 0: // Search
+                        [[rowSelected button] setSelected:NO];
+                        break;
+                    case 1: // Share
+                        [[rowSelected button] setSelected:NO];
+                        break;
+                }
+                
+            }
+            
+        }
+    }
+    
+}
+
+- (void)jcGridMenuColumnSelected:(NSInteger)indexTag indexRow:(NSInteger)indexRow indexColumn:(NSInteger)indexColumn
+{
+    NSLog(@"jcGridMenuColumnSelected %i %i %i", indexTag, indexRow, indexColumn);
+    
+    if (indexTag==1002) {
+        [[[_gmController.gridCells objectAtIndex:indexRow] button] setSelected:NO];
+        [_gmController setIsRowModal:NO];
+        
+        if (indexRow==0) {
+            // Search
+            //[self searchInput:NO];
+        }
+        
+    }
+    
+}
+
 
 #pragma mark - Toolbar buttons
 
@@ -543,7 +728,15 @@
     TransparentToolbar *toolbarLeft = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0f, 44.0f)];
     toolbarLeft.items = itemsLeft;
     toolbarLeft.tintColor = self.navigationController.navigationBar.tintColor;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarLeft];
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        // Load resources for iOS 6.1 or earlier
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarLeft];
+    } else {
+        // Load resources for iOS 7 or later
+        self.navigationItem.leftBarButtonItems = @[self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
+    }
+
 
     UIBarButtonItem *starUnstarBarButtonItem = ([self.item.starred isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
     refreshStopBarButtonItem.enabled = (self.item != nil);
@@ -562,7 +755,15 @@
     TransparentToolbar *toolbarRight = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0, 44.0f)];
     toolbarRight.items = itemsRight;
     toolbarRight.tintColor = self.navigationController.navigationBar.tintColor;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarRight];
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        // Load resources for iOS 6.1 or earlier
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarRight];
+    } else {
+        // Load resources for iOS 7 or later
+        self.navigationItem.rightBarButtonItems = @[self.actionBarButtonItem, self.textBarButtonItem, starUnstarBarButtonItem];
+    }
+
 }
 
 - (NSString *) fixRelativeUrl:(NSString *)htmlString baseUrlString:(NSString*)base {
@@ -659,6 +860,7 @@
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    [_gmController close];
     CGPoint loc = [gestureRecognizer locationInView:self.webView];
     float h = self.webView.frame.size.height;
     float q = h / 4;

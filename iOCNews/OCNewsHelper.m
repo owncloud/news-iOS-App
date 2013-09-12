@@ -382,6 +382,7 @@
                 //NSLog(@"New Items: %@", JSON);
                 NSDictionary *jsonDict = (NSDictionary *) JSON;
                 NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+                NSLog(@"New Item Count: %d", newItems.count);
                 [addedItems addObjectsFromArray:newItems];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                 NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -409,11 +410,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
                 
                 __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
-                //__block NSMutableSet *feedsWithNewItems = [NSMutableSet new];
-                [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-                    [possibleDuplicateItems addObject:[item objectForKey:@"id"]];
-                    //[feedsWithNewItems addObject:[item objectForKey:@"feedId"]];
-                }];
+                [possibleDuplicateItems addObjectsFromArray:[addedItems valueForKey:@"id"]];
                 NSLog(@"Item count: %i; possibleDuplicateItems count: %i", addedItems.count, possibleDuplicateItems.count);
                 [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
                 
@@ -446,9 +443,11 @@
                         while (feedItems.count > 200) {
                             Item *itemToRemove = [feedItems lastObject];
                             if (!itemToRemove.starredValue) {
-                                NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
-                                [self.context deleteObject:itemToRemove];
-                                [feedItems removeLastObject];
+                                if (!itemToRemove.unreadValue) {
+                                    NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
+                                    [self.context deleteObject:itemToRemove];
+                                    [feedItems removeLastObject];
+                                }
                             }
                         }
                     }

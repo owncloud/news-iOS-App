@@ -34,11 +34,13 @@
 #import "PHPrefViewController.h"
 #import "PopoverView.h"
 #import "Item.h"
+#import "JCGridMenuController.h"
 
-@interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, PopoverViewDelegate>
+@interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, PopoverViewDelegate, JCGridMenuControllerDelegate>
 
 @property (nonatomic, strong) Item *item;
 @property (nonatomic, strong) UIWebView* webView;
+@property (nonatomic, strong) JCGridMenuController *gmController;
 @property (nonatomic, strong, readonly) UIBarButtonItem *backBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *forwardBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *refreshBarButtonItem;
