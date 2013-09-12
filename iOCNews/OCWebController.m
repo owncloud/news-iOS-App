@@ -1003,4 +1003,17 @@
     _popover = nil;
 }
 
+- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        // Load resources for iOS 6.1 or earlier
+    } else {
+        shadowLayer.masksToBounds = NO;
+        shadowLayer.shadowRadius = 2;
+        shadowLayer.shadowOpacity = 0.9;
+        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
+        shadowLayer.shadowOffset = CGSizeZero;
+        shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
+    }
+}
+
 @end
