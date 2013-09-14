@@ -440,7 +440,7 @@
                         NSLog(@"Ids: %@", [feedItems valueForKey:@"myId"]);
                         NSLog(@"FeedId: %@; Count: %i", obj, feedItems.count);
                         //int i = feedItems.count;
-                        while (feedItems.count > 200) {
+                        while (feedItems.count > 500) {
                             Item *itemToRemove = [feedItems lastObject];
                             if (!itemToRemove.starredValue) {
                                 if (!itemToRemove.unreadValue) {
