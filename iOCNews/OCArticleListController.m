@@ -42,6 +42,7 @@
 #import "TransparentToolbar.h"
 #import "OCNewsHelper.h"
 #import "Item.h"
+#import "UIImage+Resource.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -415,7 +416,7 @@
 
 - (UIBarButtonItem *)markBarButtonItem {
     if (!markBarButtonItem) {
-        markBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mark"] style:UIBarButtonItemStylePlain target:self action:@selector(doMarkRead:)];
+        markBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"mark"] style:UIBarButtonItemStylePlain target:self action:@selector(doMarkRead:)];
         markBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return markBarButtonItem;

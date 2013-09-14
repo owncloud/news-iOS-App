@@ -42,6 +42,7 @@
 #import "UIImageView+WebCache.h"
 #import "KxMenu.h"
 #import "AFNetworking.h"
+#import "UIImage+Resource.h"
 
 @interface OCFeedListController () <IIViewDeckControllerDelegate> {
     int parserCount;
@@ -671,7 +672,7 @@
 - (UIBarButtonItem *)addBarButtonItem {
     
     if (!addBarButtonItem) {
-        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:event:)];
+        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:event:)];
         addBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     
