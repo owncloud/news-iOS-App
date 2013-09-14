@@ -130,11 +130,6 @@
 		D0968352179A134F00EC6E60 /* NotificationButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968318179A134F00EC6E60 /* NotificationButtonBackground@2x.png */; };
 		D0968354179A134F00EC6E60 /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D096831C179A134F00EC6E60 /* TSMessageView.m */; };
 		D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0968361179B3DB300EC6E60 /* iPhone.storyboard */; };
-		D0968365179B3E7D00EC6E60 /* icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968364179B3E7D00EC6E60 /* icon-57.png */; };
-		D0968367179B3E8700EC6E60 /* icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968366179B3E8700EC6E60 /* icon-114.png */; };
-		D0968369179B3F7A00EC6E60 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D0968368179B3F7A00EC6E60 /* Default.png */; };
-		D096836C179B3FF100EC6E60 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D096836A179B3FAF00EC6E60 /* Default@2x.png */; };
-		D096836E179B40C600EC6E60 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D096836D179B40C600EC6E60 /* Default-568h@2x.png */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -142,12 +137,6 @@
 		D0BCAA32177900C400C965F4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA31177900C300C965F4 /* main.m */; };
 		D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA35177900C400C965F4 /* OCAppDelegate.m */; };
 		D0BCAA4A177903F500C965F4 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* iPad.storyboard */; };
-		D0BCAA4C1779061A00C965F4 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA4B1779061A00C965F4 /* icon-72.png */; };
-		D0BCAA4E1779062500C965F4 /* icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA4D1779062500C965F4 /* icon-144.png */; };
-		D0BCAA501779064400C965F4 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA4F1779064400C965F4 /* Default-Portrait~ipad.png */; };
-		D0BCAA521779065600C965F4 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA511779065500C965F4 /* Default-Portrait@2x~ipad.png */; };
-		D0BCAA541779066600C965F4 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA531779066600C965F4 /* Default-Landscape~ipad.png */; };
-		D0BCAA561779067500C965F4 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA551779067500C965F4 /* Default-Landscape@2x~ipad.png */; };
 		D0BCAA64177907FD00C965F4 /* IISideController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA5F177907FD00C965F4 /* IISideController.m */; };
 		D0BCAA65177907FD00C965F4 /* IIViewDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA61177907FD00C965F4 /* IIViewDeckController.m */; };
 		D0BCAA66177907FD00C965F4 /* IIWrapController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA63177907FD00C965F4 /* IIWrapController.m */; };
@@ -236,6 +225,7 @@
 		D0BCAC8D178104FC00C965F4 /* text.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC62178104FC00C965F4 /* text.png */; };
 		D0BCAC8E178104FC00C965F4 /* text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC63178104FC00C965F4 /* text@2x.png */; };
 		D0BF490717E3EE2F00CB9311 /* UIImage+Resource.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BF490617E3EE2F00CB9311 /* UIImage+Resource.m */; };
+		D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
 		D0C66C8D17AB3E6300F0EC7C /* NSData+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C7217AB3E6300F0EC7C /* NSData+GIF.m */; };
 		D0C66C8E17AB3E6300F0EC7C /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C7417AB3E6300F0EC7C /* SDImageCache.m */; };
 		D0C66C8F17AB3E6300F0EC7C /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C7617AB3E6300F0EC7C /* SDWebImageCompat.m */; };
@@ -421,11 +411,6 @@
 		D096831B179A134F00EC6E60 /* TSMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessageView.h; sourceTree = "<group>"; };
 		D096831C179A134F00EC6E60 /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
 		D0968362179B3DB300EC6E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = iOCNews/en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
-		D0968364179B3E7D00EC6E60 /* icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-57.png"; path = "../icon-57.png"; sourceTree = "<group>"; };
-		D0968366179B3E8700EC6E60 /* icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-114.png"; path = "../icon-114.png"; sourceTree = "<group>"; };
-		D0968368179B3F7A00EC6E60 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
-		D096836A179B3FAF00EC6E60 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
-		D096836D179B40C600EC6E60 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -437,12 +422,6 @@
 		D0BCAA34177900C400C965F4 /* OCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCAppDelegate.h; sourceTree = "<group>"; };
 		D0BCAA35177900C400C965F4 /* OCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCAppDelegate.m; sourceTree = "<group>"; };
 		D0BCAA49177903F500C965F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/iPad.storyboard; sourceTree = "<group>"; };
-		D0BCAA4B1779061A00C965F4 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "../icon-72.png"; sourceTree = "<group>"; };
-		D0BCAA4D1779062500C965F4 /* icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-144.png"; path = "../icon-144.png"; sourceTree = "<group>"; };
-		D0BCAA4F1779064400C965F4 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "../Default-Portrait~ipad.png"; sourceTree = "<group>"; };
-		D0BCAA511779065500C965F4 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait@2x~ipad.png"; path = "../Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
-		D0BCAA531779066600C965F4 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "../Default-Landscape~ipad.png"; sourceTree = "<group>"; };
-		D0BCAA551779067500C965F4 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x~ipad.png"; path = "../Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		D0BCAA5E177907FD00C965F4 /* IISideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IISideController.h; sourceTree = "<group>"; };
 		D0BCAA5F177907FD00C965F4 /* IISideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IISideController.m; sourceTree = "<group>"; };
 		D0BCAA60177907FD00C965F4 /* IIViewDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIViewDeckController.h; sourceTree = "<group>"; };
@@ -575,6 +554,7 @@
 		D0BCAC63178104FC00C965F4 /* text@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "text@2x.png"; sourceTree = "<group>"; };
 		D0BF490517E3EE2F00CB9311 /* UIImage+Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resource.h"; sourceTree = "<group>"; };
 		D0BF490617E3EE2F00CB9311 /* UIImage+Resource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resource.m"; sourceTree = "<group>"; };
+		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D0C66C7117AB3E6300F0EC7C /* NSData+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GIF.h"; sourceTree = "<group>"; };
 		D0C66C7217AB3E6300F0EC7C /* NSData+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GIF.m"; sourceTree = "<group>"; };
 		D0C66C7317AB3E6300F0EC7C /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -1124,6 +1104,7 @@
 				D0BF490617E3EE2F00CB9311 /* UIImage+Resource.m */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
+				D0BF490C17E4DCF800CB9311 /* Images.xcassets */,
 			);
 			path = iOCNews;
 			sourceTree = "<group>";
@@ -1131,17 +1112,6 @@
 		D0BCAA2C177900C300C965F4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D096836D179B40C600EC6E60 /* Default-568h@2x.png */,
-				D096836A179B3FAF00EC6E60 /* Default@2x.png */,
-				D0968368179B3F7A00EC6E60 /* Default.png */,
-				D0BCAA551779067500C965F4 /* Default-Landscape@2x~ipad.png */,
-				D0BCAA531779066600C965F4 /* Default-Landscape~ipad.png */,
-				D0BCAA511779065500C965F4 /* Default-Portrait@2x~ipad.png */,
-				D0BCAA4F1779064400C965F4 /* Default-Portrait~ipad.png */,
-				D0968364179B3E7D00EC6E60 /* icon-57.png */,
-				D0968366179B3E8700EC6E60 /* icon-114.png */,
-				D0BCAA4B1779061A00C965F4 /* icon-72.png */,
-				D0BCAA4D1779062500C965F4 /* icon-144.png */,
 				D0BCAA2D177900C300C965F4 /* iOCNews-Info.plist */,
 				D0BCAA2E177900C300C965F4 /* InfoPlist.strings */,
 				D0BCAA31177900C300C965F4 /* main.m */,
@@ -1545,15 +1515,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D06CB22B179F5FCE00A1310B /* script.js in Resources */,
+				D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */,
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
 				D0BCAA4A177903F500C965F4 /* iPad.storyboard in Resources */,
-				D0BCAA4C1779061A00C965F4 /* icon-72.png in Resources */,
 				D061D7A217E287640038FB04 /* star_filled-7@2x.png in Resources */,
-				D0BCAA4E1779062500C965F4 /* icon-144.png in Resources */,
-				D0BCAA501779064400C965F4 /* Default-Portrait~ipad.png in Resources */,
-				D0BCAA521779065600C965F4 /* Default-Portrait@2x~ipad.png in Resources */,
-				D0BCAA541779066600C965F4 /* Default-Landscape~ipad.png in Resources */,
-				D0BCAA561779067500C965F4 /* Default-Landscape@2x~ipad.png in Resources */,
 				D061D79017E265410038FB04 /* back-7.png in Resources */,
 				D0BCABBB17790F6700C965F4 /* icab-activity.png in Resources */,
 				D0BCABBC17790F6700C965F4 /* icab-activity@2x.png in Resources */,
@@ -1645,11 +1610,6 @@
 				D0968351179A134F00EC6E60 /* NotificationButtonBackground.png in Resources */,
 				D0968352179A134F00EC6E60 /* NotificationButtonBackground@2x.png in Resources */,
 				D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */,
-				D0968365179B3E7D00EC6E60 /* icon-57.png in Resources */,
-				D0968367179B3E8700EC6E60 /* icon-114.png in Resources */,
-				D0968369179B3F7A00EC6E60 /* Default.png in Resources */,
-				D096836C179B3FF100EC6E60 /* Default@2x.png in Resources */,
-				D096836E179B40C600EC6E60 /* Default-568h@2x.png in Resources */,
 				D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */,
 				D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */,
 				D06CB224179C977400A1310B /* placeholder@2x~iphone.png in Resources */,
@@ -1963,6 +1923,8 @@
 		D0BCAA46177900C400C965F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
@@ -1977,6 +1939,8 @@
 		D0BCAA47177900C400C965F4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
