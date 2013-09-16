@@ -726,7 +726,11 @@
 
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
         settingsPopover = [[UIPopoverController alloc] initWithContentViewController:[storyboard instantiateViewControllerWithIdentifier: @"feedextra"]];
-        
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+            // Load resources for iOS 6.1 or earlier
+        } else {
+            [settingsPopover setPopoverContentSize:CGSizeMake(320, 216)];
+        }
     }
     return settingsPopover;
 }

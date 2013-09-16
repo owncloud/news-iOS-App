@@ -27,9 +27,6 @@
     [super viewDidLoad];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.navigationItem.leftBarButtonItem = nil;
-        if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
-            self.automaticallyAdjustsScrollViewInsets = NO;
-        }
     }
 }
 
