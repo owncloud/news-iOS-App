@@ -361,12 +361,7 @@
         //NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-86400];
         //[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[date timeIntervalSince1970]] forKey:@"LastModified"];
 
-        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
-        NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount > 0"];
-        NSArray *predArray = @[pred1, pred2];
-        NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-
-        [self.feedRequest setPredicate:pred3];
+        [self.feedRequest setPredicate:nil];
         __block NSArray *feedsWithUnread = [self.context executeFetchRequest:self.feedRequest error:nil];
         
         [feedsWithUnread enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
@@ -383,7 +378,11 @@
                 NSDictionary *jsonDict = (NSDictionary *) JSON;
                 NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
                 NSLog(@"New Item Count: %d", newItems.count);
-                [addedItems addObjectsFromArray:newItems];
+                if (newItems.count > 0) {
+                    @synchronized(addedItems) {
+                        [addedItems addObjectsFromArray:newItems];
+                    }
+                }
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                 NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
