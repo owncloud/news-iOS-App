@@ -495,15 +495,24 @@
 	_activityPopover = nil;
 }
 
-- (IBAction)doText:(id)sender {
+- (IBAction)doText:(id)sender event:(UIEvent*)event {
     //[_gmController open];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
     } else {
-        UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
+        CGPoint popoverPoint;
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+            // Load resources for iOS 6.1 or earlier
+            UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
+            popoverPoint = CGPointMake(tbar.frame.origin.x + 70, tbar.frame.origin.y);
+        } else {
+            CGPoint touchPoint = [[event.allTouches anyObject] locationInView:self.viewDeckController.view];
+            CGRect rect = self.viewDeckController.view.frame;
+            popoverPoint = CGPointMake(touchPoint.x, touchPoint.y + rect.origin.y);
+        }
         _popover = [[PopoverView alloc] initWithFrame:self.prefViewController.view.frame];
-        [_popover showAtPoint: CGPointMake(tbar.frame.origin.x + 70, tbar.frame.origin.y) inView:self.view withContentView:self.prefViewController.view] ;
+        [_popover showAtPoint:popoverPoint inView:self.view withContentView:self.prefViewController.view] ;
     }
 }
 
@@ -671,7 +680,7 @@
 - (UIBarButtonItem *)textBarButtonItem {
     
     if (!textBarButtonItem) {
-        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"text"] style:UIBarButtonItemStylePlain target:self action:@selector(doText:)];
+        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"text"] style:UIBarButtonItemStylePlain target:self action:@selector(doText:event:)];
         textBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return textBarButtonItem;

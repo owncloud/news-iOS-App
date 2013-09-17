@@ -595,11 +595,11 @@
     
     if (status == AFNetworkReachabilityStatusNotReachable) {
         networkHasBeenUnreachable = YES;
-        [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Unable to Reach Server" withMessage:@"Please check network connection and login." withType:TSMessageNotificationTypeWarning withDuration:TSMessageNotificationDurationAutomatic];
+        [TSMessage showNotificationInViewController:self.navigationController title:@"Unable to Reach Server" subtitle:@"Please check network connection and login." type:TSMessageNotificationTypeWarning];
     }
     if (status > AFNetworkReachabilityStatusNotReachable) {
         if (networkHasBeenUnreachable) {
-            [TSMessage showNotificationInViewController:self.navigationController withTitle:@"Server Reachable" withMessage:@"The network connection is working properly." withType:TSMessageNotificationTypeSuccess withDuration:TSMessageNotificationDurationAutomatic];
+            [TSMessage showNotificationInViewController:self.navigationController title:@"Server Reachable" subtitle:@"The network connection is working properly." type:TSMessageNotificationTypeSuccess];
             networkHasBeenUnreachable = NO;
         }
     }
@@ -618,13 +618,14 @@
                 if ([feedURLStrings indexOfObject:[board.URL absoluteString]] == NSNotFound) {
                     NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
                     [TSMessage showNotificationInViewController:self.navigationController
-                                                      withTitle:@"Add Feed"
-                                                    withMessage:message
-                                                       withType:TSMessageNotificationTypeMessage
-                                                   withDuration:TSMessageNotificationDurationAutomatic
-                                                   withCallback:nil
-                                                withButtonTitle:@"Add"
-                                             withButtonCallback:^{
+                                                          title:@"Add Feed"
+                                                       subtitle:message
+                                                          image:nil
+                                                           type:TSMessageNotificationTypeMessage
+                                                       duration:TSMessageNotificationDurationAutomatic
+                                                       callback:nil
+                                                    buttonTitle:@"Add"
+                                                 buttonCallback:^{
                                                  [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
                                              }
                                                      atPosition:TSMessageNotificationPositionTop
@@ -643,8 +644,17 @@
 
 - (void)networkError:(NSNotification *)n {
     [self.refreshControl endRefreshing];
-    [TSMessage showNotificationInViewController:self.navigationController withTitle:[n.userInfo objectForKey:@"Title"] withMessage:[n.userInfo objectForKey:@"Message"] withType:TSMessageNotificationTypeError withDuration:TSMessageNotificationDurationEndless];
-
+    [TSMessage showNotificationInViewController:self.navigationController
+                                          title:[n.userInfo objectForKey:@"Title"]
+                                       subtitle:[n.userInfo objectForKey:@"Message"]
+                                          image:nil
+                                           type:TSMessageNotificationTypeError
+                                       duration:TSMessageNotificationDurationEndless
+                                       callback:nil
+                                    buttonTitle:nil
+                                 buttonCallback:nil
+                                     atPosition:TSMessageNotificationPositionTop
+                            canBeDismisedByUser:YES];
 }
 
 - (void) emailSupport:(NSNotification *)n {

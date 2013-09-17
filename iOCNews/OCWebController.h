@@ -57,7 +57,7 @@
 - (IBAction) doReload:(id)sender;
 - (IBAction) doStop:(id)sender;
 - (IBAction) doInfo:(id)sender;
-- (IBAction) doText:(id)sender;
+- (IBAction) doText:(id)sender event:(UIEvent*)event;
 - (IBAction) doStar:(id)sender;
 
 @end
