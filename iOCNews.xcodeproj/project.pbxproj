@@ -146,7 +146,6 @@
 		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA72177909A600C965F4 /* OCWebController.m */; };
-		D0BCAA7B17790A9600C965F4 /* MCSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA7A17790A9600C965F4 /* MCSegmentedControl.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0BCAA7F17790B1E00C965F4 /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA7E17790B1E00C965F4 /* MKNumberBadgeView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0BCAAA417790C1E00C965F4 /* UILabel+VerticalAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */; };
 		D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAADA17790C9100C965F4 /* libxml2.dylib */; };
@@ -226,6 +225,10 @@
 		D0BCAC8E178104FC00C965F4 /* text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC63178104FC00C965F4 /* text@2x.png */; };
 		D0BF490717E3EE2F00CB9311 /* UIImage+Resource.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BF490617E3EE2F00CB9311 /* UIImage+Resource.m */; };
 		D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
+		D0BF491217E7D16800CB9311 /* background1-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490E17E7D16800CB9311 /* background1-7@2x.png */; };
+		D0BF491317E7D16800CB9311 /* background1-7.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490F17E7D16800CB9311 /* background1-7.png */; };
+		D0BF491417E7D16800CB9311 /* background2-7.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BF491017E7D16800CB9311 /* background2-7.png */; };
+		D0BF491517E7D16800CB9311 /* background2-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BF491117E7D16800CB9311 /* background2-7@2x.png */; };
 		D0C66C8D17AB3E6300F0EC7C /* NSData+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C7217AB3E6300F0EC7C /* NSData+GIF.m */; };
 		D0C66C8E17AB3E6300F0EC7C /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C7417AB3E6300F0EC7C /* SDImageCache.m */; };
 		D0C66C8F17AB3E6300F0EC7C /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C7617AB3E6300F0EC7C /* SDWebImageCompat.m */; };
@@ -439,8 +442,6 @@
 		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA71177909A600C965F4 /* OCWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCWebController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA72177909A600C965F4 /* OCWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCWebController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D0BCAA7917790A9600C965F4 /* MCSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCSegmentedControl.h; sourceTree = "<group>"; };
-		D0BCAA7A17790A9600C965F4 /* MCSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCSegmentedControl.m; sourceTree = "<group>"; };
 		D0BCAA7D17790B1E00C965F4 /* MKNumberBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNumberBadgeView.h; sourceTree = "<group>"; };
 		D0BCAA7E17790B1E00C965F4 /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
 		D0BCAAA217790C1E00C965F4 /* UILabel+VerticalAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+VerticalAlignment.h"; sourceTree = "<group>"; };
@@ -555,6 +556,10 @@
 		D0BF490517E3EE2F00CB9311 /* UIImage+Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resource.h"; sourceTree = "<group>"; };
 		D0BF490617E3EE2F00CB9311 /* UIImage+Resource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resource.m"; sourceTree = "<group>"; };
 		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D0BF490E17E7D16800CB9311 /* background1-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background1-7@2x.png"; sourceTree = "<group>"; };
+		D0BF490F17E7D16800CB9311 /* background1-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background1-7.png"; sourceTree = "<group>"; };
+		D0BF491017E7D16800CB9311 /* background2-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background2-7.png"; sourceTree = "<group>"; };
+		D0BF491117E7D16800CB9311 /* background2-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background2-7@2x.png"; sourceTree = "<group>"; };
 		D0C66C7117AB3E6300F0EC7C /* NSData+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GIF.h"; sourceTree = "<group>"; };
 		D0C66C7217AB3E6300F0EC7C /* NSData+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GIF.m"; sourceTree = "<group>"; };
 		D0C66C7317AB3E6300F0EC7C /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -1030,7 +1035,6 @@
 				D0BCABB317790F6600C965F4 /* FDReadabilityActivity */,
 				D0BCAAA117790C1E00C965F4 /* UILabel-VerticalAlignment */,
 				D0BCAA7C17790B1E00C965F4 /* MKNumberBadgeView */,
-				D0BCAA7817790A9600C965F4 /* MCSegmentedControl */,
 				D0BCAA5D177907FD00C965F4 /* ViewDeck */,
 				D07D651517DFEFE700C40D76 /* JCGridMenu */,
 				D0BCAA2B177900C300C965F4 /* iOCNews */,
@@ -1134,16 +1138,6 @@
 			path = ViewDeck/ViewDeck;
 			sourceTree = "<group>";
 		};
-		D0BCAA7817790A9600C965F4 /* MCSegmentedControl */ = {
-			isa = PBXGroup;
-			children = (
-				D0BCAA7917790A9600C965F4 /* MCSegmentedControl.h */,
-				D0BCAA7A17790A9600C965F4 /* MCSegmentedControl.m */,
-			);
-			name = MCSegmentedControl;
-			path = MCSegmentedControl/MCSegmentedControlDemo/MCSegmentedControl;
-			sourceTree = "<group>";
-		};
 		D0BCAA7C17790B1E00C965F4 /* MKNumberBadgeView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1243,6 +1237,10 @@
 		D0BCAC38178104FB00C965F4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D0BF490E17E7D16800CB9311 /* background1-7@2x.png */,
+				D0BF490F17E7D16800CB9311 /* background1-7.png */,
+				D0BF491017E7D16800CB9311 /* background2-7.png */,
+				D0BF491117E7D16800CB9311 /* background2-7@2x.png */,
 				D061D7A817E3C0CD0038FB04 /* mark-7@2x.png */,
 				D061D7A917E3C0CD0038FB04 /* mark-7.png */,
 				D061D7A417E288E60038FB04 /* gear-7.png */,
@@ -1556,11 +1554,13 @@
 				D0BCAC74178104FC00C965F4 /* fontsizem.png in Resources */,
 				D0BCAC75178104FC00C965F4 /* fontsizem@2x.png in Resources */,
 				D0BCAC76178104FC00C965F4 /* fontsizes.png in Resources */,
+				D0BF491417E7D16800CB9311 /* background2-7.png in Resources */,
 				D0BCAC77178104FC00C965F4 /* fontsizes@2x.png in Resources */,
 				D061D79E17E285930038FB04 /* star_open-7@2x.png in Resources */,
 				D0BCAC78178104FC00C965F4 /* forward.png in Resources */,
 				D0BCAC79178104FC00C965F4 /* forward@2x.png in Resources */,
 				D0BCAC7A178104FC00C965F4 /* lineheight1.png in Resources */,
+				D0BF491317E7D16800CB9311 /* background1-7.png in Resources */,
 				D0BCAC7B178104FC00C965F4 /* lineheight1@2x.png in Resources */,
 				D0BCAC7C178104FC00C965F4 /* lineheight2.png in Resources */,
 				D061D79917E281040038FB04 /* text-7@2x.png in Resources */,
@@ -1580,6 +1580,7 @@
 				D0BCAC89178104FC00C965F4 /* placeholder@2x.png in Resources */,
 				D0BCAC8A178104FC00C965F4 /* rss.css in Resources */,
 				D0BCAC8B178104FC00C965F4 /* rss.html in Resources */,
+				D0BF491217E7D16800CB9311 /* background1-7@2x.png in Resources */,
 				D0BCAC8D178104FC00C965F4 /* text.png in Resources */,
 				D0BCAC8E178104FC00C965F4 /* text@2x.png in Resources */,
 				D0F1814217862B3900F719D9 /* gear.png in Resources */,
@@ -1625,6 +1626,7 @@
 				D07D657317DFEFE700C40D76 /* CommentsSelected@2x.png in Resources */,
 				D07D657417DFEFE700C40D76 /* Email.png in Resources */,
 				D07D657517DFEFE700C40D76 /* Email@2x.png in Resources */,
+				D0BF491517E7D16800CB9311 /* background2-7@2x.png in Resources */,
 				D07D657617DFEFE700C40D76 /* EmailSelected.png in Resources */,
 				D07D657717DFEFE700C40D76 /* EmailSelected@2x.png in Resources */,
 				D07D657817DFEFE700C40D76 /* Facebook.png in Resources */,
@@ -1712,7 +1714,6 @@
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
-				D0BCAA7B17790A9600C965F4 /* MCSegmentedControl.m in Sources */,
 				D0BCAA7F17790B1E00C965F4 /* MKNumberBadgeView.m in Sources */,
 				D0BCAAA417790C1E00C965F4 /* UILabel+VerticalAlignment.m in Sources */,
 				D0BCABBA17790F6700C965F4 /* FDiCabActivity.m in Sources */,

@@ -7,9 +7,6 @@
 [submodule "iPhoneMK"]
 	path = iPhoneMK
 	url = git@github.com:phedlund/iPhoneMK.git
-[submodule "MCSegmentedControl"]
-	path = MCSegmentedControl
-	url = https://github.com/oettam/MCSegmentedControl.git
 [submodule "TUSafariActivity"]
 	path = TUSafariActivity
 	url = https://github.com/davbeck/TUSafariActivity.git

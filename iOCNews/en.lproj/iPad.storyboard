@@ -488,7 +488,7 @@
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="aOg-xm-Znw" customClass="MCSegmentedControl">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="aOg-xm-Znw">
                                 <segments>
                                     <segment title="" image="lineheight1.png"/>
                                     <segment title="" image="lineheight3.png"/>
@@ -509,7 +509,7 @@
                                     <action selector="doSegmentedValueChanged:" destination="epQ-i6-UW8" eventType="valueChanged" id="pAT-uT-bcJ"/>
                                 </connections>
                             </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="iM7-5s-HxK" customClass="MCSegmentedControl">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="iM7-5s-HxK">
                                 <segments>
                                     <segment title="" image="fontsizes.png"/>
                                     <segment title="" image="fontsizel.png"/>
@@ -518,7 +518,7 @@
                                     <action selector="doSegmentedValueChanged:" destination="epQ-i6-UW8" eventType="valueChanged" id="vhV-Vg-Qvi"/>
                                 </connections>
                             </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="7Y7-q4-kiE" customClass="MCSegmentedControl">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="7Y7-q4-kiE">
                                 <segments>
                                     <segment title="" image="margin1.png"/>
                                     <segment title="" image="margin3.png"/>
@@ -626,9 +626,6 @@
         <image name="margin3.png" width="26" height="26"/>
     </resources>
     <classes>
-        <class className="MCSegmentedControl" superclassName="UISegmentedControl">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCSegmentedControl.h"/>
-        </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
@@ -703,9 +700,9 @@
             <relationships>
                 <relationship kind="action" name="doSegmentedValueChanged:"/>
                 <relationship kind="outlet" name="backgroundSegmented" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="fontSizeSegmented" candidateClass="MCSegmentedControl"/>
-                <relationship kind="outlet" name="lineHeightSegmented" candidateClass="MCSegmentedControl"/>
-                <relationship kind="outlet" name="marginSegmented" candidateClass="MCSegmentedControl"/>
+                <relationship kind="outlet" name="fontSizeSegmented" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="lineHeightSegmented" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="marginSegmented" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
     </classes>

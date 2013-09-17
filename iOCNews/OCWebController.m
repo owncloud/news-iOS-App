@@ -496,15 +496,15 @@
 }
 
 - (IBAction)doText:(id)sender {
-    [_gmController open];
-    /*
+    //[_gmController open];
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
     } else {
         UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
         _popover = [[PopoverView alloc] initWithFrame:self.prefViewController.view.frame];
         [_popover showAtPoint: CGPointMake(tbar.frame.origin.x + 70, tbar.frame.origin.y) inView:self.view withContentView:self.prefViewController.view] ;
-    }*/
+    }
 }
 
 - (IBAction)doStar:(id)sender {

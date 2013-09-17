@@ -31,7 +31,6 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "MCSegmentedControl.h"
 
 @protocol PHPrefViewControllerDelegate
 - (void)settingsChanged:(NSString*)setting newValue:(NSUInteger)value;
@@ -40,9 +39,9 @@
 @interface PHPrefViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *backgroundSegmented;
-@property (weak, nonatomic) IBOutlet MCSegmentedControl *fontSizeSegmented;
-@property (weak, nonatomic) IBOutlet MCSegmentedControl *lineHeightSegmented;
-@property (weak, nonatomic) IBOutlet MCSegmentedControl *marginSegmented;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *fontSizeSegmented;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *lineHeightSegmented;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *marginSegmented;
 
 @property (nonatomic, strong) id<PHPrefViewControllerDelegate> delegate;
 
