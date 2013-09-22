@@ -45,9 +45,19 @@
 #import "HexColor.h"
 #import "UIImage+Resource.h"
 
+#define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
+#define MAX_FONT_SIZE 30
+
+#define MIN_LINE_HEIGHT 1.2f
+#define MAX_LINE_HEIGHT 2.6f
+
+#define MIN_WIDTH (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 380 : 150)
+#define MAX_WIDTH (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 700 : 300)
+
 @interface OCWebController () <UIPopoverControllerDelegate, IIViewDeckControllerDelegate> {
     UIPopoverController *_activityPopover;
     PopoverView *_popover;
+    BOOL _menuIsOpen;
 }
 
 @property (strong, nonatomic, readonly) UIPopoverController *prefPopoverController;
@@ -67,7 +77,10 @@
 @synthesize prefPopoverController;
 @synthesize prefViewController;
 @synthesize item = _item;
-@synthesize gmController = _gmController;
+@synthesize menuController;
+@synthesize keepUnread;
+@synthesize star;
+@synthesize background;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -105,6 +118,7 @@
     if (self.item) {
         if ([self.viewDeckController isAnySideOpen]) {
             if (self.webView != nil) {
+                [self.menuController.view removeFromSuperview];
                 [self.webView removeFromSuperview];
                 self.webView.delegate =nil;
                 self.webView = nil;
@@ -124,6 +138,7 @@
             self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             self.webView.scrollView.directionalLockEnabled = YES;
             [self.view insertSubview:self.webView atIndex:0];
+            [self.webView addSubview:self.menuController.view];
 
         } else {
             NSLog(@"Now here");
@@ -139,6 +154,7 @@
                             animations:^{
                                 
                                 if (self.webView != nil) {
+                                    [self.menuController.view removeFromSuperview];
                                     [self.webView removeFromSuperview];
                                     self.webView.delegate =nil;
                                     self.webView = nil;
@@ -157,6 +173,7 @@
                                 self.webView.delegate = self;
                                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                                 self.webView.scrollView.directionalLockEnabled = YES;
+                                [self.webView addSubview:self.menuController.view];
                                 [self.view insertSubview:self.webView belowSubview:imageView];
                                 [imageView removeFromSuperview];
                                 [self.view.layer displayIfNeeded];
@@ -291,112 +308,13 @@
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"defaults" withExtension:@"plist"]]];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
+    _menuIsOpen = NO;
     [self writeCss];
-    
-    
-    
-    
-    JCGridMenuColumn *searchInput = [[JCGridMenuColumn alloc]
-                                     initWithView:CGRectMake(0, 0, 264, 44)];
-    [searchInput.view setBackgroundColor:[UIColor whiteColor]];
-    
-    JCGridMenuColumn *searchClose = [[JCGridMenuColumn alloc]
-                                     initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
-                                     normal:@"Close"
-                                     selected:@"CloseSelected"
-                                     highlighted:@"CloseSelected"
-                                     disabled:@"Close"];
-    
-    JCGridMenuRow *search = [[JCGridMenuRow alloc]
-                             initWithImages:@"Search"
-                             selected:@"CloseSelected"
-                             highlighted:@"SearchSelected"
-                             disabled:@"Search"];
-    [search.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
-    [search setHideOnExpand:YES];
-    [search setIsModal:YES];
-    [search setHideAlpha:0.0f];
-    [search setIsSeperated:NO];
-    [search setColumns:[[NSMutableArray alloc] initWithObjects:searchInput, searchClose, nil]];
-    
-    
-    // Share
-    
-    JCGridMenuColumn *twitter = [[JCGridMenuColumn alloc]
-                                 initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
-                                 normal:@"Twitter"
-                                 selected:@"TwitterSelected"
-                                 highlighted:@"TwitterSelected"
-                                 disabled:@"Twiiter"];
-    [twitter.button setBackgroundColor:[UIColor blackColor]];
-    
-    JCGridMenuColumn *email = [[JCGridMenuColumn alloc]
-                               initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
-                               normal:@"Email"
-                               selected:@"EmailSelected"
-                               highlighted:@"EmailSelected"
-                               disabled:@"Email"];
-    [email.button setBackgroundColor:[UIColor blackColor]];
-    
-    JCGridMenuColumn *pocket = [[JCGridMenuColumn alloc]
-                                initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
-                                normal:@"Pocket"
-                                selected:@"PocketSelected"
-                                highlighted:@"PocketSelected"
-                                disabled:@"Pocket"];
-    [pocket.button setBackgroundColor:[UIColor blackColor]];
-    
-    JCGridMenuColumn *facebook = [[JCGridMenuColumn alloc]
-                                  initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
-                                  normal:@"Facebook"
-                                  selected:@"FacebookSelected"
-                                  highlighted:@"FacebookSelected"
-                                  disabled:@"Facebook"];
-    [facebook.button setBackgroundColor:[UIColor blackColor]];
-    
-    JCGridMenuRow *share = [[JCGridMenuRow alloc] initWithImages:@"Share" selected:@"CloseSelected" highlighted:@"ShareSelected" disabled:@"Share"];
-    [share setColumns:[[NSMutableArray alloc] initWithObjects:pocket, twitter, facebook, email, nil]];
-    [share setIsModal:YES];
-    [share.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
-    
-    
-    // Comments
-    
-    JCGridMenuRow *comments = [[JCGridMenuRow alloc] initWithImages:@"Comments" selected:@"CommentsSelected" highlighted:@"CommentsSelected" disabled:@"Comments"];
-    [comments setHideAlpha:1.0f];
-    [comments setIsSeperated:YES];
-    [comments setIsModal:YES];
-    [comments.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
-    
-    
-    // Spam
-    
-    JCGridMenuRow *spam = [[JCGridMenuRow alloc] initWithImages:@"Spam" selected:@"SpamSelected" highlighted:@"SpamSelected" disabled:@"Spam"];
-    [spam setIsSeperated:NO];
-    [spam setIsSelected:YES];
-    [spam setHideAlpha:1.0f];
-    [spam.button setBackgroundColor:[UIColor colorWithWhite:0.0f alpha:0.4f]];
-    
-    
-    // Rows...
-    
-    NSArray *rows1 = [[NSArray alloc] initWithObjects:search, share, comments, spam, nil];
-    _gmController = [[JCGridMenuController alloc] initWithFrame:CGRectMake(0,5,320,(44*[rows1 count])+[rows1 count]) rows:rows1 tag:1002];
-    [_gmController setDelegate:self];
-    [self.view addSubview:_gmController.view];
-    
-
-
-
-
-
     [self updateToolbar];
     self.viewDeckController.panningGestureDelegate = self;
     self.viewDeckController.delegate = self;
     self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
     [self.viewDeckController toggleLeftView];
-    //self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeRight | UIRectEdgeBottom;
 }
 
 - (void)viewDidUnload
@@ -427,7 +345,7 @@
     if (_popover) {
         [_popover dismiss:NO];
     }
-    [_gmController close];
+    //[_gmController close];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
             if (self.item != nil) {
@@ -496,8 +414,26 @@
 }
 
 - (IBAction)doText:(id)sender event:(UIEvent*)event {
-    //[_gmController open];
-    
+    if (_menuIsOpen) {
+        [self.menuController close];
+        [self.background setColumns:nil];
+        [self.background setIsModal:NO];
+        [self.background setHideOnExpand:NO];
+        self.background.isMoreButton = YES;
+        [self.background.button setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
+        [[self.menuController.rows objectAtIndex:2 + 1] button].hidden = YES;
+        [[self.menuController.rows objectAtIndex:2 + 2] button].hidden = YES;
+        [[self.menuController.rows objectAtIndex:2 + 3] button].hidden = YES;
+    } else {
+        //self.keepUnread.button.selected = self.item.unreadValue;
+        NSLog(@"Starred Value: %d", self.item.starredValue);
+        
+        [self.menuController open];
+        [self.star.button setSelected:self.item.starredValue];
+    }
+    _menuIsOpen = !_menuIsOpen;
+   
+    /*
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
     } else {
@@ -513,7 +449,7 @@
         }
         _popover = [[PopoverView alloc] initWithFrame:self.prefViewController.view.frame];
         [_popover showAtPoint:popoverPoint inView:self.view withContentView:self.prefViewController.view] ;
-    }
+    }*/
 }
 
 - (IBAction)doStar:(id)sender {
@@ -578,41 +514,88 @@
     }
     
     if (indexTag==1002) {
-        JCGridMenuRow *rowSelected = (JCGridMenuRow *)[_gmController.rows objectAtIndex:indexRow];
+        JCGridMenuRow *rowSelected = (JCGridMenuRow *)[self.menuController.rows objectAtIndex:indexRow];
         
         if ([rowSelected.columns count]==0) {
             // If there are no more columns, we can use this button as an on/off switch
-            [[rowSelected button] setSelected:![rowSelected button].selected];
-        } else {
             
-            if (isExpand) {
-                
-                switch (indexRow) {
-                    case 0: // Search
+            switch (indexRow) {
+                case 0: // Keep unread
+                    //[[rowSelected button] setSelected:YES];
+                    [[rowSelected button] setSelected:![rowSelected button].selected];
+                    break;
+                case 1: // Star
+                    //[[rowSelected button] setSelected:YES];
+                    if (!self.item.starredValue) {
+                        self.item.starredValue = YES;
+                        [[OCNewsHelper sharedHelper] starItemOffline:self.item.myId];
                         [[rowSelected button] setSelected:YES];
-                        //[self searchInput:YES];
-                        break;
-                    case 1: // Share
-                        [[rowSelected button] setSelected:YES];
-                        break;
-                }
-                
-            } else {
-                
-                switch (indexRow) {
-                    case 0: // Search
+                    } else {
+                        self.item.starredValue = NO;
+                        [[OCNewsHelper sharedHelper] unstarItemOffline:self.item.myId];
                         [[rowSelected button] setSelected:NO];
-                        break;
-                    case 1: // Share
-                        [[rowSelected button] setSelected:NO];
-                        break;
-                }
-                
+                    }
+                    break;
+                case 2: // Expand
+                    [[rowSelected button] setSelected:NO];
+                    break;
+            }
+
+        } else {
+            //This changes the icon to Close
+            [[[[self.menuController rows] objectAtIndex:indexRow] button] setSelected:isExpand];
+        }
+    }
+    
+}
+
+- (void)jcDidSelectGridMenuRow:(NSInteger)tag indexRow:(NSInteger)indexRow isExpand:(BOOL)isExpand {
+    if (tag==1002) {
+        JCGridMenuRow *rowSelected = (JCGridMenuRow *)[self.menuController.rows objectAtIndex:indexRow];
+        
+        if ([rowSelected.columns count]==0) {
+            // If there are no more columns, we can use this button as an on/off switch
+            //[[rowSelected button] setSelected:![rowSelected button].selected];
+            switch (indexRow) {
+                case 0: // Keep unread
+                    //[[rowSelected button] setSelected:YES];
+                    break;
+                case 1: // Star
+                    //[[rowSelected button] setSelected:YES];
+                    break;
+                case 2: // Expand
+                    [[self.menuController.rows objectAtIndex:indexRow + 1] button].hidden = NO;
+                    [[self.menuController.rows objectAtIndex:indexRow + 2] button].hidden = NO;
+                    [[self.menuController.rows objectAtIndex:indexRow + 3] button].hidden = NO;
+                    
+                    // Background
+                    JCGridMenuColumn *backgroundWhite = [[JCGridMenuColumn alloc]
+                                                         initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                                         normal:@"background1"
+                                                         selected:@"background1"
+                                                         highlighted:@"background1"
+                                                         disabled:@"background1"];
+                    [backgroundWhite.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+                    backgroundWhite.closeOnSelect = NO;
+                    
+                    JCGridMenuColumn *backgroundSepia = [[JCGridMenuColumn alloc]
+                                                         initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                                         normal:@"background2"
+                                                         selected:@"background2"
+                                                         highlighted:@"background2"
+                                                         disabled:@"background2"];
+                    [backgroundSepia.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+                    backgroundSepia.closeOnSelect = NO;
+                    
+                    [self.background setColumns:[NSMutableArray arrayWithArray:@[backgroundWhite, backgroundSepia]]];
+                    [self.background setIsMoreButton:NO];
+                    [self.background setIsModal:YES];
+                    [self.background.button setImage:[UIImage imageNamed:@"background1"] forState:UIControlStateNormal];
+                    break;
             }
             
         }
     }
-    
 }
 
 - (void)jcGridMenuColumnSelected:(NSInteger)indexTag indexRow:(NSInteger)indexRow indexColumn:(NSInteger)indexColumn
@@ -620,16 +603,85 @@
     NSLog(@"jcGridMenuColumnSelected %i %i %i", indexTag, indexRow, indexColumn);
     
     if (indexTag==1002) {
-        [[[_gmController.gridCells objectAtIndex:indexRow] button] setSelected:NO];
-        [_gmController setIsRowModal:NO];
-        
-        if (indexRow==0) {
-            // Search
-            //[self searchInput:NO];
+        [self.menuController setIsRowModal:YES];
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        int currentValue;
+        double currentLineSpacing;
+        switch (indexRow) {
+            case 0: // Keep
+                //Will not happen
+                break;
+            case 1: // Star
+                //Will not happen
+                break;
+            case 2: //Background
+                switch (indexColumn) {
+                    case 0: // White
+                        [prefs setInteger:0 forKey:@"Background"];
+                        break;
+                    case 1: // Sepia
+                        [prefs setInteger:1 forKey:@"Background"];
+                        break;
+                }
+                break;
+            case 3: //Font size
+                switch (indexColumn) {
+                    case 0: // Smaller
+                        currentValue = [[prefs valueForKey:@"FontSize"] integerValue];
+                        if (currentValue > MIN_FONT_SIZE) {
+                            --currentValue;
+                        }
+                        [prefs setInteger:currentValue forKey:@"FontSize"];
+                        break;
+                    case 1: // Larger
+                        currentValue = [[prefs valueForKey:@"FontSize"] integerValue];
+                        if (currentValue < MAX_FONT_SIZE) {
+                            ++currentValue;
+                        }
+                        [prefs setInteger:currentValue forKey:@"FontSize"];
+                        break;
+                }
+                break;
+            case 4: //Line spacing
+                switch (indexColumn) {
+                    case 0: // Smaller
+                        currentLineSpacing = [[prefs valueForKey:@"LineHeight"] doubleValue];
+                        if (currentLineSpacing > MIN_LINE_HEIGHT) {
+                            currentLineSpacing = currentLineSpacing - 0.2f;
+                        }
+                        [prefs setDouble:currentLineSpacing forKey:@"LineHeight"];
+                        break;
+                    case 1: // Larger
+                        currentLineSpacing = [[prefs valueForKey:@"LineHeight"] doubleValue];
+                        if (currentLineSpacing < MAX_LINE_HEIGHT) {
+                            currentLineSpacing = currentLineSpacing + 0.2f;
+                        }
+                        [prefs setDouble:currentLineSpacing forKey:@"LineHeight"];
+                        break;
+                }
+                break;
+            case 5: //Margin
+                switch (indexColumn) {
+                    case 0: // Narrower
+                        currentValue = [[prefs valueForKey:@"Margin"] integerValue];
+                        if (currentValue < MAX_WIDTH) {
+                            currentValue = currentValue + 20;
+                        }
+                        [prefs setInteger:currentValue forKey:@"Margin"];
+                        break;
+                    case 1: // Wider
+                        currentValue = [[prefs valueForKey:@"Margin"] integerValue];
+                        
+                        if (currentValue > MIN_WIDTH) {
+                            currentValue = currentValue - 20;
+                        }
+                        [prefs setInteger:currentValue forKey:@"Margin"];
+                        break;
+                }
+                break;
         }
-        
+        [self settingsChanged:Nil newValue:0];
     }
-    
 }
 
 
@@ -680,7 +732,7 @@
 - (UIBarButtonItem *)textBarButtonItem {
     
     if (!textBarButtonItem) {
-        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"text"] style:UIBarButtonItemStylePlain target:self action:@selector(doText:event:)];
+        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(doText:event:)];
         textBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return textBarButtonItem;
@@ -700,6 +752,130 @@
         unstarBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return unstarBarButtonItem;
+}
+
+- (JCGridMenuRow *)keepUnread {
+    if (!keepUnread) {
+        // Keep Unread
+        keepUnread = [[JCGridMenuRow alloc] initWithImages:@"keep_blue" selected:@"keep_green" highlighted:@"keep_green" disabled:@"keep_blue"];
+        [keepUnread setHideAlpha:1.0f];
+        [keepUnread setIsModal:NO];
+        [keepUnread.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
+    }
+    return keepUnread;
+}
+
+- (JCGridMenuRow *)star {
+    if (!star) {
+        // Star
+        star = [[JCGridMenuRow alloc] initWithImages:@"star_blue_open" selected:@"star_blue_filled" highlighted:@"star_blue_filled" disabled:@"star_blue_open"];
+        [star setIsSeperated:NO];
+        [star setIsSelected:NO];
+        [star setHideAlpha:1.0f];
+        [star setIsModal:NO];
+        [star.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
+    }
+    return star;
+}
+
+- (JCGridMenuRow *)background {
+    if (!background) {
+        background = [[JCGridMenuRow alloc] initWithImages:@"down" selected:@"close_blue" highlighted:@"background1" disabled:@"background1"];
+        [background setColumns:nil];
+        [background setIsModal:NO];
+        [background setHideOnExpand:NO];
+        [background.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
+        background.isMoreButton = YES;
+    }
+    return background;
+}
+
+- (JCGridMenuController *)menuController {
+    if (!menuController) {
+        // Background
+        // Handled above
+        
+        // Font
+        JCGridMenuColumn *fontSmaller = [[JCGridMenuColumn alloc]
+                                         initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                         normal:@"fontsizes"
+                                         selected:@"fontsizes"
+                                         highlighted:@"fontsizes"
+                                         disabled:@"fontsizes"];
+        [fontSmaller.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+        fontSmaller.closeOnSelect = NO;
+        
+        JCGridMenuColumn *fontLarger = [[JCGridMenuColumn alloc]
+                                        initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                        normal:@"fontsizel"
+                                        selected:@"fontsizel"
+                                        highlighted:@"fontsizel"
+                                        disabled:@"fontsizel"];
+        [fontLarger.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+        fontLarger.closeOnSelect = NO;
+        
+        JCGridMenuRow *font = [[JCGridMenuRow alloc] initWithImages:@"fontsizem" selected:@"close_blue" highlighted:@"fontsizem" disabled:@"fontsizem"];
+        [font setColumns:[NSMutableArray arrayWithArray:@[fontSmaller, fontLarger]]];
+        [font setIsModal:YES];
+        [font setHideOnExpand:NO];
+        [font.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
+        font.button.hidden = YES;
+        // Line Spacing
+        JCGridMenuColumn *spacingSmaller = [[JCGridMenuColumn alloc]
+                                            initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                            normal:@"lineheight1"
+                                            selected:@"lineheight1"
+                                            highlighted:@"lineheight1"
+                                            disabled:@"lineheight1"];
+        [spacingSmaller.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+        spacingSmaller.closeOnSelect = NO;
+        
+        JCGridMenuColumn *spacingLarger = [[JCGridMenuColumn alloc]
+                                           initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                           normal:@"lineheight3"
+                                           selected:@"lineheight3"
+                                           highlighted:@"lineheight3"
+                                           disabled:@"lineheight3"];
+        [spacingLarger.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+        spacingLarger.closeOnSelect = NO;
+        
+        JCGridMenuRow *spacing = [[JCGridMenuRow alloc] initWithImages:@"lineheight2" selected:@"close_blue" highlighted:@"lineheight2" disabled:@"lineheight2"];
+        [spacing setColumns:[NSMutableArray arrayWithArray:@[spacingSmaller, spacingLarger]]];
+        [spacing setIsModal:YES];
+        [spacing setHideOnExpand:NO];
+        [spacing.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
+        spacing.button.hidden = YES;
+        // Margin
+        JCGridMenuColumn *marginSmaller = [[JCGridMenuColumn alloc]
+                                           initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                           normal:@"margin1"
+                                           selected:@"margin1"
+                                           highlighted:@"margin1"
+                                           disabled:@"margin1"];
+        [marginSmaller.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+        marginSmaller.closeOnSelect = NO;
+        
+        JCGridMenuColumn *marginLarger = [[JCGridMenuColumn alloc]
+                                          initWithButtonAndImages:CGRectMake(0, 0, 44, 44)
+                                          normal:@"margin3"
+                                          selected:@"margin3"
+                                          highlighted:@"margin3"
+                                          disabled:@"margin3"];
+        [marginLarger.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
+        marginLarger.closeOnSelect = NO;
+        
+        JCGridMenuRow *margin = [[JCGridMenuRow alloc] initWithImages:@"margin2" selected:@"close_blue" highlighted:@"margin2" disabled:@"margin2"];
+        [margin setColumns:[NSMutableArray arrayWithArray:@[marginSmaller, marginLarger]]];
+        [margin setIsModal:YES];
+        [margin setHideOnExpand:NO];
+        [margin.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
+        margin.button.hidden = YES;
+        // Rows
+        NSArray *rows = @[self.keepUnread, self.star, self.background, font, spacing, margin];
+        menuController = [[JCGridMenuController alloc] initWithFrame:CGRectMake(0, 5, self.view.frame.size.width - 5, self.view.frame.size.height - 5) rows:rows tag:1002];
+        [menuController setDelegate:self];
+    }
+    return menuController;
 }
 
 #pragma mark - Toolbar
@@ -748,21 +924,13 @@
     }
 
 
-    UIBarButtonItem *starUnstarBarButtonItem = ([self.item.starred isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
+    //UIBarButtonItem *starUnstarBarButtonItem = ([self.item.starred isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
+    self.star.button.selected = self.item.starredValue;
     refreshStopBarButtonItem.enabled = (self.item != nil);
-    
 
-    NSArray *itemsRight = [NSArray arrayWithObjects:
-                           fixedSpace,
-                           starUnstarBarButtonItem,
-                           fixedSpace,
-                           self.textBarButtonItem,
-                          fixedSpace,
-                          self.actionBarButtonItem,
-                          fixedSpace,
-                          nil];
+    NSArray *itemsRight = @[fixedSpace, self.actionBarButtonItem, fixedSpace, self.textBarButtonItem];
     
-    TransparentToolbar *toolbarRight = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0, 44.0f)];
+    TransparentToolbar *toolbarRight = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0, 44.0f)];
     toolbarRight.items = itemsRight;
     toolbarRight.tintColor = self.navigationController.navigationBar.tintColor;
     
@@ -771,7 +939,7 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarRight];
     } else {
         // Load resources for iOS 7 or later
-        self.navigationItem.rightBarButtonItems = @[self.actionBarButtonItem, self.textBarButtonItem, starUnstarBarButtonItem];
+        self.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
     }
 
 }
@@ -870,7 +1038,7 @@
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    [_gmController close];
+    //[_gmController close];
     CGPoint loc = [gestureRecognizer locationInView:self.webView];
     float h = self.webView.frame.size.height;
     float q = h / 4;
