@@ -425,11 +425,9 @@
         [[self.menuController.rows objectAtIndex:2 + 2] button].hidden = YES;
         [[self.menuController.rows objectAtIndex:2 + 3] button].hidden = YES;
     } else {
-        //self.keepUnread.button.selected = self.item.unreadValue;
-        NSLog(@"Starred Value: %d", self.item.starredValue);
-        
+        self.keepUnread.button.selected = self.item.unreadValue;
+        self.star.button.selected = self.item.starredValue;
         [self.menuController open];
-        [self.star.button setSelected:self.item.starredValue];
     }
     _menuIsOpen = !_menuIsOpen;
    
@@ -473,6 +471,10 @@
             return NO;
         }
     }
+    if (![[request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
+        [self.menuController close];
+    }
+
     return YES;
 }
 
@@ -521,11 +523,17 @@
             
             switch (indexRow) {
                 case 0: // Keep unread
-                    //[[rowSelected button] setSelected:YES];
-                    [[rowSelected button] setSelected:![rowSelected button].selected];
+                    if (!self.item.unreadValue) {
+                        self.item.unreadValue = YES;
+                        [[OCNewsHelper sharedHelper] markItemUnreadOffline:self.item.myId];
+                        [[rowSelected button] setSelected:YES];
+                    } else {
+                        self.item.unreadValue = NO;
+                        [[OCNewsHelper sharedHelper] markItemsReadOffline:@[self.item.myId]];
+                        [[rowSelected button] setSelected:NO];
+                    }
                     break;
                 case 1: // Star
-                    //[[rowSelected button] setSelected:YES];
                     if (!self.item.starredValue) {
                         self.item.starredValue = YES;
                         [[OCNewsHelper sharedHelper] starItemOffline:self.item.myId];
@@ -925,6 +933,7 @@
 
 
     //UIBarButtonItem *starUnstarBarButtonItem = ([self.item.starred isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
+    self.keepUnread.button.selected = self.item.unreadValue;
     self.star.button.selected = self.item.starredValue;
     refreshStopBarButtonItem.enabled = (self.item != nil);
 

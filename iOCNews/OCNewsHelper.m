@@ -453,6 +453,10 @@
                 }];
                 [self markItemsReadOffline:itemsToMarkRead];
                 [itemsToMarkRead removeAllObjects];
+                for (NSNumber *itemId in itemsToMarkUnread) {
+                    [self markItemUnreadOffline:itemId];
+                }
+                [itemsToMarkUnread removeAllObjects];
                 for (NSNumber *itemId in itemsToStar) {
                     [self starItemOffline:itemId];
                 }
@@ -533,9 +537,12 @@
     NSLog(@"Count: %i", items.count);
     
     [allItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-            item.unreadValue = NO;
-            Feed *feed = [self feedWithId:item.feedIdValue];
+        Feed *feed = [self feedWithId:item.feedIdValue];
+        if (item.unreadValue) {
+            ++feed.unreadCountValue;
+        } else {
             --feed.unreadCountValue;
+        }
     }];
     [self updateTotalUnreadCount];
 }
@@ -668,13 +675,30 @@
         [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:nil failure:nil];
     } else {
         //offline
+        for (NSNumber *itemId in itemIds) {
+            NSInteger i = [itemsToMarkUnread indexOfObject:itemId];
+            if (i != NSNotFound) {
+                [itemsToMarkUnread removeObject:itemId];
+            }
+        }
         [itemsToMarkRead addObjectsFromArray:itemIds];
     }
     [self updateReadItems:itemIds];
 }
 
 - (void)markItemUnreadOffline:(NSNumber*)itemId {
-    //
+    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+        //online
+        [[OCAPIClient sharedClient] putPath:@"items/unread/multiple" parameters:[NSDictionary dictionaryWithObject:itemId forKey:@"items"] success:nil failure:nil];
+    } else {
+        //offline
+        NSInteger i = [itemsToMarkRead indexOfObject:itemId];
+        if (i != NSNotFound) {
+            [itemsToMarkRead removeObject:itemId];
+        }
+        [itemsToMarkUnread addObject:itemId];
+    }
+    [self updateReadItems:@[itemId]];
 }
 
 - (void)starItemOffline:(NSNumber*)itemId {

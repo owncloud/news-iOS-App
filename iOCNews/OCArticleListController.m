@@ -289,6 +289,7 @@
     self.detailViewController.item = selectedItem;
     [self.viewDeckController closeLeftView];
     if (selectedItem.unreadValue) {
+        selectedItem.unreadValue = NO;
         [self updateUnreadCount:[NSArray arrayWithObject:selectedItem.myId]];
     }
 }
@@ -321,6 +322,7 @@
             
             [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
                 if (item.unreadValue) {
+                    item.unreadValue = NO;
                     [idsToMarkRead addObject:item.myId];
                 }
             }];
@@ -354,6 +356,7 @@
                     *stop = YES;
                 }
                 if (item.unreadValue) {
+                    item.unreadValue = NO;
                     [idsToMarkRead addObject:item.myId];
                 }
             }];
