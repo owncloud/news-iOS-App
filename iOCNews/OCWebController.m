@@ -80,7 +80,7 @@
 @synthesize menuController;
 @synthesize keepUnread;
 @synthesize star;
-@synthesize background;
+@synthesize backgroundMenuRow;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -416,11 +416,11 @@
 - (IBAction)doText:(id)sender event:(UIEvent*)event {
     if (_menuIsOpen) {
         [self.menuController close];
-        [self.background setColumns:nil];
-        [self.background setIsModal:NO];
-        [self.background setHideOnExpand:NO];
-        self.background.isMoreButton = YES;
-        [self.background.button setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
+        [self.backgroundMenuRow setColumns:nil];
+        [self.backgroundMenuRow setIsModal:NO];
+        [self.backgroundMenuRow setHideOnExpand:NO];
+        self.backgroundMenuRow.isMoreButton = YES;
+        [self.backgroundMenuRow.button setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
         [[self.menuController.rows objectAtIndex:2 + 1] button].hidden = YES;
         [[self.menuController.rows objectAtIndex:2 + 2] button].hidden = YES;
         [[self.menuController.rows objectAtIndex:2 + 3] button].hidden = YES;
@@ -595,10 +595,10 @@
                     [backgroundSepia.button setBackgroundColor:[UIColor colorWithWhite:0.90f alpha:0.95f]];
                     backgroundSepia.closeOnSelect = NO;
                     
-                    [self.background setColumns:[NSMutableArray arrayWithArray:@[backgroundWhite, backgroundSepia]]];
-                    [self.background setIsMoreButton:NO];
-                    [self.background setIsModal:YES];
-                    [self.background.button setImage:[UIImage imageNamed:@"background1"] forState:UIControlStateNormal];
+                    [self.backgroundMenuRow setColumns:[NSMutableArray arrayWithArray:@[backgroundWhite, backgroundSepia]]];
+                    [self.backgroundMenuRow setIsMoreButton:NO];
+                    [self.backgroundMenuRow setIsModal:YES];
+                    [self.backgroundMenuRow.button setImage:[UIImage imageNamed:@"background1"] forState:UIControlStateNormal];
                     break;
             }
             
@@ -786,16 +786,16 @@
     return star;
 }
 
-- (JCGridMenuRow *)background {
-    if (!background) {
-        background = [[JCGridMenuRow alloc] initWithImages:@"down" selected:@"close_blue" highlighted:@"background1" disabled:@"background1"];
-        [background setColumns:nil];
-        [background setIsModal:NO];
-        [background setHideOnExpand:NO];
-        [background.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
-        background.isMoreButton = YES;
+- (JCGridMenuRow *)backgroundMenuRow {
+    if (!backgroundMenuRow) {
+        backgroundMenuRow = [[JCGridMenuRow alloc] initWithImages:@"down" selected:@"close_blue" highlighted:@"background1" disabled:@"background1"];
+        [backgroundMenuRow setColumns:nil];
+        [backgroundMenuRow setIsModal:NO];
+        [backgroundMenuRow setHideOnExpand:NO];
+        [backgroundMenuRow.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
+        backgroundMenuRow.isMoreButton = YES;
     }
-    return background;
+    return backgroundMenuRow;
 }
 
 - (JCGridMenuController *)menuController {
@@ -879,7 +879,7 @@
         [margin.button setBackgroundColor:[UIColor colorWithWhite:0.97f alpha:0.95f]];
         margin.button.hidden = YES;
         // Rows
-        NSArray *rows = @[self.keepUnread, self.star, self.background, font, spacing, margin];
+        NSArray *rows = @[self.keepUnread, self.star, self.backgroundMenuRow, font, spacing, margin];
         menuController = [[JCGridMenuController alloc] initWithFrame:CGRectMake(0, 5, self.view.frame.size.width - 5, self.view.frame.size.height - 5) rows:rows tag:1002];
         [menuController setDelegate:self];
     }

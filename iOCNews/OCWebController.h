@@ -43,7 +43,7 @@
 @property (nonatomic, strong, readonly) JCGridMenuController *menuController;
 @property (nonatomic, strong, readonly) JCGridMenuRow *keepUnread;
 @property (nonatomic, strong, readonly) JCGridMenuRow *star;
-@property (nonatomic, strong, readonly) JCGridMenuRow *background;
+@property (nonatomic, strong, readonly) JCGridMenuRow *backgroundMenuRow;
 @property (nonatomic, strong, readonly) UIBarButtonItem *backBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *forwardBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *refreshBarButtonItem;

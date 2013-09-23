@@ -244,15 +244,12 @@
 - (void)configureCell:(OCFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    BOOL haveIcon = NO;
     NSString *faviconLink = feed.faviconLink;
-    //NSLog(@"faviconLink: %@", faviconLink);
     if (![faviconLink isKindOfClass:[NSNull class]]) {
         if ([faviconLink hasPrefix:@"http"]) {
             NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
             if (faviconURL) {
                 if (cell.tag == indexPath.row) {
-                    haveIcon = YES;
                     [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
                 }
             }
