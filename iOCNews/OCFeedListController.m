@@ -40,11 +40,10 @@
 #import "Feed.h"
 #import "FeedExtra.h"
 #import "UIImageView+WebCache.h"
-#import "KxMenu.h"
 #import "AFNetworking.h"
 #import "UIImage+Resource.h"
 
-@interface OCFeedListController () <IIViewDeckControllerDelegate> {
+@interface OCFeedListController () <IIViewDeckControllerDelegate, UIActionSheetDelegate> {
     int parserCount;
     int currentIndex;
     BOOL networkHasBeenUnreachable;
@@ -69,6 +68,7 @@
 @synthesize settingsPopover;
 @synthesize feedRefreshControl;
 @synthesize fetchedResultsController;
+@synthesize gearActionSheet;
 
 - (NSFetchedResultsController *)fetchedResultsController {
     if (!fetchedResultsController) {
@@ -398,33 +398,34 @@
 #pragma mark - Actions
 
 - (void)showMenu:(UIBarButtonItem *)sender event:(UIEvent *)event {
-    NSArray *menuItems =
-    @[
-      [KxMenuItem menuItem:@"Log In"
-                     image:nil
-                    target:self
-                    action:@selector(doEdit:)],
-      
-      [KxMenuItem menuItem:@"Add Feed"
-                     image:nil
-                    target:self
-                    action:@selector(doAdd:)],
-      
-      [KxMenuItem menuItem:[[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read"
-                     image:nil
-                    target:self
-                    action:@selector(doHideRead)],
-      ];
-    
-    [KxMenu setTitleFont:[UIFont boldSystemFontOfSize:18]];
-    //UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
-    CGPoint touchPoint = [[event.allTouches anyObject] locationInView:self.viewDeckController.view];
-    CGRect rect = self.viewDeckController.view.frame;
-    [KxMenu showMenuInView:self.viewDeckController.view
-                  fromRect:CGRectMake(touchPoint.x, touchPoint.y + rect.origin.y, 1, 1)// tbar.frame
-                 menuItems:menuItems];
+    self.gearActionSheet = nil;
+    NSString *hideReadTitle = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read";
+    self.gearActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Log In", @"Add Feed", hideReadTitle, nil];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.gearActionSheet showFromBarButtonItem:sender animated:YES];
+    } else {
+        [self.gearActionSheet showInView:self.viewDeckController.view];
+    }
 }
 
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([actionSheet isEqual:self.gearActionSheet]) {
+        switch (buttonIndex) {
+            case 0:
+                [self doEdit:nil];
+                break;
+            case 1:
+                [self doAdd:nil];
+                break;
+            case 2:
+                [self doHideRead];
+                break;
+            default:
+                break;
+        }
+    }
+}
 
 - (IBAction)doAdd:(id)sender {
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];

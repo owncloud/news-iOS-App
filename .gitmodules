@@ -34,9 +34,6 @@
 [submodule "readable"]
 	path = readable
 	url = https://github.com/JanX2/readable.git
-[submodule "kxmenu"]
-	path = kxmenu
-	url = https://github.com/kolyvan/kxmenu.git
 [submodule "HexColors"]
 	path = HexColors
 	url = https://github.com/mRs-/HexColors.git

@@ -46,6 +46,7 @@
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
 @property (nonatomic, strong, readonly) UIPopoverController *settingsPopover;
+@property (strong, nonatomic) UIActionSheet *gearActionSheet;
 
 - (IBAction) doAdd:(id)sender;
 - (IBAction) doInfo:(id)sender;
