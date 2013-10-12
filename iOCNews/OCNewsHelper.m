@@ -33,11 +33,11 @@
 #import "OCNewsHelper.h"
 #import "OCAPIClient.h"
 #import "Feeds.h"
-#import "Feed.h"
-#import "Item.h"
 #import "NSDictionary+HandleNull.h"
 
 @interface OCNewsHelper () {
+    NSMutableArray *foldersToAdd;
+    NSMutableArray *foldersToDelete;
     NSMutableArray *feedsToAdd;
     NSMutableArray *feedsToDelete;
     NSMutableArray *itemsToMarkRead;
@@ -46,6 +46,7 @@
     NSMutableArray *itemsToUnstar;
 }
 
+- (int)addFolderFromDictionary:(NSDictionary*)dict;
 - (int)addFeedFromDictionary:(NSDictionary*)dict;
 - (void)addItemFromDictionary:(NSDictionary*)dict;
 
@@ -57,6 +58,7 @@
 @synthesize objectModel;
 @synthesize coordinator;
 @synthesize feedsRequest;
+@synthesize folderRequest;
 @synthesize feedRequest;
 @synthesize itemRequest;
 
@@ -109,6 +111,8 @@
     }
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    foldersToAdd = [[prefs arrayForKey:@"FoldersToAdd"] mutableCopy];
+    foldersToDelete = [[prefs arrayForKey:@"FoldersToDelete"] mutableCopy];
     feedsToAdd = [[prefs arrayForKey:@"FeedsToAdd"] mutableCopy];
     feedsToDelete = [[prefs arrayForKey:@"FeedsToDelete"] mutableCopy];
     itemsToMarkRead = [[prefs arrayForKey:@"ItemsToMarkRead"] mutableCopy];
@@ -161,6 +165,8 @@
 
 - (void)saveContext {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:foldersToAdd forKey:@"FoldersToAdd"];
+    [prefs setObject:foldersToDelete forKey:@"FoldersToDelete"];
     [prefs setObject:feedsToAdd forKey:@"FeedsToAdd"];
     [prefs setObject:feedsToDelete forKey:@"FeedsToDelete"];
     [prefs setObject:itemsToMarkRead forKey:@"ItemsToMarkRead"];
@@ -181,6 +187,13 @@
 }
 
 #pragma mark - COREDATA -INSERT
+
+- (int)addFolderFromDictionary:(NSDictionary*)dict {
+    Folder *newFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folder" inManagedObjectContext:self.context];
+    newFolder.myId = [dict objectForKey:@"id"];
+    newFolder.name = [dict objectForKeyNotNull:@"name" fallback:@"Folder"];
+    return newFolder.myIdValue;
+}
 
 - (int)addFeedFromDictionary:(NSDictionary *)dict {
     Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
@@ -213,6 +226,33 @@
     newItem.starred = [dict objectForKey:@"starred"];
     newItem.lastModified = [dict objectForKey:@"lastModified"];
     [self addItemExtra:newItem];
+}
+
+- (int)addFolder:(id)JSON {
+    NSDictionary *jsonDict = (NSDictionary *) JSON;
+    NSMutableArray *newFolders = [jsonDict objectForKey:@"folders"];
+    int newFolderId = [self addFolderFromDictionary:[newFolders lastObject]];
+    [self updateTotalUnreadCount];
+    return newFolderId;
+}
+
+- (void)deleteFolder:(Folder*)folder {
+    if (folder) {
+        //TODO delete feeds and their items
+        /*[self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
+        
+        NSError *error = nil;
+        NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
+        for (Item *item in feedItems) {
+            [self.context deleteObject:item];
+        }*/
+        [self.context deleteObject:folder];
+        [self updateTotalUnreadCount];
+    }
+}
+
+- (void)updateFolders:(id)JSON {
+    //TODO
 }
 
 - (int)addFeed:(id)JSON {
@@ -254,6 +294,7 @@
     if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
         [[OCAPIClient sharedClient] getPath:@"feeds" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [self updateFeeds:responseObject];
+            [self updateFolders];
             [self updateItems];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -268,6 +309,70 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
     }
     
+}
+
+- (void)updateFolders {
+    [[OCAPIClient sharedClient] getPath:@"folders" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //Remove previous
+        NSError *error = nil;
+        [self.folderRequest setPredicate:nil];
+        NSArray *oldFolders = [self.context executeFetchRequest:self.folderRequest error:&error];
+        NSArray *knownIds = [oldFolders valueForKey:@"myId"];
+        
+        NSLog(@"Count: %i", oldFolders.count);
+        
+        //Add the new folders
+        NSDictionary *folderDict = (NSDictionary *)responseObject;
+        
+        NSArray *newFolders = [NSArray arrayWithArray:[folderDict objectForKey:@"folders"]];
+        
+        NSArray *newIds = [newFolders valueForKey:@"id"];
+        NSLog(@"Known: %@; New: %@", knownIds, newIds);
+        
+        NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
+        [newOnServer removeObjectsInArray:knownIds];
+        NSLog(@"New on server: %@", newOnServer);
+        [newOnServer enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"id == %@", obj];
+            NSArray * matches = [newFolders filteredArrayUsingPredicate:predicate];
+            if (matches.count > 0) {
+                [self addFolderFromDictionary:[matches lastObject]];
+            }
+        }];
+        
+        NSMutableArray *deletedOnServer = [NSMutableArray arrayWithArray:knownIds];
+        [deletedOnServer removeObjectsInArray:newIds];
+        [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
+        NSLog(@"Deleted on server: %@", deletedOnServer);
+        while (deletedOnServer.count > 0) {
+            Folder *folderToRemove = [self folderWithId:[[deletedOnServer lastObject] integerValue]];
+            [self.context deleteObject:folderToRemove];
+            [deletedOnServer removeLastObject];
+        }
+        //TODO: unread count?
+        /*[newFolders enumerateObjectsUsingBlock:^(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+            Folder *folder = [self feedWithId:[[feedDict objectForKey:@"id"] integerValue]];
+            feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
+        }];
+        */
+        for (NSNumber *folderId in foldersToDelete) {
+            Folder *folder = [self folderWithId:[folderId integerValue]];
+            [self deleteFolderOffline:folder]; //the feed will have been readded as new on server
+        }
+        [foldersToDelete removeAllObjects];
+        
+        for (NSString *name in foldersToAdd) {
+            [self addFolderOffline:name];
+        }
+        [foldersToAdd removeAllObjects];
+        
+        [self updateTotalUnreadCount];
+    
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+    }];
 }
 
 - (void)updateFeeds:(id)JSON {
@@ -330,6 +435,12 @@
     [feedsToAdd removeAllObjects];
 
     [self updateTotalUnreadCount];
+}
+
+- (Folder*)folderWithId:(int)anId {
+    [self.folderRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
+    NSArray *myFolders = [self.context executeFetchRequest:self.folderRequest error:nil];
+    return (Folder*)[myFolders lastObject];
 }
 
 - (Feed*)feedWithId:(int)anId {
@@ -588,6 +699,70 @@
     [self saveContext];
 }
 
+- (void)addFolderOffline:(NSString*)name {
+    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+        //online
+        NSDictionary *params = @{@"name": name};
+        
+        [[OCAPIClient sharedClient] postPath:@"folders" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            //NSLog(@"Folders: %@", responseObject);
+            __unused int newFolderId = [self addFolder:responseObject];
+        
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSString *message;
+            switch (operation.response.statusCode) {
+                case 409:
+                    message = @"The folder already exists.";
+                    break;
+                case 422:
+                    message = @"The folder name is invalid.";
+                    break;
+                default:
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    break;
+            }
+            
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Adding Folder", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+        }];
+        
+    } else {
+        //offline
+        [foldersToAdd addObject:name];
+        Folder *newFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folder" inManagedObjectContext:self.context];
+        newFolder.myId = [NSNumber numberWithInt:10000 + foldersToAdd.count];
+        newFolder.name = name;
+    }
+    [self updateTotalUnreadCount];
+}
+
+- (void)deleteFolderOffline:(Folder*)folder {
+    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+        //online
+        NSString *path = [NSString stringWithFormat:@"folders/%@", [folder.myId stringValue]];
+        [[OCAPIClient sharedClient] deletePath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Success");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failure");
+            NSString *message;
+            switch (operation.response.statusCode) {
+                case 404:
+                    message = @"The folder does not exist.";
+                    break;
+                default:
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    break;
+            }
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Deleting Folder", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+        }];
+    } else {
+        //offline
+        [foldersToDelete addObject:folder.myId];
+    }
+    [self deleteFolder:folder];
+}
+
 - (void)addFeedOffline:(NSString *)urlString {
     if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
         //online
@@ -756,6 +931,15 @@
     return feedRequest;
 }
 
+- (NSFetchRequest *)folderRequest {
+    if (!folderRequest) {
+        folderRequest = [[NSFetchRequest alloc] init];
+        [folderRequest setEntity:[NSEntityDescription entityForName:@"Folder" inManagedObjectContext:self.context]];
+        folderRequest.predicate = nil;
+    }
+    return folderRequest;
+}
+
 - (NSFetchRequest *)itemRequest {
     if (!itemRequest) {
         itemRequest = [[NSFetchRequest alloc] init];
@@ -764,9 +948,9 @@
     }
     return itemRequest;
 }
+
 - (NSURL*) documentsDirectoryURL {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
-
 
 @end

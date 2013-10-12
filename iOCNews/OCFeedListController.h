@@ -38,7 +38,9 @@
 @interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, PopoverViewDelegate, OCFeedSettingsDelegate>
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *specialFetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *foldersFetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *feedsFetchedResultsController;
 
 @property (nonatomic, strong, readonly) UIBarButtonItem *addBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *infoBarButtonItem;
@@ -47,9 +49,9 @@
 
 @property (nonatomic, strong, readonly) UIPopoverController *settingsPopover;
 @property (strong, nonatomic) UIActionSheet *gearActionSheet;
+@property (nonatomic, strong, readonly) UIAlertView *addFolderAlertView;
+@property (nonatomic, strong, readonly) UIAlertView *addFeedAlertView;
 
-- (IBAction) doAdd:(id)sender;
-- (IBAction) doInfo:(id)sender;
 - (IBAction) doRefresh:(id)sender;
 - (IBAction) doEdit:(id)sender;
 

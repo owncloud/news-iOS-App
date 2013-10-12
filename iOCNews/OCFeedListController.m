@@ -37,6 +37,7 @@
 #import "TSMessage.h"
 #import "TransparentToolbar.h"
 #import "OCNewsHelper.h"
+#import "Folder.h"
 #import "Feed.h"
 #import "FeedExtra.h"
 #import "UIImageView+WebCache.h"
@@ -67,25 +68,74 @@
 @synthesize editBarButtonItem;
 @synthesize settingsPopover;
 @synthesize feedRefreshControl;
-@synthesize fetchedResultsController;
+@synthesize specialFetchedResultsController;
+@synthesize foldersFetchedResultsController;
+@synthesize feedsFetchedResultsController;
 @synthesize gearActionSheet;
+@synthesize addFolderAlertView;
+@synthesize addFeedAlertView;
 
-- (NSFetchedResultsController *)fetchedResultsController {
-    if (!fetchedResultsController) {
+- (NSFetchedResultsController *)specialFetchedResultsController {
+    if (!specialFetchedResultsController) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Feed" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
+        [fetchRequest setEntity:entity];
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"myId < 0"];
+        [fetchRequest setPredicate:pred];
+        
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
+        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        [fetchRequest setFetchBatchSize:2];
+        
+        specialFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                              managedObjectContext:[OCNewsHelper sharedHelper].context
+                                                                                sectionNameKeyPath:nil
+                                                                                         cacheName:nil];
+        specialFetchedResultsController.delegate = self;
+    }
+    return specialFetchedResultsController;
+}
+
+- (NSFetchedResultsController *)foldersFetchedResultsController {
+    if (!foldersFetchedResultsController) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Folder" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
 
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
         [fetchRequest setFetchBatchSize:20];
     
-        fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                        managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
-                                        cacheName:nil];
-        fetchedResultsController.delegate = self;
+        foldersFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                              managedObjectContext:[OCNewsHelper sharedHelper].context
+                                                                                sectionNameKeyPath:nil
+                                                                                         cacheName:nil];
+        foldersFetchedResultsController.delegate = self;
     }
-    return fetchedResultsController;
+    return foldersFetchedResultsController;
+}
+
+- (NSFetchedResultsController *)feedsFetchedResultsController {
+    if (!feedsFetchedResultsController) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Feed" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
+        [fetchRequest setEntity:entity];
+
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"myId > 0"];
+        [fetchRequest setPredicate:pred];
+
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
+        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        [fetchRequest setFetchBatchSize:20];
+        
+        feedsFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                            managedObjectContext:[OCNewsHelper sharedHelper].context
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
+        feedsFetchedResultsController.delegate = self;
+    }
+    return feedsFetchedResultsController;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -182,7 +232,9 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    self.fetchedResultsController = nil;
+    self.specialFetchedResultsController = nil;
+    self.foldersFetchedResultsController = nil;
+    self.feedsFetchedResultsController = nil;
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -226,146 +278,111 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return 3;
 }
-
+/*
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return @[@"Special", @"Folders", @"Feeds"];
+}
+*/
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    //return self.feeds.count + 2;
+    switch (section) {
+        case 0:
+            return [self.specialFetchedResultsController fetchedObjects].count;
+            break;
+        case 1:
+            return [self.foldersFetchedResultsController fetchedObjects].count;
+            break;
+        case 2:
+            return [self.feedsFetchedResultsController fetchedObjects].count;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
     
-    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo numberOfObjects];
+    return 0;
 }
 
 - (void)configureCell:(OCFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-    NSString *faviconLink = feed.faviconLink;
-    if (![faviconLink isKindOfClass:[NSNull class]]) {
+    NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+    if (indexPath.section == 1) {
+        Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+        [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
+        cell.textLabel.text = folder.name;
+        cell.countBadge.value = 0;
+    } else {
+        Feed *feed;
+        if (indexPath.section == 0) {
+            if (indexPath.row < 2) {
+                feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
+            }
+        } else {
+            feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
+        }
+        NSString *faviconLink = feed.faviconLink;
         if ([faviconLink hasPrefix:@"http"]) {
             NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
             if (faviconURL) {
-                if (cell.tag == indexPath.row) {
+                if (cell.tag == indexPathTemp.row) {
                     [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
                 }
             }
         } else {
             [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
         }
+        
+        cell.countBadge.value = feed.unreadCountValue;
+        
+        if (feed.extra) {
+            cell.textLabel.text = feed.extra.displayTitle;
+        } else {
+            cell.textLabel.text = feed.title;
+        }
     }
-    
-    cell.countBadge.value = feed.unreadCountValue;
-
-    if (feed.extra) {
-        cell.textLabel.text = feed.extra.displayTitle;
-    } else {
-        cell.textLabel.text = feed.title;
-    }
-
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     OCFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[OCFeedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[OCFeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     }
     cell.tag = indexPath.row;
-    // Configure the cell...
     cell.accessoryView = cell.countBadge;
     [self configureCell:cell atIndexPath:indexPath];
-/*
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"All Articles";
-        [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
-        NSArray *unreadCounts = [self.feeds valueForKey:@"unreadCount"];
-        cell.countBadge.value = [[unreadCounts valueForKeyPath:@"@sum.self"] integerValue];
-    } else if (indexPath.row == 1) {
-        cell.textLabel.text = @"Starred";
-        [cell.imageView setImage:[UIImage imageNamed:@"star_icon"]];
-        NSArray *starredCounts = [self.items valueForKey:@"starred"];
-        cell.countBadge.value = [[starredCounts valueForKeyPath:@"@sum.self"] integerValue];
-    } else {
-        NSDictionary *feed = [self.feeds objectAtIndex:indexPath.row - 2];
-        
-        BOOL haveIcon = NO;
-        NSString *faviconLink = [feed objectForKey:@"faviconLink"];
-        //NSLog(@"faviconLink: %@", faviconLink);
-        if (![faviconLink isKindOfClass:[NSNull class]]) {
-            
-            if ([faviconLink hasPrefix:@"http"]) {
-                NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
-                if (faviconURL) {
-                    if (cell.tag == indexPath.row) {
-                        haveIcon = YES;
-                        [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
-                    }
-                }
-            }
-        }
-        if (!haveIcon) {
-            [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
-        }
-*/        
-        /*
-         if ([[object valueForKey:@"Updating"] boolValue] == YES) {
-         cell.accessoryView = cell.activityIndicator;
-         [cell.activityIndicator startAnimating];
-         } else { */
-        ////cell.countBadge.value = [[feed valueForKey:@"unreadCount"] integerValue];
-        //[cell.activityIndicator stopAnimating];
-        /*    }
-         
-         if ([[object valueForKey:@"Failure"] boolValue] == YES) {
-         cell.detailTextLabel.text = @"Failed to update feed";
-         } else {
-         cell.detailTextLabel.text = @"";
-         }
-         */
-        ////cell.textLabel.text = [feed valueForKey:@"title"];
-        
-    ////}
-    
-    
     return cell;
 }
 
-
 // Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
-    if (indexPath.row < 2) {
-        return NO;
-    }
-    return YES;
+    return (indexPath.section > 0);
 }
-
 
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [[OCNewsHelper sharedHelper] deleteFeedOffline:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+        if (indexPath.section == 1) {
+            [[OCNewsHelper sharedHelper] deleteFolderOffline:[self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp]];
+        } else if (indexPath.section == 2) {
+            [[OCNewsHelper sharedHelper] deleteFeedOffline:[self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp]];
+        }
     }
 }
-
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
     //
 }
-
 
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -380,15 +397,38 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     currentIndex = indexPath.row;
+    NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     if (self.tableView.isEditing) {
         //[self showRenameForIndex:indexPath.row];
     } else {
-        Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        if (!feed.extra) {
-            [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+        Folder *folder;
+        Feed *feed;
+        switch (indexPath.section) {
+            case 0:
+                feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
+                if (!feed.extra) {
+                    [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                }
+                self.detailViewController.feed = feed;
+                [self.viewDeckController closeLeftView];
+                break;
+            case 1:
+                folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+                //TODO: Handle folders
+
+                break;
+            case 2:
+                feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
+                if (!feed.extra) {
+                    [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                }
+                self.detailViewController.feed = feed;
+                [self.viewDeckController closeLeftView];
+                break;
+                
+            default:
+                break;
         }
-        self.detailViewController.feed = feed;
-        [self.viewDeckController closeLeftView];
     }
 }
 
@@ -397,13 +437,35 @@
 - (void)showMenu:(UIBarButtonItem *)sender event:(UIEvent *)event {
     self.gearActionSheet = nil;
     NSString *hideReadTitle = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read";
-    self.gearActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Log In", @"Add Feed", hideReadTitle, nil];
+    self.gearActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Log In", @"Add Folder", @"Add Feed", hideReadTitle, nil];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.gearActionSheet showFromBarButtonItem:sender animated:YES];
     } else {
         [self.gearActionSheet showInView:self.viewDeckController.view];
     }
+}
+
+- (UIAlertView*)addFolderAlertView {
+    if (!addFolderAlertView) {
+        addFolderAlertView = [[UIAlertView alloc] initWithTitle:@"Add New Folder" message:@"Enter the name of the folder to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+        addFolderAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField * alertTextField = [addFolderAlertView textFieldAtIndex:0];
+        alertTextField.keyboardType = UIKeyboardTypeDefault;
+        alertTextField.placeholder = @"Folder name";
+    }
+    return addFolderAlertView;
+}
+
+- (UIAlertView*)addFeedAlertView {
+    if (!addFeedAlertView) {
+        addFeedAlertView = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
+        addFeedAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField * alertTextField = [addFeedAlertView textFieldAtIndex:0];
+        alertTextField.keyboardType = UIKeyboardTypeURL;
+        alertTextField.placeholder = @"http://example.com/feed";
+    }
+    return addFeedAlertView;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -413,9 +475,12 @@
                 [self doEdit:nil];
                 break;
             case 1:
-                [self doAdd:nil];
+                [self.addFolderAlertView show];
                 break;
             case 2:
+                [self.addFeedAlertView show];
+                break;
+            case 3:
                 [self doHideRead];
                 break;
             default:
@@ -424,25 +489,21 @@
     }
 }
 
-- (IBAction)doAdd:(id)sender {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    UITextField * alertTextField = [alert textFieldAtIndex:0];
-    alertTextField.keyboardType = UIKeyboardTypeURL;
-    alertTextField.placeholder = @"http://example.com/feed";
-    [alert show];
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 //
 }
 
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        [[OCNewsHelper sharedHelper] addFeedOffline:[[alertView textFieldAtIndex:0] text]];
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([alertView isEqual:self.addFolderAlertView]) {
+        if (buttonIndex == 1) {
+            [[OCNewsHelper sharedHelper] addFolderOffline:[[alertView textFieldAtIndex:0] text]];
+        }
+    }
+    if ([alertView isEqual:self.addFeedAlertView]) {
+        if (buttonIndex == 1) {
+            [[OCNewsHelper sharedHelper] addFeedOffline:[[alertView textFieldAtIndex:0] text]];
+        }
     }
 }
 
@@ -451,21 +512,6 @@
     BOOL hideRead = [prefs boolForKey:@"HideRead"];
     [prefs setBool:!hideRead forKey:@"HideRead"];
     [prefs synchronize];
-}
-
-- (IBAction)doInfo:(id)sender {
-    /*
-    CGRect myFrame;
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-        myFrame = CGRectMake(0, 0, 1024, 748);
-    } else {
-        myFrame = CGRectMake(0, 0, 768, 1004);
-    }
-    AppDelegate* myDelegate = (((AppDelegate*) [UIApplication sharedApplication].delegate));
-    FDAboutPanel *aboutPanel = [[FDAboutPanel alloc] initWithFrame:myFrame title:@"About iOCNews"];
-    [myDelegate.window.rootViewController.view addSubview:aboutPanel];
-	[aboutPanel showFromPoint:CGPointMake(250, 30)];
-     */
 }
 
 - (IBAction)doEdit:(id)sender {
@@ -523,10 +569,12 @@
         if (indexPath == nil) {
             NSLog(@"long press on table view but not on a row");
         } else {
-            if ((indexPath.section == 0) && (indexPath.row > 1)) {
+            if ((indexPath.section == 1)) {
+                //TODO: Handle folders
+            } else if (indexPath.section == 2) {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
                 if (cell.isHighlighted) {
-                    Feed *feed = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                    Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPath];
                     NSLog(@"Feed title: %@", feed.title);
                     if (!feed.extra) {
                         [[OCNewsHelper sharedHelper] addFeedExtra:feed];
@@ -558,7 +606,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.settingsPopover dismissPopoverAnimated:YES];
     }
-    [self.tableView reloadRowsAtIndexPaths:@[[self.fetchedResultsController indexPathForObject:settings.feed]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadRowsAtIndexPaths:@[[self.feedsFetchedResultsController indexPathForObject:settings.feed]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
@@ -574,12 +622,20 @@
         NSArray *predArray = @[pred1, pred2];
         NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
         NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
-        [[self.fetchedResultsController fetchRequest] setPredicate:pred4];
+        [[self.feedsFetchedResultsController fetchRequest] setPredicate:pred4];
     } else{
-        [[self.fetchedResultsController fetchRequest] setPredicate:nil];
+        [[self.feedsFetchedResultsController fetchRequest] setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     }
     NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error]) {
+    if (![[self specialFetchedResultsController] performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    if (![[self foldersFetchedResultsController] performFetch:&error]) {
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    }
+    if (![[self feedsFetchedResultsController] performFetch:&error]) {
         // Update to handle the error appropriately.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
@@ -611,7 +667,7 @@
         if (board.URL) {
             if (![board.URL.absoluteString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"PreviousPasteboardURL"]]) {
                 [[NSUserDefaults standardUserDefaults] setObject:board.URL.absoluteString forKey:@"PreviousPasteboardURL"];
-                NSArray *feedURLStrings = [self.fetchedResultsController.fetchedObjects valueForKey:@"url"];
+                NSArray *feedURLStrings = [self.feedsFetchedResultsController.fetchedObjects valueForKey:@"url"];
                 NSLog(@"URLs: %@", feedURLStrings);
                 if ([feedURLStrings indexOfObject:[board.URL absoluteString]] == NSNotFound) {
                     NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
@@ -765,7 +821,25 @@
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     
     UITableView *tableView = self.tableView;
-    
+    if (newIndexPath != nil && controller == self.foldersFetchedResultsController) {
+        newIndexPath = [NSIndexPath indexPathForRow:[newIndexPath row] inSection:1];
+        if ([tableView cellForRowAtIndexPath:newIndexPath] == nil) {
+            type = NSFetchedResultsChangeInsert;
+        }
+    }
+    if (newIndexPath != nil && controller == self.feedsFetchedResultsController) {
+        newIndexPath = [NSIndexPath indexPathForRow:[newIndexPath row] inSection:2];
+        if ([tableView cellForRowAtIndexPath:newIndexPath] == nil) {
+            type = NSFetchedResultsChangeInsert;
+        }
+    }
+    if (indexPath != nil && controller == self.foldersFetchedResultsController) {
+        indexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:1];
+    }
+    if (indexPath != nil && controller == self.feedsFetchedResultsController) {
+        indexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:2];
+    }
+
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
@@ -777,6 +851,7 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
+            NSLog(@"Section: %d; Row: %d", indexPath.section, indexPath.row);
             [self configureCell:(OCFeedCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             

@@ -32,6 +32,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Folder.h"
 #import "Feed.h"
 #import "Item.h"
 
@@ -42,6 +43,7 @@
 @property (nonatomic, retain) NSPersistentStoreCoordinator *coordinator;
 
 @property (nonatomic, strong, readonly) NSFetchRequest *feedsRequest;
+@property (nonatomic, strong, readonly) NSFetchRequest *folderRequest;
 @property (nonatomic, strong, readonly) NSFetchRequest *feedRequest;
 @property (nonatomic, strong, readonly) NSFetchRequest *itemRequest;
 
@@ -54,9 +56,13 @@
 
 - (void)sync;
 
+- (Folder*)folderWithId:(int)anId;
 - (Feed*)feedWithId:(int)anId;
 - (Item*)itemWithId:(NSNumber*)anId;
 
+- (int)addFolder:(id)JSON;
+- (void)deleteFolder:(Folder*)folder;
+- (void)updateFolders;
 - (int)addFeed:(id)JSON;
 - (void)addFeedExtra:(Feed*)feed;
 - (void)deleteFeed:(Feed*)feed;
@@ -68,6 +74,8 @@
 - (void)updateStarredCount;
 - (int)itemCount;
 
+- (void)addFolderOffline:(NSString*)name;
+- (void)deleteFolderOffline:(Folder*)folder;
 - (void)addFeedOffline:(NSString*)urlString;
 - (void)deleteFeedOffline:(Feed*)feed;
 - (void)markItemsReadOffline:(NSArray*)itemIds;

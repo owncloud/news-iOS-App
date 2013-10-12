@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch.iPad" variant="6xAndEarlier" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <development version="4600" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
         <!--Article List Controller-->
@@ -74,6 +76,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="iOCNews" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="rCW-bO-Cfx">
+                                    <rect key="frame" x="0.0" y="148" width="540" height="27"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="27" id="31Z-mc-2Ei"/>
                                     </constraints>
@@ -82,16 +85,19 @@
                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Version 1.0" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lFp-sS-I4l">
+                                    <rect key="frame" x="0.0" y="180" width="540" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Copyright © 2013 Peter B. Hedlund" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="fav-re-vvs">
+                                    <rect key="frame" x="0.0" y="205" width="540" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </label>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="http://peterandlinda.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="PBB-QX-w4M">
+                                    <rect key="frame" x="0.0" y="231" width="540" height="42"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <accessibility key="accessibilityConfiguration">
                                         <accessibilityTraits key="traits" none="YES" link="YES"/>
@@ -104,6 +110,7 @@
                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                 </textView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Currently not connected to an OwnCloud News server." lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="460" translatesAutoresizingMaskIntoConstraints="NO" id="zDJ-Ip-i6b">
+                                    <rect key="frame" x="80" y="10" width="460" height="70"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="70" id="FWv-Cm-R13"/>
                                         <constraint firstAttribute="width" constant="460" id="WH9-Um-ndU"/>
@@ -112,7 +119,9 @@
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </label>
-                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PV1-Gd-hNc"/>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="PV1-Gd-hNc">
+                                    <rect key="frame" x="40" y="18" width="20" height="20"/>
+                                </activityIndicatorView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -145,6 +154,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://www.example.com/owncloud" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RmU-IS-n75">
+                                                    <rect key="frame" x="138" y="7" width="320" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="BnU-IK-9aN"/>
                                                         <constraint firstAttribute="width" constant="320" id="IO5-7J-Vrh"/>
@@ -153,6 +163,7 @@
                                                     <textInputTraits key="textInputTraits" keyboardType="URL"/>
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Server" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdc-uP-GMV">
+                                                    <rect key="frame" x="20" y="13" width="110" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="ntS-iY-97D"/>
                                                     </constraints>
@@ -179,6 +190,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="OwnCloud Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oJg-hA-ega">
+                                                    <rect key="frame" x="138" y="7" width="320" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="320" id="Rmm-LT-0QP"/>
                                                         <constraint firstAttribute="height" constant="30" id="zvq-vf-2Gx"/>
@@ -187,6 +199,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kBq-X3-acP">
+                                                    <rect key="frame" x="20" y="11" width="110" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="yJE-af-30y"/>
                                                     </constraints>
@@ -213,6 +226,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="OwnCloud Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7fz-fA-oAA">
+                                                    <rect key="frame" x="138" y="8" width="320" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="dPZ-lf-h3o"/>
                                                         <constraint firstAttribute="width" constant="320" id="gAD-I5-pXt"/>
@@ -221,6 +235,7 @@
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F4A-va-Uxa">
+                                                    <rect key="frame" x="20" y="11" width="110" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="njf-Zq-V1p"/>
                                                     </constraints>
@@ -246,6 +261,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Allow Untrusted SSL Certificate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5e3-EW-kbb">
+                                                    <rect key="frame" x="20" y="11" width="256" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="256" id="Kmf-eK-cqt"/>
                                                     </constraints>
@@ -253,7 +269,9 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XzG-y2-lr9"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XzG-y2-lr9">
+                                                    <rect key="frame" x="381" y="8" width="79" height="27"/>
+                                                </switch>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -276,6 +294,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Connect" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQ3-rD-Q2m">
+                                                    <rect key="frame" x="20" y="11" width="438" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="438" id="BXy-BE-uCd"/>
                                                     </constraints>
@@ -323,9 +342,9 @@
         <!--Feed Settings Controller - Edit Feed-->
         <scene sceneID="teH-Xq-aMz">
             <objects>
-                <tableViewController storyboardIdentifier="" autoresizesArchivedViewToFullSize="NO" id="Nhq-e9-Wb5" customClass="OCFeedSettingsController" sceneMemberID="viewController">
+                <tableViewController autoresizesArchivedViewToFullSize="NO" id="Nhq-e9-Wb5" customClass="OCFeedSettingsController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="MGp-Mt-nLC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="152"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="216"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -339,6 +358,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nsn-eS-tNQ">
+                                                    <rect key="frame" x="65" y="7" width="225" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="225" id="smf-Cp-zL4"/>
                                                     </constraints>
@@ -346,6 +366,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9h-wI-DcA">
+                                                    <rect key="frame" x="10" y="10" width="42" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="42" id="cHH-4Y-gvR"/>
                                                     </constraints>
@@ -371,6 +392,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="View Full Article" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Cs-oC-wIg">
+                                                    <rect key="frame" x="10" y="11" width="150" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="150" id="F8k-UK-HoZ"/>
                                                     </constraints>
@@ -379,6 +401,7 @@
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5RG-hn-cs7">
+                                                    <rect key="frame" x="215" y="8" width="79" height="27"/>
                                                     <connections>
                                                         <action selector="fullArticleStateChanged:" destination="Nhq-e9-Wb5" eventType="valueChanged" id="rXl-qy-MrQ"/>
                                                     </connections>
@@ -401,6 +424,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Use Reader Mode" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3o-0F-Kgg">
+                                                    <rect key="frame" x="10" y="11" width="150" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="150" id="sVJ-Yk-h2J"/>
                                                     </constraints>
@@ -408,7 +432,9 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Svm-er-iUv"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Svm-er-iUv">
+                                                    <rect key="frame" x="215" y="8" width="79" height="27"/>
+                                                </switch>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -453,7 +479,7 @@
         <!--Web Controller-->
         <scene sceneID="ibB-ii-1Ko">
             <objects>
-                <viewController storyboardIdentifier="" id="ls0-KW-cR8" customClass="OCWebController" sceneMemberID="viewController">
+                <viewController id="ls0-KW-cR8" customClass="OCWebController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3VL-Rj-gw4">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -489,6 +515,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="aOg-xm-Znw">
+                                <rect key="frame" x="20" y="140" width="200" height="44"/>
                                 <segments>
                                     <segment title="" image="lineheight1.png"/>
                                     <segment title="" image="lineheight3.png"/>
@@ -498,6 +525,7 @@
                                 </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="yxA-IX-5x2">
+                                <rect key="frame" x="20" y="20" width="200" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="rKD-AX-22m"/>
                                 </constraints>
@@ -510,6 +538,7 @@
                                 </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="iM7-5s-HxK">
+                                <rect key="frame" x="20" y="80" width="200" height="44"/>
                                 <segments>
                                     <segment title="" image="fontsizes.png"/>
                                     <segment title="" image="fontsizel.png"/>
@@ -519,6 +548,7 @@
                                 </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="7Y7-q4-kiE">
+                                <rect key="frame" x="20" y="200" width="200" height="44"/>
                                 <segments>
                                     <segment title="" image="margin1.png"/>
                                     <segment title="" image="margin3.png"/>
@@ -616,96 +646,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="background1.png" width="26" height="26"/>
-        <image name="background2.png" width="26" height="26"/>
-        <image name="fontsizel.png" width="26" height="26"/>
-        <image name="fontsizes.png" width="26" height="26"/>
-        <image name="lineheight1.png" width="26" height="26"/>
-        <image name="lineheight3.png" width="26" height="26"/>
-        <image name="margin1.png" width="26" height="26"/>
-        <image name="margin3.png" width="26" height="26"/>
+        <image name="background1.png" width="44" height="44"/>
+        <image name="background2.png" width="44" height="44"/>
+        <image name="fontsizel.png" width="44" height="44"/>
+        <image name="fontsizes.png" width="44" height="44"/>
+        <image name="lineheight1.png" width="44" height="44"/>
+        <image name="lineheight3.png" width="44" height="44"/>
+        <image name="margin1.png" width="44" height="44"/>
+        <image name="margin3.png" width="44" height="44"/>
     </resources>
-    <classes>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="OCArticleCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OCArticleCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="articleImage" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="containerView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="dateLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="summaryLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="OCArticleListController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OCArticleListController.h"/>
-            <relationships>
-                <relationship kind="action" name="doMarkRead:"/>
-                <relationship kind="action" name="doRefresh:"/>
-            </relationships>
-        </class>
-        <class className="OCFeedCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OCFeedCell.h"/>
-        </class>
-        <class className="OCFeedListController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OCFeedListController.h"/>
-            <relationships>
-                <relationship kind="action" name="doAdd:"/>
-                <relationship kind="action" name="doEdit:"/>
-                <relationship kind="action" name="doInfo:"/>
-                <relationship kind="action" name="doRefresh:"/>
-                <relationship kind="action" name="handleTableviewPress:" candidateClass="UILongPressGestureRecognizer"/>
-            </relationships>
-        </class>
-        <class className="OCFeedSettingsController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OCFeedSettingsController.h"/>
-            <relationships>
-                <relationship kind="action" name="doCancel:"/>
-                <relationship kind="action" name="doSave:"/>
-                <relationship kind="action" name="fullArticleStateChanged:"/>
-                <relationship kind="outlet" name="fullArticleSwitch" candidateClass="UISwitch"/>
-                <relationship kind="outlet" name="readerSwitch" candidateClass="UISwitch"/>
-                <relationship kind="outlet" name="titleTextField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="OCLoginController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OCLoginController.h"/>
-            <relationships>
-                <relationship kind="action" name="doDone:"/>
-                <relationship kind="outlet" name="certificateSwitch" candidateClass="UISwitch"/>
-                <relationship kind="outlet" name="connectionActivityIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="serverTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="usernameTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="versionLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="OCWebController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OCWebController.h"/>
-            <relationships>
-                <relationship kind="action" name="doGoBack:"/>
-                <relationship kind="action" name="doGoForward:"/>
-                <relationship kind="action" name="doInfo:"/>
-                <relationship kind="action" name="doReload:"/>
-                <relationship kind="action" name="doStar:"/>
-                <relationship kind="action" name="doStop:"/>
-                <relationship kind="action" name="doText:"/>
-            </relationships>
-        </class>
-        <class className="PHPrefViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PHPrefViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="doSegmentedValueChanged:"/>
-                <relationship kind="outlet" name="backgroundSegmented" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="fontSizeSegmented" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="lineHeightSegmented" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="marginSegmented" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
