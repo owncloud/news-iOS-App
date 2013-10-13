@@ -421,6 +421,7 @@
     [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feedDict, NSUInteger idx, BOOL *stop) {
         Feed *feed = [self feedWithId:[[feedDict objectForKey:@"id"] integerValue]];
         feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
+        feed.folderId = [feedDict objectForKey:@"folderId"];
     }];
     
     for (NSNumber *feedId in feedsToDelete) {
@@ -433,7 +434,7 @@
         [self addFeedOffline:urlString];
     }
     [feedsToAdd removeAllObjects];
-
+    [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     [self updateTotalUnreadCount];
 }
 

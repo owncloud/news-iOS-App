@@ -45,7 +45,7 @@
 #import "UIImage+Resource.h"
 
 @interface OCFeedListController () <IIViewDeckControllerDelegate, UIActionSheetDelegate> {
-    int parserCount;
+    int currentFolderIndex;
     int currentIndex;
     BOOL networkHasBeenUnreachable;
 }
@@ -55,6 +55,7 @@
 - (void) networkError:(NSNotification*)n;
 - (void) showMenu:(UIBarButtonItem*)sender event:(UIEvent*)event;
 - (void) doHideRead;
+- (void) doGoBack;
 - (void) updatePredicate;
 - (void) reachabilityChanged:(NSNotification *)n;
 - (void) didBecomeActive:(NSNotification *)n;
@@ -64,7 +65,7 @@
 @implementation OCFeedListController
 
 @synthesize addBarButtonItem;
-@synthesize infoBarButtonItem;
+@synthesize backBarButtonItem;
 @synthesize editBarButtonItem;
 @synthesize settingsPopover;
 @synthesize feedRefreshControl;
@@ -159,6 +160,7 @@
     //[self setEditing:NO animated:NO];
     
     currentIndex = -1;
+    currentFolderIndex = 0;
     networkHasBeenUnreachable = NO;
     
     //UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -414,7 +416,10 @@
                 break;
             case 1:
                 folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                //TODO: Handle folders
+                currentFolderIndex = folder.myIdValue;
+                self.navigationItem.title = folder.name;
+                self.navigationItem.leftBarButtonItem = self.backBarButtonItem;
+                [self updatePredicate];
 
                 break;
             case 2:
@@ -505,6 +510,12 @@
             [[OCNewsHelper sharedHelper] addFeedOffline:[[alertView textFieldAtIndex:0] text]];
         }
     }
+}
+
+- (void)doGoBack {
+    currentFolderIndex = 0;
+    self.navigationItem.leftBarButtonItem = nil;
+    [self updatePredicate];
 }
 
 - (void)doHideRead {
@@ -616,16 +627,31 @@
 }
 
 - (void)updatePredicate {
+    NSPredicate *predFolder = [NSPredicate predicateWithFormat:@"folderId == %@", [NSNumber numberWithInt:currentFolderIndex]];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
         NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
         NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
         NSArray *predArray = @[pred1, pred2];
         NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
         NSPredicate *pred4 = [NSCompoundPredicate notPredicateWithSubpredicate:pred3];
-        [[self.feedsFetchedResultsController fetchRequest] setPredicate:pred4];
+        NSArray *predArray1 = @[predFolder, pred1, pred4];
+        NSPredicate *pred5 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray1];
+        [[self.feedsFetchedResultsController fetchRequest] setPredicate:pred5];
     } else{
-        [[self.feedsFetchedResultsController fetchRequest] setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
+        NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
+        NSArray *predArray = @[predFolder, pred1];
+        NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+        [[self.feedsFetchedResultsController fetchRequest] setPredicate:pred3];
     }
+    
+    if (currentFolderIndex > 0) {
+        self.specialFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithValue:NO];
+        self.foldersFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithValue:NO];
+    } else {
+        self.specialFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithFormat:@"myId < 0"];;
+        self.foldersFetchedResultsController.fetchRequest.predicate = nil;
+    }
+    
     NSError *error;
     if (![[self specialFetchedResultsController] performFetch:&error]) {
         // Update to handle the error appropriately.
@@ -742,17 +768,14 @@
     
     return addBarButtonItem;
 }
-/*
-- (UIBarButtonItem *)infoBarButtonItem {
-    
-    if (!infoBarButtonItem) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeInfoDark];
-        [button addTarget:self action:@selector(doInfo:) forControlEvents:UIControlEventTouchUpInside];
-        infoBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    }
-    return infoBarButtonItem;
-}
 
+- (UIBarButtonItem *)backBarButtonItem {
+    if (!backBarButtonItem) {
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Feeds" style:UIBarButtonItemStyleBordered target:self action:@selector(doGoBack)];
+    }
+    return backBarButtonItem;
+}
+/*
 - (UIBarButtonItem *)editBarButtonItem {
     
     if (!editBarButtonItem) {
@@ -819,19 +842,20 @@
 
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    
+    NSLog(@"Section: %d; Row: %d", indexPath.section, indexPath.row);
+
     UITableView *tableView = self.tableView;
     if (newIndexPath != nil && controller == self.foldersFetchedResultsController) {
         newIndexPath = [NSIndexPath indexPathForRow:[newIndexPath row] inSection:1];
-        if ([tableView cellForRowAtIndexPath:newIndexPath] == nil) {
-            type = NSFetchedResultsChangeInsert;
-        }
+        //if ([tableView cellForRowAtIndexPath:newIndexPath] == nil) {
+        //    type = NSFetchedResultsChangeInsert;
+        //}
     }
     if (newIndexPath != nil && controller == self.feedsFetchedResultsController) {
         newIndexPath = [NSIndexPath indexPathForRow:[newIndexPath row] inSection:2];
-        if ([tableView cellForRowAtIndexPath:newIndexPath] == nil) {
-            type = NSFetchedResultsChangeInsert;
-        }
+        //if ([tableView cellForRowAtIndexPath:newIndexPath] == nil) {
+        //    type = NSFetchedResultsChangeInsert;
+        //}
     }
     if (indexPath != nil && controller == self.foldersFetchedResultsController) {
         indexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:1];
@@ -851,7 +875,6 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            NSLog(@"Section: %d; Row: %d", indexPath.section, indexPath.row);
             [self configureCell:(OCFeedCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
