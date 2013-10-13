@@ -194,11 +194,13 @@
     //self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
-    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(handleTableviewPress:)];
-    //lpgr.minimumPressDuration = 2.0; //seconds
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableviewPress:)];
     lpgr.delegate = self;
     [self.tableView addGestureRecognizer:lpgr];
+    
+    UISwipeGestureRecognizer *swgr = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableviewSwipe:)];
+    swgr.delegate = self;
+    [self.tableView addGestureRecognizer:swgr];
     
     //Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
@@ -570,7 +572,13 @@
 
 }
 
-- (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer; {
+- (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
+    if (currentFolderIndex > 0) {
+        [self doGoBack];
+    }
+}
+    
+- (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer {
     //http://stackoverflow.com/a/14364085/2036378 (why it's a good idea to retrieve the cell)
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         

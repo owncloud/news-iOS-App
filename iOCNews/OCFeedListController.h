@@ -56,5 +56,6 @@
 - (IBAction) doEdit:(id)sender;
 
 - (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer;
+- (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
 
 @end
