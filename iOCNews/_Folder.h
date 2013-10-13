@@ -7,6 +7,7 @@
 extern const struct FolderAttributes {
 	__unsafe_unretained NSString *myId;
 	__unsafe_unretained NSString *name;
+	__unsafe_unretained NSString *unreadCount;
 } FolderAttributes;
 
 extern const struct FolderRelationships {
@@ -14,6 +15,7 @@ extern const struct FolderRelationships {
 
 extern const struct FolderFetchedProperties {
 } FolderFetchedProperties;
+
 
 
 
@@ -56,6 +58,20 @@ extern const struct FolderFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* unreadCount;
+
+
+
+@property int32_t unreadCountValue;
+- (int32_t)unreadCountValue;
+- (void)setUnreadCountValue:(int32_t)value_;
+
+//- (BOOL)validateUnreadCount:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 
 @end
 
@@ -77,6 +93,15 @@ extern const struct FolderFetchedProperties {
 
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveUnreadCount;
+- (void)setPrimitiveUnreadCount:(NSNumber*)value;
+
+- (int32_t)primitiveUnreadCountValue;
+- (void)setPrimitiveUnreadCountValue:(int32_t)value_;
 
 
 

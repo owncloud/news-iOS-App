@@ -192,6 +192,7 @@
     Folder *newFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folder" inManagedObjectContext:self.context];
     newFolder.myId = [dict objectForKey:@"id"];
     newFolder.name = [dict objectForKeyNotNull:@"name" fallback:@"Folder"];
+    newFolder.unreadCountValue = 0;
     return newFolder.myIdValue;
 }
 
@@ -295,7 +296,7 @@
         [[OCAPIClient sharedClient] getPath:@"feeds" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [self updateFeeds:responseObject];
             [self updateFolders];
-            [self updateItems];
+            //[self updateItems];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
@@ -345,18 +346,13 @@
         [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
         NSLog(@"Deleted on server: %@", deletedOnServer);
         while (deletedOnServer.count > 0) {
-            Folder *folderToRemove = [self folderWithId:[[deletedOnServer lastObject] integerValue]];
+            Folder *folderToRemove = [self folderWithId:[deletedOnServer lastObject]];
             [self.context deleteObject:folderToRemove];
             [deletedOnServer removeLastObject];
         }
-        //TODO: unread count?
-        /*[newFolders enumerateObjectsUsingBlock:^(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
-            Folder *folder = [self feedWithId:[[feedDict objectForKey:@"id"] integerValue]];
-            feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
-        }];
-        */
+
         for (NSNumber *folderId in foldersToDelete) {
-            Folder *folder = [self folderWithId:[folderId integerValue]];
+            Folder *folder = [self folderWithId:folderId];
             [self deleteFolderOffline:folder]; //the feed will have been readded as new on server
         }
         [foldersToDelete removeAllObjects];
@@ -365,7 +361,7 @@
             [self addFolderOffline:name];
         }
         [foldersToAdd removeAllObjects];
-        
+        [self updateItems];
         [self updateTotalUnreadCount];
     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -438,7 +434,7 @@
     [self updateTotalUnreadCount];
 }
 
-- (Folder*)folderWithId:(int)anId {
+- (Folder*)folderWithId:(NSNumber*)anId {
     [self.folderRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
     NSArray *myFolders = [self.context executeFetchRequest:self.folderRequest error:nil];
     return (Folder*)[myFolders lastObject];
@@ -486,7 +482,7 @@
             
             AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                 
-                //NSLog(@"New Items: %@", JSON);
+                NSLog(@"New Items: %@", JSON);
                 NSDictionary *jsonDict = (NSDictionary *) JSON;
                 NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
                 NSLog(@"New Item Count: %d", newItems.count);
@@ -659,19 +655,20 @@
     [self updateTotalUnreadCount];
 }
 
-- (void)updateTotalUnreadCount {
-    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
-    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount > 0"];
-    NSArray *predArray = @[pred1, pred2];
-    NSPredicate *pred3 = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-    [self.feedRequest setPredicate:pred3];
-
-    NSArray *unreadFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-    __block int i = 0;
-    [unreadFeeds enumerateObjectsUsingBlock:^(Feed *obj, NSUInteger idx, BOOL *stop) {
-        i = i + obj.unreadCountValue;
+- (void)updateFolderUnreadCount {
+    NSArray *folders = [self.context executeFetchRequest:self.folderRequest error:nil];
+    [folders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
+        self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folder.myId];
+        NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
+        folder.unreadCountValue = [[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
     }];
-    [[self feedWithId:-2] setUnreadCountValue:i];
+}
+
+- (void)updateTotalUnreadCount {
+    [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
+    NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
+    [[self feedWithId:-2] setUnreadCountValue:[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue]];
+    [self updateFolderUnreadCount];
     [self saveContext];
 }
 

@@ -317,7 +317,7 @@
         Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
         [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
         cell.textLabel.text = folder.name;
-        cell.countBadge.value = 0;
+        cell.countBadge.value = folder.unreadCountValue;
     } else {
         Feed *feed;
         if (indexPath.section == 0) {

@@ -56,7 +56,7 @@
 
 - (void)sync;
 
-- (Folder*)folderWithId:(int)anId;
+- (Folder*)folderWithId:(NSNumber*)anId;
 - (Feed*)feedWithId:(int)anId;
 - (Item*)itemWithId:(NSNumber*)anId;
 
@@ -70,6 +70,7 @@
 - (void)addItemExtra:(Item*)item;
 - (void)updateItems;
 - (void)updateReadItems:(NSArray*)items;
+- (void)updateFolderUnreadCount;
 - (void)updateTotalUnreadCount;
 - (void)updateStarredCount;
 - (int)itemCount;
