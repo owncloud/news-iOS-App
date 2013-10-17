@@ -197,7 +197,7 @@
         } else {
             self.navigationItem.title = self.item.title;
         }
-        Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedIdValue];
+        Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
         
         if (feed.extra.preferWebValue) {
             if (feed.extra.useReaderValue) {
@@ -273,7 +273,7 @@
         }
     }
     
-    Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedIdValue];
+    Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
     objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$FeedTitle$" withString:feed.extra.displayTitle];
     objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleDate$" withString:dateText];
     objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleTitle$" withString:self.item.title];

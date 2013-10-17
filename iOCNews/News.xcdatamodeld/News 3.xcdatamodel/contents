@@ -47,8 +47,6 @@
         <attribute name="readable" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="extra" inverseEntity="Item" syncable="YES"/>
     </entity>
-    <fetchRequest name="feedWithIdRequest" entity="Feed" predicateString="myId == $FEED_ID"/>
-    <fetchRequest name="totalUnreadRequest" entity="Feed" predicateString="unreadCount > 0"/>
     <elements>
         <element name="Feed" positionX="-342" positionY="-18" width="128" height="178"/>
         <element name="FeedExtra" positionX="-342" positionY="272" width="128" height="103"/>

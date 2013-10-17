@@ -57,6 +57,8 @@
 - (void) articleChangeInFeed:(NSNotification*)n;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 - (void) updatePredicate;
+- (void) networkSuccess:(NSNotification*)n;
+- (void) networkError:(NSNotification*)n;
 
 @end
 
@@ -166,6 +168,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
     self.tableView.rowHeight = 132;
+    self.refreshControl = self.feedRefreshControl;
 
     IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
     UINavigationController *navController = (UINavigationController*)deckController.centerController;
@@ -174,6 +177,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextArticle:) name:@"RightTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(articleChangeInFeed:) name:@"ArticleChangeInFeed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
+
     
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
@@ -312,7 +318,9 @@
 #pragma mark - Actions
 
 - (IBAction)doRefresh:(id)sender {
-//
+    if (self.feed) {
+        [[OCNewsHelper sharedHelper] updateFeedWithId:self.feed.myId];
+    }
 }
 
 - (IBAction)doMarkRead:(id)sender {
@@ -463,6 +471,25 @@
     }
     
     return feedRefreshControl;
+}
+
+- (void) networkSuccess:(NSNotification *)n {
+    [self.refreshControl endRefreshing];
+}
+
+- (void)networkError:(NSNotification *)n {
+    [self.refreshControl endRefreshing];
+    [TSMessage showNotificationInViewController:self.navigationController
+                                          title:[n.userInfo objectForKey:@"Title"]
+                                       subtitle:[n.userInfo objectForKey:@"Message"]
+                                          image:nil
+                                           type:TSMessageNotificationTypeError
+                                       duration:TSMessageNotificationDurationEndless
+                                       callback:nil
+                                    buttonTitle:nil
+                                 buttonCallback:nil
+                                     atPosition:TSMessageNotificationPositionTop
+                            canBeDismisedByUser:YES];
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {

@@ -57,7 +57,7 @@
 - (void)sync;
 
 - (Folder*)folderWithId:(NSNumber*)anId;
-- (Feed*)feedWithId:(int)anId;
+- (Feed*)feedWithId:(NSNumber*)anId;
 - (Item*)itemWithId:(NSNumber*)anId;
 
 - (int)addFolder:(id)JSON;
@@ -67,12 +67,14 @@
 - (void)addFeedExtra:(Feed*)feed;
 - (void)deleteFeed:(Feed*)feed;
 - (void)updateFeeds:(id)JSON;
+- (void)updateFeedWithId:(NSNumber*)anId;
 - (void)addItemExtra:(Item*)item;
 - (void)updateItems;
 - (void)updateReadItems:(NSArray*)items;
 - (void)updateFolderUnreadCount;
 - (void)updateTotalUnreadCount;
 - (void)updateStarredCount;
+- (int)feedCount;
 - (int)itemCount;
 
 - (void)addFolderOffline:(NSString*)name;
