@@ -63,6 +63,7 @@
 - (int)addFolder:(id)JSON;
 - (void)deleteFolder:(Folder*)folder;
 - (void)updateFolders;
+- (void)updateFolderWithId:(NSNumber*)anId;
 - (int)addFeed:(id)JSON;
 - (void)addFeedExtra:(Feed*)feed;
 - (void)deleteFeed:(Feed*)feed;

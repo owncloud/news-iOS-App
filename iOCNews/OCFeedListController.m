@@ -561,7 +561,11 @@
 }
 */
 - (IBAction)doRefresh:(id)sender {
-    [[OCNewsHelper sharedHelper] sync];
+    if (currentFolderIndex == 0) {
+        [[OCNewsHelper sharedHelper] sync];
+    } else {
+        [[OCNewsHelper sharedHelper] updateFolderWithId:[NSNumber numberWithInt:currentFolderIndex]];
+    }
 }
 
 - (void) reloadRow:(NSIndexPath*)indexPath {

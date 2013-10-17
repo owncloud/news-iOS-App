@@ -53,6 +53,7 @@
 - (void)addItemFromDictionary:(NSDictionary*)dict;
 
 - (NSNumber*)feedLastModified:(NSNumber*)feedId;
+- (void)syncFeedWithId:(NSNumber*)anId;
 
 @end
 
@@ -470,7 +471,23 @@
     return count;
 }
 
+- (void)updateFolderWithId:(NSNumber *)anId {
+    self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", anId];
+    NSArray *feedsToUpdate = [self.context executeFetchRequest:self.feedRequest error:nil];
+    feedCount = feedsToUpdate.count;
+    updatedFeedsCount = 0;
+    [feedsToUpdate enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+        [self syncFeedWithId:feed.myId];
+    }];
+}
+
 - (void)updateFeedWithId:(NSNumber*)anId {
+    feedCount = 1;
+    updatedFeedsCount = 0;
+    [self syncFeedWithId:anId];
+}
+
+- (void)syncFeedWithId:(NSNumber *)anId {
     NSNumber *lastMod = [self feedLastModified:anId];
     NSDictionary *itemParams = @{@"lastModified": lastMod,
                                          @"type": [NSNumber numberWithInt:0],
@@ -528,19 +545,19 @@
         }
         [self updateStarredCount];
         [self updateTotalUnreadCount];
-        //++updatedFeedsCount;
-        //if (updatedFeedsCount == feedCount) {
+        ++updatedFeedsCount;
+        if (updatedFeedsCount == feedCount) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
-        //}
+        }
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
-        //++updatedFeedsCount;
-        //if (updatedFeedsCount == feedCount) {
+        ++updatedFeedsCount;
+        if (updatedFeedsCount == feedCount) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
-        //}
+        }
     }];
 }
 
@@ -573,7 +590,7 @@
         //updatedFeedsCount = 0;
         NSLog(@"Building operations");
         [allFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-            //[self updateFeedWithId:feed.myId];
+            //[self syncFeedWithId:feed.myId];
             
             
             //[NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]]
