@@ -244,14 +244,12 @@
 
 - (void)deleteFolder:(Folder*)folder {
     if (folder) {
-        //TODO delete feeds and their items
-        /*[self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
-        
-        NSError *error = nil;
-        NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
-        for (Item *item in feedItems) {
-            [self.context deleteObject:item];
-        }*/
+        self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folder.myId];
+        NSMutableArray *feedsToBeDeleted = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.feedRequest error:nil]];
+        while (feedsToBeDeleted.count > 0) {
+            [self deleteFeed:[feedsToDelete lastObject]];
+            [feedsToBeDeleted removeLastObject];
+        }
         [self.context deleteObject:folder];
         [self updateTotalUnreadCount];
     }
