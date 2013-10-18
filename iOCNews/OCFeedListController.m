@@ -589,6 +589,7 @@
         CGPoint p = [gestureRecognizer locationInView:self.tableView];
         
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+        NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
         if (indexPath == nil) {
             NSLog(@"long press on table view but not on a row");
         } else {
@@ -597,14 +598,14 @@
             } else if (indexPath.section == 2) {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
                 if (cell.isHighlighted) {
-                    Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPath];
+                    Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                     NSLog(@"Feed title: %@", feed.title);
                     if (!feed.extra) {
                         [[OCNewsHelper sharedHelper] addFeedExtra:feed];
                     }
                     NSLog(@"Feed title: %@", feed.extra.displayTitle);
                     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle: nil];
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
                         UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
                         OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
                         [settingsController loadView];
@@ -629,7 +630,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.settingsPopover dismissPopoverAnimated:YES];
     }
-    [self.tableView reloadRowsAtIndexPaths:@[[self.feedsFetchedResultsController indexPathForObject:settings.feed]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadData]; // reloadRowsAtIndexPaths:@[[self.feedsFetchedResultsController indexPathForObject:settings.feed]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
@@ -828,7 +829,7 @@
         if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
             // Load resources for iOS 6.1 or earlier
         } else {
-            [settingsPopover setPopoverContentSize:CGSizeMake(320, 216)];
+            [settingsPopover setPopoverContentSize:CGSizeMake(320, 264)];
         }
     }
     return settingsPopover;

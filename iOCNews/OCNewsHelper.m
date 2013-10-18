@@ -40,6 +40,7 @@
     NSMutableArray *foldersToDelete;
     NSMutableArray *feedsToAdd;
     NSMutableArray *feedsToDelete;
+    NSMutableArray *feedsToMove;
     NSMutableArray *itemsToMarkRead;
     NSMutableArray *itemsToMarkUnread;
     NSMutableArray *itemsToStar;
@@ -120,6 +121,7 @@
     foldersToDelete = [[prefs arrayForKey:@"FoldersToDelete"] mutableCopy];
     feedsToAdd = [[prefs arrayForKey:@"FeedsToAdd"] mutableCopy];
     feedsToDelete = [[prefs arrayForKey:@"FeedsToDelete"] mutableCopy];
+    feedsToMove = [[prefs arrayForKey:@"FeedsToMove"] mutableCopy];
     itemsToMarkRead = [[prefs arrayForKey:@"ItemsToMarkRead"] mutableCopy];
     itemsToMarkUnread = [[prefs arrayForKey:@"ItemsToMarkUnread"] mutableCopy];
     itemsToStar = [[prefs arrayForKey:@"ItemsToStar"] mutableCopy];
@@ -174,6 +176,7 @@
     [prefs setObject:foldersToDelete forKey:@"FoldersToDelete"];
     [prefs setObject:feedsToAdd forKey:@"FeedsToAdd"];
     [prefs setObject:feedsToDelete forKey:@"FeedsToDelete"];
+    [prefs setObject:feedsToMove forKey:@"FeedsToMove"];
     [prefs setObject:itemsToMarkRead forKey:@"ItemsToMarkRead"];
     [prefs setObject:itemsToMarkUnread forKey:@"ItemsToMarkUnread"];
     [prefs setObject:itemsToStar forKey:@"ItemsToStar"];
@@ -253,6 +256,11 @@
         [self.context deleteObject:folder];
         [self updateTotalUnreadCount];
     }
+}
+
+- (NSArray*)folders {
+    self.folderRequest.predicate = nil;
+    return [self.context executeFetchRequest:self.folderRequest error:nil];
 }
 
 - (void)updateFolders:(id)JSON {
@@ -433,6 +441,13 @@
         [self addFeedOffline:urlString];
     }
     [feedsToAdd removeAllObjects];
+    
+    //@{@"feedId": aFeedId, @"folderId": aFolderId}];
+    for (NSDictionary *dict in feedsToMove) {
+        [self moveFeedOfflineWithId:[dict objectForKey:@"feedId"] toFolderWithId:[dict objectForKey:@"folderId"]];
+    }
+    [feedsToMove removeAllObjects];
+    
     [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     [self updateTotalUnreadCount];
 }
@@ -972,6 +987,26 @@
         [feedsToDelete addObject:feed.myId];
     }
     [self deleteFeed:feed];
+}
+
+- (void)moveFeedOfflineWithId:(NSNumber *)aFeedId toFolderWithId:(NSNumber *)aFolderId {
+    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+        //online
+        NSDictionary *params = @{@"folderId": aFolderId};
+        NSString *path = [NSString stringWithFormat:@"feeds/%@/move", [aFeedId stringValue]];
+        [[OCAPIClient sharedClient] putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Success");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failure");
+            NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Moving Feed", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+        }];
+    } else {
+        //offline
+        [feedsToMove addObject:@{@"feedId": aFeedId, @"folderId": aFolderId}];
+    }
+    
 }
 
 - (void)markItemsReadOffline:(NSArray *)itemIds {

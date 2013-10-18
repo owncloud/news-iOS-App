@@ -7,8 +7,10 @@
 	ItemsToMarkRead = ();
 	FeedsToDelete = ();
 	FeedsToAdd = ();
+	FeedsToMove = ();
 	FoldersToDelete = ();
 	FoldersToAdd = ();
+	FoldersToRename = ();
 	"AllowInvalidSSLCertificate" = NO;
 	LastModified = 1373159596;
 	Server = "";

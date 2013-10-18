@@ -57,6 +57,7 @@
 - (void)sync;
 
 - (Folder*)folderWithId:(NSNumber*)anId;
+- (NSArray*)folders;
 - (Feed*)feedWithId:(NSNumber*)anId;
 - (Item*)itemWithId:(NSNumber*)anId;
 
@@ -82,6 +83,7 @@
 - (void)deleteFolderOffline:(Folder*)folder;
 - (void)addFeedOffline:(NSString*)urlString;
 - (void)deleteFeedOffline:(Feed*)feed;
+- (void)moveFeedOfflineWithId:(NSNumber*)aFeedId toFolderWithId:(NSNumber*)aFolderId;
 - (void)markItemsReadOffline:(NSArray*)itemIds;
 - (void)markItemUnreadOffline:(NSNumber*)itemId;
 - (void)starItemOffline:(NSNumber*)itemId;

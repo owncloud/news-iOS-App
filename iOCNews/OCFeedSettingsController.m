@@ -8,9 +8,11 @@
 
 #import "OCFeedSettingsController.h"
 #import "OCNewsHelper.h"
+#import "OCFolderTableViewController.h"
 
 @interface OCFeedSettingsController () {
     NSArray *_cells;
+    NSNumber *_newFolderId;
 }
 
 @end
@@ -54,6 +56,10 @@
     self.feed.extra.displayTitle = self.titleTextField.text;
     self.feed.extra.preferWebValue = self.fullArticleSwitch.on;
     self.feed.extra.useReaderValue = self.readerSwitch.on;
+    if (![self.feed.folderId isEqual:_newFolderId]) {
+        self.feed.folderId = _newFolderId;
+        [[OCNewsHelper sharedHelper] moveFeedOfflineWithId:self.feed.myId toFolderWithId:self.feed.folderId];
+    }
     [[OCNewsHelper sharedHelper] saveContext];
     if (self.delegate) {
         [self.delegate feedSettingsUpdate:self];
@@ -69,4 +75,20 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+ #pragma mark - Navigation
+ 
+ // In a story board-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+     if ([segue.identifier isEqualToString:@"folderSegue"]) {
+         OCFolderTableViewController *folderController = (OCFolderTableViewController*)segue.destinationViewController;
+         folderController.feed = self.feed;
+         folderController.folders = [[OCNewsHelper sharedHelper] folders];
+         folderController.delegate = self;
+     }
+ }
+
+- (void)folderSelected:(NSNumber *)folder {
+    _newFolderId = folder;
+}
+ 
 @end

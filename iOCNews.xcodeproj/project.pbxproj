@@ -300,6 +300,8 @@
 		D07D659B17DFEFE700C40D76 /* JCGridMenuColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656517DFEFE700C40D76 /* JCGridMenuColumn.m */; };
 		D07D659C17DFEFE700C40D76 /* JCGridMenuRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656717DFEFE700C40D76 /* JCGridMenuRow.m */; };
 		D07D659D17DFEFE700C40D76 /* JCGridMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656A17DFEFE700C40D76 /* JCGridMenuView.m */; };
+		D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
+		D08D83301810B27B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0968361179B3DB300EC6E60 /* iPhone.storyboard */; };
@@ -508,7 +510,7 @@
 		D01ACAF817B84035005D1463 /* _ItemExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _ItemExtra.m; sourceTree = "<group>"; };
 		D01ACAFA17B969FE005D1463 /* NSDictionary+HandleNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HandleNull.h"; sourceTree = "<group>"; };
 		D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HandleNull.m"; sourceTree = "<group>"; };
-		D04AD65618070C4800FF6056 /* News 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "News 3.xcdatamodel"; sourceTree = "<group>"; };
+		D04AD65618070C4800FF6056 /* News 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 3.xcdatamodel"; sourceTree = "<group>"; };
 		D04AD65B1807125600FF6056 /* _Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Folder.h; sourceTree = "<group>"; };
 		D04AD65C1807125600FF6056 /* _Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Folder.m; sourceTree = "<group>"; };
 		D04AD65D1807125600FF6056 /* Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Folder.h; sourceTree = "<group>"; };
@@ -570,6 +572,8 @@
 		D07D656717DFEFE700C40D76 /* JCGridMenuRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuRow.m; sourceTree = "<group>"; };
 		D07D656917DFEFE700C40D76 /* JCGridMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuView.h; sourceTree = "<group>"; };
 		D07D656A17DFEFE700C40D76 /* JCGridMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuView.m; sourceTree = "<group>"; };
+		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
+		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
 		D09682B7179896B200EC6E60 /* star_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_icon.png; sourceTree = "<group>"; };
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D0968362179B3DB300EC6E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = iOCNews/en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
@@ -1012,6 +1016,8 @@
 				D06CB21C179C5C1900A1310B /* TransparentToolbar.m */,
 				D0F8274E17B2D83400BE84D7 /* OCFeedSettingsController.h */,
 				D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */,
+				D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */,
+				D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */,
 				D01ACAFA17B969FE005D1463 /* NSDictionary+HandleNull.h */,
 				D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */,
 				D0BF490517E3EE2F00CB9311 /* UIImage+Resource.h */,
@@ -1894,6 +1900,7 @@
 				D04AD6A11807403100FF6056 /* UIImageView+WebCache.m in Sources */,
 				D04AD6A21807403100FF6056 /* Folder.m in Sources */,
 				D04AD6A31807403100FF6056 /* _FeedExtra.m in Sources */,
+				D08D83301810B27B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D04AD6A41807403100FF6056 /* FeedExtra.m in Sources */,
 				D04AD6A51807403100FF6056 /* OCFeedSettingsController.m in Sources */,
 				D04AD6A61807403100FF6056 /* rd_list.c in Sources */,
@@ -1979,6 +1986,7 @@
 				D0C66C9917AB3E6300F0EC7C /* UIImageView+WebCache.m in Sources */,
 				D04AD6601807125600FF6056 /* Folder.m in Sources */,
 				D0C66CA217B19C3E00F0EC7C /* _FeedExtra.m in Sources */,
+				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D0C66CA317B19C3E00F0EC7C /* FeedExtra.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,

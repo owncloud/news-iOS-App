@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "Feed.h"
+#import "OCFolderTableViewController.h"
 
 @protocol OCFeedSettingsDelegate;
 
-@interface OCFeedSettingsController : UITableViewController <UITextFieldDelegate>
+@interface OCFeedSettingsController : UITableViewController <UITextFieldDelegate, OCFolderControllerDelegate>
 
 @property (nonatomic, unsafe_unretained) id <OCFeedSettingsDelegate> delegate;
 
 @property (strong, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) IBOutlet UISwitch *fullArticleSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *readerSwitch;
+@property (strong, nonatomic) IBOutlet UISwitch *articleImagesSwitch;
 
 @property (nonatomic, strong) Feed *feed;
 
