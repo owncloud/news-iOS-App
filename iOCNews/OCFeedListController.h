@@ -50,6 +50,7 @@
 @property (nonatomic, strong, readonly) UIPopoverController *settingsPopover;
 @property (strong, nonatomic) UIActionSheet *gearActionSheet;
 @property (nonatomic, strong, readonly) UIAlertView *addFolderAlertView;
+@property (nonatomic, strong, readonly) UIAlertView *renameFolderAlertView;
 @property (nonatomic, strong, readonly) UIAlertView *addFeedAlertView;
 
 - (IBAction) doRefresh:(id)sender;

@@ -46,6 +46,7 @@
 
 @interface OCFeedListController () <IIViewDeckControllerDelegate, UIActionSheetDelegate> {
     int currentFolderIndex;
+    NSNumber *currentRenameId;
     int currentIndex;
     BOOL networkHasBeenUnreachable;
 }
@@ -74,6 +75,7 @@
 @synthesize feedsFetchedResultsController;
 @synthesize gearActionSheet;
 @synthesize addFolderAlertView;
+@synthesize renameFolderAlertView;
 @synthesize addFeedAlertView;
 
 - (NSFetchedResultsController *)specialFetchedResultsController {
@@ -464,6 +466,17 @@
     return addFolderAlertView;
 }
 
+- (UIAlertView*)renameFolderAlertView {
+    if (!renameFolderAlertView) {
+        renameFolderAlertView = [[UIAlertView alloc] initWithTitle:@"Rename Folder" message:@"Enter the new name of the folder." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Rename", nil];
+        renameFolderAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField * alertTextField = [renameFolderAlertView textFieldAtIndex:0];
+        alertTextField.keyboardType = UIKeyboardTypeDefault;
+        alertTextField.placeholder = @"Folder name";
+    }
+    return renameFolderAlertView;
+}
+
 - (UIAlertView*)addFeedAlertView {
     if (!addFeedAlertView) {
         addFeedAlertView = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
@@ -505,6 +518,11 @@
     if ([alertView isEqual:self.addFolderAlertView]) {
         if (buttonIndex == 1) {
             [[OCNewsHelper sharedHelper] addFolderOffline:[[alertView textFieldAtIndex:0] text]];
+        }
+    }
+    if ([alertView isEqual:self.renameFolderAlertView]) {
+        if (buttonIndex == 1) {
+            [[OCNewsHelper sharedHelper] renameFolderOfflineWithId:currentRenameId To:[[alertView textFieldAtIndex:0] text]];
         }
     }
     if ([alertView isEqual:self.addFeedAlertView]) {
@@ -594,7 +612,10 @@
             NSLog(@"long press on table view but not on a row");
         } else {
             if ((indexPath.section == 1)) {
-                //TODO: Handle folders
+                Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+                currentRenameId = folder.myId;
+                [[self.renameFolderAlertView textFieldAtIndex:0] setText:folder.name];
+                [self.renameFolderAlertView show];
             } else if (indexPath.section == 2) {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
                 if (cell.isHighlighted) {

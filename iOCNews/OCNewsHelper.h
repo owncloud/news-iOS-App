@@ -81,6 +81,7 @@
 
 - (void)addFolderOffline:(NSString*)name;
 - (void)deleteFolderOffline:(Folder*)folder;
+- (void)renameFolderOfflineWithId:(NSNumber*)anId To:(NSString*)newName;
 - (void)addFeedOffline:(NSString*)urlString;
 - (void)deleteFeedOffline:(Feed*)feed;
 - (void)moveFeedOfflineWithId:(NSNumber*)aFeedId toFolderWithId:(NSNumber*)aFolderId;

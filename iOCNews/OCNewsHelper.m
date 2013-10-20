@@ -38,6 +38,7 @@
 @interface OCNewsHelper () {
     NSMutableArray *foldersToAdd;
     NSMutableArray *foldersToDelete;
+    NSMutableArray *foldersToRename;
     NSMutableArray *feedsToAdd;
     NSMutableArray *feedsToDelete;
     NSMutableArray *feedsToMove;
@@ -119,6 +120,7 @@
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     foldersToAdd = [[prefs arrayForKey:@"FoldersToAdd"] mutableCopy];
     foldersToDelete = [[prefs arrayForKey:@"FoldersToDelete"] mutableCopy];
+    foldersToRename = [[prefs arrayForKey:@"FoldersToRename"] mutableCopy];
     feedsToAdd = [[prefs arrayForKey:@"FeedsToAdd"] mutableCopy];
     feedsToDelete = [[prefs arrayForKey:@"FeedsToDelete"] mutableCopy];
     feedsToMove = [[prefs arrayForKey:@"FeedsToMove"] mutableCopy];
@@ -174,6 +176,7 @@
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:foldersToAdd forKey:@"FoldersToAdd"];
     [prefs setObject:foldersToDelete forKey:@"FoldersToDelete"];
+    [prefs setObject:foldersToRename forKey:@"FoldersToRename"];
     [prefs setObject:feedsToAdd forKey:@"FeedsToAdd"];
     [prefs setObject:feedsToDelete forKey:@"FeedsToDelete"];
     [prefs setObject:feedsToMove forKey:@"FeedsToMove"];
@@ -261,10 +264,6 @@
 - (NSArray*)folders {
     self.folderRequest.predicate = nil;
     return [self.context executeFetchRequest:self.folderRequest error:nil];
-}
-
-- (void)updateFolders:(id)JSON {
-    //TODO
 }
 
 - (int)addFeed:(id)JSON {
@@ -372,6 +371,13 @@
             [self addFolderOffline:name];
         }
         [foldersToAdd removeAllObjects];
+        
+        //@{@"folderId": anId, @"name": newName}
+        for (NSDictionary *dict in foldersToRename) {
+            [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
+        }
+        [foldersToRename removeAllObjects];
+        
         [self updateItems];
         [self updateTotalUnreadCount];
     
@@ -908,6 +914,40 @@
     [self deleteFolder:folder];
 }
 
+- (void)renameFolderOfflineWithId:(NSNumber*)anId To:(NSString*)newName {
+    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+        //online
+        NSDictionary *params = @{@"name": newName};
+        NSString *path = [NSString stringWithFormat:@"folders/%@", [anId stringValue]];
+        [[OCAPIClient sharedClient] putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Success");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Failure");
+            NSString *message;
+            switch (operation.response.statusCode) {
+                case 404:
+                    message = @"The folder does not exist.";
+                    break;
+                case 409:
+                    message = @"A folder with this name already exists.";
+                    break;
+                case 422:
+                    message = @"The folder name is invalid";
+                    break;
+                default:
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    break;
+            }
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Moving Feed", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+        }];
+    } else {
+        //offline
+        [foldersToRename addObject:@{@"folderId": anId, @"name": newName}];
+    }
+    [[self folderWithId:anId] setName:newName];
+}
+
 - (void)addFeedOffline:(NSString *)urlString {
     if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
         //online
@@ -1006,7 +1046,6 @@
         //offline
         [feedsToMove addObject:@{@"feedId": aFeedId, @"folderId": aFolderId}];
     }
-    
 }
 
 - (void)markItemsReadOffline:(NSArray *)itemIds {
