@@ -83,7 +83,6 @@
 		D04AD6881807403100FF6056 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D04AD6891807403100FF6056 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D04AD68A1807403100FF6056 /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
-		D04AD68B1807403100FF6056 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB228179C9C7000A1310B /* PopoverView.m */; };
 		D04AD68C1807403100FF6056 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
 		D04AD68D1807403100FF6056 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23017A073A900A1310B /* Feed.m */; };
 		D04AD68E1807403100FF6056 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23317A073C400A1310B /* Item.m */; };
@@ -282,7 +281,6 @@
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB224179C977400A1310B /* placeholder@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB222179C977400A1310B /* placeholder@2x~iphone.png */; };
 		D06CB225179C977400A1310B /* placeholder~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB223179C977400A1310B /* placeholder~iphone.png */; };
-		D06CB22A179C9C7000A1310B /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB228179C9C7000A1310B /* PopoverView.m */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
 		D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
 		D06CB23117A073AA00A1310B /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23017A073A900A1310B /* Feed.m */; };
@@ -539,9 +537,6 @@
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
 		D06CB222179C977400A1310B /* placeholder@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x~iphone.png"; sourceTree = "<group>"; };
 		D06CB223179C977400A1310B /* placeholder~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder~iphone.png"; sourceTree = "<group>"; };
-		D06CB227179C9C7000A1310B /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
-		D06CB228179C9C7000A1310B /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
-		D06CB229179C9C7000A1310B /* PopoverView_Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView_Configuration.h; sourceTree = "<group>"; };
 		D06CB22D17A06E4F00A1310B /* News.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = News.xcdatamodel; sourceTree = "<group>"; };
 		D06CB22F17A073A800A1310B /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
 		D06CB23017A073A900A1310B /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
@@ -864,17 +859,6 @@
 			path = readable;
 			sourceTree = "<group>";
 		};
-		D06CB226179C9C7000A1310B /* PopoverView */ = {
-			isa = PBXGroup;
-			children = (
-				D06CB227179C9C7000A1310B /* PopoverView.h */,
-				D06CB228179C9C7000A1310B /* PopoverView.m */,
-				D06CB229179C9C7000A1310B /* PopoverView_Configuration.h */,
-			);
-			name = PopoverView;
-			path = PopoverView/PopoverView;
-			sourceTree = "<group>";
-		};
 		D07D651517DFEFE700C40D76 /* JCGridMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -937,7 +921,6 @@
 				D0FB275417CE8D3700FABB09 /* HexColors */,
 				D01ACAB317B83637005D1463 /* readable */,
 				D0C66C6E17AB3E6300F0EC7C /* SDWebImage */,
-				D06CB226179C9C7000A1310B /* PopoverView */,
 				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
 				D0F1813A17850C6A00F719D9 /* KeychainItemWrapper */,
 				D0F18130178502E000F719D9 /* HTMLString */,
@@ -1875,7 +1858,6 @@
 				D04AD6881807403100FF6056 /* HTMLNode.m in Sources */,
 				D04AD6891807403100FF6056 /* HTMLParser.m in Sources */,
 				D04AD68A1807403100FF6056 /* TransparentToolbar.m in Sources */,
-				D04AD68B1807403100FF6056 /* PopoverView.m in Sources */,
 				D04AD68C1807403100FF6056 /* News.xcdatamodeld in Sources */,
 				D04AD68D1807403100FF6056 /* Feed.m in Sources */,
 				D04AD68E1807403100FF6056 /* Item.m in Sources */,
@@ -1961,7 +1943,6 @@
 				D0FD70791787626100EF1457 /* HTMLNode.m in Sources */,
 				D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */,
 				D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */,
-				D06CB22A179C9C7000A1310B /* PopoverView.m in Sources */,
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
 				D06CB23117A073AA00A1310B /* Feed.m in Sources */,
 				D06CB23417A073C500A1310B /* Item.m in Sources */,

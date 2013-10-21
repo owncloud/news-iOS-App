@@ -56,7 +56,6 @@
 
 @interface OCWebController () <UIPopoverControllerDelegate, IIViewDeckControllerDelegate> {
     UIPopoverController *_activityPopover;
-    PopoverView *_popover;
     BOOL _menuIsOpen;
 }
 
@@ -342,10 +341,6 @@
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (_popover) {
-        [_popover dismiss:NO];
-    }
-    //[_gmController close];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
             if (self.item != nil) {
@@ -430,24 +425,6 @@
         [self.menuController open];
     }
     _menuIsOpen = !_menuIsOpen;
-   
-    /*
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.prefPopoverController presentPopoverFromBarButtonItem:self.textBarButtonItem permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown) animated:YES];
-    } else {
-        CGPoint popoverPoint;
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-            // Load resources for iOS 6.1 or earlier
-            UIView *tbar = (UIView*)self.navigationItem.rightBarButtonItem.customView;
-            popoverPoint = CGPointMake(tbar.frame.origin.x + 70, tbar.frame.origin.y);
-        } else {
-            CGPoint touchPoint = [[event.allTouches anyObject] locationInView:self.viewDeckController.view];
-            CGRect rect = self.viewDeckController.view.frame;
-            popoverPoint = CGPointMake(touchPoint.x, touchPoint.y + rect.origin.y);
-        }
-        _popover = [[PopoverView alloc] initWithFrame:self.prefViewController.view.frame];
-        [_popover showAtPoint:popoverPoint inView:self.view withContentView:self.prefViewController.view] ;
-    }*/
 }
 
 - (IBAction)doStar:(id)sender {
@@ -1184,10 +1161,6 @@
     UIGraphicsEndImageContext();
     
     return capturedScreen;
-}
-
-- (void)popoverViewDidDismiss:(PopoverView *)popoverView {
-    _popover = nil;
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {

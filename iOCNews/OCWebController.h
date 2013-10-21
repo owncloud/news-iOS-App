@@ -32,11 +32,10 @@
 
 #import <UIKit/UIKit.h>
 #import "PHPrefViewController.h"
-#import "PopoverView.h"
 #import "Item.h"
 #import "JCGridMenuController.h"
 
-@interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, PopoverViewDelegate, JCGridMenuControllerDelegate>
+@interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, JCGridMenuControllerDelegate>
 
 @property (nonatomic, strong) Item *item;
 @property (nonatomic, strong) UIWebView* webView;

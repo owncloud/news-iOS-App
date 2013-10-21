@@ -35,7 +35,7 @@
 #import "OCArticleListController.h"
 #import "OCFeedSettingsController.h"
 
-@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, PopoverViewDelegate, OCFeedSettingsDelegate>
+@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, OCFeedSettingsDelegate>
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
 @property (nonatomic, retain) NSFetchedResultsController *specialFetchedResultsController;
