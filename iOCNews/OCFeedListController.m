@@ -206,8 +206,6 @@
     
     //Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
     
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
@@ -754,10 +752,12 @@
 
 - (void) networkSuccess:(NSNotification *)n {
     [self.refreshControl endRefreshing];
+    [self.detailViewController.refreshControl endRefreshing];
 }
 
 - (void)networkError:(NSNotification *)n {
     [self.refreshControl endRefreshing];
+    [self.detailViewController.refreshControl endRefreshing];
     [TSMessage showNotificationInViewController:self.navigationController
                                           title:[n.userInfo objectForKey:@"Title"]
                                        subtitle:[n.userInfo objectForKey:@"Message"]
@@ -866,6 +866,25 @@
         shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
         shadowLayer.shadowOffset = CGSizeZero;
         shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
+    }
+}
+
+- (void)viewDeckController:(IIViewDeckController*)viewDeckController didOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
+    if (viewDeckSide == IIViewDeckLeftSide) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.detailViewController name:@"NetworkSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self.detailViewController name:@"NetworkError" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
+    }
+}
+
+- (void)viewDeckController:(IIViewDeckController*)viewDeckController didCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
+    if (viewDeckSide == IIViewDeckLeftSide) {
+        OCArticleListController *alc = self.detailViewController;
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:alc selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:alc selector:@selector(networkError:) name:@"NetworkError" object:nil];
     }
 }
 
