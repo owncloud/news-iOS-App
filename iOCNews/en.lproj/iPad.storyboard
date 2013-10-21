@@ -470,35 +470,6 @@
                                             <constraint firstAttribute="trailing" secondItem="Zoq-O0-oQ8" secondAttribute="trailing" constant="20" type="default" id="pAJ-VG-iJg"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="GeP-fZ-s3m">
-                                        <rect key="frame" x="0.0" y="176" width="768" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Images in Article List" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMN-V8-9fo">
-                                                    <rect key="frame" x="10" y="10" width="191" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="191" id="2mV-qN-jS8"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B0s-hD-F7p">
-                                                    <rect key="frame" x="671" y="7" width="79" height="27"/>
-                                                </switch>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="B0s-hD-F7p" secondAttribute="trailing" constant="20" type="default" id="0Xf-eH-A53"/>
-                                            <constraint firstItem="B0s-hD-F7p" firstAttribute="top" secondItem="GeP-fZ-s3m" secondAttribute="top" constant="7" id="Qfc-BG-Xtv"/>
-                                            <constraint firstItem="FMN-V8-9fo" firstAttribute="leading" secondItem="GeP-fZ-s3m" secondAttribute="leading" constant="10" id="UVa-fZ-GR2"/>
-                                            <constraint firstItem="B0s-hD-F7p" firstAttribute="centerY" secondItem="FMN-V8-9fo" secondAttribute="centerY" type="default" id="bXl-Cz-RXj"/>
-                                        </constraints>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -519,9 +490,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <value key="contentSizeForViewInPopover" type="size" width="320" height="264"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="220"/>
                     <connections>
-                        <outlet property="articleImagesSwitch" destination="B0s-hD-F7p" id="3Th-4F-fhS"/>
                         <outlet property="fullArticleSwitch" destination="Ohl-UQ-yh1" id="dfZ-ar-GRJ"/>
                         <outlet property="readerSwitch" destination="Zoq-O0-oQ8" id="saG-Ca-sCf"/>
                         <outlet property="titleTextField" destination="nsn-eS-tNQ" id="mRW-6f-L9J"/>
