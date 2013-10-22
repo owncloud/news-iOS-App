@@ -75,40 +75,6 @@
                             <rect key="frame" x="0.0" y="284" width="540" height="291"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="iOCNews" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="rCW-bO-Cfx">
-                                    <rect key="frame" x="0.0" y="148" width="540" height="27"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="27" id="31Z-mc-2Ei"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Version 1.0" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="lFp-sS-I4l">
-                                    <rect key="frame" x="0.0" y="180" width="540" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Copyright © 2013 Peter B. Hedlund" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="fav-re-vvs">
-                                    <rect key="frame" x="0.0" y="205" width="540" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </label>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="http://peterandlinda.com" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="PBB-QX-w4M">
-                                    <rect key="frame" x="0.0" y="231" width="540" height="42"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <accessibility key="accessibilityConfiguration">
-                                        <accessibilityTraits key="traits" none="YES" link="YES"/>
-                                    </accessibility>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="42" id="vs2-Lr-M0T"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                </textView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Currently not connected to an OwnCloud News server." lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="460" translatesAutoresizingMaskIntoConstraints="NO" id="zDJ-Ip-i6b">
                                     <rect key="frame" x="80" y="10" width="460" height="70"/>
                                     <constraints>
@@ -125,22 +91,10 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="fav-re-vvs" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="27L-jR-Dxo"/>
-                                <constraint firstAttribute="bottom" secondItem="rCW-bO-Cfx" secondAttribute="bottom" constant="116" id="6gV-9c-8sY"/>
-                                <constraint firstItem="rCW-bO-Cfx" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="6pQ-TV-pRF"/>
-                                <constraint firstItem="rCW-bO-Cfx" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="8I4-WQ-lNt"/>
                                 <constraint firstItem="PV1-Gd-hNc" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" constant="40" id="9JN-B6-q8j"/>
-                                <constraint firstItem="PBB-QX-w4M" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="9se-uE-Cyp"/>
-                                <constraint firstAttribute="bottom" secondItem="fav-re-vvs" secondAttribute="bottom" constant="65" id="M8p-ZV-sgh"/>
                                 <constraint firstItem="PV1-Gd-hNc" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" constant="18" id="Ny7-aZ-MrQ"/>
-                                <constraint firstAttribute="bottom" secondItem="PBB-QX-w4M" secondAttribute="bottom" constant="18" id="csB-JH-xWe"/>
                                 <constraint firstItem="zDJ-Ip-i6b" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="cyg-LH-Qiu"/>
                                 <constraint firstItem="zDJ-Ip-i6b" firstAttribute="top" secondItem="KNh-ch-HsP" secondAttribute="top" constant="10" id="eBp-GU-ftu"/>
-                                <constraint firstItem="lFp-sS-I4l" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="gNZ-9S-z1W"/>
-                                <constraint firstItem="lFp-sS-I4l" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="hge-aG-VGh"/>
-                                <constraint firstAttribute="bottom" secondItem="lFp-sS-I4l" secondAttribute="bottom" constant="90" id="mQW-Df-OsQ"/>
-                                <constraint firstItem="fav-re-vvs" firstAttribute="trailing" secondItem="KNh-ch-HsP" secondAttribute="trailing" type="default" id="rHP-qE-D35"/>
-                                <constraint firstItem="PBB-QX-w4M" firstAttribute="leading" secondItem="KNh-ch-HsP" secondAttribute="leading" type="default" id="tVw-cp-Fjh"/>
                             </constraints>
                         </view>
                         <sections>
@@ -332,7 +286,6 @@
                         <outlet property="serverTextField" destination="RmU-IS-n75" id="WQy-Cb-XeK"/>
                         <outlet property="statusLabel" destination="zDJ-Ip-i6b" id="GzM-IL-FeT"/>
                         <outlet property="usernameTextField" destination="oJg-hA-ega" id="OeR-Hh-sEM"/>
-                        <outlet property="versionLabel" destination="lFp-sS-I4l" id="zLg-FT-VxY"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6VW-gY-hFs" userLabel="First Responder" sceneMemberID="firstResponder"/>

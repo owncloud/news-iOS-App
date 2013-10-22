@@ -300,6 +300,8 @@
 		D07D659D17DFEFE700C40D76 /* JCGridMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656A17DFEFE700C40D76 /* JCGridMenuView.m */; };
 		D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D08D83301810B27B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
+		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
+		D08D83B818161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0968361179B3DB300EC6E60 /* iPhone.storyboard */; };
@@ -569,6 +571,7 @@
 		D07D656A17DFEFE700C40D76 /* JCGridMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuView.m; sourceTree = "<group>"; };
 		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
 		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
+		D08D83B618161453005A75F0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		D09682B7179896B200EC6E60 /* star_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_icon.png; sourceTree = "<group>"; };
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D0968362179B3DB300EC6E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = iOCNews/en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
@@ -1007,6 +1010,7 @@
 				D0BF490617E3EE2F00CB9311 /* UIImage+Resource.m */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
+				D08D83B618161453005A75F0 /* Settings.bundle */,
 				D0BF490C17E4DCF800CB9311 /* Images.xcassets */,
 			);
 			path = iOCNews;
@@ -1412,6 +1416,7 @@
 				D04AD6B31807403100FF6056 /* Frameworks */,
 				D04AD6BF1807403100FF6056 /* Resources */,
 				D04AD73D1807403100FF6056 /* ShellScript */,
+				D08D83B918161523005A75F0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1515,6 +1520,7 @@
 				D04AD6C51807403100FF6056 /* back-7.png in Resources */,
 				D04AD6C61807403100FF6056 /* icab-activity.png in Resources */,
 				D04AD74718084F5100FF6056 /* folder.png in Resources */,
+				D08D83B818161453005A75F0 /* Settings.bundle in Resources */,
 				D04AD6C71807403100FF6056 /* icab-activity@2x.png in Resources */,
 				D04AD6C81807403100FF6056 /* instapaper-ipad.png in Resources */,
 				D04AD6C91807403100FF6056 /* instapaper-ipad@2x.png in Resources */,
@@ -1649,6 +1655,7 @@
 				D061D79017E265410038FB04 /* back-7.png in Resources */,
 				D0BCABBB17790F6700C965F4 /* icab-activity.png in Resources */,
 				D0BCABBC17790F6700C965F4 /* icab-activity@2x.png in Resources */,
+				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D0BCABBE17790F6700C965F4 /* instapaper-ipad.png in Resources */,
 				D0BCABBF17790F6700C965F4 /* instapaper-ipad@2x.png in Resources */,
 				D0BCABC017790F6700C965F4 /* instapaper.png in Resources */,
@@ -1812,6 +1819,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "KEYWORDS=\"TODO:|FIXME:|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+		};
+		D08D83B918161523005A75F0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\n#note: for simplicity, it's assumed that there's already a bundle version (which is an integer) and a version string. set them in the Summary pane!\n\n#get path to the BUILT .plist, NOT the packaged one! this fixes the off-by-one bug\nbuiltInfoPlistPath=${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\necho \"using plist at $builtInfoPlistPath\"\n\nmodifiedFilesExist=false\n#this is the modification date to compare to -- there's a possible bug here, if you edit the built plist directly, for some reason. probably you shouldn't do that anyways.\ncompModDate=$(stat -f \"%m\" \"$builtInfoPlistPath\")\n\nfor filename in *\ndo\nmodDate=$(stat -f \"%m\" \"$filename\")\nif [ \"$modDate\" -gt \"$compModDate\" ]\nthen\nmodifiedFilesExist=true;\necho \"found newly modified file: $filename\"\nbreak\nfi\ndone\n\nif $modifiedFilesExist\nthen\necho \"A file is new, bumping version\"\n\n#increment the build number\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$builtInfoPlistPath\")\necho \"retrieved current build number: $buildNumber\"\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$builtInfoPlistPath\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n\n#compose the version number string\nversionString=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$builtInfoPlistPath\")\nversionString+=\" (\"\nversionString+=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$builtInfoPlistPath\")\nversionString+=\")\"\n\n#write the version number string to the settings bundle\n#IMPORTANT: this assumes the version number is the second property in the settings bundle!\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue $versionString\" \"$SRCROOT/iOCNews/Settings.bundle/Root.plist\"\nelse\necho \"Version not incremented -- no newly modified files\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
