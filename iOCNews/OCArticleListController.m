@@ -119,6 +119,11 @@
 {
     // Update the user interface for the detail item.
     self.navigationItem.title = self.feed.extra.displayTitle; // [self.feed objectForKey:@"title"];
+    if (self.feed.myIdValue > 0) {
+        self.refreshControl = self.feedRefreshControl;
+    } else {
+        self.refreshControl = nil;
+    }
     [self updatePredicate];
     [self scrollToTop];
 }
@@ -168,7 +173,6 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
     self.tableView.rowHeight = 132;
-    self.refreshControl = self.feedRefreshControl;
 
     IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
     UINavigationController *navController = (UINavigationController*)deckController.centerController;
