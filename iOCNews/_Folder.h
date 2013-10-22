@@ -5,6 +5,7 @@
 
 
 extern const struct FolderAttributes {
+	__unsafe_unretained NSString *lastModified;
 	__unsafe_unretained NSString *myId;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *unreadCount;
@@ -21,6 +22,7 @@ extern const struct FolderFetchedProperties {
 
 
 
+
 @interface FolderID : NSManagedObjectID {}
 @end
 
@@ -29,6 +31,20 @@ extern const struct FolderFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (FolderID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* lastModified;
+
+
+
+@property int32_t lastModifiedValue;
+- (int32_t)lastModifiedValue;
+- (void)setLastModifiedValue:(int32_t)value_;
+
+//- (BOOL)validateLastModified:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -80,6 +96,15 @@ extern const struct FolderFetchedProperties {
 @end
 
 @interface _Folder (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveLastModified;
+- (void)setPrimitiveLastModified:(NSNumber*)value;
+
+- (int32_t)primitiveLastModifiedValue;
+- (void)setPrimitiveLastModifiedValue:(int32_t)value_;
+
+
 
 
 - (NSNumber*)primitiveMyId;

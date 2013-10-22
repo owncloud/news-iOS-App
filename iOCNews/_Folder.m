@@ -4,6 +4,7 @@
 #import "_Folder.h"
 
 const struct FolderAttributes FolderAttributes = {
+	.lastModified = @"lastModified",
 	.myId = @"myId",
 	.name = @"name",
 	.unreadCount = @"unreadCount",
@@ -41,6 +42,11 @@ const struct FolderFetchedProperties FolderFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"lastModifiedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"lastModified"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"myIdValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"myId"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -54,6 +60,32 @@ const struct FolderFetchedProperties FolderFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic lastModified;
+
+
+
+- (int32_t)lastModifiedValue {
+	NSNumber *result = [self lastModified];
+	return [result intValue];
+}
+
+- (void)setLastModifiedValue:(int32_t)value_ {
+	[self setLastModified:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveLastModifiedValue {
+	NSNumber *result = [self primitiveLastModified];
+	return [result intValue];
+}
+
+- (void)setPrimitiveLastModifiedValue:(int32_t)value_ {
+	[self setPrimitiveLastModified:[NSNumber numberWithInt:value_]];
+}
+
 
 
 

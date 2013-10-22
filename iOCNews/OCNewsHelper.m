@@ -35,6 +35,12 @@
 #import "Feeds.h"
 #import "NSDictionary+HandleNull.h"
 
+// the type of the query (Feed: 0, Folder: 1, Starred: 2, All: 3)
+const int UPDATE_FEED = 0;
+const int UPDATE_FOLDER = 1;
+const int UPDATE_STARRED = 2;
+const int UPDATE_ALL = 3;
+
 @interface OCNewsHelper () {
     NSMutableArray *foldersToAdd;
     NSMutableArray *foldersToDelete;
@@ -48,6 +54,8 @@
     NSMutableArray *itemsToUnstar;
     int feedCount;
     int updatedFeedsCount;
+    int updateType;
+    NSNumber *currentFolder;
 }
 
 - (int)addFolderFromDictionary:(NSDictionary*)dict;
@@ -377,7 +385,7 @@
             [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
         }
         [foldersToRename removeAllObjects];
-        
+        updateType = UPDATE_ALL;
         [self updateItems];
         [self updateTotalUnreadCount];
     
@@ -494,7 +502,9 @@
     self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", anId];
     NSArray *feedsToUpdate = [self.context executeFetchRequest:self.feedRequest error:nil];
     feedCount = feedsToUpdate.count;
+    currentFolder = anId;
     updatedFeedsCount = 0;
+    updateType = UPDATE_FOLDER;
     [feedsToUpdate enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
         [self syncFeedWithId:feed.myId];
     }];
@@ -503,6 +513,7 @@
 - (void)updateFeedWithId:(NSNumber*)anId {
     feedCount = 1;
     updatedFeedsCount = 0;
+    updateType = UPDATE_FEED;
     [self syncFeedWithId:anId];
 }
 
@@ -561,11 +572,16 @@
             NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
             Feed *feed = [self feedWithId:anId];
             feed.unreadCountValue = unreadItems.count;
+            feed.extra.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
         }
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         ++updatedFeedsCount;
         if (updatedFeedsCount == feedCount) {
+            if (updateType == UPDATE_FOLDER) {
+                Folder *folder = [self folderWithId:currentFolder];
+                folder.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         }
         
@@ -581,17 +597,10 @@
 }
 
 - (NSNumber*)feedLastModified:(NSNumber *)aFeedId {
-    //NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
-    [self.itemRequest setSortDescriptors:nil];
-    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", aFeedId]];
-    
-    [self.itemRequest setResultType:NSDictionaryResultType];
-    [self.itemRequest setReturnsDistinctResults:YES];
-    [self.itemRequest setPropertiesToFetch:[NSArray arrayWithObject:@"lastModified"]];
-    NSArray *myItems = [self.context executeFetchRequest:self.itemRequest error:nil];
-    NSNumber *newestItem = [myItems valueForKeyPath:@"@max.lastModified"];
+    Feed *feed = [self feedWithId:aFeedId];
+    NSNumber *lastFeedUpdate = feed.extra.lastModified;
     NSNumber *lastSync = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
-    return [NSNumber numberWithInt:MAX([newestItem intValue], [lastSync intValue])];
+    return [NSNumber numberWithInt:MAX([lastFeedUpdate intValue], [lastSync intValue])];
 }
 
 - (void)updateItems {

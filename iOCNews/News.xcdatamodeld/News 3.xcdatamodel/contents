@@ -13,6 +13,7 @@
     </entity>
     <entity name="FeedExtra" representedClassName="FeedExtra" syncable="YES">
         <attribute name="displayTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastModified" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="preferWeb" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="useReader" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Feed" inverseName="extra" inverseEntity="Feed" syncable="YES"/>
@@ -22,6 +23,7 @@
         <attribute name="starredCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES">
+        <attribute name="lastModified" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="myId" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unreadCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -49,10 +51,10 @@
     </entity>
     <elements>
         <element name="Feed" positionX="-342" positionY="-18" width="128" height="178"/>
-        <element name="FeedExtra" positionX="-342" positionY="272" width="128" height="103"/>
+        <element name="FeedExtra" positionX="-342" positionY="272" width="128" height="118"/>
         <element name="Feeds" positionX="-612" positionY="-18" width="128" height="73"/>
+        <element name="Folder" positionX="-479" positionY="-18" width="128" height="103"/>
         <element name="Item" positionX="-200" positionY="-16" width="128" height="268"/>
         <element name="ItemExtra" positionX="-198" positionY="270" width="128" height="73"/>
-        <element name="Folder" positionX="-479" positionY="-18" width="128" height="88"/>
     </elements>
 </model>

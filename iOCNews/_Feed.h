@@ -149,16 +149,6 @@ extern const struct FeedFetchedProperties {
 
 
 
-+ (NSArray*)fetchTotalUnreadRequest:(NSManagedObjectContext*)moc_ ;
-+ (NSArray*)fetchTotalUnreadRequest:(NSManagedObjectContext*)moc_ error:(NSError**)error_;
-
-
-
-+ (NSArray*)fetchFeedWithIdRequest:(NSManagedObjectContext*)moc_ FEED_ID:(NSNumber*)FEED_ID_ ;
-+ (NSArray*)fetchFeedWithIdRequest:(NSManagedObjectContext*)moc_ FEED_ID:(NSNumber*)FEED_ID_ error:(NSError**)error_;
-
-
-
 
 @end
 

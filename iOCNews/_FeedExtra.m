@@ -5,6 +5,7 @@
 
 const struct FeedExtraAttributes FeedExtraAttributes = {
 	.displayTitle = @"displayTitle",
+	.lastModified = @"lastModified",
 	.preferWeb = @"preferWeb",
 	.useReader = @"useReader",
 };
@@ -42,6 +43,11 @@ const struct FeedExtraFetchedProperties FeedExtraFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"lastModifiedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"lastModified"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"preferWebValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"preferWeb"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -61,6 +67,32 @@ const struct FeedExtraFetchedProperties FeedExtraFetchedProperties = {
 
 @dynamic displayTitle;
 
+
+
+
+
+
+@dynamic lastModified;
+
+
+
+- (int32_t)lastModifiedValue {
+	NSNumber *result = [self lastModified];
+	return [result intValue];
+}
+
+- (void)setLastModifiedValue:(int32_t)value_ {
+	[self setLastModified:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveLastModifiedValue {
+	NSNumber *result = [self primitiveLastModified];
+	return [result intValue];
+}
+
+- (void)setPrimitiveLastModifiedValue:(int32_t)value_ {
+	[self setPrimitiveLastModified:[NSNumber numberWithInt:value_]];
+}
 
 
 

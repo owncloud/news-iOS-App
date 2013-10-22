@@ -6,6 +6,7 @@
 
 extern const struct FeedExtraAttributes {
 	__unsafe_unretained NSString *displayTitle;
+	__unsafe_unretained NSString *lastModified;
 	__unsafe_unretained NSString *preferWeb;
 	__unsafe_unretained NSString *useReader;
 } FeedExtraAttributes;
@@ -18,6 +19,7 @@ extern const struct FeedExtraFetchedProperties {
 } FeedExtraFetchedProperties;
 
 @class Feed;
+
 
 
 
@@ -41,6 +43,20 @@ extern const struct FeedExtraFetchedProperties {
 
 
 //- (BOOL)validateDisplayTitle:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* lastModified;
+
+
+
+@property int32_t lastModifiedValue;
+- (int32_t)lastModifiedValue;
+- (void)setLastModifiedValue:(int32_t)value_;
+
+//- (BOOL)validateLastModified:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -93,6 +109,15 @@ extern const struct FeedExtraFetchedProperties {
 
 - (NSString*)primitiveDisplayTitle;
 - (void)setPrimitiveDisplayTitle:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveLastModified;
+- (void)setPrimitiveLastModified:(NSNumber*)value;
+
+- (int32_t)primitiveLastModifiedValue;
+- (void)setPrimitiveLastModifiedValue:(int32_t)value_;
 
 
 
