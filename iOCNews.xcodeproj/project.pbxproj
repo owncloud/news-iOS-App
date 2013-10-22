@@ -1436,6 +1436,7 @@
 				D0BCAA1F177900C300C965F4 /* Frameworks */,
 				D0BCAA20177900C300C965F4 /* Resources */,
 				D06CB24C17A46A5800A1310B /* ShellScript */,
+				D08D83BA181727C9005A75F0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1821,6 +1822,19 @@
 			shellScript = "KEYWORDS=\"TODO:|FIXME:|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
 		};
 		D08D83B918161523005A75F0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\n#note: for simplicity, it's assumed that there's already a bundle version (which is an integer) and a version string. set them in the Summary pane!\n\n#get path to the BUILT .plist, NOT the packaged one! this fixes the off-by-one bug\nbuiltInfoPlistPath=${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\necho \"using plist at $builtInfoPlistPath\"\n\nmodifiedFilesExist=false\n#this is the modification date to compare to -- there's a possible bug here, if you edit the built plist directly, for some reason. probably you shouldn't do that anyways.\ncompModDate=$(stat -f \"%m\" \"$builtInfoPlistPath\")\n\nfor filename in *\ndo\nmodDate=$(stat -f \"%m\" \"$filename\")\nif [ \"$modDate\" -gt \"$compModDate\" ]\nthen\nmodifiedFilesExist=true;\necho \"found newly modified file: $filename\"\nbreak\nfi\ndone\n\nif $modifiedFilesExist\nthen\necho \"A file is new, bumping version\"\n\n#increment the build number\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$builtInfoPlistPath\")\necho \"retrieved current build number: $buildNumber\"\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$builtInfoPlistPath\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n\n#compose the version number string\nversionString=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$builtInfoPlistPath\")\nversionString+=\" (\"\nversionString+=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$builtInfoPlistPath\")\nversionString+=\")\"\n\n#write the version number string to the settings bundle\n#IMPORTANT: this assumes the version number is the second property in the settings bundle!\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue $versionString\" \"$SRCROOT/iOCNews/Settings.bundle/Root.plist\"\nelse\necho \"Version not incremented -- no newly modified files\"\nfi\n";
+		};
+		D08D83BA181727C9005A75F0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
