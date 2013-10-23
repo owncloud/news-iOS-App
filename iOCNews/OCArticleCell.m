@@ -33,8 +33,6 @@
 #import "OCArticleCell.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
-
 @implementation OCArticleCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -55,42 +53,25 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    //self.articleImage.frame = CGRectMake(0,0,112,112);
-    self.articleImage.layer.masksToBounds = YES;
     
-    self.containerView.layer.borderWidth = 1.0;
-    self.containerView.layer.borderColor = [UIColorFromRGB(0xD0D0D0) CGColor];
-    self.containerView.layer.shadowColor = [[UIColor blackColor] CGColor];
-    self.containerView.layer.shadowOpacity = 0.3f;
-    self.containerView.layer.shadowOffset = CGSizeMake(0, 4);
-    
+    UIBezierPath *maskPath;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.containerView.layer.shadowRadius = 4.0f;
+        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.articleImage.bounds
+                                        byRoundingCorners:UIRectCornerAllCorners
+                                              cornerRadii:CGSizeMake(18.0, 18.0)];
+
     } else {
-        self.containerView.layer.shadowRadius = 2.0f;
-    }
-    self.containerView.layer.masksToBounds = NO;
-    
-    CGSize size = self.containerView.bounds.size;
-    
-    CGFloat curlFactor = 10.0f;
-    CGFloat shadowDepth = 3.0f;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        curlFactor = 5.0f;
-        shadowDepth = 1.5f;
+        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.articleImage.bounds
+                                         byRoundingCorners:UIRectCornerAllCorners
+                                               cornerRadii:CGSizeMake(9.0, 9.0)];
+
     }
     
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(0.0f, 0.0f)];
-    [path addLineToPoint:CGPointMake(size.width + shadowDepth, 0.0f)];
-    [path addCurveToPoint:CGPointMake(size.width, size.height + shadowDepth)
-            controlPoint1:CGPointMake(size.width - curlFactor, shadowDepth + curlFactor)
-            controlPoint2:CGPointMake(size.width +shadowDepth, size.height - curlFactor)];
-    [path addCurveToPoint:CGPointMake(0.0f, size.height + shadowDepth)
-            controlPoint1:CGPointMake(size.width - curlFactor, size.height + shadowDepth - curlFactor)
-            controlPoint2:CGPointMake(curlFactor, size.height + shadowDepth - curlFactor)];
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = self.articleImage.bounds;
+    maskLayer.path = maskPath.CGPath;
     
-    self.containerView.layer.shadowPath = path.CGPath;
+    self.articleImage.layer.mask = maskLayer;
 }
 
 @end
