@@ -533,6 +533,7 @@
 - (void)doGoBack {
     currentFolderIndex = 0;
     self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.title = @"Feeds";
     [self updatePredicate];
 }
 
