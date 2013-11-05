@@ -53,25 +53,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
-    UIBezierPath *maskPath;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.articleImage.bounds
-                                        byRoundingCorners:UIRectCornerAllCorners
-                                              cornerRadii:CGSizeMake(18.0, 18.0)];
-
-    } else {
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:self.articleImage.bounds
-                                         byRoundingCorners:UIRectCornerAllCorners
-                                               cornerRadii:CGSizeMake(9.0, 9.0)];
-
-    }
-    
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = self.articleImage.bounds;
-    maskLayer.path = maskPath.CGPath;
-    
-    self.articleImage.layer.mask = maskLayer;
 }
 
 @end
