@@ -44,8 +44,7 @@
 #import "Item.h"
 #import "UIImage+Resource.h"
 #import "objc/runtime.h"
-#import "SDWebImageOperation.h"
-#import "SDWebImageManager.h"
+#import "UIImageView+OCWebCache.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -280,87 +279,7 @@ static char articleImageKey;
         cell.articleImage.alpha = 0.4f;
     }
     
-    id<SDWebImageOperation> operation = objc_getAssociatedObject(cell.articleImage, &articleImageKey);
-    if (operation) {
-        [operation cancel];
-        objc_setAssociatedObject(cell.articleImage, &articleImageKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-
-    cell.articleImage.image = [UIImage imageNamed:@"placeholder"];
-    NSURL *imageURL = [NSURL URLWithString:[OCArticleImage findImage:summary]];
-    if (imageURL) {
-        __weak UIImageView *wself = cell.articleImage;
-        id<SDWebImageOperation> operation = [SDWebImageManager.sharedManager
-                                             downloadWithURL:imageURL
-                                                     options:0
-                                                    progress:nil
-                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-            if (!wself) return;
-            dispatch_main_sync_safe(^{
-                __strong UIImageView *sself = wself;
-                if (!sself) return;
-                if (image) {
-                    CGFloat width = image.size.width;
-                    CGFloat height = image.size.height;
-                    CGFloat targetWidth = sself.bounds.size.width;
-                    CGFloat targetHeight = sself.bounds.size.height;
-                    CGFloat scaleFactor = 0.0;
-                    CGFloat scaledWidth = targetWidth;
-                    CGFloat scaledHeight = targetHeight;
-                    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
-                    
-                    if (!CGSizeEqualToSize(image.size, sself.bounds.size)) {
-                        CGFloat widthFactor = targetWidth / width;
-                        CGFloat heightFactor = targetHeight / height;
-                        
-                        if (widthFactor > heightFactor) {
-                            scaleFactor = widthFactor; // scale to fit height
-                        } else {
-                            scaleFactor = heightFactor; // scale to fit width
-                        }
-                        
-                        scaledWidth  = width * scaleFactor;
-                        scaledHeight = height * scaleFactor;
-                        
-                        // center the image
-                        if (widthFactor > heightFactor) {
-                            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
-                        } else {
-                            if (widthFactor < heightFactor) {
-                                thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
-                            }
-                        }
-                    }
-                    
-                    UIGraphicsBeginImageContextWithOptions(sself.bounds.size, NO, 0.0);
-                    
-                    CGRect thumbnailRect = CGRectZero;
-                    thumbnailRect.origin = thumbnailPoint;
-                    thumbnailRect.size.width  = scaledWidth;
-                    thumbnailRect.size.height = scaledHeight;
-                    
-                    int radius;
-                    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                        radius = 18;
-                    } else {
-                        radius = 9;
-                    }
-
-                    [[UIBezierPath bezierPathWithRoundedRect:sself.bounds cornerRadius:radius] addClip];
-                    
-                    [image drawInRect:thumbnailRect];
-                    
-                    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-                    
-                    UIGraphicsEndImageContext();
-                    sself.image = newImage;
-                    [sself setNeedsLayout];
-                }
-                
-            });
-        }];
-        objc_setAssociatedObject(cell.articleImage, &articleImageKey, operation, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
+    [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

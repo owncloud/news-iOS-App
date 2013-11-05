@@ -262,6 +262,7 @@
 		D04AD74718084F5100FF6056 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = D04AD74418084F5100FF6056 /* folder.png */; };
 		D04AD74818084F5100FF6056 /* folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04AD74518084F5100FF6056 /* folder@2x.png */; };
 		D04AD74918084F5100FF6056 /* folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04AD74518084F5100FF6056 /* folder@2x.png */; };
+		D0516E67182988B300F6D677 /* UIImageView+OCWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E66182988B300F6D677 /* UIImageView+OCWebCache.m */; };
 		D061D78F17E265410038FB04 /* back-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D061D78D17E265410038FB04 /* back-7@2x.png */; };
 		D061D79017E265410038FB04 /* back-7.png in Resources */ = {isa = PBXBuildFile; fileRef = D061D78E17E265410038FB04 /* back-7.png */; };
 		D061D79417E269180038FB04 /* forward-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D061D79217E269180038FB04 /* forward-7@2x.png */; };
@@ -519,6 +520,8 @@
 		D04AD7421807403100FF6056 /* iOCNews copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOCNews copy-Info.plist"; path = "/Users/peter/Projects/iOCNews/iOCNews copy-Info.plist"; sourceTree = "<absolute>"; };
 		D04AD74418084F5100FF6056 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		D04AD74518084F5100FF6056 /* folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder@2x.png"; sourceTree = "<group>"; };
+		D0516E65182988B300F6D677 /* UIImageView+OCWebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+OCWebCache.h"; sourceTree = "<group>"; };
+		D0516E66182988B300F6D677 /* UIImageView+OCWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+OCWebCache.m"; sourceTree = "<group>"; };
 		D061D78D17E265410038FB04 /* back-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-7@2x.png"; sourceTree = "<group>"; };
 		D061D78E17E265410038FB04 /* back-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-7.png"; sourceTree = "<group>"; };
 		D061D79217E269180038FB04 /* forward-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward-7@2x.png"; sourceTree = "<group>"; };
@@ -1008,6 +1011,8 @@
 				D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */,
 				D0BF490517E3EE2F00CB9311 /* UIImage+Resource.h */,
 				D0BF490617E3EE2F00CB9311 /* UIImage+Resource.m */,
+				D0516E65182988B300F6D677 /* UIImageView+OCWebCache.h */,
+				D0516E66182988B300F6D677 /* UIImageView+OCWebCache.m */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
 				D08D83B618161453005A75F0 /* Settings.bundle */,
@@ -1955,6 +1960,7 @@
 				D0BCABBA17790F6700C965F4 /* FDiCabActivity.m in Sources */,
 				D0BCABBD17790F6700C965F4 /* FDInstapaperActivity.m in Sources */,
 				D0BF490717E3EE2F00CB9311 /* UIImage+Resource.m in Sources */,
+				D0516E67182988B300F6D677 /* UIImageView+OCWebCache.m in Sources */,
 				D0BCABC217790F6700C965F4 /* FDReadabilityActivity.m in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
 				D0BCAC0117791F3400C965F4 /* TUSafariActivity.m in Sources */,
