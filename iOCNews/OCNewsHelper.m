@@ -52,18 +52,16 @@ const int UPDATE_ALL = 3;
     NSMutableArray *itemsToMarkUnread;
     NSMutableArray *itemsToStar;
     NSMutableArray *itemsToUnstar;
-    int feedCount;
-    int updatedFeedsCount;
-    int updateType;
-    NSNumber *currentFolder;
 }
 
 - (int)addFolderFromDictionary:(NSDictionary*)dict;
 - (int)addFeedFromDictionary:(NSDictionary*)dict;
 - (void)addItemFromDictionary:(NSDictionary*)dict;
-
+- (NSNumber*)folderLastModified:(NSNumber*)folderId;
 - (NSNumber*)feedLastModified:(NSNumber*)feedId;
-- (void)syncFeedWithId:(NSNumber*)anId;
+- (void)updateItemsFirstTime;
+- (void)updateItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId;
+- (void)updateFeedItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId;
 
 @end
 
@@ -385,8 +383,13 @@ const int UPDATE_ALL = 3;
             [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
         }
         [foldersToRename removeAllObjects];
-        updateType = UPDATE_ALL;
-        [self updateItems];
+        //updateType = UPDATE_ALL;
+        if ([self itemCount] > 0) {
+            NSNumber *lastMod = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+            [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_ALL] andId:[NSNumber numberWithInt:0]];
+        } else {
+            [self updateItemsFirstTime];
+        }
         [self updateTotalUnreadCount];
     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -499,31 +502,33 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)updateFolderWithId:(NSNumber *)anId {
-    self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", anId];
-    NSArray *feedsToUpdate = [self.context executeFetchRequest:self.feedRequest error:nil];
-    feedCount = feedsToUpdate.count;
-    currentFolder = anId;
-    updatedFeedsCount = 0;
-    updateType = UPDATE_FOLDER;
-    [feedsToUpdate enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-        [self syncFeedWithId:feed.myId];
-    }];
+    NSNumber *lastMod = [self folderLastModified:anId];
+    [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_FOLDER] andId:anId];
 }
 
 - (void)updateFeedWithId:(NSNumber*)anId {
-    feedCount = 1;
-    updatedFeedsCount = 0;
-    updateType = UPDATE_FEED;
-    [self syncFeedWithId:anId];
+    NSNumber *lastMod = [self feedLastModified:anId];
+    [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_FEED] andId:anId];
 }
 
-- (void)syncFeedWithId:(NSNumber *)anId {
-    NSNumber *lastMod = [self feedLastModified:anId];
+- (NSNumber*)folderLastModified:(NSNumber *)aFolderId {
+    Folder *folder = [self folderWithId:aFolderId];
+    NSNumber *lastFolderUpdate = folder.lastModified;
+    NSNumber *lastSync = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+    return [NSNumber numberWithInt:MAX([lastFolderUpdate intValue], [lastSync intValue])];
+}
+
+- (NSNumber*)feedLastModified:(NSNumber *)aFeedId {
+    Feed *feed = [self feedWithId:aFeedId];
+    NSNumber *lastFeedUpdate = feed.extra.lastModified;
+    NSNumber *lastSync = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+    return [NSNumber numberWithInt:MAX([lastFeedUpdate intValue], [lastSync intValue])];
+}
+
+- (void)updateItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId {
     NSDictionary *itemParams = @{@"lastModified": lastMod,
-                                         @"type": [NSNumber numberWithInt:0],
+                                         @"type": aType,
                                            @"id": anId};
-    
-    
     
     [[OCAPIClient sharedClient] getPath:@"items/updated" parameters:itemParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"URL: %@", operation.request.URL.absoluteString);
@@ -538,7 +543,7 @@ const int UPDATE_ALL = 3;
             [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
             
             [self.itemRequest setResultType:NSManagedObjectResultType];
-
+            
             NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:nil];
             NSLog(@"duplicateItems Count: %i", duplicateItems.count);
             
@@ -547,17 +552,21 @@ const int UPDATE_ALL = 3;
                 [self.context deleteObject:item];
             }
             
+            __block NSMutableSet *feedsWithNewItems = [[NSMutableSet alloc] init];
             [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+                NSNumber *myFeedId = [item objectForKey:@"feedId"];
+                [feedsWithNewItems addObject:myFeedId];
                 [self addItemFromDictionary:item];
             }];
             
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-            
-            NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:nil]];
-            if (feedItems.count > 500) {
-                //NSLog(@"Ids: %@", [feedItems valueForKey:@"myId"]);
-                //NSLog(@"FeedId: %@; Count: %i", anId, feedItems.count);
+            NSLog(@"Feeds with new items: %d", feedsWithNewItems.count);
+            [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
+                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
+                
+                NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:nil]];
+                
                 while (feedItems.count > 500) {
                     Item *itemToRemove = [feedItems lastObject];
                     if (!itemToRemove.starredValue) {
@@ -568,143 +577,17 @@ const int UPDATE_ALL = 3;
                         }
                     }
                 }
-            }
-            NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
-            Feed *feed = [self feedWithId:anId];
-            feed.unreadCountValue = unreadItems.count;
-            feed.extra.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
-        }
-        [self updateStarredCount];
-        [self updateTotalUnreadCount];
-        ++updatedFeedsCount;
-        if (updatedFeedsCount == feedCount) {
-            if (updateType == UPDATE_FOLDER) {
-                Folder *folder = [self folderWithId:currentFolder];
-                folder.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
-        }
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
-        ++updatedFeedsCount;
-        if (updatedFeedsCount == feedCount) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
-        }
-    }];
-}
-
-- (NSNumber*)feedLastModified:(NSNumber *)aFeedId {
-    Feed *feed = [self feedWithId:aFeedId];
-    NSNumber *lastFeedUpdate = feed.extra.lastModified;
-    NSNumber *lastSync = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
-    return [NSNumber numberWithInt:MAX([lastFeedUpdate intValue], [lastSync intValue])];
-}
-
-- (void)updateItems {
-    __block NSMutableArray *operations = [NSMutableArray new];
-    __block NSMutableArray *addedItems = [NSMutableArray new];
-    __block OCAPIClient *client = [OCAPIClient sharedClient];
-    
-    if ([self itemCount] > 0) {
-        //NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-86400];
-        //[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[date timeIntervalSince1970]] forKey:@"LastModified"];
-
-        [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
-        __block NSArray *allFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-        //feedCount = feedsWithUnread.count;
-        //updatedFeedsCount = 0;
-        NSLog(@"Building operations");
-        [allFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-            //[self syncFeedWithId:feed.myId];
-            
-            
-            //[NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]]
-            NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[self feedLastModified:feed.myId], @"lastModified",
-                                    [NSNumber numberWithInt:0], @"type",
-                                    feed.myId, @"id", nil];
-            
-            
-            NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items/updated" parameters:itemParams];
-            
-            AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:nil failure:nil];
-            BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
-            if (allowInvalid) {
-                [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-                    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-                        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-                    }
-                }];
-            }
-            NSLog(@"Adding operation %i", idx);
-            [operations addObject:itemOperation];
-        }];
-        NSLog(@"Enqueing operations");
-        [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
-            NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
-        } completionBlock:^(NSArray *operations) {
-            __block int errorCount = 0;
-            __block NSMutableSet *feedsWithNewItems;
-            [operations enumerateObjectsUsingBlock:^(AFJSONRequestOperation *itemOperation, NSUInteger idx, BOOL *stop) {
-                //NSLog(@"New Items: %@", JSON);
-                if (itemOperation.error) {
-                    ++errorCount;
-                } else {
-                    NSDictionary *jsonDict = (NSDictionary *) itemOperation.responseJSON;
-                    NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                    //NSLog(@"New Item Count: %d", newItems.count);
-                    if (newItems.count > 0) {
-                        [feedsWithNewItems addObject:[(NSDictionary*)[newItems objectAtIndex:0] objectForKey:@"feedId"]];
-                        [addedItems addObjectsFromArray:newItems];
-                        //NSLog(@"Feed: %@ (%d) adding %d for %d total items", feed.title, feed.unreadCountValue, newItems.count, addedItems.count);
-                    }
-                }
+                
+                NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
+                NSLog(@"Unread item count: %d", unreadItems.count);
+                Feed *feed = [self feedWithId:feedId];
+                feed.unreadCountValue = unreadItems.count;
             }];
-            
-            if (addedItems.count > 0) {
-                __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
-                [possibleDuplicateItems addObjectsFromArray:[addedItems valueForKey:@"id"]];
-                NSLog(@"Item count: %i; possibleDuplicateItems count: %i", addedItems.count, possibleDuplicateItems.count);
-                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
-                [self.itemRequest setResultType:NSManagedObjectResultType];
-                NSError *error = nil;
-                NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:&error];
-                NSLog(@"duplicateItems Count: %i", duplicateItems.count);
-                
-                for (NSManagedObject *item in duplicateItems) {
-                    //NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
-                    [self.context deleteObject:item];
-                }
-                
-                [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-                    [self addItemFromDictionary:item];
-                }];
-                
-                NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
-                [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-                
-                [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
-
-                //[allFeeds enumerateObjectsUsingBlock:^(Feed *obj, NSUInteger idx, BOOL *stop) {
-               
-                    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
-                    
-                    NSError *error = nil;
-                    NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
-                    
-                    while (feedItems.count > 500) {
-                        Item *itemToRemove = [feedItems lastObject];
-                        if (!itemToRemove.starredValue) {
-                            if (!itemToRemove.unreadValue) {
-                                NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
-                                [self.context deleteObject:itemToRemove];
-                                [feedItems removeLastObject];
-                            }
-                        }
-                    }
-                }];
+        }
+        
+        switch ([aType intValue]) {
+            case UPDATE_ALL: {
+                NSLog(@"Finishing all item update");
                 [self markItemsReadOffline:itemsToMarkRead];
                 [itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
@@ -719,80 +602,252 @@ const int UPDATE_ALL = 3;
                     [self unstarItemOffline:itemId];
                 }
                 [itemsToUnstar removeAllObjects];
-                
-            }
-            [self updateStarredCount];
-            if (errorCount > 0) {
-                 NSString *message = @"At least one feed failed to update properly. Try syncing again.";
-                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
-                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
-            } else {
+                [self updateStarredCount];
+                [self updateTotalUnreadCount];
                 [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
             }
-        }];
-        
-    } else { //first time
-        
-        NSError *error = nil;
-        [self.feedRequest setPredicate:nil];
-        NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
-        
-        [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-            
-            NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
-                                        [NSNumber numberWithInt:0], @"offset",
-                                        [NSNumber numberWithInt:0], @"type",
-                                        feed.myId, @"id",
-                                        @"true", @"getRead", nil];
-            
-            NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
-            
-            AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:nil failure:nil];
-            BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
-            if (allowInvalid) {
-                [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-                    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-                        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-                    }
-                    
-                }];
+                break;
+            case UPDATE_FOLDER: {
+                NSLog(@"Finishing folder item update");
+                Folder *folder = [self folderWithId:anId];
+                folder.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
             }
-            
-            [operations addObject:itemOperation];
-        }];
+                break;
+            case UPDATE_FEED: {
+                NSLog(@"Finishing feed item update");
+                Feed *feed = [self feedWithId:anId];
+                feed.extra.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+            }
+                break;
+                
+            default:
+                break;
+        }
         
-        [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
-            NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
-        } completionBlock:^(NSArray *operations) {
-            __block int errorCount = 0;
-            [operations enumerateObjectsUsingBlock:^(AFJSONRequestOperation *itemOperation, NSUInteger idx, BOOL *stop) {
-                //NSLog(@"New Items: %@", JSON);
-                if (itemOperation.error) {
-                    ++errorCount;
-                } else {
-                    //NSLog(@"New Items: %@", JSON);
-                    NSDictionary *jsonDict = (NSDictionary *) itemOperation.responseJSON;
-                    NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                    [addedItems addObjectsFromArray:newItems];
+        [self updateStarredCount];
+        [self updateTotalUnreadCount];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        //feedsToUpdate;
+        switch ([aType intValue]) {
+            case UPDATE_ALL:
+                NSLog(@"Doing single feed all item update");
+                [self updateFeedItemsWithLastModified:lastMod type:aType andId:anId];
+                break;
+            case UPDATE_FOLDER: {
+                NSLog(@"Doing single feed folder item update");
+                //update feeds individually
+                [self updateFeedItemsWithLastModified:lastMod type:aType andId:anId];
+            }
+                break;
+            case UPDATE_FEED: {
+                NSLog(@"Finishing feed item update");
+                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }];
+}
+
+
+- (void)updateFeedItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId {
+    __block NSMutableArray *operations = [NSMutableArray new];
+    __block NSMutableArray *addedItems = [NSMutableArray new];
+    __block OCAPIClient *client = [OCAPIClient sharedClient];
+    
+    //update feeds individually
+    [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
+    __block NSArray *allFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
+    if ([aType intValue] == UPDATE_FOLDER) {
+        allFeeds = [allFeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", anId]];
+    }
+
+    NSLog(@"Building operations");
+    [allFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+        NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[self feedLastModified:feed.myId], @"lastModified",
+                                    [NSNumber numberWithInt:0], @"type",
+                                    feed.myId, @"id", nil];
+        
+        
+        NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items/updated" parameters:itemParams];
+        
+        AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:nil failure:nil];
+        BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
+        if (allowInvalid) {
+            [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+                if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+                    [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
                 }
             }];
+        }
+        NSLog(@"Adding operation %i", idx);
+        [operations addObject:itemOperation];
+    }];
+    NSLog(@"Enqueing operations");
+    [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
+        NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
+    } completionBlock:^(NSArray *operations) {
+        __block int errorCount = 0;
+        __block NSMutableSet *feedsWithNewItems;
+        [operations enumerateObjectsUsingBlock:^(AFJSONRequestOperation *itemOperation, NSUInteger idx, BOOL *stop) {
+            //NSLog(@"New Items: %@", JSON);
+            if (itemOperation.error) {
+                ++errorCount;
+            } else {
+                NSDictionary *jsonDict = (NSDictionary *) itemOperation.responseJSON;
+                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+                //NSLog(@"New Item Count: %d", newItems.count);
+                if (newItems.count > 0) {
+                    [feedsWithNewItems addObject:[(NSDictionary*)[newItems objectAtIndex:0] objectForKey:@"feedId"]];
+                    [addedItems addObjectsFromArray:newItems];
+                    //NSLog(@"Feed: %@ (%d) adding %d for %d total items", feed.title, feed.unreadCountValue, newItems.count, addedItems.count);
+                }
+            }
+        }];
+        
+        if (addedItems.count > 0) {
+            __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
+            [possibleDuplicateItems addObjectsFromArray:[addedItems valueForKey:@"id"]];
+            NSLog(@"Item count: %i; possibleDuplicateItems count: %i", addedItems.count, possibleDuplicateItems.count);
+            [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
+            [self.itemRequest setResultType:NSManagedObjectResultType];
+            NSError *error = nil;
+            NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:&error];
+            NSLog(@"duplicateItems Count: %i", duplicateItems.count);
+            
+            for (NSManagedObject *item in duplicateItems) {
+                //NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
+                [self.context deleteObject:item];
+            }
+            
             [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                 [self addItemFromDictionary:item];
             }];
-            [self updateStarredCount];
-            if (errorCount > 0) {
-                NSString *message = @"At least one feed failed to update properly. Try syncing again.";
-                NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+            
+            NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
+            [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+            
+            [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
+                
+                //[allFeeds enumerateObjectsUsingBlock:^(Feed *obj, NSUInteger idx, BOOL *stop) {
+                
+                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
+                
+                NSError *error = nil;
+                NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
+                
+                while (feedItems.count > 500) {
+                    Item *itemToRemove = [feedItems lastObject];
+                    if (!itemToRemove.starredValue) {
+                        if (!itemToRemove.unreadValue) {
+                            NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
+                            [self.context deleteObject:itemToRemove];
+                            [feedItems removeLastObject];
+                        }
+                    }
+                }
+            }];
+            if ([aType intValue] == UPDATE_ALL) {
+                
+                [self markItemsReadOffline:itemsToMarkRead];
+                [itemsToMarkRead removeAllObjects];
+                for (NSNumber *itemId in itemsToMarkUnread) {
+                    [self markItemUnreadOffline:itemId];
+                }
+                [itemsToMarkUnread removeAllObjects];
+                for (NSNumber *itemId in itemsToStar) {
+                    [self starItemOffline:itemId];
+                }
+                [itemsToStar removeAllObjects];
+                for (NSNumber *itemId in itemsToUnstar) {
+                    [self unstarItemOffline:itemId];
+                }
+                [itemsToUnstar removeAllObjects];
+            }
+            
+        }
+        [self updateStarredCount];
+        [self updateTotalUnreadCount];
+        if (errorCount > 0) {
+            NSString *message = @"At least one feed failed to update properly. Try syncing again.";
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
+        }
+    }];
+}
+
+
+- (void)updateItemsFirstTime {
+    __block NSMutableArray *operations = [NSMutableArray new];
+    __block NSMutableArray *addedItems = [NSMutableArray new];
+    __block OCAPIClient *client = [OCAPIClient sharedClient];
+    NSError *error = nil;
+    [self.feedRequest setPredicate:nil];
+    NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
+    
+    [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+        
+        NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
+                                    [NSNumber numberWithInt:0], @"offset",
+                                    [NSNumber numberWithInt:0], @"type",
+                                    feed.myId, @"id",
+                                    @"true", @"getRead", nil];
+        
+        NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
+        
+        AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:nil failure:nil];
+        BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
+        if (allowInvalid) {
+            [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+                if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+                    [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
+                }
+                
+            }];
+        }
+        
+        [operations addObject:itemOperation];
+    }];
+    
+    [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
+        NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
+    } completionBlock:^(NSArray *operations) {
+        __block int errorCount = 0;
+        [operations enumerateObjectsUsingBlock:^(AFJSONRequestOperation *itemOperation, NSUInteger idx, BOOL *stop) {
+            //NSLog(@"New Items: %@", JSON);
+            if (itemOperation.error) {
+                ++errorCount;
             } else {
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
+                //NSLog(@"New Items: %@", JSON);
+                NSDictionary *jsonDict = (NSDictionary *) itemOperation.responseJSON;
+                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
+                [addedItems addObjectsFromArray:newItems];
             }
         }];
-    }
-    
-    [self updateTotalUnreadCount];
+        [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+            [self addItemFromDictionary:item];
+        }];
+        [self updateStarredCount];
+        [self updateTotalUnreadCount];
+        if (errorCount > 0) {
+            NSString *message = @"At least one feed failed to update properly. Try syncing again.";
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
+        }
+    }];
 }
 
 - (void)updateReadItems:(NSArray *)items {

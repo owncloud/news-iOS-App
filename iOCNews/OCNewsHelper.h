@@ -71,7 +71,6 @@
 - (void)updateFeeds:(id)JSON;
 - (void)updateFeedWithId:(NSNumber*)anId;
 - (void)addItemExtra:(Item*)item;
-- (void)updateItems;
 - (void)updateReadItems:(NSArray*)items;
 - (void)updateFolderUnreadCount;
 - (void)updateTotalUnreadCount;
