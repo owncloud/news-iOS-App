@@ -383,12 +383,12 @@ const int UPDATE_ALL = 3;
             [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
         }
         [foldersToRename removeAllObjects];
-        //updateType = UPDATE_ALL;
+        NSNumber *lastMod = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
         if ([self itemCount] > 0) {
-            NSNumber *lastMod = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
             [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_ALL] andId:[NSNumber numberWithInt:0]];
         } else {
             [self updateItemsFirstTime];
+            [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_STARRED] andId:[NSNumber numberWithInt:0]];
         }
         [self updateTotalUnreadCount];
     
@@ -565,17 +565,14 @@ const int UPDATE_ALL = 3;
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
                 [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
                 
-                NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:nil]];
-                
-                while (feedItems.count > 500) {
-                    Item *itemToRemove = [feedItems lastObject];
-                    if (!itemToRemove.starredValue) {
-                        if (!itemToRemove.unreadValue) {
-                            NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
-                            [self.context deleteObject:itemToRemove];
-                            [feedItems removeLastObject];
-                        }
-                    }
+                NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:nil];
+                NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
+                filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
+                while (filteredArray.count > 500) {
+                    Item *itemToRemove = [filteredArray lastObject];
+                    NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
+                    [self.context deleteObject:itemToRemove];
+                    [filteredArray removeLastObject];
                 }
                 
                 NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
@@ -642,7 +639,8 @@ const int UPDATE_ALL = 3;
                 [self updateFeedItemsWithLastModified:lastMod type:aType andId:anId];
             }
                 break;
-            case UPDATE_FEED: {
+            case UPDATE_FEED:
+            case UPDATE_STARRED: {
                 NSLog(@"Finishing feed item update");
                 NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
@@ -796,8 +794,8 @@ const int UPDATE_ALL = 3;
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
     
     [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-        
-        NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
+        int batchSize = MAX(50, feed.unreadCountValue);
+        NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:batchSize], @"batchSize",
                                     [NSNumber numberWithInt:0], @"offset",
                                     [NSNumber numberWithInt:0], @"type",
                                     feed.myId, @"id",
