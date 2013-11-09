@@ -121,6 +121,7 @@ const int UPDATE_ALL = 3;
         starredFeed.folderId = [NSNumber numberWithInt:0];
         starredFeed.unreadCount = [NSNumber numberWithInt:0];
         starredFeed.link = @"";
+        [self addFeedExtra:starredFeed];
         starredFeed.extra.lastModified = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
     }
     
