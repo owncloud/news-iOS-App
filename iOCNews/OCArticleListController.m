@@ -45,8 +45,7 @@
 #import "UIImage+Resource.h"
 #import "objc/runtime.h"
 #import "UIImageView+OCWebCache.h"
-
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#import "HexColor.h"
 
 @interface OCArticleListController () {
     int currentIndex;
@@ -271,9 +270,9 @@
         cell.dateLabel.textColor = [UIColor darkTextColor];
         cell.articleImage.alpha = 1.0f;
     } else {
-        cell.summaryLabel.textColor = UIColorFromRGB(0x696969);
-        cell.titleLabel.textColor = UIColorFromRGB(0x696969);
-        cell.dateLabel.textColor = UIColorFromRGB(0x696969);
+        cell.summaryLabel.textColor = [UIColor colorWithHexString:@"#696969"];
+        cell.titleLabel.textColor = [UIColor colorWithHexString:@"#696969"];
+        cell.dateLabel.textColor = [UIColor colorWithHexString:@"#696969"];
         cell.articleImage.alpha = 0.4f;
     }
     
