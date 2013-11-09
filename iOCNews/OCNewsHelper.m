@@ -121,6 +121,7 @@ const int UPDATE_ALL = 3;
         starredFeed.folderId = [NSNumber numberWithInt:0];
         starredFeed.unreadCount = [NSNumber numberWithInt:0];
         starredFeed.link = @"";
+        starredFeed.extra.lastModified = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
     }
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -508,7 +509,11 @@ const int UPDATE_ALL = 3;
 
 - (void)updateFeedWithId:(NSNumber*)anId {
     NSNumber *lastMod = [self feedLastModified:anId];
-    [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_FEED] andId:anId];
+    if ([anId intValue] == -1) {
+        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_STARRED] andId:[NSNumber numberWithInt:0]];
+    } else {
+        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_FEED] andId:anId];
+    }
 }
 
 - (NSNumber*)folderLastModified:(NSNumber *)aFolderId {
@@ -610,7 +615,8 @@ const int UPDATE_ALL = 3;
                 folder.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
             }
                 break;
-            case UPDATE_FEED: {
+            case UPDATE_FEED:
+            case UPDATE_STARRED: {
                 NSLog(@"Finishing feed item update");
                 Feed *feed = [self feedWithId:anId];
                 feed.extra.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
