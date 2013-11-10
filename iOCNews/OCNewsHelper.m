@@ -889,7 +889,9 @@ const int UPDATE_ALL = 3;
 - (void)updateTotalUnreadCount {
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-    [self feedWithId:[NSNumber numberWithInt:-2]].unreadCountValue = [[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
+    int totalUnreadCount = [[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
+    [self feedWithId:[NSNumber numberWithInt:-2]].unreadCountValue = totalUnreadCount;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = totalUnreadCount;
     [self updateFolderUnreadCount];
     [self saveContext];
 }
