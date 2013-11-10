@@ -54,9 +54,13 @@
 #define MIN_WIDTH (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 380 : 150)
 #define MAX_WIDTH (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 700 : 300)
 
+const int SWIPE_NEXT = 0;
+const int SWIPE_PREVIOUS = 1;
+
 @interface OCWebController () <UIPopoverControllerDelegate, IIViewDeckControllerDelegate> {
     UIPopoverController *_activityPopover;
     BOOL _menuIsOpen;
+    int _swipeDirection;
 }
 
 @property (strong, nonatomic, readonly) UIPopoverController *prefPopoverController;
@@ -140,13 +144,64 @@
             [self.webView addSubview:self.menuController.view];
 
         } else {
-            NSLog(@"Now here");
             __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
             imageView.frame = self.view.frame;
             imageView.image = [self screenshot];
             [self.view insertSubview:imageView atIndex:0];
             
             [self.view setNeedsDisplay];
+            
+            float width = self.view.frame.size.width;
+            float height = self.view.frame.size.height;
+            
+            if (self.webView != nil) {
+                [self.menuController.view removeFromSuperview];
+                [self.webView removeFromSuperview];
+                self.webView.delegate =nil;
+                self.webView = nil;
+            }
+            __block CGFloat topBarOffset = 0.0f;
+
+            if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+                // Load resources for iOS 6.1 or earlier
+                //self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+            } else {
+                // Load resources for iOS 7 or later
+                topBarOffset = self.topLayoutGuide.length;
+                //CGRect frame = self.view.frame;
+                self.automaticallyAdjustsScrollViewInsets = NO;
+            }
+            if (_swipeDirection == SWIPE_NEXT) {
+                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(width, topBarOffset, width, height - topBarOffset)];
+            } else {
+                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(-width, topBarOffset, width, height - topBarOffset)];
+            }
+            self.webView.scalesPageToFit = YES;
+            self.webView.delegate = self;
+            self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.webView.scrollView.directionalLockEnabled = YES;
+            [self.webView addSubview:self.menuController.view];
+            [self.view insertSubview:self.webView belowSubview:imageView];
+
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction
+                             animations:^{
+                                 [self.webView setFrame:CGRectMake(0.0, topBarOffset, width, height - topBarOffset)];
+                                 if (_swipeDirection == SWIPE_NEXT) {
+                                     [imageView setFrame:CGRectMake(-width, 0.0, width, height)];
+                                 } else {
+                                     [imageView setFrame:CGRectMake(width, 0.0, width, height)];
+                                 }
+                             }
+                             completion:^(BOOL finished){
+                                 // do whatever post processing you want (such as resetting what is "current" and what is "next")
+                                 [imageView removeFromSuperview];
+                                 [self.view.layer displayIfNeeded];
+                                 imageView = nil;
+                             }];
+            
+            /* old fade animation
             [UIView transitionWithView:self.view
                               duration:0.3
                                options:UIViewAnimationOptionTransitionCrossDissolve
@@ -181,7 +236,7 @@
                                 if (finished) {
                                     imageView = nil;
                                 }
-                            }];
+                            }];*/
         }
         
         [self.webView addGestureRecognizer:self.nextArticleRecognizer];
@@ -1054,9 +1109,11 @@
 - (void)handleSwipe:(UISwipeGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded) {
         if ([gesture isEqual:self.previousArticleRecognizer]) {
+            _swipeDirection = SWIPE_PREVIOUS;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LeftTapZone" object:self userInfo:nil];
         }
         if ([gesture isEqual:self.nextArticleRecognizer]) {
+            _swipeDirection = SWIPE_NEXT;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RightTapZone" object:self userInfo:nil];
         }
     }
@@ -1153,7 +1210,6 @@
 }
 
 - (UIImage*)screenshot {
-    //CGRect rect = CGRectMake(0, 0, 320, 480);
     UIGraphicsBeginImageContextWithOptions(self.view.frame.size, NO, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     [self.view.layer renderInContext:context];
