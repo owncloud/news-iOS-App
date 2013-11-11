@@ -314,25 +314,22 @@ const int UPDATE_ALL = 3;
         [[OCAPIClient sharedClient] getPath:@"feeds" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [self updateFeeds:responseObject];
             [self updateFolders];
-            //[self updateItems];
-            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
-        
     } else {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Unable to Reach Server", @"Title",
                                   @"Please check network connection and login.", @"Message", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
     }
-    
 }
 
 - (void)updateFolders {
     [[OCAPIClient sharedClient] getPath:@"folders" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //Remove previous
+        //TODO: only fetch myId
         NSError *error = nil;
         [self.folderRequest setPredicate:nil];
         NSArray *oldFolders = [self.context executeFetchRequest:self.folderRequest error:&error];
@@ -403,6 +400,7 @@ const int UPDATE_ALL = 3;
 
 - (void)updateFeeds:(id)JSON {
     //Remove previous
+    //TODO: only fetch myId
     NSError *error = nil;
     [self.feedRequest setPredicate:nil];
     NSArray *oldFeeds = [self.context executeFetchRequest:self.feedRequest error:&error];
@@ -492,14 +490,12 @@ const int UPDATE_ALL = 3;
 - (int)feedCount {
     [self.feedRequest setPredicate:nil];
     int count = [self.context countForFetchRequest:self.feedRequest error:nil];
-    NSLog(@"Feed Count: %i", count - 2);
     return count - 2;
 }
 
 - (int)itemCount {
     [self.itemRequest setPredicate:nil];
     int count = [self.context countForFetchRequest:self.itemRequest error:nil];
-    NSLog(@"Item Count: %i", count);
     return count;
 }
 
