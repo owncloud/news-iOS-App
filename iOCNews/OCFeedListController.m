@@ -188,6 +188,7 @@
     } else {
         // Load resources for iOS 7 or later
         self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
+        self.tableView.separatorInset = UIEdgeInsetsMake(0, 36, 0, 0);
     }
     
     self.refreshControl = self.feedRefreshControl;
