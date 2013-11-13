@@ -601,7 +601,7 @@
 }
     
 - (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer {
-    //http://stackoverflow.com/a/14364085/2036378 (why it's a good idea to retrieve the cell)
+    //http://stackoverflow.com/a/14364085/2036378 (why it's sometimes a good idea to retrieve the cell)
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         
         CGPoint p = [gestureRecognizer locationInView:self.tableView];
@@ -617,8 +617,8 @@
                 [[self.renameFolderAlertView textFieldAtIndex:0] setText:folder.name];
                 [self.renameFolderAlertView show];
             } else if (indexPath.section == 2) {
-                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.isHighlighted) {
+                //UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                //if (cell.isHighlighted) {
                     Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                     NSLog(@"Feed title: %@", feed.title);
                     if (!feed.extra) {
@@ -641,7 +641,7 @@
                         
                         [self.settingsPopover presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:[self view] permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
                     }
-                }
+                //}
             }
         }
     }
