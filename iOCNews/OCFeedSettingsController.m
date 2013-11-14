@@ -49,6 +49,7 @@
         self.fullArticleSwitch.on = feed.extra.preferWebValue;
         self.readerSwitch.on = feed.extra.useReaderValue;
         self.readerSwitch.enabled = self.fullArticleSwitch.on;
+        _newFolderId = feed.folderId;
     }
 }
 
