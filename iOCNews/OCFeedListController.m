@@ -350,6 +350,7 @@
             cell.textLabel.text = feed.title;
         }
     }
+    cell.delegate = self;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -439,6 +440,56 @@
         }
     }
 }
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"Delete";
+}
+
+- (void)tableView:(UITableView *)tableView moreOptionButtonPressedInRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+    if ((indexPath.section == 1)) {
+        Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+        currentRenameId = folder.myId;
+        [[self.renameFolderAlertView textFieldAtIndex:0] setText:folder.name];
+        [self.renameFolderAlertView show];
+    } else if (indexPath.section == 2) {
+        Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
+        NSLog(@"Feed title: %@", feed.title);
+        if (!feed.extra) {
+            [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+        }
+        NSLog(@"Feed title: %@", feed.extra.displayTitle);
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
+            UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
+            OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
+            [settingsController loadView];
+            settingsController.feed = feed;
+            settingsController.delegate = self;
+            [self presentViewController:navController animated:YES completion:nil];
+        } else {
+            UINavigationController *navController = (UINavigationController *)self.settingsPopover.contentViewController;
+            OCFeedSettingsController *settingsController = (OCFeedSettingsController *)navController.topViewController;
+            settingsController.feed = feed;
+            settingsController.delegate = self;
+            
+            [self.settingsPopover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:YES];
+        }
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForMoreOptionButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"More";
+}
+/*
+-(UIColor *)tableView:(UITableView *)tableView backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [UIColor colorWithRed:0.18f green:0.67f blue:0.84f alpha:1.0f];
+}
+*/
 
 #pragma mark - Actions
 

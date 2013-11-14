@@ -34,8 +34,9 @@
 #import <MessageUI/MessageUI.h>
 #import "OCArticleListController.h"
 #import "OCFeedSettingsController.h"
+#import "MSCMoreOptionTableViewCellDelegate.h"
 
-@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, OCFeedSettingsDelegate>
+@interface OCFeedListController : UITableViewController <MFMailComposeViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, OCFeedSettingsDelegate, MSCMoreOptionTableViewCellDelegate>
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
 @property (nonatomic, retain) NSFetchedResultsController *specialFetchedResultsController;

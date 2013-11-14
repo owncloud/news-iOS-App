@@ -441,6 +441,8 @@
 		D0C66CA217B19C3E00F0EC7C /* _FeedExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C9F17B19C3D00F0EC7C /* _FeedExtra.m */; };
 		D0C66CA317B19C3E00F0EC7C /* FeedExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */; };
 		D0E89F49182D6EA6005F8CAF /* UIImageView+OCWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E66182988B300F6D677 /* UIImageView+OCWebCache.m */; };
+		D0E89F541833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
+		D0E89F551833FFCD005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
 		D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F181251782585100F719D9 /* SystemConfiguration.framework */; };
 		D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F181281783B12C00F719D9 /* OCLoginController.m */; };
 		D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812B178502D500F719D9 /* GTMNSString+HTML.m */; };
@@ -780,6 +782,9 @@
 		D0C66C9F17B19C3D00F0EC7C /* _FeedExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _FeedExtra.m; sourceTree = "<group>"; };
 		D0C66CA017B19C3D00F0EC7C /* FeedExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedExtra.h; sourceTree = "<group>"; };
 		D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedExtra.m; sourceTree = "<group>"; };
+		D0E89F511833FDD4005F8CAF /* MSCMoreOptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCell.h; sourceTree = "<group>"; };
+		D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCMoreOptionTableViewCell.m; sourceTree = "<group>"; };
+		D0E89F531833FDD4005F8CAF /* MSCMoreOptionTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCellDelegate.h; sourceTree = "<group>"; };
 		D0F181251782585100F719D9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D0F181271783B12C00F719D9 /* OCLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCLoginController.h; sourceTree = "<group>"; };
 		D0F181281783B12C00F719D9 /* OCLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCLoginController.m; sourceTree = "<group>"; };
@@ -924,6 +929,7 @@
 			isa = PBXGroup;
 			children = (
 				D01ACAA917B8339C005D1463 /* pcre.xcodeproj */,
+				D0E89F4F1833FDD4005F8CAF /* MSCMoreOptionTableViewCell */,
 				D0BF491617E7DF2000CB9311 /* TSMessages */,
 				D0FB275417CE8D3700FABB09 /* HexColors */,
 				D01ACAB317B83637005D1463 /* readable */,
@@ -1368,6 +1374,17 @@
 				D01ACAF517B84001005D1463 /* ItemExtra.m */,
 			);
 			name = DataModel;
+			sourceTree = "<group>";
+		};
+		D0E89F4F1833FDD4005F8CAF /* MSCMoreOptionTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				D0E89F511833FDD4005F8CAF /* MSCMoreOptionTableViewCell.h */,
+				D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */,
+				D0E89F531833FDD4005F8CAF /* MSCMoreOptionTableViewCellDelegate.h */,
+			);
+			name = MSCMoreOptionTableViewCell;
+			path = MSCMoreOptionTableViewCell/MSCMoreOptionTableViewCell;
 			sourceTree = "<group>";
 		};
 		D0F18130178502E000F719D9 /* HTMLString */ = {
@@ -1860,6 +1877,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0E89F551833FFCD005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */,
 				D04AD6651807403100FF6056 /* main.m in Sources */,
 				D04AD6661807403100FF6056 /* OCAppDelegate.m in Sources */,
 				D04AD6671807403100FF6056 /* IISideController.m in Sources */,
@@ -2003,6 +2021,7 @@
 				D0C66C9417AB3E6300F0EC7C /* SDWebImagePrefetcher.m in Sources */,
 				D0C66C9517AB3E6300F0EC7C /* UIButton+WebCache.m in Sources */,
 				D0C66C9617AB3E6300F0EC7C /* UIImage+GIF.m in Sources */,
+				D0E89F541833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */,
 				D0C66C9717AB3E6300F0EC7C /* UIImage+MultiFormat.m in Sources */,
 				D0C66C9817AB3E6300F0EC7C /* UIImage+WebP.m in Sources */,
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
@@ -2103,6 +2122,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "iOCNews copy";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2119,6 +2139,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "iOCNews copy";
 				TARGETED_DEVICE_FAMILY = "1,2";

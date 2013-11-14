@@ -37,3 +37,6 @@
 [submodule "JCGridMenu"]
 	path = JCGridMenu
 	url = https://github.com/joecarney/JCGridMenu.git
+[submodule "MSCMoreOptionTableViewCell"]
+	path = MSCMoreOptionTableViewCell
+	url = https://github.com/scheinem/MSCMoreOptionTableViewCell.git

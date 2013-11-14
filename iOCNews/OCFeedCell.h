@@ -32,8 +32,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MKNumberBadgeView.h"
+#import "MSCMoreOptionTableViewCell.h"
 
-@interface OCFeedCell : UITableViewCell
+@interface OCFeedCell : MSCMoreOptionTableViewCell
 
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong, readonly) MKNumberBadgeView *countBadge;
