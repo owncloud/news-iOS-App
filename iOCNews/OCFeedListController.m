@@ -631,7 +631,7 @@
 */
 - (IBAction)doRefresh:(id)sender {
     if (currentFolderIndex == 0) {
-        [[OCNewsHelper sharedHelper] sync];
+        [[OCNewsHelper sharedHelper] sync:nil];
     } else {
         [[OCNewsHelper sharedHelper] updateFolderWithId:[NSNumber numberWithInt:currentFolderIndex]];
     }

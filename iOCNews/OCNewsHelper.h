@@ -54,7 +54,7 @@
 - (NSPersistentStoreCoordinator *)coordinator;
 - (void)saveContext;
 
-- (void)sync;
+- (void)sync:(void (^)(UIBackgroundFetchResult))completionHandler;
 
 - (Folder*)folderWithId:(NSNumber*)anId;
 - (NSArray*)folders;

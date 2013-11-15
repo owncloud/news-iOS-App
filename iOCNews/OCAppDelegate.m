@@ -33,6 +33,7 @@
 #import "OCAppDelegate.h"
 #import "AFNetworking.h"
 #import "IIViewDeckController.h"
+#import "OCNewsHelper.h"
 
 @implementation OCAppDelegate
 
@@ -65,7 +66,13 @@
     self.window.rootViewController = deckController;
     [self.window makeKeyAndVisible];
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     return YES;
+}
+
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [[OCNewsHelper sharedHelper] sync:completionHandler];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

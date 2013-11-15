@@ -52,6 +52,8 @@ const int UPDATE_ALL = 3;
     NSMutableArray *itemsToMarkUnread;
     NSMutableArray *itemsToStar;
     NSMutableArray *itemsToUnstar;
+    
+    void (^_completionHandler)(UIBackgroundFetchResult);
 }
 
 - (int)addFolderFromDictionary:(NSDictionary*)dict;
@@ -309,17 +311,26 @@ const int UPDATE_ALL = 3;
     }
 }
 
-- (void)sync {
+- (void)sync:(void (^)(UIBackgroundFetchResult))completionHandler {
+    _completionHandler = [completionHandler copy];
     if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
         [[OCAPIClient sharedClient] getPath:@"feeds" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [self updateFeeds:responseObject];
             [self updateFolders];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (_completionHandler) {
+                NSLog(@"Calling completion block");
+                _completionHandler(UIBackgroundFetchResultFailed);
+            }
             NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
+        if (_completionHandler) {
+            NSLog(@"Calling completion block");
+            _completionHandler(UIBackgroundFetchResultFailed);
+        }
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Unable to Reach Server", @"Title",
                                   @"Please check network connection and login.", @"Message", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
@@ -392,6 +403,10 @@ const int UPDATE_ALL = 3;
         [self updateTotalUnreadCount];
     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (_completionHandler) {
+            NSLog(@"Calling completion block");
+            _completionHandler(UIBackgroundFetchResultFailed);
+        }
         NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
@@ -626,6 +641,10 @@ const int UPDATE_ALL = 3;
         
         [self updateStarredCount];
         [self updateTotalUnreadCount];
+        if (_completionHandler) {
+            NSLog(@"Calling completion block");
+            _completionHandler((newItems.count > 0) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData);
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -645,6 +664,10 @@ const int UPDATE_ALL = 3;
             case UPDATE_FEED:
             case UPDATE_STARRED: {
                 NSLog(@"Finishing feed item update");
+                if (_completionHandler) {
+                    NSLog(@"Calling completion block");
+                    _completionHandler(UIBackgroundFetchResultFailed);
+                }
                 NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
@@ -777,10 +800,18 @@ const int UPDATE_ALL = 3;
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         if (errorCount > 0) {
+            if (_completionHandler) {
+                NSLog(@"Calling completion block");
+                _completionHandler(UIBackgroundFetchResultFailed);
+            }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
+            if (_completionHandler) {
+                NSLog(@"Calling completion block");
+                _completionHandler(UIBackgroundFetchResultNewData);
+            }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         }
@@ -841,10 +872,18 @@ const int UPDATE_ALL = 3;
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         if (errorCount > 0) {
+            if (_completionHandler) {
+                NSLog(@"Calling completion block");
+                _completionHandler(UIBackgroundFetchResultFailed);
+            }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
+            if (_completionHandler) {
+                NSLog(@"Calling completion block");
+                _completionHandler(UIBackgroundFetchResultNewData);
+            }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         }
