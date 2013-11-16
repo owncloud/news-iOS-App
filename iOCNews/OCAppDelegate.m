@@ -66,7 +66,11 @@
     self.window.rootViewController = deckController;
     [self.window makeKeyAndVisible];
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncInBackground"]) {
+        [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    } else {
+        [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
+    }
     return YES;
 }
 

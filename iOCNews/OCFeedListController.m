@@ -212,7 +212,12 @@
                                             forKeyPath:@"HideRead"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
-        
+
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"SyncInBackground"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:AFNetworkingReachabilityDidChangeNotification
@@ -714,6 +719,13 @@
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
     if([keyPath isEqual:@"HideRead"]) {
         [self updatePredicate];
+    }
+    if([keyPath isEqual:@"SyncInBackground"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncInBackground"]) {
+            [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+        } else {
+            [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
+        }
     }
 }
 
