@@ -343,37 +343,38 @@
 }
 
 - (void) markRowsRead {
-    int unreadCount = self.feed.unreadCountValue;
-    
-    if (unreadCount > 0) {
-        NSArray * vCells = self.tableView.indexPathsForVisibleRows;
-        __block int row = 0;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
+        int unreadCount = self.feed.unreadCountValue;
         
-        if (vCells.count > 0) {
-            NSIndexPath *topCell = [vCells objectAtIndex:0];
-            row = topCell.row;
-            if (row > 0) {
-                --row;
+        if (unreadCount > 0) {
+            NSArray * vCells = self.tableView.indexPathsForVisibleRows;
+            __block int row = 0;
+            
+            if (vCells.count > 0) {
+                NSIndexPath *topCell = [vCells objectAtIndex:0];
+                row = topCell.row;
+                if (row > 0) {
+                    --row;
+                }
             }
-            NSLog(@"Top row: %d", row);
-        }
-        
-        if ([self.fetchedResultsController fetchedObjects].count > 0) {
-            NSMutableArray *idsToMarkRead = [NSMutableArray new];
             
-            [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-                if (idx >= row) {
-                    *stop = YES;
-                }
-                if (item.unreadValue) {
-                    item.unreadValue = NO;
-                    [idsToMarkRead addObject:item.myId];
-                }
-            }];
-            
-            unreadCount = unreadCount - [idsToMarkRead count];
-            [self updateUnreadCount:idsToMarkRead];
-            self.markBarButtonItem.enabled = (unreadCount > 0);
+            if ([self.fetchedResultsController fetchedObjects].count > 0) {
+                NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                
+                [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                    if (idx >= row) {
+                        *stop = YES;
+                    }
+                    if (item.unreadValue) {
+                        item.unreadValue = NO;
+                        [idsToMarkRead addObject:item.myId];
+                    }
+                }];
+                
+                unreadCount = unreadCount - [idsToMarkRead count];
+                [self updateUnreadCount:idsToMarkRead];
+                self.markBarButtonItem.enabled = (unreadCount > 0);
+            }
         }
     }
 }
