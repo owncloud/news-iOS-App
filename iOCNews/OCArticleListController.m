@@ -187,6 +187,11 @@
                                             forKeyPath:@"HideRead"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"ShowThumbnails"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
 }
 
 - (void)viewDidUnload
@@ -275,8 +280,12 @@
         cell.dateLabel.textColor = [UIColor colorWithHexString:@"#696969"];
         cell.articleImage.alpha = 0.4f;
     }
-    
-    [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]]];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
+        [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]]];
+    } else {
+        [cell.articleImage setImage:nil];
+    }
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -387,6 +396,9 @@
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
     if([keyPath isEqual:@"HideRead"]) {
         [self updatePredicate];
+    }
+    if([keyPath isEqual:@"ShowThumbnails"]) {
+        [self.tableView reloadData];
     }
 }
 
