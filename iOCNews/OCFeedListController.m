@@ -188,7 +188,11 @@
     } else {
         // Load resources for iOS 7 or later
         self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 36, 0, 0);
+        int imageViewOffset = 14;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
+            imageViewOffset = 36;
+        }
+        self.tableView.separatorInset = UIEdgeInsetsMake(0, imageViewOffset, 0, 0);
     }
     
     self.refreshControl = self.feedRefreshControl;
@@ -215,6 +219,11 @@
 
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"SyncInBackground"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
+
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"ShowFavicons"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
 
@@ -335,18 +344,19 @@
         } else {
             feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
         }
-        NSString *faviconLink = feed.faviconLink;
-        if ([faviconLink hasPrefix:@"http"]) {
-            NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
-            if (faviconURL) {
-                if (cell.tag == indexPathTemp.row) {
-                    [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicon"]) {
+            NSString *faviconLink = feed.faviconLink;
+            if ([faviconLink hasPrefix:@"http"]) {
+                NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
+                if (faviconURL) {
+                    if (cell.tag == indexPathTemp.row) {
+                        [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                    }
                 }
+            } else {
+                [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
             }
-        } else {
-            [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
         }
-        
         cell.countBadge.value = feed.unreadCountValue;
         
         if (feed.extra) {
@@ -726,6 +736,14 @@
         } else {
             [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
         }
+    }
+    if([keyPath isEqual:@"ShowFavicons"]) {
+        int imageViewOffset = 14;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
+            imageViewOffset = 36;
+        }
+        self.tableView.separatorInset = UIEdgeInsetsMake(0, imageViewOffset, 0, 0);
+        [self.tableView reloadData];
     }
 }
 

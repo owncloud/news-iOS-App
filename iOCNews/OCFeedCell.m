@@ -82,12 +82,15 @@
     [super layoutSubviews];
     //self.imageView.layer.masksToBounds = YES; impacts scrolling
     self.imageView.layer.cornerRadius = 2.0;
-    self.imageView.frame = CGRectMake(5, 10, 22, 22);
-    float limgW =  self.imageView.image.size.width;
-    if(limgW > 0) {
-        self.textLabel.frame = CGRectMake(37, self.textLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - 37, self.textLabel.frame.size.height);
-        self.detailTextLabel.frame = CGRectMake(37, self.detailTextLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - 37, self.detailTextLabel.frame.size.height);
+    int imageViewOffset = 15;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
+        self.imageView.frame = CGRectMake(5, 10, 22, 22);
+        imageViewOffset = 37;
+    } else {
+        self.imageView.frame = CGRectZero;
     }
+    self.textLabel.frame = CGRectMake(imageViewOffset, self.textLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - imageViewOffset, self.textLabel.frame.size.height);
+    //self.detailTextLabel.frame = CGRectMake(imageViewOffset, self.detailTextLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - 37, self.detailTextLabel.frame.size.height);
 }
 
 @end
