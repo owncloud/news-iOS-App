@@ -443,6 +443,8 @@
 		D0E89F49182D6EA6005F8CAF /* UIImageView+OCWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E66182988B300F6D677 /* UIImageView+OCWebCache.m */; };
 		D0E89F541833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
 		D0E89F551833FFCD005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
+		D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F571836E03A005F8CAF /* OCSettingsController.m */; };
+		D0E89F591836E03A005F8CAF /* OCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F571836E03A005F8CAF /* OCSettingsController.m */; };
 		D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F181251782585100F719D9 /* SystemConfiguration.framework */; };
 		D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F181281783B12C00F719D9 /* OCLoginController.m */; };
 		D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812B178502D500F719D9 /* GTMNSString+HTML.m */; };
@@ -785,6 +787,8 @@
 		D0E89F511833FDD4005F8CAF /* MSCMoreOptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCell.h; sourceTree = "<group>"; };
 		D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCMoreOptionTableViewCell.m; sourceTree = "<group>"; };
 		D0E89F531833FDD4005F8CAF /* MSCMoreOptionTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCellDelegate.h; sourceTree = "<group>"; };
+		D0E89F561836E03A005F8CAF /* OCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSettingsController.h; sourceTree = "<group>"; };
+		D0E89F571836E03A005F8CAF /* OCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSettingsController.m; sourceTree = "<group>"; };
 		D0F181251782585100F719D9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D0F181271783B12C00F719D9 /* OCLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCLoginController.h; sourceTree = "<group>"; };
 		D0F181281783B12C00F719D9 /* OCLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCLoginController.m; sourceTree = "<group>"; };
@@ -984,16 +988,18 @@
 				D0C66CA417B19C6A00F0EC7C /* DataModel */,
 				D0BCAA48177903F500C965F4 /* iPad.storyboard */,
 				D0968361179B3DB300EC6E60 /* iPhone.storyboard */,
+				D0BCAA34177900C400C965F4 /* OCAppDelegate.h */,
+				D0BCAA35177900C400C965F4 /* OCAppDelegate.m */,
 				D06CB23717A0A0A800A1310B /* OCNewsHelper.h */,
 				D06CB23817A0A0A900A1310B /* OCNewsHelper.m */,
 				D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */,
 				D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */,
+				D0E89F561836E03A005F8CAF /* OCSettingsController.h */,
+				D0E89F571836E03A005F8CAF /* OCSettingsController.m */,
 				D0F181271783B12C00F719D9 /* OCLoginController.h */,
 				D0F181281783B12C00F719D9 /* OCLoginController.m */,
 				D0BCABD41779112000C965F4 /* PHPrefViewController.h */,
 				D0BCABD51779112000C965F4 /* PHPrefViewController.m */,
-				D0BCAA34177900C400C965F4 /* OCAppDelegate.h */,
-				D0BCAA35177900C400C965F4 /* OCAppDelegate.m */,
 				D0BCAA6D177909A600C965F4 /* OCFeedCell.h */,
 				D0BCAA6E177909A600C965F4 /* OCFeedCell.m */,
 				D0BCAA6F177909A600C965F4 /* OCFeedListController.h */,
@@ -1962,6 +1968,7 @@
 				D04AD6A51807403100FF6056 /* OCFeedSettingsController.m in Sources */,
 				D04AD6A61807403100FF6056 /* rd_list.c in Sources */,
 				D04AD6A71807403100FF6056 /* readable.c in Sources */,
+				D0E89F591836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D04AD6A81807403100FF6056 /* ItemExtra.m in Sources */,
 				D04AD6A91807403100FF6056 /* _ItemExtra.m in Sources */,
 				D04AD6AA1807403100FF6056 /* NSDictionary+HandleNull.m in Sources */,
@@ -2049,6 +2056,7 @@
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
+				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D01ACAF617B84001005D1463 /* ItemExtra.m in Sources */,
 				D01ACAF917B84035005D1463 /* _ItemExtra.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,

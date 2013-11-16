@@ -55,7 +55,7 @@
 @property (nonatomic, strong, readonly) UIAlertView *addFeedAlertView;
 
 - (IBAction) doRefresh:(id)sender;
-- (IBAction) doEdit:(id)sender;
+- (IBAction) doSettings:(id)sender;
 
 - (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer;
 - (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;

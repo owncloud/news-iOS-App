@@ -496,7 +496,7 @@
 - (void)showMenu:(UIBarButtonItem *)sender event:(UIEvent *)event {
     self.gearActionSheet = nil;
     NSString *hideReadTitle = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read";
-    self.gearActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Log In", @"Add Folder", @"Add Feed", hideReadTitle, nil];
+    self.gearActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Settings", @"Add Folder", @"Add Feed", hideReadTitle, nil];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.gearActionSheet showFromBarButtonItem:sender animated:YES];
@@ -542,7 +542,7 @@
     if ([actionSheet isEqual:self.gearActionSheet]) {
         switch (buttonIndex) {
             case 0:
-                [self doEdit:nil];
+                [self doSettings:self.gearActionSheet];
                 break;
             case 1:
                 [self.addFolderAlertView show];
@@ -596,7 +596,7 @@
     [prefs synchronize];
 }
 
-- (IBAction)doEdit:(id)sender {
+- (IBAction)doSettings:(id)sender {
     //[self setEditing:YES animated:YES];
     UIStoryboard *storyboard;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -604,7 +604,13 @@
     } else {
         storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
     }
-    [self.viewDeckController presentViewController: [storyboard instantiateViewControllerWithIdentifier:@"login"] animated:YES completion:nil];
+    UINavigationController *nav = [storyboard instantiateViewControllerWithIdentifier:@"login"];
+    if ([sender isEqual:self.gearActionSheet]) {
+        //
+    } else {
+        [nav.topViewController performSegueWithIdentifier:@"login" sender:nil];
+    }
+    [self.viewDeckController presentViewController: nav animated:YES completion:nil];
 }
 /*
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -772,8 +778,11 @@
 
 - (void) didBecomeActive:(NSNotification *)n {
     if ([[NSUserDefaults standardUserDefaults] stringForKey:@"Server"].length == 0) {
-        [self doEdit:nil];
+        [self doSettings:nil];
     } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncOnStart"]) {
+            [[OCNewsHelper sharedHelper] performSelector:@selector(sync:) withObject:nil afterDelay:1.0f];
+        }
         UIPasteboard *board = [UIPasteboard generalPasteboard];
         if (board.URL) {
             if (![board.URL.absoluteString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"PreviousPasteboardURL"]]) {

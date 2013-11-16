@@ -1,4 +1,9 @@
 {
+	MarkWhileScrolling = YES;
+	ShowThumbnails = YES;
+	ShowFavicons = YES;
+	SyncInBackground = NO;
+	SyncOnStart = NO;
 	"PreviousPasteboardURL" = "http://example.com";
 	HideRead = NO;
 	ItemsToUnstar = ();
