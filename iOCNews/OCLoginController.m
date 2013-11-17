@@ -64,6 +64,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     self.serverTextField.delegate = self;
     self.usernameTextField.delegate = self;
     self.passwordTextField.delegate = self;
+    self.certificateCell.accessoryView = self.certificateSwitch;
 }
 
 - (void)viewWillAppear:(BOOL)animated

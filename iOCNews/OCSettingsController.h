@@ -15,6 +15,11 @@
 @property (strong, nonatomic) IBOutlet UISwitch *showFaviconsSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *showThumbnailsSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *markWhileScrollingSwitch;
+@property (strong, nonatomic) IBOutlet UITableViewCell *syncOnStartCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *syncInBackgroundCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *showFaviconsCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *showThumbnailsCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *markWhileScrollingCell;
 
 - (IBAction)syncOnStartChanged:(id)sender;
 - (IBAction)syncInBackgroundChanged:(id)sender;
