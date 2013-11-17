@@ -568,13 +568,14 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://example.com/owncloud" adjustsFontSizeToFit="NO" minimumFontSize="15" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Sh4-X5-7pP">
-                                                    <rect key="frame" x="103" y="8" width="197" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="http://example.com/owncloud" adjustsFontSizeToFit="NO" minimumFontSize="15" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Sh4-X5-7pP">
+                                                    <rect key="frame" x="103" y="14" width="197" height="19"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="URL" returnKeyType="next"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="Sh4-X5-7pP" secondAttribute="centerY" constant="-1.5" id="NxB-V7-7QP"/>
                                                 <constraint firstAttribute="trailing" secondItem="Sh4-X5-7pP" secondAttribute="trailing" constant="20" id="fGR-oc-5FB"/>
                                                 <constraint firstItem="Sh4-X5-7pP" firstAttribute="leading" secondItem="Lvi-Da-a7e" secondAttribute="leading" constant="103" id="umJ-p6-lTB"/>
                                             </constraints>
@@ -593,8 +594,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="ownCloud Username" adjustsFontSizeToFit="NO" minimumFontSize="15" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="TQf-9q-cWZ">
-                                                    <rect key="frame" x="103" y="7" width="197" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="ownCloud Username" adjustsFontSizeToFit="NO" minimumFontSize="15" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="TQf-9q-cWZ">
+                                                    <rect key="frame" x="103" y="13" width="197" height="19"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                                 </textField>
@@ -602,6 +603,7 @@
                                             <constraints>
                                                 <constraint firstItem="TQf-9q-cWZ" firstAttribute="leading" secondItem="71e-gw-Wge" secondAttribute="leading" constant="103" id="66j-fO-uNu"/>
                                                 <constraint firstAttribute="trailing" secondItem="TQf-9q-cWZ" secondAttribute="trailing" constant="20" id="ZiM-dd-3Sj"/>
+                                                <constraint firstAttribute="centerY" secondItem="TQf-9q-cWZ" secondAttribute="centerY" constant="-0.5" id="lw5-UB-dVu"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -618,8 +620,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="ownCloud Password" adjustsFontSizeToFit="NO" minimumFontSize="15" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T2l-03-vO6">
-                                                    <rect key="frame" x="103" y="8" width="197" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="ownCloud Password" adjustsFontSizeToFit="NO" minimumFontSize="15" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T2l-03-vO6">
+                                                    <rect key="frame" x="103" y="14" width="197" height="19"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                 </textField>
@@ -627,6 +629,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="T2l-03-vO6" secondAttribute="trailing" constant="20" id="BMD-Jq-lPm"/>
                                                 <constraint firstItem="T2l-03-vO6" firstAttribute="leading" secondItem="cnG-Fw-Z7v" secondAttribute="leading" constant="103" id="JKY-Zq-JWB"/>
+                                                <constraint firstAttribute="centerY" secondItem="T2l-03-vO6" secondAttribute="centerY" constant="-1.5" id="bXY-I4-dXJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
