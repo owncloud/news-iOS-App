@@ -240,7 +240,6 @@
     UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
     [self updatePredicate];
-    self.viewDeckController.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     self.viewDeckController.delegate = self;
     [self.viewDeckController openLeftView];
     [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
@@ -344,7 +343,7 @@
         } else {
             feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
         }
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicon"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
             NSString *faviconLink = feed.faviconLink;
             if ([faviconLink hasPrefix:@"http"]) {
                 NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
