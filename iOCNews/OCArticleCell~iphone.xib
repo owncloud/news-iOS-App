@@ -44,13 +44,17 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6">
+                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6">
                         <rect key="frame" x="10" y="10" width="56" height="56"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="56" id="tkM-pB-aiH"/>
+                        </constraints>
                     </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="4" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="5" id="2ya-rc-jeQ"/>
+                    <constraint firstItem="4" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="4OS-Vo-L4D"/>
                     <constraint firstItem="3" firstAttribute="leading" secondItem="jBQ-w3-M73" secondAttribute="leading" constant="76" id="PKv-hN-eqO"/>
                     <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="17" id="Rio-yX-WQA"/>
                     <constraint firstItem="5" firstAttribute="leading" secondItem="jBQ-w3-M73" secondAttribute="leading" constant="10" id="Ykk-Nz-EZI"/>
@@ -58,7 +62,6 @@
                     <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" constant="17" id="ZO9-RJ-QSC"/>
                     <constraint firstItem="6" firstAttribute="top" secondItem="jBQ-w3-M73" secondAttribute="top" constant="10" id="dX7-Nx-d0t"/>
                     <constraint firstItem="5" firstAttribute="top" secondItem="6" secondAttribute="bottom" constant="7" id="kcO-nC-WK4"/>
-                    <constraint firstItem="4" firstAttribute="leading" secondItem="jBQ-w3-M73" secondAttribute="leading" constant="76" id="lPZ-F9-lT2"/>
                     <constraint firstItem="5" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="mPk-2I-YJd"/>
                     <constraint firstAttribute="trailing" secondItem="4" secondAttribute="trailing" constant="17" id="uTd-Sh-uFJ"/>
                     <constraint firstItem="3" firstAttribute="top" secondItem="jBQ-w3-M73" secondAttribute="top" constant="9" id="zkl-sD-MWG"/>
@@ -66,10 +69,9 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="articleImage" destination="6" id="10"/>
+                <outlet property="articleImageWidthConstraint" destination="tkM-pB-aiH" id="Ku0-e8-6MO"/>
                 <outlet property="dateLabel" destination="4" id="12"/>
-                <outlet property="dateLabelLeftConstraint" destination="lPZ-F9-lT2" id="veL-Zz-tkq"/>
                 <outlet property="summaryLabel" destination="5" id="13"/>
-                <outlet property="summaryLabelLeftConstraint" destination="Ykk-Nz-EZI" id="Mhf-xd-GLI"/>
                 <outlet property="titleLabel" destination="3" id="11"/>
                 <outlet property="titleLabelLeftConstraint" destination="PKv-hN-eqO" id="j0A-13-cDH"/>
             </connections>

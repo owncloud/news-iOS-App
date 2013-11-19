@@ -40,7 +40,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *summaryLabel;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeftConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *dateLabelLeftConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *summaryLabelLeftConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *articleImageWidthConstraint;
 
 @end

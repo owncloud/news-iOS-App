@@ -53,17 +53,22 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    //self.imageView.layer.masksToBounds = YES; impacts scrolling
-    //self.imageView.layer.cornerRadius = 2.0;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
-            self.articleImage.frame = CGRectMake(10, 10, 56, 56);
+            [self.articleImageWidthConstraint setConstant:56.0f];
             [self.titleLabelLeftConstraint setConstant:76.0f];
-            [self.dateLabelLeftConstraint setConstant:76.0f];
         } else {
-            self.articleImage.frame = CGRectZero;
+            [self.articleImageWidthConstraint setConstant:0.0f];
             [self.titleLabelLeftConstraint setConstant:10.0f];
-            [self.dateLabelLeftConstraint setConstant:10.0f];
+        }
+    }
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
+            [self.articleImageWidthConstraint setConstant:112.0f];
+            [self.titleLabelLeftConstraint setConstant:152.0f];
+        } else {
+            [self.articleImageWidthConstraint setConstant:112.0f];
+            [self.titleLabelLeftConstraint setConstant:20.0f];
         }
     }
 }
