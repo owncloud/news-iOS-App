@@ -39,4 +39,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *summaryLabel;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeftConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *dateLabelLeftConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *summaryLabelLeftConstraint;
+
 @end
