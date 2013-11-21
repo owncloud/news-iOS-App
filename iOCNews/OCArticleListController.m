@@ -173,7 +173,7 @@
     self.markBarButtonItem.enabled = NO;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
-    self.tableView.rowHeight = 132;
+    self.tableView.rowHeight = 154;
 
     IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
     UINavigationController *navController = (UINavigationController*)deckController.centerController;
@@ -192,6 +192,14 @@
                                             forKeyPath:@"ShowThumbnails"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification
+                                                      object:nil
+                                                       queue:mainQueue
+                                                  usingBlock:^(NSNotification *notification) {
+                                                      [self.tableView reloadData];
+                                                  }];
+
 }
 
 - (void)viewDidUnload
@@ -222,9 +230,24 @@
     return [sectionInfo numberOfObjects];
 }
 
+- (UIFont*) makeItalic:(UIFont*)font {
+    UIFontDescriptor *desc = font.fontDescriptor;
+    UIFontDescriptor *italic = [desc fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+    return [UIFont fontWithDescriptor:italic size:0.0f];
+}
+
+- (UIFont*) makeSmaller:(UIFont*)font {
+    UIFontDescriptor *desc = font.fontDescriptor;
+    UIFontDescriptor *italic = [desc fontDescriptorWithSize:desc.pointSize - 1];
+    return [UIFont fontWithDescriptor:italic size:0.0f];
+}
 
 - (void)configureCell:(OCArticleCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+    cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
 
     cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
     [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
@@ -285,7 +308,6 @@
     } else {
         [cell.articleImage setImage:nil];
     }
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
