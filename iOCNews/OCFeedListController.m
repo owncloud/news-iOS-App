@@ -608,44 +608,23 @@
 }
 
 - (IBAction)doSettings:(id)sender {
-    //[self setEditing:YES animated:YES];
     UIStoryboard *storyboard;
+    UINavigationController *nav;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
     } else {
         storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
     }
-    UINavigationController *nav = [storyboard instantiateViewControllerWithIdentifier:@"login"];
     if ([sender isEqual:self.gearActionSheet]) {
-        //
+        nav = [storyboard instantiateViewControllerWithIdentifier:@"login"];
     } else {
-        [nav.topViewController performSegueWithIdentifier:@"login" sender:nil];
+        OCLoginController *lc = [storyboard instantiateViewControllerWithIdentifier:@"server"];
+        nav = [[UINavigationController alloc] initWithRootViewController:lc];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    [self.viewDeckController presentViewController: nav animated:YES completion:nil];
+    [self.viewDeckController presentViewController:nav animated:YES completion:nil];
 }
-/*
-- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing:editing animated:animated];
-//    if (editing) {
-//        self.navigationItem.leftBarButtonItem = self.editButtonItem;
-//    } else {
-        UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        fixedSpace.width = 2.0f;
-        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        
-        NSArray *items = [NSArray arrayWithObjects:
-                          fixedSpace,
-                          self.editBarButtonItem,
-                          flexibleSpace,
-                          nil];
-        
-        TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
-        toolbar.items = items;
-        toolbar.tintColor = self.navigationController.navigationBar.tintColor;
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-//    }
-}
-*/
+
 - (IBAction)doRefresh:(id)sender {
     if (currentFolderIndex == 0) {
         [[OCNewsHelper sharedHelper] sync:nil];

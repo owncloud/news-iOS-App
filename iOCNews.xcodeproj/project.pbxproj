@@ -748,7 +748,7 @@
 		D04AD65C1807125600FF6056 /* _Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Folder.m; sourceTree = "<group>"; };
 		D04AD65D1807125600FF6056 /* Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Folder.h; sourceTree = "<group>"; };
 		D04AD65E1807125600FF6056 /* Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Folder.m; sourceTree = "<group>"; };
-		D04AD7411807403100FF6056 /* iOCNews copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOCNews copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D04AD7411807403100FF6056 /* iOCNews Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOCNews Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04AD7421807403100FF6056 /* iOCNews copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOCNews copy-Info.plist"; path = "/Users/peter/Projects/iOCNews/iOCNews copy-Info.plist"; sourceTree = "<absolute>"; };
 		D04AD74418084F5100FF6056 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		D04AD74518084F5100FF6056 /* folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder@2x.png"; sourceTree = "<group>"; };
@@ -1016,7 +1016,7 @@
 		D0E89F531833FDD4005F8CAF /* MSCMoreOptionTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCellDelegate.h; sourceTree = "<group>"; };
 		D0E89F561836E03A005F8CAF /* OCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSettingsController.h; sourceTree = "<group>"; };
 		D0E89F571836E03A005F8CAF /* OCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSettingsController.m; sourceTree = "<group>"; };
-		D0E8A04118385457005F8CAF /* iOCNews copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOCNews copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0E8A04118385457005F8CAF /* iOCNews iPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOCNews iPhone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0E8A04218385457005F8CAF /* iOCNews copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOCNews copy2-Info.plist"; path = "/Users/peter/Projects/iOCNews/iOCNews copy2-Info.plist"; sourceTree = "<absolute>"; };
 		D0F181251782585100F719D9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D0F181271783B12C00F719D9 /* OCLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCLoginController.h; sourceTree = "<group>"; };
@@ -1207,8 +1207,8 @@
 			isa = PBXGroup;
 			children = (
 				D0BCAA22177900C300C965F4 /* iOCNews.app */,
-				D04AD7411807403100FF6056 /* iOCNews copy.app */,
-				D0E8A04118385457005F8CAF /* iOCNews copy.app */,
+				D04AD7411807403100FF6056 /* iOCNews Dev.app */,
+				D0E8A04118385457005F8CAF /* iOCNews iPhone.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1703,7 +1703,7 @@
 			);
 			name = "iOCNews (Dev)";
 			productName = iOCNews;
-			productReference = D04AD7411807403100FF6056 /* iOCNews copy.app */;
+			productReference = D04AD7411807403100FF6056 /* iOCNews Dev.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D0BCAA21177900C300C965F4 /* iOCNews */ = {
@@ -1743,7 +1743,7 @@
 			);
 			name = "iOCNews (iPhone)";
 			productName = iOCNews;
-			productReference = D0E8A04118385457005F8CAF /* iOCNews copy.app */;
+			productReference = D0E8A04118385457005F8CAF /* iOCNews iPhone.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -2672,7 +2672,7 @@
 				INFOPLIST_FILE = "iOCNews copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-lxml2";
-				PRODUCT_NAME = "iOCNews copy";
+				PRODUCT_NAME = "iOCNews Dev";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
@@ -2689,7 +2689,7 @@
 				INFOPLIST_FILE = "iOCNews copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-lxml2";
-				PRODUCT_NAME = "iOCNews copy";
+				PRODUCT_NAME = "iOCNews Dev";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
@@ -2816,7 +2816,7 @@
 				INFOPLIST_FILE = "iOCNews copy2-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-lxml2";
-				PRODUCT_NAME = "iOCNews copy";
+				PRODUCT_NAME = "iOCNews iPhone";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
@@ -2833,7 +2833,7 @@
 				INFOPLIST_FILE = "iOCNews copy2-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-lxml2";
-				PRODUCT_NAME = "iOCNews copy";
+				PRODUCT_NAME = "iOCNews iPhone";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
