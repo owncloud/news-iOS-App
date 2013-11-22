@@ -157,6 +157,7 @@
     self.clearsSelectionOnViewWillAppear = NO;
     self.tableView.allowsSelection = YES;
     self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.scrollsToTop = YES;
 
     //self.navigationItem.leftBarButtonItem = self.editButtonItem;
     //[self setEditing:NO animated:NO];
