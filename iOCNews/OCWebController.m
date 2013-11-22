@@ -1130,10 +1130,6 @@ const int SWIPE_PREVIOUS = 1;
     if (self.webView) {
         self.webView.scrollView.scrollsToTop = NO;
     }
-    IIViewDeckController *dc = (IIViewDeckController*)self.viewDeckController.leftController;
-    UINavigationController *nc = (UINavigationController*)dc.centerController;
-    UITableViewController *tc = (UITableViewController*)nc.topViewController;
-    tc.tableView.scrollsToTop = YES;    
 }
 
 - (void)viewDeckController:(IIViewDeckController*)viewDeckController willCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {

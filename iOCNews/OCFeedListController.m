@@ -157,11 +157,7 @@
     self.clearsSelectionOnViewWillAppear = NO;
     self.tableView.allowsSelection = YES;
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.scrollsToTop = YES;
 
-    //self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    //[self setEditing:NO animated:NO];
-    
     currentIndex = -1;
     currentFolderIndex = 0;
     networkHasBeenUnreachable = NO;
@@ -967,6 +963,9 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self.detailViewController name:@"NetworkError" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
+        OCArticleListController *alc = self.detailViewController;
+        alc.tableView.scrollsToTop = NO;
+        self.tableView.scrollsToTop = YES;
     }
 }
 
@@ -977,6 +976,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:alc selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:alc selector:@selector(networkError:) name:@"NetworkError" object:nil];
+        alc.tableView.scrollsToTop = YES;
+        self.tableView.scrollsToTop = NO;
     }
 }
 

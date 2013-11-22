@@ -174,7 +174,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
     self.tableView.rowHeight = 154;
-    self.tableView.scrollsToTop = YES;
+    self.tableView.scrollsToTop = NO;
 
     IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
     UINavigationController *navController = (UINavigationController*)deckController.centerController;
