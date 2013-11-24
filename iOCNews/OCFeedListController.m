@@ -928,7 +928,7 @@
         // Load resources for iOS 6.1 or earlier
     } else {
         shadowLayer.masksToBounds = NO;
-        shadowLayer.shadowRadius = 2;
+        shadowLayer.shadowRadius = 1;
         shadowLayer.shadowOpacity = 0.9;
         shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
         shadowLayer.shadowOffset = CGSizeZero;

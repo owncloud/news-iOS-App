@@ -56,13 +56,15 @@
                                                                                           leftViewController:feedController];
 
     secondDeckController.panningCancelsTouchesInView = YES;
-    
+    secondDeckController.parallaxAmount = 0.2f;
+
     IIViewDeckController* deckController = [[IIViewDeckController alloc] initWithCenterViewController:webController
                                                                                    leftViewController:secondDeckController];
     deckController.sizeMode = IIViewDeckLedgeSizeMode;
     secondDeckController.sizeMode = IIViewDeckViewSizeMode;
     deckController.leftSize = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 40 : 10;
-
+    deckController.parallaxAmount = 0.2f;
+    
     self.window.rootViewController = deckController;
     [self.window makeKeyAndVisible];
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
