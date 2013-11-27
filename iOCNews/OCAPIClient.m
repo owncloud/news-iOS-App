@@ -47,7 +47,10 @@ static dispatch_once_t oncePredicate = 0;
 +(OCAPIClient *)sharedClient {
     //static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"], rootPath]]];
+        NSString *serverURLString = [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"];
+        if (serverURLString.length > 0) {
+            _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", serverURLString, rootPath]]];
+        }
     });
     return _sharedClient;
 }
