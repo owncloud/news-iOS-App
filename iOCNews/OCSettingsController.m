@@ -131,6 +131,28 @@
 }
 */
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 3) {
+        if ([MFMailComposeViewController canSendMail]) {
+            MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
+            mailViewController.mailComposeDelegate = self;
+            [mailViewController setToRecipients:[NSArray arrayWithObject:@"support@peterandlinda.com"]];
+            [mailViewController setSubject:@"iOCNews Support Request"];
+            [mailViewController setMessageBody:@"<Please state your question or problem here>" isHTML:NO ];
+            mailViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self presentViewController:mailViewController animated:YES completion:nil];
+        }
+    }
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - Navigation
 

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface OCSettingsController : UITableViewController
+@interface OCSettingsController : UITableViewController <MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UISwitch *syncOnStartSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *syncinBackgroundSwitch;

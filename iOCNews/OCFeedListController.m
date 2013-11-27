@@ -51,7 +51,6 @@
     BOOL networkHasBeenUnreachable;
 }
 
-- (void) emailSupport:(NSNotification*)n;
 - (void) networkSuccess:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
 - (void) showMenu:(UIBarButtonItem*)sender event:(UIEvent*)event;
@@ -207,8 +206,6 @@
     [self.tableView addGestureRecognizer:swgr];
     
     //Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailSupport:) name:@"EmailSupport" object:nil];
-    
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
                                                options:NSKeyValueObservingOptionNew
@@ -836,26 +833,6 @@
                                  buttonCallback:nil
                                      atPosition:TSMessageNotificationPositionTop
                             canBeDismisedByUser:YES];
-}
-
-- (void) emailSupport:(NSNotification *)n {
-    MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
-    
-    mailViewController.mailComposeDelegate = self;
-    [mailViewController setToRecipients:[NSArray arrayWithObject:@"support@peterandlinda.com"]];
-    [mailViewController setSubject:@"iOCNews Support Request"];
-    [mailViewController setMessageBody:@"<Please state your problem here>\n\n\nI have attached my current subscriptions." isHTML:NO ];
-    mailViewController.modalPresentationStyle = UIModalPresentationPageSheet;
-    
-    [self presentViewController:mailViewController animated:YES completion:nil];
-}
-#pragma mark - MFMailComposeViewControllerDelegate
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError *)error
-{
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Toolbar Buttons
