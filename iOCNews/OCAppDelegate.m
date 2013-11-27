@@ -31,7 +31,7 @@
  *************************************************************************/
 
 #import "OCAppDelegate.h"
-#import "AFNetworking.h"
+#import "AFNetworkActivityIndicatorManager.h"
 #import "IIViewDeckController.h"
 #import "OCNewsHelper.h"
 

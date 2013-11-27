@@ -30,9 +30,9 @@
  
  *************************************************************************/
 
-#import "AFNetworking.h"
+#include "AFHTTPSessionManager.h"
 
-@interface OCAPIClient : AFHTTPClient
+@interface OCAPIClient : AFHTTPSessionManager
 
 +(OCAPIClient *)sharedClient;
 +(void)setSharedClient:(OCAPIClient *)client;

@@ -77,7 +77,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     self.certificateSwitch.on = [prefs boolForKey:@"AllowInvalidSSLCertificate"];
     
     NSString *status;
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         status = [NSString stringWithFormat:@"Connected to an ownCloud News server at \"%@\".", [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"]];
     } else {
         status = @"Currently not connected to an ownCloud News server";
@@ -100,12 +100,14 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     if (indexPath.section == 1) {
         [tableView deselectRowAtIndexPath:indexPath animated:true];
         [self.connectionActivityIndicator startAnimating];
-        OCAPIClient *client = [OCAPIClient clientWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
-        [client setAuthorizationHeaderWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
+        OCAPIClient *client = [[OCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
+        [client setRequestSerializer:[AFJSONRequestSerializer serializer]];
+        [client.requestSerializer setAuthorizationHeaderFieldWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
+
         BOOL allowInvalid = self.certificateSwitch.on;
-        client.allowsInvalidSSLCertificate = allowInvalid;
+        client.securityPolicy.allowInvalidCertificates = allowInvalid;
         
-        [client getPath:@"version" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [client GET:@"version" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Version: %@", responseObject);
             NSDictionary *jsonDict = (NSDictionary *) responseObject;
             NSString *version = [jsonDict valueForKey:@"version"];
@@ -116,17 +118,17 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
             [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
             [prefs synchronize];
             [OCAPIClient setSharedClient:nil];
-            int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
+            int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
             NSLog(@"Server status: %i", status);
             self.statusLabel.text = [NSString stringWithFormat:@"Connected to an ownCloud News server at \"%@\" running version %@.", self.serverTextField.text, version];
             
             [self.connectionActivityIndicator stopAnimating];
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@, response: %d", [error localizedDescription], [operation.response statusCode]);
+
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            NSLog(@"Error: %@, response: %d", [error localizedDescription], [response statusCode]);
             self.statusLabel.text = @"Failed to connect to a server. Check your settings.";
             [self.connectionActivityIndicator stopAnimating];
-            
         }];
     }
 }

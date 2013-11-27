@@ -258,14 +258,14 @@ const int SWIPE_PREVIOUS = 1;
                 if (self.item.extra.readable) {
                     [self writeAndLoadHtml:self.item.extra.readable];
                 } else {
-                    [[OCAPIClient sharedClient] getPath:self.item.url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [[OCAPIClient sharedClient] GET:self.item.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                         NSString *html;
                         NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
                         if (responseObject) {
                             html = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
                             char *article;
                             article = readable([html cStringUsingEncoding:NSUTF8StringEncoding],
-                                               [[[operation.response URL] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding],
+                                               [[[task.response URL] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding],
                                                "UTF-8",
                                                READABLE_OPTIONS_DEFAULT);
                             if (article == NULL) {
@@ -274,7 +274,7 @@ const int SWIPE_PREVIOUS = 1;
                             } else {
                                 html = [NSString stringWithCString:article encoding:NSUTF8StringEncoding];
                                 html = [self fixRelativeUrl:html
-                                              baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", [[operation.response URL] scheme], [[operation.response URL] host], [[operation.response URL] path]]];
+                                              baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", [[task.response URL] scheme], [[task.response URL] host], [[task.response URL] path]]];
                             }
                             self.item.extra.readable = html;
                             [[OCNewsHelper sharedHelper] saveContext];
@@ -284,14 +284,13 @@ const int SWIPE_PREVIOUS = 1;
                         }
                         [self writeAndLoadHtml:html];
 
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
                         NSLog(@"Error: %@", error);
                         NSString *html;
                         html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
                         html = [html stringByAppendingString:self.item.body];
                         [self writeAndLoadHtml:html];
-
-                    }];                    
+                    }];
                 }
             } else {
                 [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];

@@ -142,7 +142,7 @@ const int UPDATE_ALL = 3;
     [self updateStarredCount];
     [self saveContext];
 
-    __unused int status = [[OCAPIClient sharedClient] networkReachabilityStatus];
+    __unused BOOL status = [OCAPIClient sharedClient].reachabilityManager.isReachable;
 
     return self;
 }
@@ -313,16 +313,18 @@ const int UPDATE_ALL = 3;
 
 - (void)sync:(void (^)(UIBackgroundFetchResult))completionHandler {
     _completionHandler = [completionHandler copy];
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
-        [[OCAPIClient sharedClient] getPath:@"feeds" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
+        [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             [self updateFeeds:responseObject];
             [self updateFolders];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
             if (_completionHandler) {
                 NSLog(@"Calling completion block");
                 _completionHandler(UIBackgroundFetchResultFailed);
             }
-            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
@@ -338,7 +340,7 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)updateFolders {
-    [[OCAPIClient sharedClient] getPath:@"folders" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[OCAPIClient sharedClient] GET:@"folders" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         //Remove previous
         //TODO: only fetch myId
         NSError *error = nil;
@@ -376,7 +378,7 @@ const int UPDATE_ALL = 3;
             [self.context deleteObject:folderToRemove];
             [deletedOnServer removeLastObject];
         }
-
+        
         for (NSNumber *folderId in foldersToDelete) {
             Folder *folder = [self folderWithId:folderId];
             [self deleteFolderOffline:folder]; //the feed will have been readded as new on server
@@ -401,15 +403,16 @@ const int UPDATE_ALL = 3;
             [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_STARRED] andId:[NSNumber numberWithInt:0]];
         }
         [self updateTotalUnreadCount];
-    
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         if (_completionHandler) {
             NSLog(@"Calling completion block");
             _completionHandler(UIBackgroundFetchResultFailed);
         }
-        NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+        NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+        NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+
     }];
 }
 
@@ -461,6 +464,7 @@ const int UPDATE_ALL = 3;
         Feed *feed = [self feedWithId:[feedDict objectForKey:@"id"]];
         feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
         feed.folderId = [feedDict objectForKey:@"folderId"];
+        [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     }];
     
     for (NSNumber *feedId in feedsToDelete) {
@@ -480,7 +484,7 @@ const int UPDATE_ALL = 3;
     }
     [feedsToMove removeAllObjects];
     
-    [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
+//    [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     [self updateTotalUnreadCount];
 }
 
@@ -547,8 +551,8 @@ const int UPDATE_ALL = 3;
                                          @"type": aType,
                                            @"id": anId};
     
-    [[OCAPIClient sharedClient] getPath:@"items/updated" parameters:itemParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"URL: %@", operation.request.URL.absoluteString);
+    [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"URL: %@", task.currentRequest.URL.absoluteString);
         NSDictionary *itemDict = (NSDictionary*)responseObject;
         //NSLog(@"New Items: %@", itemDict);
         NSArray *newItems = [NSArray arrayWithArray:[itemDict objectForKey:@"items"]];
@@ -647,8 +651,8 @@ const int UPDATE_ALL = 3;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         //feedsToUpdate;
         switch ([aType intValue]) {
             case UPDATE_ALL:
@@ -668,7 +672,8 @@ const int UPDATE_ALL = 3;
                     NSLog(@"Calling completion block");
                     _completionHandler(UIBackgroundFetchResultFailed);
                 }
-                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
             }
@@ -684,6 +689,7 @@ const int UPDATE_ALL = 3;
 - (void)updateFeedItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId {
     __block NSMutableArray *operations = [NSMutableArray new];
     __block NSMutableArray *addedItems = [NSMutableArray new];
+    __block NSMutableArray *responseObjects = [NSMutableArray new];
     __block OCAPIClient *client = [OCAPIClient sharedClient];
     
     //update feeds individually
@@ -693,49 +699,44 @@ const int UPDATE_ALL = 3;
         allFeeds = [allFeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", anId]];
     }
 
-    NSLog(@"Building operations");
+    NSLog(@"Building tasks");
+    dispatch_group_t group = dispatch_group_create();
     [allFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
         NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[self feedLastModified:feed.myId], @"lastModified",
                                     [NSNumber numberWithInt:0], @"type",
                                     feed.myId, @"id", nil];
         
         
-        NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items/updated" parameters:itemParams];
-        
-        AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:nil failure:nil];
-        BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
-        if (allowInvalid) {
-            [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-                if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-                    [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-                }
-            }];
+        NSURLSessionDataTask *task = [client GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
+            dispatch_group_leave(group);
+            @synchronized(responseObjects) {
+                [responseObjects addObject:responseObject];
+            }
         }
-        NSLog(@"Adding operation %i", idx);
-        [operations addObject:itemOperation];
+        failure:^(NSURLSessionDataTask *task, NSError *error) {
+            dispatch_group_leave(group);
+        }];
+
+        [operations addObject:task];
     }];
     NSLog(@"Enqueing operations");
-    [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
-        NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
-    } completionBlock:^(NSArray *operations) {
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         __block int errorCount = 0;
         __block NSMutableSet *feedsWithNewItems;
-        [operations enumerateObjectsUsingBlock:^(AFJSONRequestOperation *itemOperation, NSUInteger idx, BOOL *stop) {
-            //NSLog(@"New Items: %@", JSON);
-            if (itemOperation.error) {
+        [operations enumerateObjectsUsingBlock:^(NSURLSessionDataTask *task, NSUInteger idx, BOOL *stop) {
+            if (task.error) {
                 ++errorCount;
-            } else {
-                NSDictionary *jsonDict = (NSDictionary *) itemOperation.responseJSON;
-                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                //NSLog(@"New Item Count: %d", newItems.count);
-                if (newItems.count > 0) {
-                    [feedsWithNewItems addObject:[(NSDictionary*)[newItems objectAtIndex:0] objectForKey:@"feedId"]];
-                    [addedItems addObjectsFromArray:newItems];
-                    //NSLog(@"Feed: %@ (%d) adding %d for %d total items", feed.title, feed.unreadCountValue, newItems.count, addedItems.count);
-                }
             }
         }];
-        
+        [responseObjects enumerateObjectsUsingBlock:^(NSDictionary *JSON, NSUInteger idx, BOOL *stop) {
+            NSArray *newItems = [NSArray arrayWithArray:[JSON objectForKey:@"items"]];
+            if (newItems.count > 0) {
+                [feedsWithNewItems addObject:[(NSDictionary*)[newItems objectAtIndex:0] objectForKey:@"feedId"]];
+                [addedItems addObjectsFromArray:newItems];
+                //NSLog(@"Feed: %@ (%d) adding %d for %d total items", feed.title, feed.unreadCountValue, newItems.count, addedItems.count);
+            }
+        }];
         if (addedItems.count > 0) {
             __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
             [possibleDuplicateItems addObjectsFromArray:[addedItems valueForKey:@"id"]];
@@ -779,7 +780,6 @@ const int UPDATE_ALL = 3;
                 }
             }];
             if ([aType intValue] == UPDATE_ALL) {
-                
                 [self markItemsReadOffline:itemsToMarkRead];
                 [itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
@@ -795,7 +795,6 @@ const int UPDATE_ALL = 3;
                 }
                 [itemsToUnstar removeAllObjects];
             }
-            
         }
         [self updateStarredCount];
         [self updateTotalUnreadCount];
@@ -815,19 +814,23 @@ const int UPDATE_ALL = 3;
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         }
-    }];
+    });
 }
-
 
 - (void)updateItemsFirstTime {
     __block NSMutableArray *operations = [NSMutableArray new];
     __block NSMutableArray *addedItems = [NSMutableArray new];
+    __block NSMutableArray *responseObjects = [NSMutableArray new];
     __block OCAPIClient *client = [OCAPIClient sharedClient];
     NSError *error = nil;
     [self.feedRequest setPredicate:nil];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
+
+    dispatch_group_t group = dispatch_group_create();
     
     [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+        // Enter the group for each request we create
+        dispatch_group_enter(group);
         int batchSize = MAX(50, feed.unreadCountValue);
         NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:batchSize], @"batchSize",
                                     [NSNumber numberWithInt:0], @"offset",
@@ -835,36 +838,29 @@ const int UPDATE_ALL = 3;
                                     feed.myId, @"id",
                                     @"true", @"getRead", nil];
         
-        NSMutableURLRequest *itemURLRequest = [client requestWithMethod:@"GET" path:@"items" parameters:itemParams];
-        
-        AFJSONRequestOperation *itemOperation = [AFJSONRequestOperation JSONRequestOperationWithRequest:itemURLRequest success:nil failure:nil];
-        BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
-        if (allowInvalid) {
-            [itemOperation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-                if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-                    [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-                }
-                
-            }];
-        }
-        
-        [operations addObject:itemOperation];
-    }];
-    
-    [client enqueueBatchOfHTTPRequestOperations:operations progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
-        NSLog(@"Feed %i of %i", numberOfFinishedOperations, totalNumberOfOperations);
-    } completionBlock:^(NSArray *operations) {
-        __block int errorCount = 0;
-        [operations enumerateObjectsUsingBlock:^(AFJSONRequestOperation *itemOperation, NSUInteger idx, BOOL *stop) {
-            //NSLog(@"New Items: %@", JSON);
-            if (itemOperation.error) {
-                ++errorCount;
-            } else {
-                //NSLog(@"New Items: %@", JSON);
-                NSDictionary *jsonDict = (NSDictionary *) itemOperation.responseJSON;
-                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                [addedItems addObjectsFromArray:newItems];
+        NSURLSessionDataTask *task = [client GET:@"items" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
+            dispatch_group_leave(group);
+            @synchronized(responseObjects) {
+                [responseObjects addObject:responseObject];
             }
+        }
+        failure:^(NSURLSessionDataTask *task, NSError *error) {
+            dispatch_group_leave(group);
+        }];
+        
+        [operations addObject:task];
+    }];
+
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        __block int errorCount = 0;
+        [operations enumerateObjectsUsingBlock:^(NSURLSessionDataTask *task, NSUInteger idx, BOOL *stop) {
+            if (task.error) {
+                ++errorCount;
+            }
+        }];
+        [responseObjects enumerateObjectsUsingBlock:^(NSDictionary *JSON, NSUInteger idx, BOOL *stop) {
+            NSArray *newItems = [NSArray arrayWithArray:[JSON objectForKey:@"items"]];
+            [addedItems addObjectsFromArray:newItems];
         }];
         [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
             [self addItemFromDictionary:item];
@@ -887,7 +883,8 @@ const int UPDATE_ALL = 3;
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         }
-    }];
+
+    });
 }
 
 - (void)updateReadItems:(NSArray *)items {
@@ -957,17 +954,18 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)addFolderOffline:(NSString*)name {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"name": name};
         
-        [[OCAPIClient sharedClient] postPath:@"folders" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[OCAPIClient sharedClient] POST:@"folders" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             //NSLog(@"Folders: %@", responseObject);
             __unused int newFolderId = [self addFolder:responseObject];
-        
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSString *message;
-            switch (operation.response.statusCode) {
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            switch (response.statusCode) {
                 case 409:
                     message = @"The folder already exists.";
                     break;
@@ -975,12 +973,13 @@ const int UPDATE_ALL = 3;
                     message = @"The folder name is invalid.";
                     break;
                 default:
-                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                     break;
             }
             
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Adding Folder", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+
         }];
         
     } else {
@@ -994,20 +993,21 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)deleteFolderOffline:(Folder*)folder {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"folders/%@", [folder.myId stringValue]];
-        [[OCAPIClient sharedClient] deletePath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Failure");
             NSString *message;
-            switch (operation.response.statusCode) {
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            switch (response.statusCode) {
                 case 404:
                     message = @"The folder does not exist.";
                     break;
                 default:
-                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                     break;
             }
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Deleting Folder", @"Title", message, @"Message", nil];
@@ -1021,16 +1021,17 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)renameFolderOfflineWithId:(NSNumber*)anId To:(NSString*)newName {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"name": newName};
         NSString *path = [NSString stringWithFormat:@"folders/%@", [anId stringValue]];
-        [[OCAPIClient sharedClient] putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+             NSLog(@"Success");
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Failure");
             NSString *message;
-            switch (operation.response.statusCode) {
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            switch (response.statusCode) {
                 case 404:
                     message = @"The folder does not exist.";
                     break;
@@ -1041,7 +1042,7 @@ const int UPDATE_ALL = 3;
                     message = @"The folder name is invalid";
                     break;
                 default:
-                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                     break;
             }
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Moving Feed", @"Title", message, @"Message", nil];
@@ -1055,11 +1056,11 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)addFeedOffline:(NSString *)urlString {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:urlString, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
         
-        [[OCAPIClient sharedClient] postPath:@"feeds" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[OCAPIClient sharedClient] POST:@"feeds" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             //NSLog(@"Feeds: %@", responseObject);
             
             int newFeedId = [self addFeed:responseObject];
@@ -1069,21 +1070,24 @@ const int UPDATE_ALL = 3;
                                     [NSNumber numberWithInt:newFeedId], @"id",
                                     [NSNumber numberWithInt:1], @"getRead", nil];
             
-            [[OCAPIClient sharedClient] getPath:@"items" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[OCAPIClient sharedClient] GET:@"items" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSDictionary *jsonDict = (NSDictionary *) responseObject;
                 NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
                 [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                     [self addItemFromDictionary:item];
                 }];
-                
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                NSString *message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Retrieving Items", @"Title", message, @"Message", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
             }];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSString *message;
-            switch (operation.response.statusCode) {
+            switch (response.statusCode) {
                 case 409:
                     message = @"The feed already exists";
                     break;
@@ -1091,7 +1095,7 @@ const int UPDATE_ALL = 3;
                     message = @"The feed could not be read. It most likely contains errors";
                     break;
                 default:
-                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode], [error localizedDescription]];
+                    message = [NSString stringWithFormat:@"The server repsonded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                     break;
             }
             
@@ -1117,12 +1121,12 @@ const int UPDATE_ALL = 3;
 }
 
 - (void) deleteFeedOffline:(Feed*)feed {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"feeds/%@", [feed.myId stringValue]];
-        [[OCAPIClient sharedClient] deletePath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Failure");
             NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Deleting Feed", @"Title", message, @"Message", nil];
@@ -1136,13 +1140,13 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)moveFeedOfflineWithId:(NSNumber *)aFeedId toFolderWithId:(NSNumber *)aFolderId {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"folderId": aFolderId};
         NSString *path = [NSString stringWithFormat:@"feeds/%@/move", [aFeedId stringValue]];
-        [[OCAPIClient sharedClient] putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Success");
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"Failure");
             NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Moving Feed", @"Title", message, @"Message", nil];
@@ -1155,9 +1159,9 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)markItemsReadOffline:(NSArray *)itemIds {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [[OCAPIClient sharedClient] putPath:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:nil failure:nil];
+        [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:nil failure:nil];
     } else {
         //offline
         for (NSNumber *itemId in itemIds) {
@@ -1172,9 +1176,9 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)markItemUnreadOffline:(NSNumber*)itemId {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [[OCAPIClient sharedClient] putPath:@"items/unread/multiple" parameters:[NSDictionary dictionaryWithObject:itemId forKey:@"items"] success:nil failure:nil];
+        [[OCAPIClient sharedClient] PUT:@"items/unread/multiple" parameters:[NSDictionary dictionaryWithObject:itemId forKey:@"items"] success:nil failure:nil];
     } else {
         //offline
         NSInteger i = [itemsToMarkRead indexOfObject:itemId];
@@ -1187,12 +1191,12 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)starItemOffline:(NSNumber*)itemId {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
-            [[OCAPIClient sharedClient] putPath:path parameters:nil success:nil failure:nil];
+            [[OCAPIClient sharedClient] PUT:path parameters:nil success:nil failure:nil];
         }
     } else {
         //offline
@@ -1206,12 +1210,12 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)unstarItemOffline:(NSNumber*)itemId {
-    if ([[OCAPIClient sharedClient] networkReachabilityStatus] > 0) {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
-            [[OCAPIClient sharedClient] putPath:path parameters:nil success:nil failure:nil];
+            [[OCAPIClient sharedClient] PUT:path parameters:nil success:nil failure:nil];
         }
     } else {
         //offline
