@@ -42,7 +42,6 @@
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HexColor.h"
-#import "UIImage+Resource.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
@@ -717,7 +716,7 @@ const int SWIPE_PREVIOUS = 1;
 - (UIBarButtonItem *)backBarButtonItem {
     
     if (!backBarButtonItem) {
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(doGoBack:)];
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(doGoBack:)];
         backBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return backBarButtonItem;
@@ -726,7 +725,7 @@ const int SWIPE_PREVIOUS = 1;
 - (UIBarButtonItem *)forwardBarButtonItem {
     
     if (!forwardBarButtonItem) {
-        forwardBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"forward"] style:UIBarButtonItemStylePlain target:self action:@selector(doGoForward:)];
+        forwardBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forward"] style:UIBarButtonItemStylePlain target:self action:@selector(doGoForward:)];
         forwardBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return forwardBarButtonItem;
@@ -759,7 +758,7 @@ const int SWIPE_PREVIOUS = 1;
 - (UIBarButtonItem *)textBarButtonItem {
     
     if (!textBarButtonItem) {
-        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(doText:event:)];
+        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(doText:event:)];
         textBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return textBarButtonItem;
@@ -767,7 +766,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (UIBarButtonItem *)starBarButtonItem {
     if (!starBarButtonItem) {
-        starBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"star_open"] style:UIBarButtonItemStylePlain target:self action:@selector(doStar:)];
+        starBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star_open"] style:UIBarButtonItemStylePlain target:self action:@selector(doStar:)];
         starBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return starBarButtonItem;
@@ -775,7 +774,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (UIBarButtonItem *)unstarBarButtonItem {
     if (!unstarBarButtonItem) {
-        unstarBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"star_filled"] style:UIBarButtonItemStylePlain target:self action:@selector(doStar:)];
+        unstarBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star_filled"] style:UIBarButtonItemStylePlain target:self action:@selector(doStar:)];
         unstarBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return unstarBarButtonItem;

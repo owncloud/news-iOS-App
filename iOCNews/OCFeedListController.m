@@ -41,7 +41,6 @@
 #import "FeedExtra.h"
 #import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
-#import "UIImage+Resource.h"
 
 @interface OCFeedListController () <IIViewDeckControllerDelegate, UIActionSheetDelegate> {
     int currentFolderIndex;
@@ -815,7 +814,7 @@
 - (UIBarButtonItem *)addBarButtonItem {
     
     if (!addBarButtonItem) {
-        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:event:)];
+        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:event:)];
         addBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     

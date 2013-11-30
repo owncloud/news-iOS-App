@@ -41,7 +41,6 @@
 #import "TSMessage.h"
 #import "OCNewsHelper.h"
 #import "Item.h"
-#import "UIImage+Resource.h"
 #import "objc/runtime.h"
 #import "UIImageView+OCWebCache.h"
 #import "HexColor.h"
@@ -446,7 +445,7 @@
 
 - (UIBarButtonItem *)markBarButtonItem {
     if (!markBarButtonItem) {
-        markBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageResourceNamed:@"mark"] style:UIBarButtonItemStylePlain target:self action:@selector(doMarkRead:)];
+        markBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mark"] style:UIBarButtonItemStylePlain target:self action:@selector(doMarkRead:)];
         markBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return markBarButtonItem;

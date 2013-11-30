@@ -56,8 +56,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.backgroundSegmented setImage:[[UIImage imageNamed:@"background1-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal ]  forSegmentAtIndex:0];
-    [self.backgroundSegmented setImage:[[UIImage imageNamed:@"background2-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal ]  forSegmentAtIndex:1];
+    [self.backgroundSegmented setImage:[[UIImage imageNamed:@"background1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal ]  forSegmentAtIndex:0];
+    [self.backgroundSegmented setImage:[[UIImage imageNamed:@"background2"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal ]  forSegmentAtIndex:1];
 }
 
 - (void)viewDidUnload
