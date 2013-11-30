@@ -35,7 +35,6 @@
 #import "OCFeedCell.h"
 #import "OCLoginController.h"
 #import "TSMessage.h"
-#import "TransparentToolbar.h"
 #import "OCNewsHelper.h"
 #import "Folder.h"
 #import "Feed.h"
@@ -161,40 +160,16 @@
     currentFolderIndex = 0;
     networkHasBeenUnreachable = NO;
     
-    //UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    //fixedSpace.width = 5.0f;
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    NSArray *items = [NSArray arrayWithObjects:
-                      flexibleSpace,
-                      //self.infoBarButtonItem,
-                      //fixedSpace,
-                      self.addBarButtonItem,
-                      
-                      nil];
-    
-    TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
-    toolbar.items = items;
-    toolbar.tintColor = self.navigationController.navigationBar.tintColor;
-    
-    
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        // Load resources for iOS 6.1 or earlier
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-    } else {
-        // Load resources for iOS 7 or later
-        self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
-        int imageViewOffset = 14;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
-            imageViewOffset = 36;
-        }
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, imageViewOffset, 0, 0);
+    int imageViewOffset = 14;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
+        imageViewOffset = 36;
     }
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, imageViewOffset, 0, 0);
     
     self.refreshControl = self.feedRefreshControl;
     
+    self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
     self.navigationItem.title = @"Feeds";
-    //self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableviewPress:)];
@@ -853,64 +828,31 @@
     }
     return backBarButtonItem;
 }
-/*
-- (UIBarButtonItem *)editBarButtonItem {
-    
-    if (!editBarButtonItem) {
-        editBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(doEdit:)];
-        editBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
-    }
-    return editBarButtonItem;
-}
 
-- (UIPopoverController *) settingsPopover {
-    if (!settingsPopover) {
-        
-        FDFeedSettingsController *settingsController = [[FDFeedSettingsController alloc] initWithStyle:UITableViewStyleGrouped];
-        UINavigationController *settingsNavController = [[UINavigationController alloc] initWithRootViewController:settingsController];
-        settingsNavController.topViewController.navigationItem.title = @"Edit Feed";
-        settingsNavController.topViewController.navigationItem.rightBarButtonItem = settingsController.saveBarButtonItem;
-        settingsController.delegate = self;
-        settingsPopover = [[UIPopoverController alloc] initWithContentViewController:settingsNavController];
-
-    }
-    return settingsPopover;
-}
-*/
 - (UIRefreshControl *)feedRefreshControl {
     if (!feedRefreshControl) {
         feedRefreshControl = [[UIRefreshControl alloc] init];
         [feedRefreshControl addTarget:self action:@selector(doRefresh:) forControlEvents:UIControlEventValueChanged];
-    }
-    
+    }    
     return feedRefreshControl;
 }
 
 - (UIPopoverController *) settingsPopover {
     if (!settingsPopover) {
-
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
         settingsPopover = [[UIPopoverController alloc] initWithContentViewController:[storyboard instantiateViewControllerWithIdentifier: @"feedextra"]];
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-            // Load resources for iOS 6.1 or earlier
-        } else {
-            [settingsPopover setPopoverContentSize:CGSizeMake(320, 220)];
-        }
+        [settingsPopover setPopoverContentSize:CGSizeMake(320, 220)];
     }
     return settingsPopover;
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        // Load resources for iOS 6.1 or earlier
-    } else {
-        shadowLayer.masksToBounds = NO;
-        shadowLayer.shadowRadius = 1;
-        shadowLayer.shadowOpacity = 0.9;
-        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
-        shadowLayer.shadowOffset = CGSizeZero;
-        shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
-    }
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowRadius = 1;
+    shadowLayer.shadowOpacity = 0.9;
+    shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
+    shadowLayer.shadowOffset = CGSizeZero;
+    shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
 }
 
 - (void)viewDeckController:(IIViewDeckController*)viewDeckController didOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {

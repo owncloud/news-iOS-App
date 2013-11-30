@@ -12,13 +12,7 @@
 
 + (UIImage *)imageResourceNamed:(NSString *)name {
     NSString *resName;
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        // Load resources for iOS 6.1 or earlier
-        resName = name;
-    } else {
-        // Load resources for iOS 7 or later
-        resName = [NSString stringWithFormat:@"%@-7", name];
-    }
+    resName = [NSString stringWithFormat:@"%@-7", name];
     return [self imageNamed:resName];
 }
 

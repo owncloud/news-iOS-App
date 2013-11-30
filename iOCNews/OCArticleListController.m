@@ -39,7 +39,6 @@
 #import "AFNetworking.h"
 #import "OCArticleImage.h"
 #import "TSMessage.h"
-#import "TransparentToolbar.h"
 #import "OCNewsHelper.h"
 #import "Item.h"
 #import "UIImage+Resource.h"
@@ -148,28 +147,7 @@
 {
     [super viewDidLoad];
 
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpace.width = 5.0f;
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    NSArray *items = [NSArray arrayWithObjects:
-                      fixedSpace,
-                      self.markBarButtonItem,
-                      flexibleSpace,
-                      nil];
-    
-    TransparentToolbar *toolbar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)];
-    toolbar.items = items;
-    toolbar.tintColor = self.navigationController.navigationBar.tintColor;
-    
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        // Load resources for iOS 6.1 or earlier
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-    } else {
-        // Load resources for iOS 7 or later
-        self.navigationItem.leftBarButtonItem = self.markBarButtonItem;
-    }
-
+    self.navigationItem.leftBarButtonItem = self.markBarButtonItem;
     self.markBarButtonItem.enabled = NO;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
@@ -210,6 +188,7 @@
     // e.g. self.myOutlet = nil;
     self.fetchedResultsController = nil;
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

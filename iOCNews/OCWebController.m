@@ -38,7 +38,6 @@
 #import "FDiCabActivity.h"
 #import "FDInstapaperActivity.h"
 #import "IIViewDeckController.h"
-#import "TransparentToolbar.h"
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
@@ -126,16 +125,12 @@ const int SWIPE_PREVIOUS = 1;
                 self.webView.delegate =nil;
                 self.webView = nil;
             }
-            if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-                // Load resources for iOS 6.1 or earlier
-                self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
-            } else {
-                // Load resources for iOS 7 or later
-                CGFloat topBarOffset = self.topLayoutGuide.length;
-                CGRect frame = self.view.frame;
-                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
-                self.automaticallyAdjustsScrollViewInsets = NO;
-            }
+
+            CGFloat topBarOffset = self.topLayoutGuide.length;
+            CGRect frame = self.view.frame;
+            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
+            self.automaticallyAdjustsScrollViewInsets = NO;
+
             self.webView.scalesPageToFit = YES;
             self.webView.delegate = self;
             self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -160,17 +155,10 @@ const int SWIPE_PREVIOUS = 1;
                 self.webView.delegate =nil;
                 self.webView = nil;
             }
-            __block CGFloat topBarOffset = 0.0f;
+            __block CGFloat topBarOffset = self.topLayoutGuide.length;
 
-            if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-                // Load resources for iOS 6.1 or earlier
-                //self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
-            } else {
-                // Load resources for iOS 7 or later
-                topBarOffset = self.topLayoutGuide.length;
-                //CGRect frame = self.view.frame;
-                self.automaticallyAdjustsScrollViewInsets = NO;
-            }
+            self.automaticallyAdjustsScrollViewInsets = NO;
+ 
             if (_swipeDirection == SWIPE_NEXT) {
                 self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(width, topBarOffset, width, height - topBarOffset)];
             } else {
@@ -936,52 +924,11 @@ const int SWIPE_PREVIOUS = 1;
 
     UIBarButtonItem *refreshStopBarButtonItem = self.webView.isLoading ? self.stopBarButtonItem : self.refreshBarButtonItem;
     refreshStopBarButtonItem.enabled = (self.item != nil);
-    
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpace.width = 5.0f;
+    self.navigationItem.leftBarButtonItems = @[self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
 
-    NSArray *itemsLeft = [NSArray arrayWithObjects:
-                      fixedSpace,
-                      self.backBarButtonItem,
-                      fixedSpace,
-                      self.forwardBarButtonItem,
-                      fixedSpace,
-                      refreshStopBarButtonItem,
-                      fixedSpace,
-                      nil];
-
-    TransparentToolbar *toolbarLeft = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 125.0f, 44.0f)];
-    toolbarLeft.items = itemsLeft;
-    toolbarLeft.tintColor = self.navigationController.navigationBar.tintColor;
-    
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        // Load resources for iOS 6.1 or earlier
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarLeft];
-    } else {
-        // Load resources for iOS 7 or later
-        self.navigationItem.leftBarButtonItems = @[self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
-    }
-
-
-    //UIBarButtonItem *starUnstarBarButtonItem = ([self.item.starred isEqual:[NSNumber numberWithInt:1]]) ? self.unstarBarButtonItem : self.starBarButtonItem;
     self.keepUnread.button.selected = self.item.unreadValue;
     self.star.button.selected = self.item.starredValue;
-    refreshStopBarButtonItem.enabled = (self.item != nil);
-
-    NSArray *itemsRight = @[fixedSpace, self.actionBarButtonItem, fixedSpace, self.textBarButtonItem];
-    
-    TransparentToolbar *toolbarRight = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0, 44.0f)];
-    toolbarRight.items = itemsRight;
-    toolbarRight.tintColor = self.navigationController.navigationBar.tintColor;
-    
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        // Load resources for iOS 6.1 or earlier
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbarRight];
-    } else {
-        // Load resources for iOS 7 or later
-        self.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
-    }
-
+    self.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
 }
 
 - (NSString *) fixRelativeUrl:(NSString *)htmlString baseUrlString:(NSString*)base {
@@ -1225,16 +1172,12 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 - (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        // Load resources for iOS 6.1 or earlier
-    } else {
-        shadowLayer.masksToBounds = NO;
-        shadowLayer.shadowRadius = 1;
-        shadowLayer.shadowOpacity = 0.9;
-        shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
-        shadowLayer.shadowOffset = CGSizeZero;
-        shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
-    }
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowRadius = 1;
+    shadowLayer.shadowOpacity = 0.9;
+    shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
+    shadowLayer.shadowOffset = CGSizeZero;
+    shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
 }
 
 @end

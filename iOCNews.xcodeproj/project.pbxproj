@@ -74,7 +74,6 @@
 		D04AD6871807403100FF6056 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1813C17850C6A00F719D9 /* KeychainItemWrapper.m */; };
 		D04AD6881807403100FF6056 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D04AD6891807403100FF6056 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D04AD68A1807403100FF6056 /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D04AD68C1807403100FF6056 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
 		D04AD68D1807403100FF6056 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23017A073A900A1310B /* Feed.m */; };
 		D04AD68E1807403100FF6056 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23317A073C400A1310B /* Item.m */; };
@@ -269,7 +268,6 @@
 		D061D7A717E288E60038FB04 /* gear-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D061D7A517E288E60038FB04 /* gear-7@2x.png */; };
 		D061D7AA17E3C0CD0038FB04 /* mark-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D061D7A817E3C0CD0038FB04 /* mark-7@2x.png */; };
 		D061D7AB17E3C0CD0038FB04 /* mark-7.png in Resources */ = {isa = PBXBuildFile; fileRef = D061D7A917E3C0CD0038FB04 /* mark-7.png */; };
-		D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB224179C977400A1310B /* placeholder@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D06CB222179C977400A1310B /* placeholder@2x~iphone.png */; };
@@ -459,7 +457,6 @@
 		D0E89F8118385457005F8CAF /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1813C17850C6A00F719D9 /* KeychainItemWrapper.m */; };
 		D0E89F8218385457005F8CAF /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0E89F8318385457005F8CAF /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D0E89F8418385457005F8CAF /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB21C179C5C1900A1310B /* TransparentToolbar.m */; };
 		D0E89F8518385457005F8CAF /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
 		D0E89F8618385457005F8CAF /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23017A073A900A1310B /* Feed.m */; };
 		D0E89F8718385457005F8CAF /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23317A073C400A1310B /* Item.m */; };
@@ -792,8 +789,6 @@
 		D061D7A517E288E60038FB04 /* gear-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear-7@2x.png"; sourceTree = "<group>"; };
 		D061D7A817E3C0CD0038FB04 /* mark-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mark-7@2x.png"; sourceTree = "<group>"; };
 		D061D7A917E3C0CD0038FB04 /* mark-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mark-7.png"; sourceTree = "<group>"; };
-		D06CB21B179C5C1900A1310B /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
-		D06CB21C179C5C1900A1310B /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
 		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
 		D06CB222179C977400A1310B /* placeholder@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "placeholder@2x~iphone.png"; sourceTree = "<group>"; };
@@ -1303,8 +1298,6 @@
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
 				D0BCAA71177909A600C965F4 /* OCWebController.h */,
 				D0BCAA72177909A600C965F4 /* OCWebController.m */,
-				D06CB21B179C5C1900A1310B /* TransparentToolbar.h */,
-				D06CB21C179C5C1900A1310B /* TransparentToolbar.m */,
 				D0F8274E17B2D83400BE84D7 /* OCFeedSettingsController.h */,
 				D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */,
 				D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */,
@@ -2445,7 +2438,6 @@
 				D04AD6881807403100FF6056 /* HTMLNode.m in Sources */,
 				D04AD6891807403100FF6056 /* HTMLParser.m in Sources */,
 				D0E8A0881842C29C005F8CAF /* AFNetworkReachabilityManager.m in Sources */,
-				D04AD68A1807403100FF6056 /* TransparentToolbar.m in Sources */,
 				D04AD68C1807403100FF6056 /* News.xcdatamodeld in Sources */,
 				D04AD68D1807403100FF6056 /* Feed.m in Sources */,
 				D04AD68E1807403100FF6056 /* Item.m in Sources */,
@@ -2539,7 +2531,6 @@
 				D0F1813D17850C6A00F719D9 /* KeychainItemWrapper.m in Sources */,
 				D0FD70791787626100EF1457 /* HTMLNode.m in Sources */,
 				D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */,
-				D06CB21D179C5C1900A1310B /* TransparentToolbar.m in Sources */,
 				D0E8A0781842ABD5005F8CAF /* AFNetworkReachabilityManager.m in Sources */,
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
 				D06CB23117A073AA00A1310B /* Feed.m in Sources */,
@@ -2635,7 +2626,6 @@
 				D0E89F8118385457005F8CAF /* KeychainItemWrapper.m in Sources */,
 				D0E89F8218385457005F8CAF /* HTMLNode.m in Sources */,
 				D0E89F8318385457005F8CAF /* HTMLParser.m in Sources */,
-				D0E89F8418385457005F8CAF /* TransparentToolbar.m in Sources */,
 				D0E8A0911842C29D005F8CAF /* AFNetworkReachabilityManager.m in Sources */,
 				D0E89F8518385457005F8CAF /* News.xcdatamodeld in Sources */,
 				D0E89F8618385457005F8CAF /* Feed.m in Sources */,
