@@ -34,8 +34,28 @@
 #import "AFNetworkActivityIndicatorManager.h"
 #import "IIViewDeckController.h"
 #import "OCNewsHelper.h"
+#import "UAAppReviewManager.h"
 
 @implementation OCAppDelegate
+
++ (void)initialize {
+	[OCAppDelegate setupUAAppReviewManager];
+}
+
++ (void)setupUAAppReviewManager {
+	// Normally, all the setup would be here.
+	// But, because we are presenting a few different setups in the example,
+	// The config will be in the view controllers
+	[UAAppReviewManager setAppID:@"683859706"]; // iOCNews
+    [UAAppReviewManager setDaysUntilPrompt:14];
+    [UAAppReviewManager setShouldPromptIfRated:NO];
+	//
+	// It is always best to load UAAppReviewManager as early as possible
+	// because it needs to receive application life-cycle notifications,
+	// so we will call a simple method on it here to load it up now.
+	[UAAppReviewManager setDebug:NO];
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -73,6 +93,7 @@
     } else {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
     }
+    [UAAppReviewManager showPromptIfNecessary];
     return YES;
 }
 
