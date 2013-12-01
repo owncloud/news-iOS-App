@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.48.4 r9943 custom"
    sodipodi:docname="menu.svg"
-   inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/menu-7.png"
+   inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/menu.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45">
   <defs
@@ -27,17 +27,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.5"
-     inkscape:cx="24"
+     inkscape:zoom="11"
+     inkscape:cx="41.727273"
      inkscape:cy="32.090909"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:showpageshadow="false"
-     inkscape:window-width="1450"
-     inkscape:window-height="856"
-     inkscape:window-x="1400"
+     inkscape:window-width="1871"
+     inkscape:window-height="1036"
+     inkscape:window-x="49"
      inkscape:window-y="22"
      inkscape:window-maximized="0">
     <inkscape:grid
@@ -67,10 +67,34 @@
      inkscape:groupmode="layer"
      transform="translate(0,24)">
     <path
-       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 7.909091,36 0.181818,0 m 19.818182,0 0.181818,0 m 19.818182,0 0.181818,0"
-       id="path7790"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccc" />
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3.20000005;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path3381"
+       sodipodi:cx="8"
+       sodipodi:cy="44"
+       sodipodi:rx="8"
+       sodipodi:ry="8"
+       d="M 16,44 A 8,8 0 1 1 0,44 8,8 0 1 1 16,44 z"
+       transform="matrix(0.625,0,0,0.625,3.0000002,8.5)" />
+    <path
+       transform="matrix(0.625,0,0,0.625,22.999999,8.5)"
+       d="M 16,44 A 8,8 0 1 1 0,44 8,8 0 1 1 16,44 z"
+       sodipodi:ry="8"
+       sodipodi:rx="8"
+       sodipodi:cy="44"
+       sodipodi:cx="8"
+       id="path4151"
+       style="fill:none;stroke:#000000;stroke-width:3.20000005;stroke-miterlimit:4;stroke-dasharray:none"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3.20000005;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path4153"
+       sodipodi:cx="8"
+       sodipodi:cy="44"
+       sodipodi:rx="8"
+       sodipodi:ry="8"
+       d="M 16,44 A 8,8 0 1 1 0,44 8,8 0 1 1 16,44 z"
+       transform="matrix(0.625,0,0,0.625,42.999997,8.5)" />
   </g>
 </svg>
