@@ -91,7 +91,7 @@
         specialFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                               managedObjectContext:[OCNewsHelper sharedHelper].context
                                                                                 sectionNameKeyPath:nil
-                                                                                         cacheName:nil];
+                                                                                         cacheName:@"SpecialCache"];
         specialFetchedResultsController.delegate = self;
     }
     return specialFetchedResultsController;
@@ -110,7 +110,7 @@
         foldersFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                               managedObjectContext:[OCNewsHelper sharedHelper].context
                                                                                 sectionNameKeyPath:nil
-                                                                                         cacheName:nil];
+                                                                                         cacheName:@"FolderCache"];
         foldersFetchedResultsController.delegate = self;
     }
     return foldersFetchedResultsController;
@@ -132,7 +132,7 @@
         feedsFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:[OCNewsHelper sharedHelper].context
                                                                               sectionNameKeyPath:nil
-                                                                                       cacheName:nil];
+                                                                                       cacheName:@"FeedCache"];
         feedsFetchedResultsController.delegate = self;
     }
     return feedsFetchedResultsController;
@@ -694,6 +694,9 @@
 }
 
 - (void)updatePredicate {
+    [NSFetchedResultsController deleteCacheWithName:@"SpecialCache"];
+    [NSFetchedResultsController deleteCacheWithName:@"FolderCache"];
+    [NSFetchedResultsController deleteCacheWithName:@"FeedCache"];
     NSPredicate *predFolder = [NSPredicate predicateWithFormat:@"folderId == %@", [NSNumber numberWithInt:currentFolderIndex]];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
         NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];

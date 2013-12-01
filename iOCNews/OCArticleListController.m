@@ -108,7 +108,7 @@
         
         fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                        managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
-                                                                                  cacheName:nil];
+                                                                                  cacheName:@"ArticleCache"];
         
     }
     return fetchedResultsController;
@@ -429,7 +429,7 @@
             self.fetchedResultsController.delegate = self;
         }
     }
-    
+    [NSFetchedResultsController deleteCacheWithName:@"ArticleCache"];
     self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
     
     if (![self.fetchedResultsController performFetch:&error]) {
