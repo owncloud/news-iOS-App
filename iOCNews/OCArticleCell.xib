@@ -58,9 +58,18 @@
                             <constraint firstAttribute="width" constant="112" id="tJl-Tn-Im8"/>
                         </constraints>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uAr-hd-b6i">
+                        <rect key="frame" x="636" y="4" width="16" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="8DJ-uz-xMV"/>
+                            <constraint firstAttribute="width" constant="16" id="ny9-4B-egp"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="5" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="2tM-Ll-34n"/>
+                    <constraint firstAttribute="trailing" secondItem="uAr-hd-b6i" secondAttribute="trailing" constant="48" id="DnS-XU-9Pc"/>
                     <constraint firstItem="3" firstAttribute="leading" secondItem="azd-30-7Fu" secondAttribute="leading" constant="152" id="Jjg-p8-zUG"/>
                     <constraint firstItem="3" firstAttribute="top" secondItem="azd-30-7Fu" secondAttribute="top" constant="10" id="Q4F-ED-Zhh"/>
                     <constraint firstItem="5" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="6" id="R64-fw-iwK"/>
@@ -73,12 +82,14 @@
                     <constraint firstItem="3" firstAttribute="leading" secondItem="4" secondAttribute="leading" id="v4m-wl-0Pg"/>
                     <constraint firstItem="6" firstAttribute="top" secondItem="azd-30-7Fu" secondAttribute="top" constant="21" id="wge-Cy-iFh"/>
                     <constraint firstAttribute="bottom" secondItem="6" secondAttribute="bottom" constant="20" id="yAB-fx-gl9"/>
+                    <constraint firstItem="uAr-hd-b6i" firstAttribute="top" secondItem="azd-30-7Fu" secondAttribute="top" constant="4" id="yIy-M6-Py7"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="articleImage" destination="6" id="10"/>
                 <outlet property="articleImageWidthConstraint" destination="tJl-Tn-Im8" id="IBB-D2-wQV"/>
                 <outlet property="dateLabel" destination="4" id="12"/>
+                <outlet property="starImage" destination="uAr-hd-b6i" id="Pxw-cU-QgH"/>
                 <outlet property="summaryLabel" destination="5" id="13"/>
                 <outlet property="titleLabel" destination="3" id="11"/>
                 <outlet property="titleLabelLeftConstraint" destination="Jjg-p8-zUG" id="lX0-JC-ASB"/>

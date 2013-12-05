@@ -624,6 +624,7 @@
 		D0E8A168184BF09D005F8CAF /* UAAppReviewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E8A0FA184BF09C005F8CAF /* UAAppReviewManager.m */; };
 		D0E8A169184BF09D005F8CAF /* UAAppReviewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E8A0FA184BF09C005F8CAF /* UAAppReviewManager.m */; };
 		D0E8A20A184BF21A005F8CAF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0E8A209184BF21A005F8CAF /* StoreKit.framework */; };
+		D0E8A230184FD466005F8CAF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0E8A209184BF21A005F8CAF /* StoreKit.framework */; };
 		D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F181251782585100F719D9 /* SystemConfiguration.framework */; };
 		D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F181281783B12C00F719D9 /* OCLoginController.m */; };
 		D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812B178502D500F719D9 /* GTMNSString+HTML.m */; };
@@ -1061,6 +1062,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0E8A230184FD466005F8CAF /* StoreKit.framework in Frameworks */,
 				D0E89FB018385457005F8CAF /* libpcre.a in Frameworks */,
 				D0E89FB118385457005F8CAF /* CoreData.framework in Frameworks */,
 				D0E89FB218385457005F8CAF /* Security.framework in Frameworks */,

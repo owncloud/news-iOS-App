@@ -45,19 +45,21 @@
 #import "UIImageView+OCWebCache.h"
 #import "HexColor.h"
 
-@interface OCArticleListController () {
+@interface OCArticleListController () <UIGestureRecognizerDelegate> {
     int currentIndex;
 }
+
+@property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
 
 - (void) configureView;
 - (void) scrollToTop;
 - (void) previousArticle:(NSNotification*)n;
 - (void) nextArticle:(NSNotification*)n;
-- (void) articleChangeInFeed:(NSNotification*)n;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 - (void) updatePredicate;
 - (void) networkSuccess:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
+- (IBAction)handleCellSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
 
 @end
 
@@ -67,6 +69,7 @@
 @synthesize feedRefreshControl;
 @synthesize feed = _feed;
 @synthesize fetchedResultsController;
+@synthesize markGesture;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -152,6 +155,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
     self.tableView.rowHeight = 154;
     self.tableView.scrollsToTop = NO;
+    [self.tableView addGestureRecognizer:self.markGesture];
 
     IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
     UINavigationController *navController = (UINavigationController*)deckController.centerController;
@@ -270,6 +274,10 @@
     }
     cell.summaryLabel.text = [summary stringByConvertingHTMLToPlainText];
     [cell.summaryLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
+    cell.starImage.image = nil;
+    if (item.starredValue) {
+        cell.starImage.image = [UIImage imageNamed:@"star_icon"];
+    }
     NSNumber *read = item.unread;
     if ([read intValue] == 1) {
         cell.summaryLabel.textColor = [UIColor darkTextColor];
@@ -326,6 +334,13 @@
     [self markRowsRead];
 }
 
+
+#pragma mark - Gesture recognizer delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
 
 #pragma mark - Actions
 
@@ -469,15 +484,47 @@
     }
 }
 
-- (void) articleChangeInFeed:(NSNotification *)n {
-/*    NSString * articleText = [n.userInfo objectForKey:@"ArticleText"];
-    FDArticle *a = (FDArticle*)[self.articles objectAtIndex:currentIndex];
-    a.readable = articleText;
+- (UISwipeGestureRecognizer *) markGesture {
+    if (!markGesture) {
+        markGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellSwipe:)];
+        markGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        markGesture.delegate = self;
+    }
+    return markGesture;
+}
 
-    BOOL success = [self.feed writeToFile];
-    if (success) {
-        [self configureView];
-    } */
+- (IBAction)handleCellSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
+    //http://stackoverflow.com/a/14364085/2036378 (why it's sometimes a good idea to retrieve the cell)
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        
+        CGPoint p = [gestureRecognizer locationInView:self.tableView];
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+        if (indexPath == nil) {
+            NSLog(@"swipe on table view but not on a row");
+        } else {
+            if (indexPath.section == 0) {
+                //UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                //if (cell.isHighlighted) {
+                Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                if (item.unreadValue) {
+                    NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                    item.unreadValue = NO;
+                    [idsToMarkRead addObject:item.myId];
+                    [self updateUnreadCount:idsToMarkRead];
+                } else {
+                    if (item.starredValue) {
+                        item.starredValue = NO;
+                        [[OCNewsHelper sharedHelper] unstarItemOffline:item.myId];
+                    } else {
+                        item.starredValue = YES;
+                        [[OCNewsHelper sharedHelper] starItemOffline:item.myId];
+                    }
+                }
+                //}
+            }
+        }
+    }
 }
 
 - (UIRefreshControl *)feedRefreshControl {

@@ -55,10 +55,20 @@
                             <constraint firstAttribute="width" constant="56" id="tkM-pB-aiH"/>
                         </constraints>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="G4D-5n-5jt">
+                        <rect key="frame" x="300" y="4" width="16" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="Fwf-9P-BcU"/>
+                            <constraint firstAttribute="width" constant="16" id="UPm-JK-zM3"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="5" secondAttribute="bottom" constant="5" id="8hV-C3-MID"/>
                     <constraint firstItem="3" firstAttribute="top" secondItem="6" secondAttribute="top" id="D7n-t0-WGj"/>
+                    <constraint firstAttribute="trailing" secondItem="G4D-5n-5jt" secondAttribute="trailing" constant="4" id="LRm-Fp-un9"/>
+                    <constraint firstItem="G4D-5n-5jt" firstAttribute="top" secondItem="jBQ-w3-M73" secondAttribute="top" constant="4" id="PZd-iH-VrH"/>
                     <constraint firstItem="3" firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="SFc-wj-jrJ"/>
                     <constraint firstItem="4" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="5" id="Xsm-Lq-4Zf"/>
                     <constraint firstItem="5" firstAttribute="leading" secondItem="jBQ-w3-M73" secondAttribute="leading" constant="10" id="Ykk-Nz-EZI"/>
@@ -75,6 +85,7 @@
                 <outlet property="articleImage" destination="6" id="10"/>
                 <outlet property="articleImageWidthConstraint" destination="tkM-pB-aiH" id="L1D-q8-7tG"/>
                 <outlet property="dateLabel" destination="4" id="12"/>
+                <outlet property="starImage" destination="G4D-5n-5jt" id="qAt-mH-3E6"/>
                 <outlet property="summaryLabel" destination="5" id="13"/>
                 <outlet property="titleLabel" destination="3" id="11"/>
                 <outlet property="titleLabelLeftConstraint" destination="mwp-ol-DJG" id="8Xb-lm-q3b"/>
