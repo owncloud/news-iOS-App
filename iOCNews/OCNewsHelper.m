@@ -142,6 +142,8 @@ const int UPDATE_ALL = 3;
     [self updateStarredCount];
     [self saveContext];
 
+    __unused BOOL reachable = [[OCAPIClient sharedClient] reachabilityManager].isReachable;
+    
     return self;
 }
 
