@@ -438,7 +438,18 @@ const int UPDATE_ALL = 3;
     NSArray *newFeeds = [NSArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
     
     NSArray *newIds = [newFeeds valueForKey:@"id"];
-    NSLog(@"Known: %@; New: %@", knownIds, newIds);
+    //NSLog(@"Known: %@; New: %@", knownIds, newIds);
+    
+    //Update feed titles to those on server.
+    NSDictionary *titleDict = [NSDictionary dictionaryWithObjects:[newFeeds valueForKey:@"title"] forKeys:newIds];
+    //NSLog(@"Titles: %@", titleDict);
+    [oldFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+        NSString *newTitle = [titleDict objectForKey:feed.myId];
+        if (newTitle) {
+            feed.title = newTitle;
+            feed.extra.displayTitle = newTitle;
+        }
+    }];
     
     NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
     [newOnServer removeObjectsInArray:knownIds];
