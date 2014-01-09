@@ -452,14 +452,15 @@
             [settingsController loadView];
             settingsController.feed = feed;
             settingsController.delegate = self;
-            [self presentViewController:navController animated:YES completion:nil];
+            [self.viewDeckController presentViewController:navController animated:YES completion:nil];
         } else {
-            UINavigationController *navController = (UINavigationController *)self.settingsPopover.contentViewController;
-            OCFeedSettingsController *settingsController = (OCFeedSettingsController *)navController.topViewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
+            UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
+            OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
+            [settingsController loadView];
             settingsController.feed = feed;
             settingsController.delegate = self;
-            
-            [self.settingsPopover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown animated:YES];
+            [self.viewDeckController presentViewController:navController animated:YES completion:nil];
         }
     }
 }

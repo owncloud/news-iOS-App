@@ -44,12 +44,17 @@
 @property (strong, nonatomic) IBOutlet UISwitch *fullArticleSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *readerSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *articleImagesSwitch;
+@property (strong, nonatomic) IBOutlet UITextView *urlTextView;
+@property (strong, nonatomic) IBOutlet UITextView *titleTextView;
+@property (strong, nonatomic) IBOutlet UIStepper *keepStepper;
+@property (strong, nonatomic) IBOutlet UILabel *keepLabel;
 
 @property (nonatomic, strong) Feed *feed;
 
 - (IBAction) doSave:(id)sender;
 - (IBAction) doCancel:(id)sender;
 - (IBAction) fullArticleStateChanged:(id)sender;
+- (IBAction)keepCountChanged:(id)sender;
 
 @end
 
