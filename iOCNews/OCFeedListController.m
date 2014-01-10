@@ -325,12 +325,7 @@
             }
         }
         cell.countBadge.value = feed.unreadCountValue;
-        
-        if (feed.extra) {
-            cell.textLabel.text = feed.extra.displayTitle;
-        } else {
-            cell.textLabel.text = feed.title;
-        }
+        cell.textLabel.text = feed.title;
     }
     cell.delegate = self;
 }
@@ -444,7 +439,7 @@
         if (!feed.extra) {
             [[OCNewsHelper sharedHelper] addFeedExtra:feed];
         }
-        NSLog(@"Feed title: %@", feed.extra.displayTitle);
+        NSLog(@"Feed title: %@", feed.title);
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
             UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
@@ -643,7 +638,7 @@
                     if (!feed.extra) {
                         [[OCNewsHelper sharedHelper] addFeedExtra:feed];
                     }
-                    NSLog(@"Feed title: %@", feed.extra.displayTitle);
+                    NSLog(@"Feed title: %@", feed.title);
                     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
                         UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];

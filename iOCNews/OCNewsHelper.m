@@ -286,7 +286,6 @@ const int UPDATE_ALL = 3;
 
 - (void)addFeedExtra:(Feed *)feed {
     FeedExtra *extra = [NSEntityDescription insertNewObjectForEntityForName:@"FeedExtra" inManagedObjectContext:self.context];
-    extra.displayTitle = feed.title;
     extra.parent = feed;
     feed.extra = extra;
 }
@@ -447,7 +446,6 @@ const int UPDATE_ALL = 3;
         NSString *newTitle = [titleDict objectForKey:feed.myId];
         if (newTitle) {
             feed.title = newTitle;
-            feed.extra.displayTitle = newTitle;
         }
     }];
     
@@ -595,12 +593,13 @@ const int UPDATE_ALL = 3;
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
             NSLog(@"Feeds with new items: %d", feedsWithNewItems.count);
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
+                Feed *feed = [self feedWithId:feedId];
                 [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
                 
                 NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:nil];
                 NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
                 filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
-                while (filteredArray.count > 500) {
+                while (filteredArray.count > feed.extra.articleCountValue) {
                     Item *itemToRemove = [filteredArray lastObject];
                     NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
                     [self.context deleteObject:itemToRemove];
@@ -609,7 +608,6 @@ const int UPDATE_ALL = 3;
                 
                 NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
                 NSLog(@"Unread item count: %d", unreadItems.count);
-                Feed *feed = [self feedWithId:feedId];
                 feed.unreadCountValue = unreadItems.count;
             }];
         }
@@ -772,14 +770,14 @@ const int UPDATE_ALL = 3;
             
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
                 
-                //[allFeeds enumerateObjectsUsingBlock:^(Feed *obj, NSUInteger idx, BOOL *stop) {
+                Feed *feed = [self feedWithId:feedId];
                 
                 [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
                 
                 NSError *error = nil;
                 NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
                 
-                while (feedItems.count > 500) {
+                while (feedItems.count > feed.extra.articleCountValue) {
                     Item *itemToRemove = [feedItems lastObject];
                     if (!itemToRemove.starredValue) {
                         if (!itemToRemove.unreadValue) {

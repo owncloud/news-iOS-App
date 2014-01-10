@@ -4,7 +4,7 @@
 #import "_FeedExtra.h"
 
 const struct FeedExtraAttributes FeedExtraAttributes = {
-	.displayTitle = @"displayTitle",
+	.articleCount = @"articleCount",
 	.lastModified = @"lastModified",
 	.preferWeb = @"preferWeb",
 	.useReader = @"useReader",
@@ -43,6 +43,11 @@ const struct FeedExtraFetchedProperties FeedExtraFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"articleCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"articleCount"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"lastModifiedValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"lastModified"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -65,8 +70,27 @@ const struct FeedExtraFetchedProperties FeedExtraFetchedProperties = {
 
 
 
-@dynamic displayTitle;
+@dynamic articleCount;
 
+
+
+- (int32_t)articleCountValue {
+	NSNumber *result = [self articleCount];
+	return [result intValue];
+}
+
+- (void)setArticleCountValue:(int32_t)value_ {
+	[self setArticleCount:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveArticleCountValue {
+	NSNumber *result = [self primitiveArticleCount];
+	return [result intValue];
+}
+
+- (void)setPrimitiveArticleCountValue:(int32_t)value_ {
+	[self setPrimitiveArticleCount:[NSNumber numberWithInt:value_]];
+}
 
 
 

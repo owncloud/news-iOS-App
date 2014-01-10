@@ -5,7 +5,7 @@
 
 
 extern const struct FeedExtraAttributes {
-	__unsafe_unretained NSString *displayTitle;
+	__unsafe_unretained NSString *articleCount;
 	__unsafe_unretained NSString *lastModified;
 	__unsafe_unretained NSString *preferWeb;
 	__unsafe_unretained NSString *useReader;
@@ -38,11 +38,15 @@ extern const struct FeedExtraFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* displayTitle;
+@property (nonatomic, strong) NSNumber* articleCount;
 
 
 
-//- (BOOL)validateDisplayTitle:(id*)value_ error:(NSError**)error_;
+@property int32_t articleCountValue;
+- (int32_t)articleCountValue;
+- (void)setArticleCountValue:(int32_t)value_;
+
+//- (BOOL)validateArticleCount:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -107,8 +111,11 @@ extern const struct FeedExtraFetchedProperties {
 @interface _FeedExtra (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSString*)primitiveDisplayTitle;
-- (void)setPrimitiveDisplayTitle:(NSString*)value;
+- (NSNumber*)primitiveArticleCount;
+- (void)setPrimitiveArticleCount:(NSNumber*)value;
+
+- (int32_t)primitiveArticleCountValue;
+- (void)setPrimitiveArticleCountValue:(int32_t)value_;
 
 
 

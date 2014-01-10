@@ -120,7 +120,7 @@
 - (void)configureView
 {
     // Update the user interface for the detail item.
-    self.navigationItem.title = self.feed.extra.displayTitle; // [self.feed objectForKey:@"title"];
+    self.navigationItem.title = self.feed.title; // [self.feed objectForKey:@"title"];
     if (self.feed.myIdValue > -2) {
         self.refreshControl = self.feedRefreshControl;
     } else {
