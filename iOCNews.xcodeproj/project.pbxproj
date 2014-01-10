@@ -269,6 +269,11 @@
 		D09682B9179896B200EC6E60 /* star_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B7179896B200EC6E60 /* star_icon.png */; };
 		D09682BA179896B200EC6E60 /* star_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D09682B8179896B200EC6E60 /* star_icon@2x.png */; };
 		D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0968361179B3DB300EC6E60 /* iPhone.storyboard */; };
+		D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F391880987000C6DA92 /* libc++.dylib */; };
+		D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
+		D0A33F3E1880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
+		D0A33F3F1880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
+		D0A33F401880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -761,6 +766,9 @@
 		D09682B8179896B200EC6E60 /* star_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star_icon@2x.png"; sourceTree = "<group>"; };
 		D0968362179B3DB300EC6E60 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = iOCNews/en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
 		D0A33F2B187F5BF900C6DA92 /* News 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "News 4.xcdatamodel"; sourceTree = "<group>"; };
+		D0A33F391880987000C6DA92 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		D0A33F3B1880987C00C6DA92 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		D0A33F3D1880A12600C6DA92 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KSCrash.framework; path = "../../Library/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts/KSCrash.framework"; sourceTree = "<group>"; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1026,6 +1034,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A33F3F1880A12600C6DA92 /* KSCrash.framework in Frameworks */,
 				D04AD6B41807403100FF6056 /* libpcre.a in Frameworks */,
 				D04AD6B51807403100FF6056 /* CoreData.framework in Frameworks */,
 				D04AD6B61807403100FF6056 /* Security.framework in Frameworks */,
@@ -1044,7 +1053,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */,
+				D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */,
 				D0E8A20A184BF21A005F8CAF /* StoreKit.framework in Frameworks */,
+				D0A33F3E1880A12600C6DA92 /* KSCrash.framework in Frameworks */,
 				D01ACAB217B8342D005D1463 /* libpcre.a in Frameworks */,
 				D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */,
 				D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */,
@@ -1072,6 +1084,7 @@
 				D0E89FB518385457005F8CAF /* ImageIO.framework in Frameworks */,
 				D0E89FB618385457005F8CAF /* libxml2.dylib in Frameworks */,
 				D0E89FB718385457005F8CAF /* QuartzCore.framework in Frameworks */,
+				D0A33F401880A12600C6DA92 /* KSCrash.framework in Frameworks */,
 				D0E89FB818385457005F8CAF /* UIKit.framework in Frameworks */,
 				D0E89FB918385457005F8CAF /* Foundation.framework in Frameworks */,
 				D0E89FBA18385457005F8CAF /* CoreGraphics.framework in Frameworks */,
@@ -1196,6 +1209,9 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0A33F3D1880A12600C6DA92 /* KSCrash.framework */,
+				D0A33F3B1880987C00C6DA92 /* libz.dylib */,
+				D0A33F391880987000C6DA92 /* libc++.dylib */,
 				D0E8A209184BF21A005F8CAF /* StoreKit.framework */,
 				D06CB23517A074AA00A1310B /* CoreData.framework */,
 				D0F1813E17850CAF00F719D9 /* Security.framework */,
@@ -2680,6 +2696,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy-Info.plist";
@@ -2697,6 +2717,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy-Info.plist";
@@ -2753,6 +2777,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos;
+				STRIP_STYLE = debugging;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -2780,6 +2805,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos;
+				STRIP_STYLE = debugging;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2790,12 +2816,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = debugging;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
@@ -2807,12 +2841,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = debugging;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
@@ -2824,6 +2866,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy2-Info.plist";
@@ -2841,6 +2887,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy2-Info.plist";

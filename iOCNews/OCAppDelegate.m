@@ -35,6 +35,8 @@
 #import "IIViewDeckController.h"
 #import "OCNewsHelper.h"
 #import "UAAppReviewManager.h"
+#import <KSCrash/KSCrash.h>
+#import <KSCrash/KSCrashInstallationEmail.h>
 
 @implementation OCAppDelegate
 
@@ -59,8 +61,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    KSCrashInstallation* installation = [self makeEmailInstallation];
+    [installation install];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
+
     UIStoryboard *storyboard;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
@@ -94,6 +99,15 @@
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
     }
     [UAAppReviewManager showPromptIfNecessary];
+
+    [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
+        if(completed) {
+            NSLog(@"Sent %d reports", (int)[reports count]);
+        } else{
+            NSLog(@"Failed to send reports: %@", error);
+        }
+    }];
+    
     return YES;
 }
 
@@ -128,5 +142,27 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+- (KSCrashInstallation*) makeEmailInstallation {
+    NSString* emailAddress = @"support@peterandlinda.com";
+    
+    KSCrashInstallationEmail* email = [KSCrashInstallationEmail sharedInstance];
+    email.recipients = @[emailAddress];
+    email.subject = @"iOCNews Crash Report";
+    email.message = @"This is a crash report";
+    email.filenameFmt = @"crash-report-%d.txt.gz";
+    
+    [email addConditionalAlertWithTitle:@"Crash Detected"
+                                message:@"iOCNews crashed last time it was launched. Do you want to send a report to the developer?"
+                              yesAnswer:@"Yes, please!"
+                               noAnswer:@"No thanks"];
+    
+    // Uncomment to send Apple style reports instead of JSON.
+    [email setReportStyle:KSCrashEmailReportStyleApple useDefaultFilenameFormat:YES];
+    
+    return email;
+}
+
+
 
 @end
