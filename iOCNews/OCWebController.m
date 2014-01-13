@@ -66,6 +66,8 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)configureView;
 - (void) writeAndLoadHtml:(NSString*)html;
+- (NSString *)replaceYTIframe:(NSString *)html;
+- (NSString *)extractYoutubeVideoID:(NSString *)urlYoutube;
 - (UIColor*)myBackgroundColor;
 
 @end
@@ -298,6 +300,7 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 - (void)writeAndLoadHtml:(NSString *)html {
+    html = [self replaceYTIframe:html];
     NSURL *source = [[NSBundle mainBundle] URLForResource:@"rss" withExtension:@"html" subdirectory:nil];
     NSString *objectHtml = [NSString stringWithContentsOfURL:source encoding:NSUTF8StringEncoding error:nil];
     
@@ -1177,6 +1180,76 @@ const int SWIPE_PREVIOUS = 1;
     shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
     shadowLayer.shadowOffset = CGSizeZero;
     shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
+}
+
+- (NSString*)replaceYTIframe:(NSString *)html {
+    __block NSString *result = html;
+    NSError *error = nil;
+    HTMLParser *parser = [[HTMLParser alloc] initWithString:html error:&error];
+    
+    if (error) {
+        NSLog(@"Error: %@", error);
+        return html;
+    }
+    
+    //parse body
+    HTMLNode *bodyNode = [parser body];
+    
+    NSArray *inputNodes = [bodyNode findChildTags:@"iframe"];
+    [inputNodes enumerateObjectsUsingBlock:^(HTMLNode *inputNode, NSUInteger idx, BOOL *stop) {
+        if (inputNode) {
+            NSString *src = [inputNode getAttributeNamed:@"src"];
+            if (src && [src rangeOfString:@"youtu"].location != NSNotFound) {
+                NSString *videoID = [self extractYoutubeVideoID:src];
+                if (videoID) {
+                    NSLog(@"Raw: %@", [inputNode rawContents]);
+                    
+                    NSString *height = [inputNode getAttributeNamed:@"height"];
+                    NSString *width = [inputNode getAttributeNamed:@"width"];
+                    NSString *heightString = @"";
+                    NSString *widthString = @"";
+                    if (height.length > 0) {
+                        heightString = [NSString stringWithFormat:@"height=\"%@\"", height];
+                    }
+                    if (width.length > 0) {
+                        widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
+                    }
+                    NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/v/%@\" type=\"application/x-shockwave-flash\" %@ %@></embed>", videoID, heightString, widthString];
+                    result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
+                }
+            }
+        }
+    }];
+    
+    return result;
+}
+
+
+//based on https://gist.github.com/rais38/4683817
+/**
+ @see https://devforums.apple.com/message/705665#705665
+ extractYoutubeVideoID: works for the following URL formats:
+ www.youtube.com/v/VIDEOID
+ www.youtube.com?v=VIDEOID
+ www.youtube.com/watch?v=WHsHKzYOV2E&feature=youtu.be
+ www.youtube.com/watch?v=WHsHKzYOV2E
+ youtu.be/KFPtWedl7wg_U923
+ www.youtube.com/watch?feature=player_detailpage&v=WHsHKzYOV2E#t=31s
+ youtube.googleapis.com/v/WHsHKzYOV2E
+ www.youtube.com/embed/VIDEOID
+ */
+
+- (NSString *)extractYoutubeVideoID:(NSString *)urlYoutube {
+    NSString *regexString = @"(?<=v(=|/))([-a-zA-Z0-9_]+)|(?<=youtu.be/)([-a-zA-Z0-9_]+)|(?<=embed/)([-a-zA-Z0-9_]+)";
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRange rangeOfFirstMatch = [regex rangeOfFirstMatchInString:urlYoutube options:0 range:NSMakeRange(0, [urlYoutube length])];
+    if(!NSEqualRanges(rangeOfFirstMatch, NSMakeRange(NSNotFound, 0))) {
+        NSString *substringForFirstMatch = [urlYoutube substringWithRange:rangeOfFirstMatch];
+        return substringForFirstMatch;
+    }
+    
+    return nil;
 }
 
 @end
