@@ -54,6 +54,7 @@
 		D04AD66D1807403100FF6056 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D04AD66E1807403100FF6056 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D04AD66F1807403100FF6056 /* OCWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA72177909A600C965F4 /* OCWebController.m */; };
+		D04AD6701807403100FF6056 /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA7E17790B1E00C965F4 /* MKNumberBadgeView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D04AD6711807403100FF6056 /* UILabel+VerticalAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */; };
 		D04AD6721807403100FF6056 /* FDiCabActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABA917790F6600C965F4 /* FDiCabActivity.m */; };
 		D04AD6731807403100FF6056 /* FDInstapaperActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABAE17790F6600C965F4 /* FDInstapaperActivity.m */; };
@@ -273,14 +274,6 @@
 		D0A33F3E1880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
 		D0A33F3F1880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
 		D0A33F401880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
-		D0A33F4A18848CB900C6DA92 /* OCFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0A33F4918848CB900C6DA92 /* OCFeedCell.xib */; };
-		D0A33F4B18848CB900C6DA92 /* OCFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0A33F4918848CB900C6DA92 /* OCFeedCell.xib */; };
-		D0A33F4C18848CB900C6DA92 /* OCFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0A33F4918848CB900C6DA92 /* OCFeedCell.xib */; };
-		D0A33F4D1884B63500C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
-		D0A33F4E1884B64300C6DA92 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F391880987000C6DA92 /* libc++.dylib */; };
-		D0A33F521884C07100C6DA92 /* MLPAccessoryBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F511884C07100C6DA92 /* MLPAccessoryBadge.m */; };
-		D0A33F531884C07100C6DA92 /* MLPAccessoryBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F511884C07100C6DA92 /* MLPAccessoryBadge.m */; };
-		D0A33F541884C07200C6DA92 /* MLPAccessoryBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F511884C07100C6DA92 /* MLPAccessoryBadge.m */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -297,6 +290,7 @@
 		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA72177909A600C965F4 /* OCWebController.m */; };
+		D0BCAA7F17790B1E00C965F4 /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA7E17790B1E00C965F4 /* MKNumberBadgeView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0BCAAA417790C1E00C965F4 /* UILabel+VerticalAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */; };
 		D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAADA17790C9100C965F4 /* libxml2.dylib */; };
 		D0BCABBA17790F6700C965F4 /* FDiCabActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABA917790F6600C965F4 /* FDiCabActivity.m */; };
@@ -405,6 +399,7 @@
 		D0E89F6618385457005F8CAF /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0E89F6718385457005F8CAF /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D0E89F6818385457005F8CAF /* OCWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA72177909A600C965F4 /* OCWebController.m */; };
+		D0E89F6918385457005F8CAF /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA7E17790B1E00C965F4 /* MKNumberBadgeView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0E89F6A18385457005F8CAF /* UILabel+VerticalAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */; };
 		D0E89F6B18385457005F8CAF /* FDiCabActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABA917790F6600C965F4 /* FDiCabActivity.m */; };
 		D0E89F6C18385457005F8CAF /* FDInstapaperActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABAE17790F6600C965F4 /* FDInstapaperActivity.m */; };
@@ -774,9 +769,6 @@
 		D0A33F391880987000C6DA92 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		D0A33F3B1880987C00C6DA92 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		D0A33F3D1880A12600C6DA92 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KSCrash.framework; path = "../../Library/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts/KSCrash.framework"; sourceTree = "<group>"; };
-		D0A33F4918848CB900C6DA92 /* OCFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OCFeedCell.xib; sourceTree = "<group>"; };
-		D0A33F501884C07100C6DA92 /* MLPAccessoryBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPAccessoryBadge.h; sourceTree = "<group>"; };
-		D0A33F511884C07100C6DA92 /* MLPAccessoryBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLPAccessoryBadge.m; sourceTree = "<group>"; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -805,6 +797,8 @@
 		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA71177909A600C965F4 /* OCWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCWebController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA72177909A600C965F4 /* OCWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCWebController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA7D17790B1E00C965F4 /* MKNumberBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNumberBadgeView.h; sourceTree = "<group>"; };
+		D0BCAA7E17790B1E00C965F4 /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
 		D0BCAAA217790C1E00C965F4 /* UILabel+VerticalAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+VerticalAlignment.h"; sourceTree = "<group>"; };
 		D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+VerticalAlignment.m"; sourceTree = "<group>"; };
 		D0BCAADA17790C9100C965F4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -1090,12 +1084,10 @@
 				D0E89FB518385457005F8CAF /* ImageIO.framework in Frameworks */,
 				D0E89FB618385457005F8CAF /* libxml2.dylib in Frameworks */,
 				D0E89FB718385457005F8CAF /* QuartzCore.framework in Frameworks */,
+				D0A33F401880A12600C6DA92 /* KSCrash.framework in Frameworks */,
 				D0E89FB818385457005F8CAF /* UIKit.framework in Frameworks */,
 				D0E89FB918385457005F8CAF /* Foundation.framework in Frameworks */,
 				D0E89FBA18385457005F8CAF /* CoreGraphics.framework in Frameworks */,
-				D0A33F401880A12600C6DA92 /* KSCrash.framework in Frameworks */,
-				D0A33F4E1884B64300C6DA92 /* libc++.dylib in Frameworks */,
-				D0A33F4D1884B63500C6DA92 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1176,16 +1168,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		D0A33F4F1884C07100C6DA92 /* MLPAccessoryBadge */ = {
-			isa = PBXGroup;
-			children = (
-				D0A33F501884C07100C6DA92 /* MLPAccessoryBadge.h */,
-				D0A33F511884C07100C6DA92 /* MLPAccessoryBadge.m */,
-			);
-			name = MLPAccessoryBadge;
-			path = MLPAccessoryBadge/MLPAccessoryBadge;
-			sourceTree = "<group>";
-		};
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
@@ -1205,7 +1187,7 @@
 				D0BCABAC17790F6600C965F4 /* FDInstapaperActivity */,
 				D0BCABB317790F6600C965F4 /* FDReadabilityActivity */,
 				D0BCAAA117790C1E00C965F4 /* UILabel-VerticalAlignment */,
-				D0A33F4F1884C07100C6DA92 /* MLPAccessoryBadge */,
+				D0BCAA7C17790B1E00C965F4 /* MKNumberBadgeView */,
 				D0BCAA5D177907FD00C965F4 /* ViewDeck */,
 				D07D651517DFEFE700C40D76 /* JCGridMenu */,
 				D0BCAA2B177900C300C965F4 /* iOCNews */,
@@ -1265,7 +1247,6 @@
 				D0BCABD51779112000C965F4 /* PHPrefViewController.m */,
 				D0BCAA6D177909A600C965F4 /* OCFeedCell.h */,
 				D0BCAA6E177909A600C965F4 /* OCFeedCell.m */,
-				D0A33F4918848CB900C6DA92 /* OCFeedCell.xib */,
 				D0BCAA6F177909A600C965F4 /* OCFeedListController.h */,
 				D0BCAA70177909A600C965F4 /* OCFeedListController.m */,
 				D0BCAA69177909A500C965F4 /* OCArticleCell.h */,
@@ -1319,6 +1300,16 @@
 			);
 			name = ViewDeck;
 			path = ViewDeck/ViewDeck;
+			sourceTree = "<group>";
+		};
+		D0BCAA7C17790B1E00C965F4 /* MKNumberBadgeView */ = {
+			isa = PBXGroup;
+			children = (
+				D0BCAA7D17790B1E00C965F4 /* MKNumberBadgeView.h */,
+				D0BCAA7E17790B1E00C965F4 /* MKNumberBadgeView.m */,
+			);
+			name = MKNumberBadgeView;
+			path = iPhoneMK/Views/MKNumberBadgeView;
 			sourceTree = "<group>";
 		};
 		D0BCAAA117790C1E00C965F4 /* UILabel-VerticalAlignment */ = {
@@ -1896,7 +1887,6 @@
 				D04AD6CE1807403100FF6056 /* Readability-activity-iPhone.png in Resources */,
 				D04AD6CF1807403100FF6056 /* Readability-activity-iPhone@2x.png in Resources */,
 				D04AD6D01807403100FF6056 /* TSMessagesDefaultDesign.json in Resources */,
-				D0A33F4B18848CB900C6DA92 /* OCFeedCell.xib in Resources */,
 				D04AD6D11807403100FF6056 /* TUSafariActivity.strings in Resources */,
 				D04AD6D21807403100FF6056 /* Safari.png in Resources */,
 				D04AD6D31807403100FF6056 /* Safari@2x.png in Resources */,
@@ -2009,7 +1999,6 @@
 				D0BCABC617790F6700C965F4 /* Readability-activity-iPhone@2x.png in Resources */,
 				D0BF494317E7DF2000CB9311 /* TSMessagesDefaultDesign.json in Resources */,
 				D0BCABFC17791F3400C965F4 /* TUSafariActivity.strings in Resources */,
-				D0A33F4A18848CB900C6DA92 /* OCFeedCell.xib in Resources */,
 				D0BCABFD17791F3400C965F4 /* Safari.png in Resources */,
 				D0BCABFE17791F3400C965F4 /* Safari@2x.png in Resources */,
 				D0096CC917EE780C00B05E68 /* menu.png in Resources */,
@@ -2122,7 +2111,6 @@
 				D0E89FCC18385457005F8CAF /* Readability-activity-iPhone@2x.png in Resources */,
 				D0E89FCD18385457005F8CAF /* TSMessagesDefaultDesign.json in Resources */,
 				D0E89FCE18385457005F8CAF /* TUSafariActivity.strings in Resources */,
-				D0A33F4C18848CB900C6DA92 /* OCFeedCell.xib in Resources */,
 				D0E89FCF18385457005F8CAF /* Safari.png in Resources */,
 				D0E89FD018385457005F8CAF /* Safari@2x.png in Resources */,
 				D0E89FD118385457005F8CAF /* menu.png in Resources */,
@@ -2324,13 +2312,13 @@
 				D04AD66A1807403100FF6056 /* OCArticleCell.m in Sources */,
 				D0E8A0991842C2AC005F8CAF /* UIAlertView+AFNetworking.m in Sources */,
 				D0E8A08B1842C29C005F8CAF /* AFURLRequestSerialization.m in Sources */,
-				D0A33F531884C07100C6DA92 /* MLPAccessoryBadge.m in Sources */,
 				D04AD66B1807403100FF6056 /* TSBlurView.m in Sources */,
 				D0E8A09A1842C2AC005F8CAF /* UIButton+AFNetworking.m in Sources */,
 				D04AD66C1807403100FF6056 /* OCArticleListController.m in Sources */,
 				D04AD66D1807403100FF6056 /* OCFeedCell.m in Sources */,
 				D04AD66E1807403100FF6056 /* OCFeedListController.m in Sources */,
 				D04AD66F1807403100FF6056 /* OCWebController.m in Sources */,
+				D04AD6701807403100FF6056 /* MKNumberBadgeView.m in Sources */,
 				D04AD6711807403100FF6056 /* UILabel+VerticalAlignment.m in Sources */,
 				D04AD6721807403100FF6056 /* FDiCabActivity.m in Sources */,
 				D04AD6731807403100FF6056 /* FDInstapaperActivity.m in Sources */,
@@ -2419,12 +2407,12 @@
 				D0BF494417E7DF2000CB9311 /* TSBlurView.m in Sources */,
 				D0E8A0801842ABD5005F8CAF /* UIAlertView+AFNetworking.m in Sources */,
 				D0E8A07B1842ABD5005F8CAF /* AFURLRequestSerialization.m in Sources */,
-				D0A33F521884C07100C6DA92 /* MLPAccessoryBadge.m in Sources */,
 				D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */,
 				D0E8A0811842ABD5005F8CAF /* UIButton+AFNetworking.m in Sources */,
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
+				D0BCAA7F17790B1E00C965F4 /* MKNumberBadgeView.m in Sources */,
 				D0BCAAA417790C1E00C965F4 /* UILabel+VerticalAlignment.m in Sources */,
 				D0BCABBA17790F6700C965F4 /* FDiCabActivity.m in Sources */,
 				D0BCABBD17790F6700C965F4 /* FDInstapaperActivity.m in Sources */,
@@ -2514,12 +2502,12 @@
 				D0E89F6418385457005F8CAF /* TSBlurView.m in Sources */,
 				D0E8A0A01842C2AD005F8CAF /* UIAlertView+AFNetworking.m in Sources */,
 				D0E8A0941842C29D005F8CAF /* AFURLRequestSerialization.m in Sources */,
-				D0A33F541884C07200C6DA92 /* MLPAccessoryBadge.m in Sources */,
 				D0E89F6518385457005F8CAF /* OCArticleListController.m in Sources */,
 				D0E8A0A11842C2AD005F8CAF /* UIButton+AFNetworking.m in Sources */,
 				D0E89F6618385457005F8CAF /* OCFeedCell.m in Sources */,
 				D0E89F6718385457005F8CAF /* OCFeedListController.m in Sources */,
 				D0E89F6818385457005F8CAF /* OCWebController.m in Sources */,
+				D0E89F6918385457005F8CAF /* MKNumberBadgeView.m in Sources */,
 				D0E89F6A18385457005F8CAF /* UILabel+VerticalAlignment.m in Sources */,
 				D0E89F6B18385457005F8CAF /* FDiCabActivity.m in Sources */,
 				D0E89F6C18385457005F8CAF /* FDInstapaperActivity.m in Sources */,
@@ -2886,10 +2874,7 @@
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy2-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "iOCNews iPhone";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
@@ -2910,10 +2895,7 @@
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews copy2-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "iOCNews iPhone";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
