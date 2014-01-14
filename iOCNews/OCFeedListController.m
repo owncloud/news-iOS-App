@@ -171,10 +171,6 @@
     self.navigationItem.title = @"Feeds";
     self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
-    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableviewPress:)];
-    lpgr.delegate = self;
-    [self.tableView addGestureRecognizer:lpgr];
-    
     UISwipeGestureRecognizer *swgr = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableviewSwipe:)];
     swgr.delegate = self;
     [self.tableView addGestureRecognizer:swgr];
@@ -612,53 +608,6 @@
 - (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
     if (currentFolderIndex > 0) {
         [self doGoBack];
-    }
-}
-    
-- (IBAction)handleTableviewPress:(UILongPressGestureRecognizer *)gestureRecognizer {
-    //http://stackoverflow.com/a/14364085/2036378 (why it's sometimes a good idea to retrieve the cell)
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        
-        CGPoint p = [gestureRecognizer locationInView:self.tableView];
-        
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-        NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-        if (indexPath == nil) {
-            NSLog(@"long press on table view but not on a row");
-        } else {
-            if ((indexPath.section == 1)) {
-                Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                currentRenameId = folder.myId;
-                [[self.renameFolderAlertView textFieldAtIndex:0] setText:folder.name];
-                [self.renameFolderAlertView show];
-            } else if (indexPath.section == 2) {
-                //UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                //if (cell.isHighlighted) {
-                    Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    NSLog(@"Feed title: %@", feed.title);
-                    if (!feed.extra) {
-                        [[OCNewsHelper sharedHelper] addFeedExtra:feed];
-                    }
-                    NSLog(@"Feed title: %@", feed.title);
-                    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
-                        UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
-                        OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
-                        [settingsController loadView];
-                        settingsController.feed = feed;
-                        settingsController.delegate = self;
-                        [self presentViewController:navController animated:YES completion:nil];
-                    } else {
-                        UINavigationController *navController = (UINavigationController *)self.settingsPopover.contentViewController;
-                        OCFeedSettingsController *settingsController = (OCFeedSettingsController *)navController.topViewController;
-                        settingsController.feed = feed;
-                        settingsController.delegate = self;
-                        
-                        [self.settingsPopover presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:[self view] permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-                    }
-                //}
-            }
-        }
     }
 }
 
