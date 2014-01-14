@@ -301,6 +301,7 @@
         Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
         [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
         cell.textLabel.text = folder.name;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.countBadge.value = folder.unreadCountValue;
     } else {
         Feed *feed;
@@ -324,6 +325,7 @@
                 [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
             }
         }
+        cell.accessoryType = UITableViewCellAccessoryNone;
         cell.countBadge.value = feed.unreadCountValue;
         cell.textLabel.text = feed.title;
     }
@@ -338,7 +340,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     }
     cell.tag = indexPath.row;
-    cell.accessoryView = cell.countBadge;
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }

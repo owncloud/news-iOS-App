@@ -45,19 +45,11 @@
     return activityIndicator;
 }
 
-
-- (MKNumberBadgeView *)countBadge {
+- (OCBadgeView *)countBadge {
     
     if (!countBadge) {
-        countBadge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(0, 0, 65, 40)];
+        countBadge = [[OCBadgeView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];
         countBadge.value = 888;
-        countBadge.alignment = NSTextAlignmentRight;
-        countBadge.fillColor = [UIColor colorWithRed:0.58f green:0.61f blue:0.65f alpha:1.0f];
-        countBadge.hideWhenZero = YES;
-        countBadge.shadow = NO;
-        countBadge.strokeColor = [UIColor lightGrayColor];
-        countBadge.strokeWidth = 0.0f;
-        countBadge.shine = NO;
     }
     return countBadge;
 }
@@ -71,6 +63,10 @@
     return self;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self.contentView addSubview:self.countBadge];
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -89,8 +85,18 @@
     } else {
         self.imageView.frame = CGRectZero;
     }
-    self.textLabel.frame = CGRectMake(imageViewOffset, self.textLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - imageViewOffset, self.textLabel.frame.size.height);
-    //self.detailTextLabel.frame = CGRectMake(imageViewOffset, self.detailTextLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - 37, self.detailTextLabel.frame.size.height);
+    int accessoryOffset = 15;
+    if (self.accessoryType == UITableViewCellAccessoryNone) {
+        accessoryOffset = -18;
+    }
+    self.countBadge.frame = CGRectMake(self.contentView.frame.size.width - self.countBadge.frame.size.width + accessoryOffset,
+                                       self.countBadge.frame.origin.y,
+                                       self.countBadge.frame.size.width,
+                                       self.countBadge.frame.size.height);
+    self.textLabel.frame = CGRectMake(imageViewOffset,
+                                      self.textLabel.frame.origin.y,
+                                      self.countBadge.frame.origin.x - imageViewOffset,
+                                      self.textLabel.frame.size.height);
 }
 
 @end
