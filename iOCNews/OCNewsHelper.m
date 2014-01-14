@@ -356,6 +356,16 @@ const int UPDATE_ALL = 3;
         
         NSArray *newIds = [newFolders valueForKey:@"id"];
         NSLog(@"Known: %@; New: %@", knownIds, newIds);
+
+        //Update folder names to those on server.
+        NSDictionary *nameDict = [NSDictionary dictionaryWithObjects:[newFolders valueForKey:@"name"] forKeys:newIds];
+        //NSLog(@"Titles: %@", titleDict);
+        [oldFolders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
+            NSString *newName = [nameDict objectForKey:folder.myId];
+            if (newName) {
+                folder.name = newName;
+            }
+        }];
         
         NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
         [newOnServer removeObjectsInArray:knownIds];
