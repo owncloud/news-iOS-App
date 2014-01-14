@@ -581,6 +581,7 @@ const int UPDATE_ALL = 3;
                 NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
                 [self.context deleteObject:item];
             }
+            [self.context processPendingChanges];
             
             __block NSMutableSet *feedsWithNewItems = [[NSMutableSet alloc] init];
             [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
