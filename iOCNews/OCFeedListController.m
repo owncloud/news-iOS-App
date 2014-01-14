@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2014 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -163,6 +163,8 @@
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
         imageViewOffset = 36;
     }
+    [self.tableView registerNib:[UINib nibWithNibName:@"OCFeedCell" bundle:nil] forCellReuseIdentifier:@"FeedCell"];
+
     self.tableView.separatorInset = UIEdgeInsetsMake(0, imageViewOffset, 0, 0);
     
     self.refreshControl = self.feedRefreshControl;
@@ -301,7 +303,14 @@
         Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
         [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
         cell.textLabel.text = folder.name;
-        cell.countBadge.value = folder.unreadCountValue;
+        if (folder.unreadCountValue) {
+            [cell.countBadge setTextWithNumber:folder.unreadCount];
+            [cell.countBadge setBadgeHidden:NO];
+        } else {
+            [cell.countBadge setText:@""];
+            [cell.countBadge setBadgeHidden:YES];
+        }
+        [cell.countBadge setChevronColor:[UIColor colorWithRed:0.58f green:0.61f blue:0.65f alpha:1.0f]];
     } else {
         Feed *feed;
         if (indexPath.section == 0) {
@@ -324,21 +333,23 @@
                 [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
             }
         }
-        cell.countBadge.value = feed.unreadCountValue;
+        if (feed.unreadCountValue) {
+            [cell.countBadge setTextWithNumber:feed.unreadCount];
+            [cell.countBadge setBadgeHidden:NO];
+        } else {
+            [cell.countBadge setText:@""];
+            [cell.countBadge setBadgeHidden:YES];
+        }
+        [cell.countBadge setChevronColor:[UIColor clearColor]];
         cell.textLabel.text = feed.title;
     }
     cell.delegate = self;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"FeedCell";
     OCFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[OCFeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    }
     cell.tag = indexPath.row;
-    cell.accessoryView = cell.countBadge;
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }

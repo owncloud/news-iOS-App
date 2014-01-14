@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2014 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -31,12 +31,17 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "MKNumberBadgeView.h"
+#import "MLPAccessoryBadge.h"
 #import "MSCMoreOptionTableViewCell.h"
 
 @interface OCFeedCell : MSCMoreOptionTableViewCell
 
-@property (nonatomic, strong, readonly) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, strong, readonly) MKNumberBadgeView *countBadge;
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UILabel *textLabel;
+@property (strong, nonatomic, readonly) MLPAccessoryBadge *countBadge;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *textLabelLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *imageViewWidthConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *imageViewLeadingConstraint;
 
 @end

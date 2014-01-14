@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2014 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -35,32 +35,7 @@
 
 @implementation OCFeedCell
 
-@synthesize activityIndicator, countBadge;
-
-- (UIActivityIndicatorView *)activityIndicator {
-    
-    if (!activityIndicator) {
-        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    }
-    return activityIndicator;
-}
-
-
-- (MKNumberBadgeView *)countBadge {
-    
-    if (!countBadge) {
-        countBadge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(0, 0, 65, 40)];
-        countBadge.value = 888;
-        countBadge.alignment = NSTextAlignmentRight;
-        countBadge.fillColor = [UIColor colorWithRed:0.58f green:0.61f blue:0.65f alpha:1.0f];
-        countBadge.hideWhenZero = YES;
-        countBadge.shadow = NO;
-        countBadge.strokeColor = [UIColor lightGrayColor];
-        countBadge.strokeWidth = 0.0f;
-        countBadge.shine = NO;
-    }
-    return countBadge;
-}
+@synthesize countBadge;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -78,19 +53,39 @@
     // Configure the view for the selected state
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.accessoryView = self.countBadge;
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
-    //self.imageView.layer.masksToBounds = YES; impacts scrolling
-    self.imageView.layer.cornerRadius = 2.0;
-    int imageViewOffset = 15;
+    self.imageView.layer.cornerRadius = 2.0f;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
-        self.imageView.frame = CGRectMake(5, 10, 22, 22);
-        imageViewOffset = 37;
+        self.imageViewWidthConstraint.constant = 22;
+        self.imageViewLeadingConstraint.constant = 5;
+        self.textLabelLeadingConstraint.constant = 35;
     } else {
-        self.imageView.frame = CGRectZero;
+        self.imageViewWidthConstraint.constant = 0;
+        self.imageViewLeadingConstraint.constant = 5;
+        self.textLabelLeadingConstraint.constant = 15;
     }
-    self.textLabel.frame = CGRectMake(imageViewOffset, self.textLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - imageViewOffset, self.textLabel.frame.size.height);
-    //self.detailTextLabel.frame = CGRectMake(imageViewOffset, self.detailTextLabel.frame.origin.y, self.bounds.size.width - self.accessoryView.bounds.size.width - 37, self.detailTextLabel.frame.size.height);
+    [super layoutSubviews];
+}
+
+- (MLPAccessoryBadge *)countBadge {
+    if (!countBadge) {
+        countBadge = [MLPAccessoryBadgeChevron new];
+        [countBadge.textLabel setFont:[UIFont boldSystemFontOfSize:16]];
+        [countBadge setChevronStrokeWidth:2.0f];
+        [countBadge setCornerRadius:100];
+        [countBadge setBackgroundColor:[UIColor colorWithRed:0.58f green:0.61f blue:0.65f alpha:1.0f]];
+        [countBadge.textLabel setShadowOffset:CGSizeZero];
+        [countBadge setHighlightAlpha:0];
+        [countBadge setShadowAlpha:0];
+        [countBadge setGradientAlpha:0];
+    }
+    return countBadge;
 }
 
 @end

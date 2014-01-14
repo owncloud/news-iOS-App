@@ -4,9 +4,6 @@
 [submodule "KeychainItemWrapper"]
 	path = KeychainItemWrapper
 	url = git://gist.github.com/1170641.git
-[submodule "iPhoneMK"]
-	path = iPhoneMK
-	url = git@github.com:phedlund/iPhoneMK.git
 [submodule "TUSafariActivity"]
 	path = TUSafariActivity
 	url = https://github.com/davbeck/TUSafariActivity.git
@@ -46,3 +43,6 @@
 [submodule "KSCrash"]
 	path = KSCrash
 	url = https://github.com/kstenerud/KSCrash.git
+[submodule "MLPAccessoryBadge"]
+	path = MLPAccessoryBadge
+	url = https://github.com/EddyBorja/MLPAccessoryBadge.git
