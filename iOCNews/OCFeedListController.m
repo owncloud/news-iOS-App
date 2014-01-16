@@ -437,23 +437,13 @@
             [[OCNewsHelper sharedHelper] addFeedExtra:feed];
         }
         NSLog(@"Feed title: %@", feed.title);
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
-            UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
-            OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
-            [settingsController loadView];
-            settingsController.feed = feed;
-            settingsController.delegate = self;
-            [self.viewDeckController presentViewController:navController animated:YES completion:nil];
-        } else {
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
-            UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
-            OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
-            [settingsController loadView];
-            settingsController.feed = feed;
-            settingsController.delegate = self;
-            [self.viewDeckController presentViewController:navController animated:YES completion:nil];
-        }
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
+        UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
+        OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
+        [settingsController loadView];
+        settingsController.feed = feed;
+        settingsController.delegate = self;
+        [self.viewDeckController presentViewController:navController animated:YES completion:nil];
     }
 }
 

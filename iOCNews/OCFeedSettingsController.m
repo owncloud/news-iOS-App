@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2013-2014 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -44,16 +44,12 @@
 @implementation OCFeedSettingsController
 
 @synthesize delegate;
-@synthesize titleTextField;
 @synthesize fullArticleSwitch;
 @synthesize readerSwitch;
 @synthesize feed = _feed;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.navigationItem.leftBarButtonItem = nil;
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,13 +58,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0) {
+        return MAX(self.tableView.rowHeight, self.urlTextView.intrinsicContentSize.height);
+    } else if (indexPath.row == 1) {
+        return MAX(self.tableView.rowHeight, self.titleTextView.intrinsicContentSize.height);
+    } else {
+        return tableView.rowHeight;
+    }
+}
+
 #pragma mark - Extra
 
 - (void)setFeed:(Feed *)feed {
     if (_feed != feed) {
         _feed = feed;
         
-        self.titleTextField.text = feed.title;
         self.urlTextView.text = feed.url;
         self.titleTextView.text = feed.title;
         self.fullArticleSwitch.on = feed.extra.preferWebValue;
@@ -81,7 +86,6 @@
 }
 
 - (IBAction)doSave:(id)sender {
-    //self.feed.extra.displayTitle = self.titleTextField.text;
     self.feed.extra.preferWebValue = self.fullArticleSwitch.on;
     self.feed.extra.useReaderValue = self.readerSwitch.on;
     self.feed.extra.articleCountValue = self.keepStepper.value;

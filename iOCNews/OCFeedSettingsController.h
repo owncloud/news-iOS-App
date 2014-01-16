@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2013-2014 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -40,7 +40,6 @@
 
 @property (nonatomic, unsafe_unretained) id <OCFeedSettingsDelegate> delegate;
 
-@property (strong, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) IBOutlet UISwitch *fullArticleSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *readerSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *articleImagesSwitch;

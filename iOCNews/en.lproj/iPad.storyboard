@@ -463,7 +463,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9h-wI-DcA">
-                                                    <rect key="frame" x="20" y="10" width="42" height="21"/>
+                                                    <rect key="frame" x="20" y="11" width="42" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="42" id="cHH-4Y-gvR"/>
                                                     </constraints>
@@ -471,19 +471,19 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet." translatesAutoresizingMaskIntoConstraints="NO" id="5JD-pO-xTc">
-                                                    <rect key="frame" x="75" y="5" width="673" height="38"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet." translatesAutoresizingMaskIntoConstraints="NO" id="5JD-pO-xTc" customClass="OCTextView">
+                                                    <rect key="frame" x="75" y="0.0" width="673" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="v9h-wI-DcA" secondAttribute="centerY" constant="1" id="Etf-rj-PhI"/>
-                                                <constraint firstItem="5JD-pO-xTc" firstAttribute="top" secondItem="HSI-Mx-nVC" secondAttribute="top" constant="5" id="GFb-c5-6cW"/>
+                                                <constraint firstItem="5JD-pO-xTc" firstAttribute="top" secondItem="HSI-Mx-nVC" secondAttribute="top" id="GFb-c5-6cW"/>
                                                 <constraint firstItem="5JD-pO-xTc" firstAttribute="leading" secondItem="HSI-Mx-nVC" secondAttribute="leading" constant="75" id="N3d-fw-feZ"/>
                                                 <constraint firstAttribute="bottom" secondItem="5JD-pO-xTc" secondAttribute="bottom" id="P9f-nb-BhL"/>
+                                                <constraint firstAttribute="centerY" secondItem="v9h-wI-DcA" secondAttribute="centerY" id="haP-Jy-woU"/>
                                                 <constraint firstAttribute="trailing" secondItem="5JD-pO-xTc" secondAttribute="trailing" constant="20" id="s0v-ge-WnK"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -499,7 +499,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6Z-w3-ikf">
-                                                    <rect key="frame" x="20" y="12" width="150" height="21"/>
+                                                    <rect key="frame" x="20" y="11" width="150" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="150" id="eJM-uA-T0O"/>
                                                     </constraints>
@@ -507,19 +507,19 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet." translatesAutoresizingMaskIntoConstraints="NO" id="kho-hW-zqf">
-                                                    <rect key="frame" x="75" y="6" width="673" height="37"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet." translatesAutoresizingMaskIntoConstraints="NO" id="kho-hW-zqf" customClass="OCTextView">
+                                                    <rect key="frame" x="75" y="0.0" width="673" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="kho-hW-zqf" firstAttribute="leading" secondItem="ZkU-db-TZ0" secondAttribute="leading" constant="75" id="FM2-5e-Sxm"/>
-                                                <constraint firstAttribute="centerY" secondItem="f6Z-w3-ikf" secondAttribute="centerY" constant="-1" id="NJr-Uf-JKG"/>
-                                                <constraint firstItem="kho-hW-zqf" firstAttribute="top" secondItem="ZkU-db-TZ0" secondAttribute="top" constant="6" id="cWK-KE-pGd"/>
+                                                <constraint firstItem="kho-hW-zqf" firstAttribute="top" secondItem="ZkU-db-TZ0" secondAttribute="top" id="cWK-KE-pGd"/>
                                                 <constraint firstAttribute="trailing" secondItem="kho-hW-zqf" secondAttribute="trailing" constant="20" id="kUW-jW-09Q"/>
+                                                <constraint firstAttribute="centerY" secondItem="f6Z-w3-ikf" secondAttribute="centerY" id="lRv-aj-lSJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="kho-hW-zqf" secondAttribute="bottom" id="zMH-k2-EzP"/>
                                             </constraints>
                                         </tableViewCellContentView>
