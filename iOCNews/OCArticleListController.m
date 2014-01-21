@@ -390,9 +390,11 @@
                     if (idx >= row) {
                         *stop = YES;
                     }
-                    if (item.unreadValue) {
-                        item.unreadValue = NO;
-                        [idsToMarkRead addObject:item.myId];
+                    if (item) {
+                        if (item.unreadValue) {
+                            item.unreadValue = NO;
+                            [idsToMarkRead addObject:item.myId];
+                        }
                     }
                 }];
                 
