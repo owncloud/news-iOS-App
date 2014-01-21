@@ -148,12 +148,12 @@
     
     KSCrashInstallationEmail* email = [KSCrashInstallationEmail sharedInstance];
     email.recipients = @[emailAddress];
-    email.subject = @"iOCNews Crash Report";
-    email.message = @"This is a crash report";
+    email.subject = @"CloudNews Crash Report";
+    email.message = @"<Please provide as much details as possible about what you were doing when the crash occurred.>";
     email.filenameFmt = @"crash-report-%d.txt.gz";
     
     [email addConditionalAlertWithTitle:@"Crash Detected"
-                                message:@"iOCNews crashed last time it was launched. Do you want to send a report to the developer?"
+                                message:@"CloudNews crashed last time it was launched. Do you want to send a report to the developer?"
                               yesAnswer:@"Yes, please!"
                                noAnswer:@"No thanks"];
     

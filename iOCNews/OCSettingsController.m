@@ -160,7 +160,7 @@
             MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
             mailViewController.mailComposeDelegate = self;
             [mailViewController setToRecipients:[NSArray arrayWithObject:@"support@peterandlinda.com"]];
-            [mailViewController setSubject:@"iOCNews Support Request"];
+            [mailViewController setSubject:@"CloudNews Support Request"];
             [mailViewController setMessageBody:@"<Please state your question or problem here>" isHTML:NO ];
             mailViewController.modalPresentationStyle = UIModalPresentationFormSheet;
             [self presentViewController:mailViewController animated:YES completion:nil];
