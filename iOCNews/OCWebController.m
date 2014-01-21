@@ -317,10 +317,18 @@ const int SWIPE_PREVIOUS = 1;
     }
     
     Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$FeedTitle$" withString:feed.title];
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleDate$" withString:dateText];
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleTitle$" withString:self.item.title];
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleLink$" withString:self.item.url];
+    if (feed && feed.title) {
+        objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$FeedTitle$" withString:feed.title];
+    }
+    if (dateText) {
+        objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleDate$" withString:dateText];
+    }
+    if (self.item.title) {
+        objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleTitle$" withString:self.item.title];
+    }
+    if (self.item.url) {
+        objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleLink$" withString:self.item.url];
+    }
     NSString *author = self.item.author;
     if (![author isKindOfClass:[NSNull class]]) {
         if (author.length > 0) {
@@ -329,8 +337,12 @@ const int SWIPE_PREVIOUS = 1;
     } else {
         author = @"";
     }
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleAuthor$" withString:author];
-    objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleSummary$" withString:html];
+    if (author) {
+        objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleAuthor$" withString:author];
+    }
+    if (html) {
+        objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$ArticleSummary$" withString:html];
+    }
     
     NSFileManager *fm = [NSFileManager defaultManager];
     NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
