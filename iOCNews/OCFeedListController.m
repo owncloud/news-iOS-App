@@ -385,28 +385,42 @@
         Feed *feed;
         switch (indexPath.section) {
             case 0:
-                feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
-                if (!feed.extra) {
-                    [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                @try {
+                    feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
+                    if (!feed.extra) {
+                        [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                    }
+                    self.detailViewController.feed = feed;
+                    [self.viewDeckController closeLeftView];
                 }
-                self.detailViewController.feed = feed;
-                [self.viewDeckController closeLeftView];
+                @catch (NSException *exception) {
+                    //
+                }
                 break;
             case 1:
-                folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                currentFolderIndex = folder.myIdValue;
-                self.navigationItem.title = folder.name;
-                self.navigationItem.leftBarButtonItem = self.backBarButtonItem;
-                [self updatePredicate];
-
+                @try {
+                    folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+                    currentFolderIndex = folder.myIdValue;
+                    self.navigationItem.title = folder.name;
+                    self.navigationItem.leftBarButtonItem = self.backBarButtonItem;
+                    [self updatePredicate];
+                }
+                @catch (NSException *exception) {
+                    //
+                }
                 break;
             case 2:
-                feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
-                if (!feed.extra) {
-                    [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                @try {
+                    feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
+                    if (!feed.extra) {
+                        [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                    }
+                    self.detailViewController.feed = feed;
+                    [self.viewDeckController closeLeftView];
                 }
-                self.detailViewController.feed = feed;
-                [self.viewDeckController closeLeftView];
+                @catch (NSException *exception) {
+                    //
+                }
                 break;
                 
             default:
