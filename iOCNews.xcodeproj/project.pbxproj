@@ -270,9 +270,6 @@
 		D0968363179B3DB300EC6E60 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0968361179B3DB300EC6E60 /* iPhone.storyboard */; };
 		D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F391880987000C6DA92 /* libc++.dylib */; };
 		D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
-		D0A33F3E1880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
-		D0A33F3F1880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
-		D0A33F401880A12600C6DA92 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3D1880A12600C6DA92 /* KSCrash.framework */; };
 		D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
 		D0A33F591885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
 		D0A33F5A1885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
@@ -389,6 +386,9 @@
 		D0C66C9917AB3E6300F0EC7C /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C8B17AB3E6300F0EC7C /* UIImageView+WebCache.m */; };
 		D0C66CA217B19C3E00F0EC7C /* _FeedExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66C9F17B19C3D00F0EC7C /* _FeedExtra.m */; };
 		D0C66CA317B19C3E00F0EC7C /* FeedExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */; };
+		D0CFE5A9188F43EF00165839 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CFE5A8188F43EF00165839 /* KSCrash.framework */; };
+		D0CFE5AA188F43F000165839 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CFE5A8188F43EF00165839 /* KSCrash.framework */; };
+		D0CFE5AB188F43F000165839 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CFE5A8188F43EF00165839 /* KSCrash.framework */; };
 		D0E89F49182D6EA6005F8CAF /* UIImageView+OCWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0516E66182988B300F6D677 /* UIImageView+OCWebCache.m */; };
 		D0E89F541833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
 		D0E89F551833FFCD005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
@@ -773,7 +773,6 @@
 		D0A33F2B187F5BF900C6DA92 /* News 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 4.xcdatamodel"; sourceTree = "<group>"; };
 		D0A33F391880987000C6DA92 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		D0A33F3B1880987C00C6DA92 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		D0A33F3D1880A12600C6DA92 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KSCrash.framework; path = "../../Library/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts/KSCrash.framework"; sourceTree = "<group>"; };
 		D0A33F561885B91B00C6DA92 /* OCBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCBadgeView.h; sourceTree = "<group>"; };
 		D0A33F571885B91B00C6DA92 /* OCBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCBadgeView.m; sourceTree = "<group>"; };
 		D0A33F5E18876CF700C6DA92 /* OCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTextView.h; sourceTree = "<group>"; };
@@ -942,6 +941,7 @@
 		D0C66C9F17B19C3D00F0EC7C /* _FeedExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _FeedExtra.m; sourceTree = "<group>"; };
 		D0C66CA017B19C3D00F0EC7C /* FeedExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedExtra.h; sourceTree = "<group>"; };
 		D0C66CA117B19C3E00F0EC7C /* FeedExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedExtra.m; sourceTree = "<group>"; };
+		D0CFE5A8188F43EF00165839 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KSCrash.framework; sourceTree = "<group>"; };
 		D0E89F511833FDD4005F8CAF /* MSCMoreOptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCell.h; sourceTree = "<group>"; };
 		D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCMoreOptionTableViewCell.m; sourceTree = "<group>"; };
 		D0E89F531833FDD4005F8CAF /* MSCMoreOptionTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCellDelegate.h; sourceTree = "<group>"; };
@@ -1041,7 +1041,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0A33F3F1880A12600C6DA92 /* KSCrash.framework in Frameworks */,
+				D0CFE5AA188F43F000165839 /* KSCrash.framework in Frameworks */,
 				D04AD6B41807403100FF6056 /* libpcre.a in Frameworks */,
 				D04AD6B51807403100FF6056 /* CoreData.framework in Frameworks */,
 				D04AD6B61807403100FF6056 /* Security.framework in Frameworks */,
@@ -1063,7 +1063,7 @@
 				D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */,
 				D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */,
 				D0E8A20A184BF21A005F8CAF /* StoreKit.framework in Frameworks */,
-				D0A33F3E1880A12600C6DA92 /* KSCrash.framework in Frameworks */,
+				D0CFE5A9188F43EF00165839 /* KSCrash.framework in Frameworks */,
 				D01ACAB217B8342D005D1463 /* libpcre.a in Frameworks */,
 				D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */,
 				D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */,
@@ -1085,6 +1085,7 @@
 				D0E8A230184FD466005F8CAF /* StoreKit.framework in Frameworks */,
 				D0E89FB018385457005F8CAF /* libpcre.a in Frameworks */,
 				D0E89FB118385457005F8CAF /* CoreData.framework in Frameworks */,
+				D0CFE5AB188F43F000165839 /* KSCrash.framework in Frameworks */,
 				D0E89FB218385457005F8CAF /* Security.framework in Frameworks */,
 				D0E89FB318385457005F8CAF /* SystemConfiguration.framework in Frameworks */,
 				D0E89FB418385457005F8CAF /* MessageUI.framework in Frameworks */,
@@ -1094,7 +1095,6 @@
 				D0E89FB818385457005F8CAF /* UIKit.framework in Frameworks */,
 				D0E89FB918385457005F8CAF /* Foundation.framework in Frameworks */,
 				D0E89FBA18385457005F8CAF /* CoreGraphics.framework in Frameworks */,
-				D0A33F401880A12600C6DA92 /* KSCrash.framework in Frameworks */,
 				D0A33F5C1885E0CE00C6DA92 /* libz.dylib in Frameworks */,
 				D0A33F5D1885E0CE00C6DA92 /* libc++.dylib in Frameworks */,
 			);
@@ -1217,7 +1217,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D0A33F3D1880A12600C6DA92 /* KSCrash.framework */,
+				D0CFE5A8188F43EF00165839 /* KSCrash.framework */,
 				D0A33F3B1880987C00C6DA92 /* libz.dylib */,
 				D0A33F391880987000C6DA92 /* libc++.dylib */,
 				D0E8A209184BF21A005F8CAF /* StoreKit.framework */,
@@ -2703,7 +2703,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+					/Users/peter/Projects/iOCNews,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
@@ -2724,7 +2724,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+					/Users/peter/Projects/iOCNews,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
@@ -2823,7 +2823,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+					/Users/peter/Projects/iOCNews,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
@@ -2848,7 +2848,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+					/Users/peter/Projects/iOCNews,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
@@ -2873,7 +2873,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+					/Users/peter/Projects/iOCNews,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
@@ -2897,7 +2897,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/iOCNews-dwnsqcxororxxeaichxgtgujthpm/Build/Intermediates/ArchiveIntermediates/KSCrash/IntermediateBuildFilesPath/UninstalledProducts",
+					/Users/peter/Projects/iOCNews,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
