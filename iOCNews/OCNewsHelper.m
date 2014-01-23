@@ -214,6 +214,7 @@ const int UPDATE_ALL = 3;
     newFolder.myId = [dict objectForKey:@"id"];
     newFolder.name = [dict objectForKeyNotNull:@"name" fallback:@"Folder"];
     newFolder.unreadCountValue = 0;
+    [self saveContext];
     return newFolder.myIdValue;
 }
 
@@ -247,6 +248,7 @@ const int UPDATE_ALL = 3;
     newItem.unread = [dict objectForKey:@"unread"];
     newItem.starred = [dict objectForKey:@"starred"];
     newItem.lastModified = [dict objectForKey:@"lastModified"];
+    [self saveContext];
     [self addItemExtra:newItem];
 }
 
@@ -294,6 +296,7 @@ const int UPDATE_ALL = 3;
     ItemExtra *extra = [NSEntityDescription insertNewObjectForEntityForName:@"ItemExtra" inManagedObjectContext:self.context];
     extra.parent = item;
     item.extra = extra;
+    [self saveContext];
 }
 
 - (void)deleteFeed:(Feed*)feed {
@@ -458,7 +461,7 @@ const int UPDATE_ALL = 3;
             feed.title = newTitle;
         }
     }];
-    
+    [self saveContext];
     NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
     [newOnServer removeObjectsInArray:knownIds];
     NSLog(@"New on server: %@", newOnServer);
@@ -591,7 +594,7 @@ const int UPDATE_ALL = 3;
                 NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
                 [self.context deleteObject:item];
             }
-            [self.context processPendingChanges];
+            [self saveContext];
             
             __block NSMutableSet *feedsWithNewItems = [[NSMutableSet alloc] init];
             [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
@@ -798,6 +801,7 @@ const int UPDATE_ALL = 3;
                         }
                     }
                 }
+                [self saveContext];
             }];
             if ([aType intValue] == UPDATE_ALL) {
                 [self markItemsReadOffline:itemsToMarkRead];
@@ -1073,6 +1077,7 @@ const int UPDATE_ALL = 3;
         [foldersToRename addObject:@{@"folderId": anId, @"name": newName}];
     }
     [[self folderWithId:anId] setName:newName];
+    [self saveContext];
 }
 
 - (void)addFeedOffline:(NSString *)urlString {
@@ -1157,6 +1162,7 @@ const int UPDATE_ALL = 3;
         [feedsToDelete addObject:feed.myId];
     }
     [self deleteFeed:feed];
+    [self saveContext];
 }
 
 - (void)moveFeedOfflineWithId:(NSNumber *)aFeedId toFolderWithId:(NSNumber *)aFolderId {
