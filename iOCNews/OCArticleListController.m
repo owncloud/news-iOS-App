@@ -471,7 +471,7 @@
 #pragma mark - Tap navigation
 
 - (void) previousArticle:(NSNotification *)n {
-    if (currentIndex != 0) {
+    if ((currentIndex > 0) && (currentIndex < [self.tableView numberOfRowsInSection:0])) {
         --currentIndex;
         [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
@@ -479,7 +479,7 @@
 }
 
 - (void) nextArticle:(NSNotification *)n {
-    if (currentIndex < ([self.tableView numberOfRowsInSection:0] - 1)) {
+    if ((currentIndex >= 0) && (currentIndex < ([self.tableView numberOfRowsInSection:0] - 1))) {
         ++currentIndex;
         [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
