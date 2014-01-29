@@ -725,6 +725,7 @@ const int UPDATE_ALL = 3;
     NSLog(@"Building tasks");
     dispatch_group_t group = dispatch_group_create();
     [allFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+        dispatch_group_enter(group);
         NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[self feedLastModified:feed.myId], @"lastModified",
                                     [NSNumber numberWithInt:0], @"type",
                                     feed.myId, @"id", nil];
