@@ -313,7 +313,7 @@
     currentIndex = indexPath.row;
     Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.detailViewController.item = selectedItem;
-    [self.viewDeckController closeLeftView];
+    [self.viewDeckController.viewDeckController closeLeftView];
     if (selectedItem.unreadValue) {
         selectedItem.unreadValue = NO;
         [self updateUnreadCount:[NSArray arrayWithObject:selectedItem.myId]];
