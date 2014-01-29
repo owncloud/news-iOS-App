@@ -12,7 +12,7 @@
         <relationship name="extra" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="FeedExtra" inverseName="parent" inverseEntity="FeedExtra" syncable="YES"/>
     </entity>
     <entity name="FeedExtra" representedClassName="FeedExtra" syncable="YES">
-        <attribute name="articleCount" attributeType="Integer 32" minValueString="1" maxValueString="500" defaultValueString="500" syncable="YES"/>
+        <attribute name="articleCount" attributeType="Integer 32" minValueString="1" maxValueString="500" defaultValueString="250" syncable="YES"/>
         <attribute name="lastModified" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="preferWeb" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="useReader" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
