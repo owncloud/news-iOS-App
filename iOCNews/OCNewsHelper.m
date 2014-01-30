@@ -294,9 +294,12 @@ const int UPDATE_ALL = 3;
 
 - (void)addItemExtra:(Item *)item {
     ItemExtra *extra = [NSEntityDescription insertNewObjectForEntityForName:@"ItemExtra" inManagedObjectContext:self.context];
-    extra.parent = item;
-    item.extra = extra;
-    [self saveContext];
+    Item *itemToAddTo = (Item*)[extra.managedObjectContext objectWithID:item.objectID];
+    if (itemToAddTo) {
+        extra.parent = item;
+        item.extra = extra;
+        [self saveContext];
+    }
 }
 
 - (void)deleteFeed:(Feed*)feed {
