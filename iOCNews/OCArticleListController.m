@@ -342,6 +342,17 @@
     return YES;
 }
 
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    BOOL result = YES;
+    if ([gestureRecognizer isEqual:self.markGesture]) {
+        if (![self.viewDeckController isSideClosed:IIViewDeckLeftSide]) {
+            result = NO;
+        }
+    }
+    NSLog(@"Swipe Result: %d", result);
+    return result;
+}
+
 #pragma mark - Actions
 
 - (IBAction)doRefresh:(id)sender {
