@@ -37,6 +37,8 @@
 #import "UAAppReviewManager.h"
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationEmail.h>
+#import "PocketAPI.h"
+#import "PocketCredentials.h"
 
 @implementation OCAppDelegate
 
@@ -63,6 +65,7 @@
 {
     KSCrashInstallation* installation = [self makeEmailInstallation];
     [installation install];
+	[[PocketAPI sharedAPI] setConsumerKey:CONSUMER_KEY];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
@@ -109,6 +112,15 @@
     }];
     
     return YES;
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+	if([[PocketAPI sharedAPI] handleOpenURL:url]) {
+		return YES;
+	} else {
+		// if you handle your own URLs, do it here
+		return NO;
+	}
 }
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler

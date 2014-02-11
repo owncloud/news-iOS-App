@@ -37,6 +37,7 @@
 #import "FDReadabilityActivity.h"
 #import "FDiCabActivity.h"
 #import "FDInstapaperActivity.h"
+#import "OCPocketActivity.h"
 #import "IIViewDeckController.h"
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
@@ -440,10 +441,11 @@ const int SWIPE_PREVIOUS = 1;
     TUSafariActivity *sa = [[TUSafariActivity alloc] init];
     FDiCabActivity *ia = [[FDiCabActivity alloc] init];
     FDInstapaperActivity *ipa = [[FDInstapaperActivity alloc] init];
+    OCPocketActivity *pa = [[OCPocketActivity alloc] init];
     FDReadabilityActivity *ra = [[FDReadabilityActivity alloc] init];
     
     NSArray *activityItems = @[url];
-    NSArray *activities = @[sa, ia, ipa, ra];
+    NSArray *activities = @[sa, ia, ipa, pa, ra];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
 

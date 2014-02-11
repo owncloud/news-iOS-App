@@ -254,6 +254,33 @@
 		D06CB24817A2EA9300A1310B /* _Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24317A2EA8C00A1310B /* _Feed.m */; };
 		D06CB24917A2EA9300A1310B /* _Feeds.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24517A2EA8F00A1310B /* _Feeds.m */; };
 		D06CB24A17A2EA9300A1310B /* _Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24717A2EA9200A1310B /* _Item.m */; };
+		D0791ACF18AABA71005227AB /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791AC718AABA71005227AB /* PocketAPI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D0791AD018AABA71005227AB /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791AC718AABA71005227AB /* PocketAPI.m */; };
+		D0791AD118AABA71005227AB /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791AC718AABA71005227AB /* PocketAPI.m */; };
+		D0791AD218AABA71005227AB /* PocketAPILogin.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791AC918AABA71005227AB /* PocketAPILogin.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D0791AD318AABA71005227AB /* PocketAPILogin.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791AC918AABA71005227AB /* PocketAPILogin.m */; };
+		D0791AD418AABA71005227AB /* PocketAPILogin.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791AC918AABA71005227AB /* PocketAPILogin.m */; };
+		D0791AD518AABA71005227AB /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ACB18AABA71005227AB /* PocketAPIOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D0791AD618AABA71005227AB /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ACB18AABA71005227AB /* PocketAPIOperation.m */; };
+		D0791AD718AABA71005227AB /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ACB18AABA71005227AB /* PocketAPIOperation.m */; };
+		D0791AD818AABA71005227AB /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ACE18AABA71005227AB /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D0791AD918AABA71005227AB /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ACE18AABA71005227AB /* SFHFKeychainUtils.m */; };
+		D0791ADA18AABA71005227AB /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ACE18AABA71005227AB /* SFHFKeychainUtils.m */; };
+		D0791AE418AAC148005227AB /* OCPocketActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ADF18AAC148005227AB /* OCPocketActivity.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D0791AE518AAC148005227AB /* OCPocketActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ADF18AAC148005227AB /* OCPocketActivity.m */; };
+		D0791AE618AAC148005227AB /* OCPocketActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D0791ADF18AAC148005227AB /* OCPocketActivity.m */; };
+		D0791AE718AAC148005227AB /* PocketActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE018AAC148005227AB /* PocketActivity@2x~ipad.png */; };
+		D0791AE818AAC148005227AB /* PocketActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE018AAC148005227AB /* PocketActivity@2x~ipad.png */; };
+		D0791AE918AAC148005227AB /* PocketActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE018AAC148005227AB /* PocketActivity@2x~ipad.png */; };
+		D0791AEA18AAC148005227AB /* PocketActivity@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE118AAC148005227AB /* PocketActivity@2x~iphone.png */; };
+		D0791AEB18AAC148005227AB /* PocketActivity@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE118AAC148005227AB /* PocketActivity@2x~iphone.png */; };
+		D0791AEC18AAC148005227AB /* PocketActivity@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE118AAC148005227AB /* PocketActivity@2x~iphone.png */; };
+		D0791AED18AAC148005227AB /* PocketActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE218AAC148005227AB /* PocketActivity~ipad.png */; };
+		D0791AEE18AAC148005227AB /* PocketActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE218AAC148005227AB /* PocketActivity~ipad.png */; };
+		D0791AEF18AAC148005227AB /* PocketActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE218AAC148005227AB /* PocketActivity~ipad.png */; };
+		D0791AF018AAC148005227AB /* PocketActivity~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE318AAC148005227AB /* PocketActivity~iphone.png */; };
+		D0791AF118AAC148005227AB /* PocketActivity~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE318AAC148005227AB /* PocketActivity~iphone.png */; };
+		D0791AF218AAC148005227AB /* PocketActivity~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D0791AE318AAC148005227AB /* PocketActivity~iphone.png */; };
 		D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D651817DFEFE700C40D76 /* JCGridMenuController.m */; };
 		D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D655E17DFEFE700C40D76 /* UIButton+JCUI.m */; };
 		D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656017DFEFE700C40D76 /* UILabel+JCUI.m */; };
@@ -750,6 +777,23 @@
 		D06CB24517A2EA8F00A1310B /* _Feeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Feeds.m; sourceTree = "<group>"; };
 		D06CB24617A2EA9100A1310B /* _Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Item.h; sourceTree = "<group>"; };
 		D06CB24717A2EA9200A1310B /* _Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Item.m; sourceTree = "<group>"; };
+		D0791AC518AABA71005227AB /* PocketAPI+NSOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PocketAPI+NSOperation.h"; sourceTree = "<group>"; };
+		D0791AC618AABA71005227AB /* PocketAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPI.h; sourceTree = "<group>"; };
+		D0791AC718AABA71005227AB /* PocketAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPI.m; sourceTree = "<group>"; };
+		D0791AC818AABA71005227AB /* PocketAPILogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPILogin.h; sourceTree = "<group>"; };
+		D0791AC918AABA71005227AB /* PocketAPILogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPILogin.m; sourceTree = "<group>"; };
+		D0791ACA18AABA71005227AB /* PocketAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPIOperation.h; sourceTree = "<group>"; };
+		D0791ACB18AABA71005227AB /* PocketAPIOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPIOperation.m; sourceTree = "<group>"; };
+		D0791ACC18AABA71005227AB /* PocketAPITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPITypes.h; sourceTree = "<group>"; };
+		D0791ACD18AABA71005227AB /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		D0791ACE18AABA71005227AB /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		D0791ADC18AABC2B005227AB /* PocketCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PocketCredentials.h; path = iOCNews/PocketCredentials.h; sourceTree = SOURCE_ROOT; };
+		D0791ADE18AAC148005227AB /* OCPocketActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPocketActivity.h; sourceTree = "<group>"; };
+		D0791ADF18AAC148005227AB /* OCPocketActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCPocketActivity.m; sourceTree = "<group>"; };
+		D0791AE018AAC148005227AB /* PocketActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketActivity@2x~ipad.png"; sourceTree = "<group>"; };
+		D0791AE118AAC148005227AB /* PocketActivity@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketActivity@2x~iphone.png"; sourceTree = "<group>"; };
+		D0791AE218AAC148005227AB /* PocketActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketActivity~ipad.png"; sourceTree = "<group>"; };
+		D0791AE318AAC148005227AB /* PocketActivity~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PocketActivity~iphone.png"; sourceTree = "<group>"; };
 		D07D651717DFEFE700C40D76 /* JCGridMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuController.h; sourceTree = "<group>"; };
 		D07D651817DFEFE700C40D76 /* JCGridMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuController.m; sourceTree = "<group>"; };
 		D07D655D17DFEFE700C40D76 /* UIButton+JCUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+JCUI.h"; sourceTree = "<group>"; };
@@ -1123,6 +1167,38 @@
 			path = readable;
 			sourceTree = "<group>";
 		};
+		D0791AC418AABA71005227AB /* Pocket SDK */ = {
+			isa = PBXGroup;
+			children = (
+				D0791ADC18AABC2B005227AB /* PocketCredentials.h */,
+				D0791AC518AABA71005227AB /* PocketAPI+NSOperation.h */,
+				D0791AC618AABA71005227AB /* PocketAPI.h */,
+				D0791AC718AABA71005227AB /* PocketAPI.m */,
+				D0791AC818AABA71005227AB /* PocketAPILogin.h */,
+				D0791AC918AABA71005227AB /* PocketAPILogin.m */,
+				D0791ACA18AABA71005227AB /* PocketAPIOperation.h */,
+				D0791ACB18AABA71005227AB /* PocketAPIOperation.m */,
+				D0791ACC18AABA71005227AB /* PocketAPITypes.h */,
+				D0791ACD18AABA71005227AB /* SFHFKeychainUtils.h */,
+				D0791ACE18AABA71005227AB /* SFHFKeychainUtils.m */,
+			);
+			name = "Pocket SDK";
+			path = "Pocket-ObjC-SDK/SDK";
+			sourceTree = "<group>";
+		};
+		D0791ADD18AAC148005227AB /* OCPocketActivity */ = {
+			isa = PBXGroup;
+			children = (
+				D0791ADE18AAC148005227AB /* OCPocketActivity.h */,
+				D0791ADF18AAC148005227AB /* OCPocketActivity.m */,
+				D0791AE018AAC148005227AB /* PocketActivity@2x~ipad.png */,
+				D0791AE118AAC148005227AB /* PocketActivity@2x~iphone.png */,
+				D0791AE218AAC148005227AB /* PocketActivity~ipad.png */,
+				D0791AE318AAC148005227AB /* PocketActivity~iphone.png */,
+			);
+			path = OCPocketActivity;
+			sourceTree = "<group>";
+		};
 		D07D651517DFEFE700C40D76 /* JCGridMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1181,6 +1257,7 @@
 			isa = PBXGroup;
 			children = (
 				D01ACAA917B8339C005D1463 /* pcre.xcodeproj */,
+				D0791AC418AABA71005227AB /* Pocket SDK */,
 				D0E8A0D0184BF09B005F8CAF /* UAAppReviewManager */,
 				D0E89F4F1833FDD4005F8CAF /* MSCMoreOptionTableViewCell */,
 				D0BF491617E7DF2000CB9311 /* TSMessages */,
@@ -1195,6 +1272,7 @@
 				D0BCABA717790F6600C965F4 /* FDiCabActivity */,
 				D0BCABAC17790F6600C965F4 /* FDInstapaperActivity */,
 				D0BCABB317790F6600C965F4 /* FDReadabilityActivity */,
+				D0791ADD18AAC148005227AB /* OCPocketActivity */,
 				D0BCAAA117790C1E00C965F4 /* UILabel-VerticalAlignment */,
 				D0BCAA5D177907FD00C965F4 /* ViewDeck */,
 				D07D651517DFEFE700C40D76 /* JCGridMenu */,
@@ -1876,6 +1954,7 @@
 				D04AD6C31807403100FF6056 /* iPad.storyboard in Resources */,
 				D04AD6C41807403100FF6056 /* star_filled@2x.png in Resources */,
 				D04AD6C51807403100FF6056 /* back.png in Resources */,
+				D0791AF118AAC148005227AB /* PocketActivity~iphone.png in Resources */,
 				D04AD6C61807403100FF6056 /* icab-activity.png in Resources */,
 				D04AD74718084F5100FF6056 /* folder.png in Resources */,
 				D08D83B818161453005A75F0 /* Settings.bundle in Resources */,
@@ -1906,6 +1985,7 @@
 				D04AD6E61807403100FF6056 /* keep_blue.png in Resources */,
 				D04AD6E91807403100FF6056 /* favicon.png in Resources */,
 				D04AD6EA1807403100FF6056 /* favicon@2x.png in Resources */,
+				D0791AE818AAC148005227AB /* PocketActivity@2x~ipad.png in Resources */,
 				D04AD6EB1807403100FF6056 /* fontsizel.png in Resources */,
 				D04AD6EC1807403100FF6056 /* fontsizel@2x.png in Resources */,
 				D04AD6ED1807403100FF6056 /* fontsizem.png in Resources */,
@@ -1941,6 +2021,7 @@
 				D04AD7101807403100FF6056 /* background1@2x.png in Resources */,
 				D04AD7121807403100FF6056 /* star_blue_open.png in Resources */,
 				D04AD7131807403100FF6056 /* NotificationBackgroundWarning@2x.png in Resources */,
+				D0791AEB18AAC148005227AB /* PocketActivity@2x~iphone.png in Resources */,
 				D04AD71C1807403100FF6056 /* NotificationBackgroundSuccess@2x.png in Resources */,
 				D04AD71D1807403100FF6056 /* star_icon.png in Resources */,
 				D04AD71E1807403100FF6056 /* back@2x.png in Resources */,
@@ -1965,6 +2046,7 @@
 				D04AD7301807403100FF6056 /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				D04AD7311807403100FF6056 /* NotificationBackgroundErrorIcon@2x.png in Resources */,
 				D04AD7321807403100FF6056 /* star_filled.png in Resources */,
+				D0791AEE18AAC148005227AB /* PocketActivity~ipad.png in Resources */,
 				D04AD7331807403100FF6056 /* gear@2x.png in Resources */,
 				D04AD7341807403100FF6056 /* star_blue_filled.png in Resources */,
 				D04AD7351807403100FF6056 /* mark.png in Resources */,
@@ -1988,6 +2070,7 @@
 				D0BCAA4A177903F500C965F4 /* iPad.storyboard in Resources */,
 				D061D7A217E287640038FB04 /* star_filled@2x.png in Resources */,
 				D061D79017E265410038FB04 /* back.png in Resources */,
+				D0791AF018AAC148005227AB /* PocketActivity~iphone.png in Resources */,
 				D0BCABBB17790F6700C965F4 /* icab-activity.png in Resources */,
 				D0BCABBC17790F6700C965F4 /* icab-activity@2x.png in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
@@ -2018,6 +2101,7 @@
 				D0BCAC70178104FC00C965F4 /* favicon.png in Resources */,
 				D0BCAC71178104FC00C965F4 /* favicon@2x.png in Resources */,
 				D0BCAC72178104FC00C965F4 /* fontsizel.png in Resources */,
+				D0791AE718AAC148005227AB /* PocketActivity@2x~ipad.png in Resources */,
 				D0BCAC73178104FC00C965F4 /* fontsizel@2x.png in Resources */,
 				D0BCAC74178104FC00C965F4 /* fontsizem.png in Resources */,
 				D0BCAC75178104FC00C965F4 /* fontsizem@2x.png in Resources */,
@@ -2053,6 +2137,7 @@
 				D0BF491217E7D16800CB9311 /* background1@2x.png in Resources */,
 				D0096CAD17EE4FBF00B05E68 /* star_blue_open.png in Resources */,
 				D04AD74618084F5100FF6056 /* folder.png in Resources */,
+				D0791AEA18AAC148005227AB /* PocketActivity@2x~iphone.png in Resources */,
 				D0BF493E17E7DF2000CB9311 /* NotificationBackgroundWarning@2x.png in Resources */,
 				D0BF493A17E7DF2000CB9311 /* NotificationBackgroundSuccess@2x.png in Resources */,
 				D09682B9179896B200EC6E60 /* star_icon.png in Resources */,
@@ -2077,6 +2162,7 @@
 				D0BF494017E7DF2000CB9311 /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				D0BF493617E7DF2000CB9311 /* NotificationBackgroundErrorIcon@2x.png in Resources */,
 				D061D7A317E287640038FB04 /* star_filled.png in Resources */,
+				D0791AED18AAC148005227AB /* PocketActivity~ipad.png in Resources */,
 				D061D7A717E288E60038FB04 /* gear@2x.png in Resources */,
 				D0096CB017EE4FC000B05E68 /* star_blue_filled.png in Resources */,
 				D061D7AB17E3C0CD0038FB04 /* mark.png in Resources */,
@@ -2100,6 +2186,7 @@
 				D0E89FBF18385457005F8CAF /* iPad.storyboard in Resources */,
 				D0E89FC018385457005F8CAF /* star_filled@2x.png in Resources */,
 				D0E89FC118385457005F8CAF /* back.png in Resources */,
+				D0791AF218AAC148005227AB /* PocketActivity~iphone.png in Resources */,
 				D0E89FC218385457005F8CAF /* icab-activity.png in Resources */,
 				D0E89FC318385457005F8CAF /* icab-activity@2x.png in Resources */,
 				D0E89FC418385457005F8CAF /* Settings.bundle in Resources */,
@@ -2130,6 +2217,7 @@
 				D0E89FE618385457005F8CAF /* favicon.png in Resources */,
 				D0E89FE718385457005F8CAF /* favicon@2x.png in Resources */,
 				D0E89FE818385457005F8CAF /* fontsizel.png in Resources */,
+				D0791AE918AAC148005227AB /* PocketActivity@2x~ipad.png in Resources */,
 				D0E89FE918385457005F8CAF /* fontsizel@2x.png in Resources */,
 				D0E89FEA18385457005F8CAF /* fontsizem.png in Resources */,
 				D0E89FEB18385457005F8CAF /* fontsizem@2x.png in Resources */,
@@ -2165,6 +2253,7 @@
 				D0E8A00E18385457005F8CAF /* background1@2x.png in Resources */,
 				D0E8A01018385457005F8CAF /* star_blue_open.png in Resources */,
 				D0E8A01118385457005F8CAF /* folder.png in Resources */,
+				D0791AEC18AAC148005227AB /* PocketActivity@2x~iphone.png in Resources */,
 				D0E8A01218385457005F8CAF /* NotificationBackgroundWarning@2x.png in Resources */,
 				D0E8A01B18385457005F8CAF /* NotificationBackgroundSuccess@2x.png in Resources */,
 				D0E8A01C18385457005F8CAF /* star_icon.png in Resources */,
@@ -2189,6 +2278,7 @@
 				D0E8A02F18385457005F8CAF /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				D0E8A03018385457005F8CAF /* NotificationBackgroundErrorIcon@2x.png in Resources */,
 				D0E8A03118385457005F8CAF /* star_filled.png in Resources */,
+				D0791AEF18AAC148005227AB /* PocketActivity~ipad.png in Resources */,
 				D0E8A03218385457005F8CAF /* gear@2x.png in Resources */,
 				D0E8A03318385457005F8CAF /* star_blue_filled.png in Resources */,
 				D0E8A03418385457005F8CAF /* mark.png in Resources */,
@@ -2323,6 +2413,7 @@
 				D04AD6711807403100FF6056 /* UILabel+VerticalAlignment.m in Sources */,
 				D04AD6721807403100FF6056 /* FDiCabActivity.m in Sources */,
 				D04AD6731807403100FF6056 /* FDInstapaperActivity.m in Sources */,
+				D0791AD918AABA71005227AB /* SFHFKeychainUtils.m in Sources */,
 				D0E89F49182D6EA6005F8CAF /* UIImageView+OCWebCache.m in Sources */,
 				D0E8A08C1842C29C005F8CAF /* AFURLResponseSerialization.m in Sources */,
 				D0E8A09C1842C2AC005F8CAF /* UIProgressView+AFNetworking.m in Sources */,
@@ -2371,20 +2462,24 @@
 				D04AD6A01807403100FF6056 /* _Folder.m in Sources */,
 				D04AD6A11807403100FF6056 /* UIImageView+WebCache.m in Sources */,
 				D04AD6A21807403100FF6056 /* Folder.m in Sources */,
+				D0791AD618AABA71005227AB /* PocketAPIOperation.m in Sources */,
 				D04AD6A31807403100FF6056 /* _FeedExtra.m in Sources */,
 				D08D83301810B27B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D04AD6A41807403100FF6056 /* FeedExtra.m in Sources */,
 				D04AD6A51807403100FF6056 /* OCFeedSettingsController.m in Sources */,
 				D04AD6A61807403100FF6056 /* rd_list.c in Sources */,
 				D04AD6A71807403100FF6056 /* readable.c in Sources */,
+				D0791AE518AAC148005227AB /* OCPocketActivity.m in Sources */,
 				D0A33F6118876CF700C6DA92 /* OCTextView.m in Sources */,
 				D0E8A0861842C29C005F8CAF /* AFHTTPRequestOperationManager.m in Sources */,
 				D0E89F591836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D04AD6A81807403100FF6056 /* ItemExtra.m in Sources */,
 				D04AD6A91807403100FF6056 /* _ItemExtra.m in Sources */,
+				D0791AD318AABA71005227AB /* PocketAPILogin.m in Sources */,
 				D04AD6AA1807403100FF6056 /* NSDictionary+HandleNull.m in Sources */,
 				D04AD6AB1807403100FF6056 /* HexColor.m in Sources */,
 				D04AD6AC1807403100FF6056 /* JCGridMenuController.m in Sources */,
+				D0791AD018AABA71005227AB /* PocketAPI.m in Sources */,
 				D04AD6AD1807403100FF6056 /* UIButton+JCUI.m in Sources */,
 				D04AD6AE1807403100FF6056 /* UILabel+JCUI.m in Sources */,
 				D04AD6AF1807403100FF6056 /* UIView+JCUI.m in Sources */,
@@ -2419,6 +2514,7 @@
 				D0BCABBA17790F6700C965F4 /* FDiCabActivity.m in Sources */,
 				D0BCABBD17790F6700C965F4 /* FDInstapaperActivity.m in Sources */,
 				D0516E67182988B300F6D677 /* UIImageView+OCWebCache.m in Sources */,
+				D0791AD818AABA71005227AB /* SFHFKeychainUtils.m in Sources */,
 				D0BCABC217790F6700C965F4 /* FDReadabilityActivity.m in Sources */,
 				D0E8A07C1842ABD5005F8CAF /* AFURLResponseSerialization.m in Sources */,
 				D0E8A0831842ABD5005F8CAF /* UIProgressView+AFNetworking.m in Sources */,
@@ -2467,20 +2563,24 @@
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
 				D0C66C9917AB3E6300F0EC7C /* UIImageView+WebCache.m in Sources */,
 				D04AD6601807125600FF6056 /* Folder.m in Sources */,
+				D0791AD518AABA71005227AB /* PocketAPIOperation.m in Sources */,
 				D0C66CA217B19C3E00F0EC7C /* _FeedExtra.m in Sources */,
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D0C66CA317B19C3E00F0EC7C /* FeedExtra.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
+				D0791AE418AAC148005227AB /* OCPocketActivity.m in Sources */,
 				D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */,
 				D0E8A0761842ABD5005F8CAF /* AFHTTPRequestOperationManager.m in Sources */,
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D01ACAF617B84001005D1463 /* ItemExtra.m in Sources */,
 				D01ACAF917B84035005D1463 /* _ItemExtra.m in Sources */,
+				D0791AD218AABA71005227AB /* PocketAPILogin.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
 				D0FB275717CE8D3700FABB09 /* HexColor.m in Sources */,
 				D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */,
+				D0791ACF18AABA71005227AB /* PocketAPI.m in Sources */,
 				D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */,
 				D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */,
 				D07D659A17DFEFE700C40D76 /* UIView+JCUI.m in Sources */,
@@ -2515,6 +2615,7 @@
 				D0E89F6B18385457005F8CAF /* FDiCabActivity.m in Sources */,
 				D0E89F6C18385457005F8CAF /* FDInstapaperActivity.m in Sources */,
 				D0E89F6E18385457005F8CAF /* UIImageView+OCWebCache.m in Sources */,
+				D0791ADA18AABA71005227AB /* SFHFKeychainUtils.m in Sources */,
 				D0E89F6F18385457005F8CAF /* FDReadabilityActivity.m in Sources */,
 				D0E8A0951842C29D005F8CAF /* AFURLResponseSerialization.m in Sources */,
 				D0E8A0A31842C2AD005F8CAF /* UIProgressView+AFNetworking.m in Sources */,
@@ -2563,20 +2664,24 @@
 				D0E89F9A18385457005F8CAF /* _Folder.m in Sources */,
 				D0E89F9B18385457005F8CAF /* UIImageView+WebCache.m in Sources */,
 				D0E89F9C18385457005F8CAF /* Folder.m in Sources */,
+				D0791AD718AABA71005227AB /* PocketAPIOperation.m in Sources */,
 				D0E89F9D18385457005F8CAF /* _FeedExtra.m in Sources */,
 				D0E89F9E18385457005F8CAF /* OCFolderTableViewController.m in Sources */,
 				D0E89F9F18385457005F8CAF /* FeedExtra.m in Sources */,
 				D0E89FA018385457005F8CAF /* OCFeedSettingsController.m in Sources */,
 				D0E89FA118385457005F8CAF /* rd_list.c in Sources */,
 				D0E89FA218385457005F8CAF /* readable.c in Sources */,
+				D0791AE618AAC148005227AB /* OCPocketActivity.m in Sources */,
 				D0A33F6218876CF700C6DA92 /* OCTextView.m in Sources */,
 				D0E8A08F1842C29D005F8CAF /* AFHTTPRequestOperationManager.m in Sources */,
 				D0E89FA318385457005F8CAF /* OCSettingsController.m in Sources */,
 				D0E89FA418385457005F8CAF /* ItemExtra.m in Sources */,
 				D0E89FA518385457005F8CAF /* _ItemExtra.m in Sources */,
+				D0791AD418AABA71005227AB /* PocketAPILogin.m in Sources */,
 				D0E89FA618385457005F8CAF /* NSDictionary+HandleNull.m in Sources */,
 				D0E89FA718385457005F8CAF /* HexColor.m in Sources */,
 				D0E89FA818385457005F8CAF /* JCGridMenuController.m in Sources */,
+				D0791AD118AABA71005227AB /* PocketAPI.m in Sources */,
 				D0E89FA918385457005F8CAF /* UIButton+JCUI.m in Sources */,
 				D0E89FAA18385457005F8CAF /* UILabel+JCUI.m in Sources */,
 				D0E89FAB18385457005F8CAF /* UIView+JCUI.m in Sources */,
