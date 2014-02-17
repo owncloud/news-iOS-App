@@ -1159,10 +1159,10 @@
 			isa = PBXGroup;
 			children = (
 				D01ACAB517B83637005D1463 /* khash.h */,
-				D01ACABA17B83637005D1463 /* rd_list.c */,
 				D01ACABB17B83637005D1463 /* rd_list.h */,
-				D01ACABC17B83637005D1463 /* readable.c */,
+				D01ACABA17B83637005D1463 /* rd_list.c */,
 				D01ACABD17B83637005D1463 /* readable.h */,
+				D01ACABC17B83637005D1463 /* readable.c */,
 			);
 			path = readable;
 			sourceTree = "<group>";
