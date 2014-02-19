@@ -525,6 +525,16 @@ const int UPDATE_ALL = 3;
     return (Feed*)[myFeeds lastObject];
 }
 
+- (NSArray*)feedIdsWithFolderId:(NSNumber*)folderId {
+    NSMutableArray *idArray = [NSMutableArray new];
+    self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folderId];
+    NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
+    [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+        [idArray addObject:feed.myId];
+    }];
+    return [NSArray arrayWithArray:idArray];
+}
+
 - (Item*)itemWithId:(NSNumber *)anId {
     [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
     NSArray *myItems = [self.context executeFetchRequest:self.itemRequest error:nil];

@@ -60,6 +60,7 @@
 - (void) networkSuccess:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
 - (IBAction)handleCellSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
+- (NSInteger) unreadCount;
 
 @end
 
@@ -70,6 +71,7 @@
 @synthesize feed = _feed;
 @synthesize fetchedResultsController;
 @synthesize markGesture;
+@synthesize folderId;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -90,13 +92,12 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setFeed:(Feed *)feed
-{
-    if (_feed != feed) {
+- (void)setFeed:(Feed *)feed {
+    //if (_feed != feed) {
         _feed = feed;
 
         [self configureView];
-    }
+    //}
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -131,7 +132,7 @@
 }
 
 - (void) scrollToTop {
-    self.markBarButtonItem.enabled = (self.feed.unreadCountValue > 0);
+    self.markBarButtonItem.enabled = ([self unreadCount] > 0);
     if ([[self.fetchedResultsController fetchedObjects] count] > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
@@ -139,7 +140,7 @@
 
 - (void) refresh {
     [self.tableView reloadData];
-    int unreadCount = self.feed.unreadCountValue;
+    int unreadCount = [self unreadCount];
     self.markBarButtonItem.enabled = (unreadCount > 0);    
 }
 
@@ -151,7 +152,7 @@
 
     self.navigationItem.leftBarButtonItem = self.markBarButtonItem;
     self.markBarButtonItem.enabled = NO;
-    
+    self.folderId = 0;
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
     self.tableView.rowHeight = 154;
     self.tableView.scrollsToTop = NO;
@@ -362,7 +363,7 @@
 }
 
 - (IBAction)doMarkRead:(id)sender {
-    if (self.feed.unreadCountValue > 0) {
+    if ([self unreadCount] > 0) {
         if ([self.fetchedResultsController fetchedObjects].count > 0) {
             NSMutableArray *idsToMarkRead = [NSMutableArray new];
             
@@ -380,7 +381,7 @@
 
 - (void) markRowsRead {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
-        int unreadCount = self.feed.unreadCountValue;
+        int unreadCount = [self unreadCount];
         
         if (unreadCount > 0) {
             NSArray * vCells = self.tableView.indexPathsForVisibleRows;
@@ -419,7 +420,7 @@
 
 - (void) updateUnreadCount:(NSArray *)itemsToUpdate {
     [[OCNewsHelper sharedHelper] markItemsReadOffline:itemsToUpdate];
-    [self.tableView reloadData];
+    [self refresh];
 }
 
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
@@ -427,7 +428,7 @@
         [self updatePredicate];
     }
     if([keyPath isEqual:@"ShowThumbnails"]) {
-        [self.tableView reloadData];
+        [self refresh];
     }
 }
 
@@ -439,7 +440,16 @@
     } else {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
             if (self.feed.myIdValue == -2) {
-                fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
+                if (self.folderId > 0) {
+                    NSMutableArray *feedsArray = [NSMutableArray new];
+                    NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
+                    [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
+                        [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feedId],[NSPredicate predicateWithFormat:@"unread == 1"] ]]];
+                    }];
+                    fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                } else {
+                    fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
+                }
             } else {
                 NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
                 NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
@@ -449,7 +459,16 @@
             self.fetchedResultsController.delegate = nil;
         } else {
             if (self.feed.myIdValue == -2) {
-                fetchPredicate = nil;
+                if (self.folderId > 0) {
+                    NSMutableArray *feedsArray = [NSMutableArray new];
+                    NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
+                    [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
+                        [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feedId]];
+                    }];
+                    fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                } else {
+                    fetchPredicate = nil;
+                }
             } else {
                 NSLog(@"Feed Id: %@", self.feed.myId);
                 fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
@@ -466,7 +485,7 @@
     }
     NSLog(@"Fetch Count: %d", self.fetchedResultsController.fetchedObjects.count);
     
-    [self.tableView reloadData];
+    [self refresh];
 }
 
 #pragma mark - Toolbar buttons
@@ -619,6 +638,19 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
+}
+
+- (NSInteger)unreadCount {
+    NSInteger result = 0;
+    if (self.feed) {
+        if (self.feed.myIdValue == -2) {
+            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithInt:self.folderId]];
+            result = folder.unreadCountValue;
+        } else {
+            result = self.feed.unreadCountValue;
+        }
+    }
+    return result;
 }
 
 @end

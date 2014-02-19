@@ -318,12 +318,22 @@
                     }
                 }
             } else {
-                [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
+                if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
+                    [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
+                } else {
+                    [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
+                }
             }
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.countBadge.value = feed.unreadCountValue;
-        cell.textLabel.text = feed.title;
+        if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
+            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithInt:currentFolderIndex]];
+            cell.countBadge.value = folder.unreadCountValue;
+            cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+        } else {
+            cell.countBadge.value = feed.unreadCountValue;
+            cell.textLabel.text = feed.title;
+        }
     }
     cell.delegate = self;
 }
@@ -376,6 +386,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.detailViewController.folderId = 0;
     currentIndex = indexPath.row;
     NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     if (self.tableView.isEditing) {
@@ -389,6 +400,9 @@
                     feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
                     if (!feed.extra) {
                         [[OCNewsHelper sharedHelper] addFeedExtra:feed];
+                    }
+                    if (currentFolderIndex > 0) {
+                        self.detailViewController.folderId = currentFolderIndex;
                     }
                     self.detailViewController.feed = feed;
                     [self.viewDeckController closeLeftView];
@@ -665,10 +679,10 @@
     }
     
     if (currentFolderIndex > 0) {
-        self.specialFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithValue:NO];
+        self.specialFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithFormat:@"myId == -2"];
         self.foldersFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithValue:NO];
     } else {
-        self.specialFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithFormat:@"myId < 0"];;
+        self.specialFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithFormat:@"myId < 0"];
         self.foldersFetchedResultsController.fetchRequest.predicate = nil;
     }
     
