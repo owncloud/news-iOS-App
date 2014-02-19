@@ -107,13 +107,16 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)setItem:(Item*)newItem
 {
-    if (_item != newItem) {
-        _item = newItem;
-        if (!_item.extra) {
-            [[OCNewsHelper sharedHelper] addItemExtra:_item];
+    Item *myItem = (Item*)[[OCNewsHelper sharedHelper].context objectWithID:newItem.objectID];
+    if (myItem) {
+        if (_item != myItem) {
+            _item = myItem;
+            if (!_item.extra) {
+                [[OCNewsHelper sharedHelper] addItemExtra:_item];
+            }
+            // Update the view.
+            [self configureView];
         }
-        // Update the view.
-        [self configureView];
     }
 }
 
