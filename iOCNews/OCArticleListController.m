@@ -236,30 +236,42 @@
     cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
     [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
     NSString *dateLabelText = @"";
-    NSString *author = item.author;
-    if (![author isKindOfClass:[NSNull class]]) {
-        
-        if (author.length > 0) {
-            const int clipLength = 50;
-            if([author length] > clipLength) {
-                dateLabelText = [NSString stringWithFormat:@"%@...",[author substringToIndex:clipLength]];
-            } else {
-                dateLabelText = author;
-            }
-        }
-    }
+    
     NSNumber *dateNumber = item.pubDate;
     if (![dateNumber isKindOfClass:[NSNull class]]) {
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dateNumber doubleValue]];
         if (date) {
-            if (dateLabelText.length > 0) {
-                dateLabelText = [dateLabelText stringByAppendingString:@" on "];
-            }
+            NSLocale *currentLocale = [NSLocale currentLocale];
+            NSString *dateComponents = @"MMM d";
+            NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:currentLocale];
+            NSLog(@"Date format for %@: %@", [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]], dateFormatString);
             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-            dateFormat.dateStyle = NSDateFormatterMediumStyle;
-            dateFormat.timeStyle = NSDateFormatterShortStyle;
+            dateFormat.dateFormat = dateFormatString;
             dateLabelText = [dateLabelText stringByAppendingString:[dateFormat stringFromDate:date]];
         }
+    }
+    if (dateLabelText.length > 0) {
+        dateLabelText = [dateLabelText stringByAppendingString:@" | "];
+    }
+    
+    NSString *author = item.author;
+    if (![author isKindOfClass:[NSNull class]]) {
+        
+        if (author.length > 0) {
+            const int clipLength = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 50 : 25;
+            if([author length] > clipLength) {
+                dateLabelText = [dateLabelText stringByAppendingString:[NSString stringWithFormat:@"%@...",[author substringToIndex:clipLength]]];
+            } else {
+                dateLabelText = [dateLabelText stringByAppendingString:author];
+            }
+        }
+    }
+    Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:item.feedId];
+    if (feed && feed.title && ![feed.title isEqualToString:author]) {
+        if (author.length > 0) {
+            dateLabelText = [dateLabelText stringByAppendingString:@" | "];
+        }
+        dateLabelText = [dateLabelText stringByAppendingString:feed.title];
     }
     cell.dateLabel.text = dateLabelText;
     
@@ -643,7 +655,7 @@
 - (NSInteger)unreadCount {
     NSInteger result = 0;
     if (self.feed) {
-        if (self.feed.myIdValue == -2) {
+        if ((self.feed.myIdValue == -2) && (self.folderId > 0)) {
             Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithInt:self.folderId]];
             result = folder.unreadCountValue;
         } else {
