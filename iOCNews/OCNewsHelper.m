@@ -248,7 +248,6 @@ const int UPDATE_ALL = 3;
     newItem.unread = [dict objectForKey:@"unread"];
     newItem.starred = [dict objectForKey:@"starred"];
     newItem.lastModified = [dict objectForKey:@"lastModified"];
-    [self saveContext];
     [self addItemExtra:newItem];
 }
 
@@ -298,7 +297,6 @@ const int UPDATE_ALL = 3;
     if (itemToAddTo) {
         extra.parent = itemToAddTo;
         itemToAddTo.extra = extra;
-        [self saveContext];
     }
 }
 
@@ -615,6 +613,7 @@ const int UPDATE_ALL = 3;
                 [feedsWithNewItems addObject:myFeedId];
                 [self addItemFromDictionary:item];
             }];
+            [self saveContext];
             
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
@@ -792,6 +791,7 @@ const int UPDATE_ALL = 3;
             [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                 [self addItemFromDictionary:item];
             }];
+            [self saveContext];
             
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
@@ -903,6 +903,7 @@ const int UPDATE_ALL = 3;
         [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
             [self addItemFromDictionary:item];
         }];
+        [self saveContext];
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         if (errorCount > 0) {
@@ -1115,7 +1116,8 @@ const int UPDATE_ALL = 3;
                 [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                     [self addItemFromDictionary:item];
                 }];
-
+                [self saveContext];
+            
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
