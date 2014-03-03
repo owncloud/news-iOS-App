@@ -76,19 +76,19 @@
         
         self.urlTextView.text = feed.url;
         self.titleTextView.text = feed.title;
-        self.fullArticleSwitch.on = feed.extra.preferWebValue;
-        self.readerSwitch.on = feed.extra.useReaderValue;
+        self.fullArticleSwitch.on = feed.preferWebValue;
+        self.readerSwitch.on = feed.useReaderValue;
         self.readerSwitch.enabled = self.fullArticleSwitch.on;
-        self.keepStepper.value = feed.extra.articleCountValue;
+        self.keepStepper.value = feed.articleCountValue;
         self.keepLabel.text = [NSString stringWithFormat:@"%.f", self.keepStepper.value];
         _newFolderId = feed.folderId;
     }
 }
 
 - (IBAction)doSave:(id)sender {
-    self.feed.extra.preferWebValue = self.fullArticleSwitch.on;
-    self.feed.extra.useReaderValue = self.readerSwitch.on;
-    self.feed.extra.articleCountValue = self.keepStepper.value;
+    self.feed.preferWebValue = self.fullArticleSwitch.on;
+    self.feed.useReaderValue = self.readerSwitch.on;
+    self.feed.articleCountValue = self.keepStepper.value;
     if (![self.feed.folderId isEqual:_newFolderId]) {
         self.feed.folderId = _newFolderId;
         [[OCNewsHelper sharedHelper] moveFeedOfflineWithId:self.feed.myId toFolderWithId:self.feed.folderId];

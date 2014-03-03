@@ -5,17 +5,20 @@
 
 const struct FeedAttributes FeedAttributes = {
 	.added = @"added",
+	.articleCount = @"articleCount",
 	.faviconLink = @"faviconLink",
 	.folderId = @"folderId",
+	.lastModified = @"lastModified",
 	.link = @"link",
 	.myId = @"myId",
+	.preferWeb = @"preferWeb",
 	.title = @"title",
 	.unreadCount = @"unreadCount",
 	.url = @"url",
+	.useReader = @"useReader",
 };
 
 const struct FeedRelationships FeedRelationships = {
-	.extra = @"extra",
 };
 
 const struct FeedFetchedProperties FeedFetchedProperties = {
@@ -52,8 +55,18 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"articleCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"articleCount"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"folderIdValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"folderId"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"lastModifiedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"lastModified"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -62,8 +75,18 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"preferWebValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"preferWeb"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"unreadCountValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"unreadCount"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"useReaderValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"useReader"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -94,6 +117,32 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 
 - (void)setPrimitiveAddedValue:(int32_t)value_ {
 	[self setPrimitiveAdded:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic articleCount;
+
+
+
+- (int32_t)articleCountValue {
+	NSNumber *result = [self articleCount];
+	return [result intValue];
+}
+
+- (void)setArticleCountValue:(int32_t)value_ {
+	[self setArticleCount:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveArticleCountValue {
+	NSNumber *result = [self primitiveArticleCount];
+	return [result intValue];
+}
+
+- (void)setPrimitiveArticleCountValue:(int32_t)value_ {
+	[self setPrimitiveArticleCount:[NSNumber numberWithInt:value_]];
 }
 
 
@@ -133,6 +182,32 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 
 
 
+@dynamic lastModified;
+
+
+
+- (int32_t)lastModifiedValue {
+	NSNumber *result = [self lastModified];
+	return [result intValue];
+}
+
+- (void)setLastModifiedValue:(int32_t)value_ {
+	[self setLastModified:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveLastModifiedValue {
+	NSNumber *result = [self primitiveLastModified];
+	return [result intValue];
+}
+
+- (void)setPrimitiveLastModifiedValue:(int32_t)value_ {
+	[self setPrimitiveLastModified:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
 @dynamic link;
 
 
@@ -160,6 +235,32 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 
 - (void)setPrimitiveMyIdValue:(int32_t)value_ {
 	[self setPrimitiveMyId:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic preferWeb;
+
+
+
+- (BOOL)preferWebValue {
+	NSNumber *result = [self preferWeb];
+	return [result boolValue];
+}
+
+- (void)setPreferWebValue:(BOOL)value_ {
+	[self setPreferWeb:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitivePreferWebValue {
+	NSNumber *result = [self primitivePreferWeb];
+	return [result boolValue];
+}
+
+- (void)setPrimitivePreferWebValue:(BOOL)value_ {
+	[self setPrimitivePreferWeb:[NSNumber numberWithBool:value_]];
 }
 
 
@@ -206,9 +307,31 @@ const struct FeedFetchedProperties FeedFetchedProperties = {
 
 
 
-@dynamic extra;
+@dynamic useReader;
 
-	
+
+
+- (BOOL)useReaderValue {
+	NSNumber *result = [self useReader];
+	return [result boolValue];
+}
+
+- (void)setUseReaderValue:(BOOL)value_ {
+	[self setUseReader:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveUseReaderValue {
+	NSNumber *result = [self primitiveUseReader];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveUseReaderValue:(BOOL)value_ {
+	[self setPrimitiveUseReader:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
 
 
 

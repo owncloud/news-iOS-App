@@ -14,6 +14,7 @@ const struct ItemAttributes ItemAttributes = {
 	.lastModified = @"lastModified",
 	.myId = @"myId",
 	.pubDate = @"pubDate",
+	.readable = @"readable",
 	.starred = @"starred",
 	.title = @"title",
 	.unread = @"unread",
@@ -21,7 +22,6 @@ const struct ItemAttributes ItemAttributes = {
 };
 
 const struct ItemRelationships ItemRelationships = {
-	.extra = @"extra",
 };
 
 const struct ItemFetchedProperties ItemFetchedProperties = {
@@ -236,6 +236,13 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 
 
 
+@dynamic readable;
+
+
+
+
+
+
 @dynamic starred;
 
 
@@ -301,10 +308,6 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 
 
 
-
-@dynamic extra;
-
-	
 
 
 

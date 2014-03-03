@@ -15,6 +15,7 @@ extern const struct ItemAttributes {
 	__unsafe_unretained NSString *lastModified;
 	__unsafe_unretained NSString *myId;
 	__unsafe_unretained NSString *pubDate;
+	__unsafe_unretained NSString *readable;
 	__unsafe_unretained NSString *starred;
 	__unsafe_unretained NSString *title;
 	__unsafe_unretained NSString *unread;
@@ -22,13 +23,12 @@ extern const struct ItemAttributes {
 } ItemAttributes;
 
 extern const struct ItemRelationships {
-	__unsafe_unretained NSString *extra;
 } ItemRelationships;
 
 extern const struct ItemFetchedProperties {
 } ItemFetchedProperties;
 
-@class ItemExtra;
+
 
 
 
@@ -174,6 +174,16 @@ extern const struct ItemFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* readable;
+
+
+
+//- (BOOL)validateReadable:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSNumber* starred;
 
 
@@ -218,13 +228,6 @@ extern const struct ItemFetchedProperties {
 
 //- (BOOL)validateUrl:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
-@property (nonatomic, strong) ItemExtra *extra;
-
-//- (BOOL)validateExtra:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -311,6 +314,12 @@ extern const struct ItemFetchedProperties {
 
 
 
+- (NSString*)primitiveReadable;
+- (void)setPrimitiveReadable:(NSString*)value;
+
+
+
+
 - (NSNumber*)primitiveStarred;
 - (void)setPrimitiveStarred:(NSNumber*)value;
 
@@ -339,11 +348,6 @@ extern const struct ItemFetchedProperties {
 - (void)setPrimitiveUrl:(NSString*)value;
 
 
-
-
-
-- (ItemExtra*)primitiveExtra;
-- (void)setPrimitiveExtra:(ItemExtra*)value;
 
 
 @end

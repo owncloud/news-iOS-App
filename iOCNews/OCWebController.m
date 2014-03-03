@@ -111,9 +111,6 @@ const int SWIPE_PREVIOUS = 1;
     if (myItem) {
         if (_item != myItem) {
             _item = myItem;
-            if (!_item.extra) {
-                [[OCNewsHelper sharedHelper] addItemExtra:_item];
-            }
             // Update the view.
             [self configureView];
         }
@@ -246,10 +243,10 @@ const int SWIPE_PREVIOUS = 1;
         }
         Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
         
-        if (feed.extra.preferWebValue) {
-            if (feed.extra.useReaderValue) {
-                if (self.item.extra.readable) {
-                    [self writeAndLoadHtml:self.item.extra.readable];
+        if (feed.preferWebValue) {
+            if (feed.useReaderValue) {
+                if (self.item.readable) {
+                    [self writeAndLoadHtml:self.item.readable];
                 } else {
                     [[OCAPIClient sharedClient] setResponseSerializer:[AFHTTPResponseSerializer serializer]];
 
@@ -271,7 +268,7 @@ const int SWIPE_PREVIOUS = 1;
                                 html = [self fixRelativeUrl:html
                                               baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", [[task.response URL] scheme], [[task.response URL] host], [[task.response URL] path]]];
                             }
-                            self.item.extra.readable = html;
+                            self.item.readable = html;
                             [[OCNewsHelper sharedHelper] saveContext];
                         } else {
                             html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";

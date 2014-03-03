@@ -38,7 +38,6 @@
 #import "OCNewsHelper.h"
 #import "Folder.h"
 #import "Feed.h"
-#import "FeedExtra.h"
 #import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
 
@@ -398,9 +397,6 @@
             case 0:
                 @try {
                     feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    if (!feed.extra) {
-                        [[OCNewsHelper sharedHelper] addFeedExtra:feed];
-                    }
                     if (currentFolderIndex > 0) {
                         self.detailViewController.folderId = currentFolderIndex;
                     }
@@ -426,9 +422,6 @@
             case 2:
                 @try {
                     feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    if (!feed.extra) {
-                        [[OCNewsHelper sharedHelper] addFeedExtra:feed];
-                    }
                     self.detailViewController.feed = feed;
                     [self.viewDeckController closeLeftView];
                 }
@@ -461,9 +454,6 @@
     } else if (indexPath.section == 2) {
         Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
         NSLog(@"Feed title: %@", feed.title);
-        if (!feed.extra) {
-            [[OCNewsHelper sharedHelper] addFeedExtra:feed];
-        }
         NSLog(@"Feed title: %@", feed.title);
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
         UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];

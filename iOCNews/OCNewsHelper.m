@@ -123,8 +123,7 @@ const int UPDATE_ALL = 3;
         starredFeed.folderId = [NSNumber numberWithInt:0];
         starredFeed.unreadCount = [NSNumber numberWithInt:0];
         starredFeed.link = @"";
-        [self addFeedExtra:starredFeed];
-        starredFeed.extra.lastModified = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+        starredFeed.lastModified = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
     }
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -228,7 +227,6 @@ const int UPDATE_ALL = 3;
     newFeed.folderId = [dict objectForKey:@"folderId"];
     newFeed.unreadCount = [dict objectForKey:@"unreadCount"];
     newFeed.link = [dict objectForKeyNotNull:@"link" fallback:@""];
-    [self addFeedExtra:newFeed];
     return newFeed.myIdValue;
 }
 
@@ -248,7 +246,6 @@ const int UPDATE_ALL = 3;
     newItem.unread = [dict objectForKey:@"unread"];
     newItem.starred = [dict objectForKey:@"starred"];
     newItem.lastModified = [dict objectForKey:@"lastModified"];
-    [self addItemExtra:newItem];
 }
 
 - (int)addFolder:(id)JSON {
@@ -283,21 +280,6 @@ const int UPDATE_ALL = 3;
     int newFeedId = [self addFeedFromDictionary:[newFeeds lastObject]];
     [self updateTotalUnreadCount];
     return newFeedId;
-}
-
-- (void)addFeedExtra:(Feed *)feed {
-    FeedExtra *extra = [NSEntityDescription insertNewObjectForEntityForName:@"FeedExtra" inManagedObjectContext:self.context];
-    extra.parent = feed;
-    feed.extra = extra;
-}
-
-- (void)addItemExtra:(Item *)item {
-    ItemExtra *extra = [NSEntityDescription insertNewObjectForEntityForName:@"ItemExtra" inManagedObjectContext:self.context];
-    Item *itemToAddTo = (Item*)[extra.managedObjectContext objectWithID:item.objectID];
-    if (itemToAddTo) {
-        extra.parent = itemToAddTo;
-        itemToAddTo.extra = extra;
-    }
 }
 
 - (void)deleteFeed:(Feed*)feed {
@@ -574,7 +556,7 @@ const int UPDATE_ALL = 3;
 
 - (NSNumber*)feedLastModified:(NSNumber *)aFeedId {
     Feed *feed = [self feedWithId:aFeedId];
-    NSNumber *lastFeedUpdate = feed.extra.lastModified;
+    NSNumber *lastFeedUpdate = feed.lastModified;
     NSNumber *lastSync = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
     return [NSNumber numberWithInt:MAX([lastFeedUpdate intValue], [lastSync intValue])];
 }
@@ -625,7 +607,7 @@ const int UPDATE_ALL = 3;
                 NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:nil];
                 NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
                 filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
-                while (filteredArray.count > feed.extra.articleCountValue) {
+                while (filteredArray.count > feed.articleCountValue) {
                     Item *itemToRemove = [filteredArray lastObject];
                     NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
                     [self.context deleteObject:itemToRemove];
@@ -670,7 +652,7 @@ const int UPDATE_ALL = 3;
             case UPDATE_STARRED: {
                 NSLog(@"Finishing feed item update");
                 Feed *feed = [self feedWithId:anId];
-                feed.extra.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+                feed.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
             }
                 break;
                 
@@ -805,7 +787,7 @@ const int UPDATE_ALL = 3;
                 NSError *error = nil;
                 NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
                 
-                while (feedItems.count > feed.extra.articleCountValue) {
+                while (feedItems.count > feed.articleCountValue) {
                     Item *itemToRemove = [feedItems lastObject];
                     if (!itemToRemove.starredValue) {
                         if (!itemToRemove.unreadValue) {
