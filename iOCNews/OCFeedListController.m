@@ -398,12 +398,12 @@
         switch (indexPath.section) {
             case 0:
                 @try {
+                    [self.viewDeckController closeLeftView];
                     feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
                     if (currentFolderIndex > 0) {
                         self.detailViewController.folderId = currentFolderIndex;
                     }
                     self.detailViewController.feed = feed;
-                    [self.viewDeckController closeLeftView];
                 }
                 @catch (NSException *exception) {
                     //
@@ -423,9 +423,10 @@
                 break;
             case 2:
                 @try {
+                    [self.viewDeckController closeLeftView];
                     feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                     self.detailViewController.feed = feed;
-                    [self.viewDeckController closeLeftView];
+                    
                 }
                 @catch (NSException *exception) {
                     //
