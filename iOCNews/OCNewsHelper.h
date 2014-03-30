@@ -74,8 +74,8 @@
 - (void)updateFolderUnreadCount;
 - (void)updateTotalUnreadCount;
 - (void)updateStarredCount;
-- (int)feedCount;
-- (int)itemCount;
+- (long)feedCount;
+- (long)itemCount;
 
 - (void)addFolderOffline:(NSString*)name;
 - (void)deleteFolderOffline:(Folder*)folder;

@@ -42,9 +42,9 @@
 #import "AFNetworking.h"
 
 @interface OCFeedListController () <IIViewDeckControllerDelegate, UIActionSheetDelegate> {
-    int currentFolderIndex;
+    long currentFolderIndex;
     NSNumber *currentRenameId;
-    int currentIndex;
+    long currentIndex;
     BOOL networkHasBeenUnreachable;
 }
 
@@ -328,7 +328,7 @@
                 }
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
-                    Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithInt:currentFolderIndex]];
+                    Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:currentFolderIndex]];
                     cell.countBadge.value = folder.unreadCountValue;
                     cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
                 } else {
@@ -613,7 +613,7 @@
     if (currentFolderIndex == 0) {
         [[OCNewsHelper sharedHelper] sync:nil];
     } else {
-        [[OCNewsHelper sharedHelper] updateFolderWithId:[NSNumber numberWithInt:currentFolderIndex]];
+        [[OCNewsHelper sharedHelper] updateFolderWithId:[NSNumber numberWithLong:currentFolderIndex]];
     }
 }
 
@@ -663,7 +663,7 @@
     [NSFetchedResultsController deleteCacheWithName:@"SpecialCache"];
     [NSFetchedResultsController deleteCacheWithName:@"FolderCache"];
     [NSFetchedResultsController deleteCacheWithName:@"FeedCache"];
-    NSPredicate *predFolder = [NSPredicate predicateWithFormat:@"folderId == %@", [NSNumber numberWithInt:currentFolderIndex]];
+    NSPredicate *predFolder = [NSPredicate predicateWithFormat:@"folderId == %@", [NSNumber numberWithLong:currentFolderIndex]];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
         NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
         NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
@@ -854,7 +854,7 @@
 
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    NSLog(@"Section: %d; Row: %d", indexPath.section, indexPath.row);
+    NSLog(@"Section: %ld; Row: %ld", (long)indexPath.section, (long)indexPath.row);
 
     UITableView *tableView = self.tableView;
     if (newIndexPath != nil && controller == self.foldersFetchedResultsController) {

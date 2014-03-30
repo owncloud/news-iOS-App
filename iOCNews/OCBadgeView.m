@@ -24,7 +24,7 @@
 - (void)drawRect:(CGRect)rect {
 	CGRect viewBounds = self.bounds;
 	CGContextRef curContext = UIGraphicsGetCurrentContext();
-	NSString* numberString = [NSString stringWithFormat:@"%d", self.value];
+	NSString* numberString = [NSString stringWithFormat:@"%lu", (unsigned long)self.value];
 	CGSize numberSize = [numberString sizeWithAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:16.0f]}];
     
     CGFloat arcRadius = ceil((numberSize.height + 2.0) / 2.0);

@@ -526,9 +526,9 @@ const int SWIPE_PREVIOUS = 1;
 - (void)jcGridMenuRowSelected:(NSInteger)indexTag indexRow:(NSInteger)indexRow isExpand:(BOOL)isExpand
 {
     if (isExpand) {
-        NSLog(@"jcGridMenuRowSelected %i %i isExpand", indexTag, indexRow);
+        NSLog(@"jcGridMenuRowSelected %li %li isExpand", (long)indexTag, (long)indexRow);
     } else {
-        NSLog(@"jcGridMenuRowSelected %i %i !isExpand", indexTag, indexRow);
+        NSLog(@"jcGridMenuRowSelected %li %li !isExpand", (long)indexTag, (long)indexRow);
     }
     
     if (indexTag==1002) {
@@ -638,12 +638,12 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)jcGridMenuColumnSelected:(NSInteger)indexTag indexRow:(NSInteger)indexRow indexColumn:(NSInteger)indexColumn
 {
-    NSLog(@"jcGridMenuColumnSelected %i %i %i", indexTag, indexRow, indexColumn);
+    NSLog(@"jcGridMenuColumnSelected %li %li %li", (long)indexTag, (long)indexRow, (long)indexColumn);
     
     if (indexTag==1002) {
         [self.menuController setIsRowModal:YES];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        int currentValue;
+        long currentValue;
         double currentLineSpacing;
         switch (indexRow) {
             case 0: // Keep
@@ -1104,17 +1104,17 @@ const int SWIPE_PREVIOUS = 1;
     NSURL *cssTemplateURL = [appBundle URLForResource:@"rss" withExtension:@"css" subdirectory:nil];
     NSString *cssTemplate = [NSString stringWithContentsOfURL:cssTemplateURL encoding:NSUTF8StringEncoding error:nil];
     
-    int fontSize =[[NSUserDefaults standardUserDefaults] integerForKey:@"FontSize"];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$FONTSIZE$" withString:[NSString stringWithFormat:@"%dpx", fontSize]];
+    long fontSize =[[NSUserDefaults standardUserDefaults] integerForKey:@"FontSize"];
+    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$FONTSIZE$" withString:[NSString stringWithFormat:@"%ldpx", fontSize]];
     
-    int margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%dpx", margin]];
+    long margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
+    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", margin]];
     
     double lineHeight =[[NSUserDefaults standardUserDefaults] doubleForKey:@"LineHeight"];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$LINEHEIGHT$" withString:[NSString stringWithFormat:@"%fem", lineHeight]];
     
     NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
-    int backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
+    long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
     NSString *background = [backgrounds objectAtIndex:backgroundIndex];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$BACKGROUND$" withString:background];
     
@@ -1135,7 +1135,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (UIColor*)myBackgroundColor {
     NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
-    int backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
+    long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
     NSString *background = [backgrounds objectAtIndex:backgroundIndex];
     UIColor *backColor = [UIColor colorWithHexString:background];
     return backColor;

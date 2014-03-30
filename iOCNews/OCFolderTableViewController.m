@@ -108,7 +108,7 @@
         Folder *folder = [self.folders objectAtIndex:indexPath.row - 1];
         cell.textLabel.text = folder.name;
         NSArray *folderIds = [self.folders valueForKeyPath:@"myId"];
-        int folderIdIndex = [folderIds indexOfObject:_selectedFolderId];
+        long folderIdIndex = [folderIds indexOfObject:_selectedFolderId];
         if (folderIdIndex == indexPath.row - 1) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }

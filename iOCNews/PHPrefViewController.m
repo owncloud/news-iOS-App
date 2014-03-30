@@ -77,7 +77,7 @@
 
 - (IBAction)doSegmentedValueChanged:(id)sender {
     UISegmentedControl *seg = (UISegmentedControl*)sender;
-    int newValue = [seg selectedSegmentIndex];
+    long newValue = [seg selectedSegmentIndex];
     if (newValue == UISegmentedControlNoSegment) {
         return;
     }
@@ -93,7 +93,7 @@
     
     if (seg == fontSizeSegmented) {
         //NSLog(@"FS: %d", newValue);
-        int currentFontSize = [[prefs valueForKey:@"FontSize"] integerValue];
+        long currentFontSize = [[prefs valueForKey:@"FontSize"] integerValue];
         if (newValue == 0) {
             if (currentFontSize > MIN_FONT_SIZE) {
                 --currentFontSize;
@@ -103,7 +103,7 @@
                 ++currentFontSize;
             }
         }
-        NSLog(@"FS: %d", currentFontSize);
+        NSLog(@"FS: %ld", currentFontSize);
         [prefs setInteger:currentFontSize forKey:@"FontSize"];
     }
     
@@ -125,7 +125,7 @@
     
     if (seg == marginSegmented) {
         //NSLog(@"M: %d", newValue);
-        int currentMargin = [[prefs valueForKey:@"Margin"] integerValue];
+        long currentMargin = [[prefs valueForKey:@"Margin"] integerValue];
         if (newValue == 0) {
             if (currentMargin < MAX_WIDTH) {
                 currentMargin = currentMargin + 20;
@@ -135,7 +135,7 @@
                 currentMargin = currentMargin - 20;
             }
         }
-        NSLog(@"FS: %d", currentMargin);
+        NSLog(@"FS: %ld", currentMargin);
         [prefs setInteger:currentMargin forKey:@"Margin"];
     }
 

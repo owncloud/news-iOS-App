@@ -123,7 +123,7 @@ const int UPDATE_ALL = 3;
         starredFeed.folderId = [NSNumber numberWithInt:0];
         starredFeed.unreadCount = [NSNumber numberWithInt:0];
         starredFeed.link = @"";
-        starredFeed.lastModified = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+        starredFeed.lastModified = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
     }
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -333,7 +333,7 @@ const int UPDATE_ALL = 3;
         NSArray *oldFolders = [self.context executeFetchRequest:self.folderRequest error:&error];
         NSArray *knownIds = [oldFolders valueForKey:@"myId"];
         
-        NSLog(@"Count: %i", oldFolders.count);
+        NSLog(@"Count: %lu", (unsigned long)oldFolders.count);
         
         //Add the new folders
         NSDictionary *folderDict = (NSDictionary *)responseObject;
@@ -390,7 +390,7 @@ const int UPDATE_ALL = 3;
             [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
         }
         [foldersToRename removeAllObjects];
-        NSNumber *lastMod = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+        NSNumber *lastMod = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
         if ([self itemCount] > 0) {
             [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_ALL] andId:[NSNumber numberWithInt:0]];
         } else {
@@ -419,7 +419,7 @@ const int UPDATE_ALL = 3;
     NSArray *oldFeeds = [self.context executeFetchRequest:self.feedRequest error:&error];
     NSArray *knownIds = [oldFeeds valueForKey:@"myId"];
     
-    NSLog(@"Count: %i", oldFeeds.count);
+    NSLog(@"Count: %lu", (unsigned long)oldFeeds.count);
     
     error = nil;
     NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
@@ -521,15 +521,15 @@ const int UPDATE_ALL = 3;
     return (Item*)[myItems lastObject];
 }
 
-- (int)feedCount {
+- (long)feedCount {
     [self.feedRequest setPredicate:nil];
-    int count = [self.context countForFetchRequest:self.feedRequest error:nil];
+    long count = [self.context countForFetchRequest:self.feedRequest error:nil];
     return count - 2;
 }
 
-- (int)itemCount {
+- (long)itemCount {
     [self.itemRequest setPredicate:nil];
-    int count = [self.context countForFetchRequest:self.itemRequest error:nil];
+    long count = [self.context countForFetchRequest:self.itemRequest error:nil];
     return count;
 }
 
@@ -550,14 +550,14 @@ const int UPDATE_ALL = 3;
 - (NSNumber*)folderLastModified:(NSNumber *)aFolderId {
     Folder *folder = [self folderWithId:aFolderId];
     NSNumber *lastFolderUpdate = folder.lastModified;
-    NSNumber *lastSync = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+    NSNumber *lastSync = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
     return [NSNumber numberWithInt:MAX([lastFolderUpdate intValue], [lastSync intValue])];
 }
 
 - (NSNumber*)feedLastModified:(NSNumber *)aFeedId {
     Feed *feed = [self feedWithId:aFeedId];
     NSNumber *lastFeedUpdate = feed.lastModified;
-    NSNumber *lastSync = [NSNumber numberWithInt:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+    NSNumber *lastSync = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
     return [NSNumber numberWithInt:MAX([lastFeedUpdate intValue], [lastSync intValue])];
 }
 
@@ -571,17 +571,17 @@ const int UPDATE_ALL = 3;
         NSDictionary *itemDict = (NSDictionary*)responseObject;
         //NSLog(@"New Items: %@", itemDict);
         NSArray *newItems = [NSArray arrayWithArray:[itemDict objectForKey:@"items"]];
-        NSLog(@"New Item Count: %d", newItems.count);
+        NSLog(@"New Item Count: %lu", (unsigned long)newItems.count);
         if (newItems.count > 0) {
             __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
             [possibleDuplicateItems addObjectsFromArray:[newItems valueForKey:@"id"]];
-            NSLog(@"Item count: %i; possibleDuplicateItems count: %i", newItems.count, possibleDuplicateItems.count);
+            NSLog(@"Item count: %lu; possibleDuplicateItems count: %lu", (unsigned long)newItems.count, (unsigned long)possibleDuplicateItems.count);
             [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
             
             [self.itemRequest setResultType:NSManagedObjectResultType];
             
             NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:nil];
-            NSLog(@"duplicateItems Count: %i", duplicateItems.count);
+            NSLog(@"duplicateItems Count: %lu", (unsigned long)duplicateItems.count);
             
             for (NSManagedObject *item in duplicateItems) {
                 NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
@@ -599,7 +599,7 @@ const int UPDATE_ALL = 3;
             
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-            NSLog(@"Feeds with new items: %d", feedsWithNewItems.count);
+            NSLog(@"Feeds with new items: %lu", (unsigned long)feedsWithNewItems.count);
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
                 Feed *feed = [self feedWithId:feedId];
                 [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
@@ -615,8 +615,8 @@ const int UPDATE_ALL = 3;
                 }
                 
                 NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
-                NSLog(@"Unread item count: %d", unreadItems.count);
-                feed.unreadCountValue = unreadItems.count;
+                NSLog(@"Unread item count: %lu", (unsigned long)unreadItems.count);
+                feed.unreadCountValue = (int)unreadItems.count;
             }];
         }
         
@@ -758,12 +758,12 @@ const int UPDATE_ALL = 3;
         if (addedItems.count > 0) {
             __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
             [possibleDuplicateItems addObjectsFromArray:[addedItems valueForKey:@"id"]];
-            NSLog(@"Item count: %i; possibleDuplicateItems count: %i", addedItems.count, possibleDuplicateItems.count);
+            NSLog(@"Item count: %lu; possibleDuplicateItems count: %lu", (unsigned long)addedItems.count, (unsigned long)possibleDuplicateItems.count);
             [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
             [self.itemRequest setResultType:NSManagedObjectResultType];
             NSError *error = nil;
             NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:&error];
-            NSLog(@"duplicateItems Count: %i", duplicateItems.count);
+            NSLog(@"duplicateItems Count: %lu", (unsigned long)duplicateItems.count);
             
             for (NSManagedObject *item in duplicateItems) {
                 //NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
@@ -917,7 +917,7 @@ const int UPDATE_ALL = 3;
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    NSLog(@"Count: %i", items.count);
+    NSLog(@"Count: %lu", (unsigned long)items.count);
     
     [allItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
         Feed *feed = [self feedWithId:item.feedId];
@@ -935,14 +935,14 @@ const int UPDATE_ALL = 3;
     [folders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
         self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folder.myId];
         NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-        folder.unreadCountValue = [[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
+        folder.unreadCountValue = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
     }];
 }
 
 - (void)updateTotalUnreadCount {
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-    int totalUnreadCount = [[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
+    int totalUnreadCount = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
     [self feedWithId:[NSNumber numberWithInt:-2]].unreadCountValue = totalUnreadCount;
     [UIApplication sharedApplication].applicationIconBadgeNumber = totalUnreadCount;
     [self updateFolderUnreadCount];
@@ -958,7 +958,7 @@ const int UPDATE_ALL = 3;
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    NSLog(@"Starred Count: %i", starredItems.count);
+    NSLog(@"Starred Count: %lu", (unsigned long)starredItems.count);
     
     error = nil;
     NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
@@ -968,9 +968,9 @@ const int UPDATE_ALL = 3;
     }
 
     Feeds *theFeeds = [feeds lastObject];
-    theFeeds.starredCountValue = starredItems.count;
+    theFeeds.starredCountValue = (int)starredItems.count;
     
-    [[self feedWithId:[NSNumber numberWithInt:-1]] setUnreadCountValue:starredItems.count];
+    [[self feedWithId:[NSNumber numberWithInt:-1]] setUnreadCountValue:(int)starredItems.count];
     [self saveContext];
 }
 
@@ -1007,7 +1007,7 @@ const int UPDATE_ALL = 3;
         //offline
         [foldersToAdd addObject:name];
         Folder *newFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folder" inManagedObjectContext:self.context];
-        newFolder.myId = [NSNumber numberWithInt:10000 + foldersToAdd.count];
+        newFolder.myId = [NSNumber numberWithLong:10000 + foldersToAdd.count];
         newFolder.name = name;
     }
     [self updateTotalUnreadCount];
@@ -1130,7 +1130,7 @@ const int UPDATE_ALL = 3;
         //offline
         [feedsToAdd addObject:urlString];
         Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-        newFeed.myId = [NSNumber numberWithInt:10000 + feedsToAdd.count];
+        newFeed.myId = [NSNumber numberWithLong:10000 + feedsToAdd.count];
         newFeed.url = urlString;
         newFeed.title = urlString;
         newFeed.faviconLink = @"favicon";

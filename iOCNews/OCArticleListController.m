@@ -46,7 +46,7 @@
 #import "HexColor.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
-    int currentIndex;
+    long currentIndex;
 }
 
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
@@ -140,7 +140,7 @@
 
 - (void) refresh {
     [self.tableView reloadData];
-    int unreadCount = [self unreadCount];
+    long unreadCount = [self unreadCount];
     self.markBarButtonItem.enabled = (unreadCount > 0);    
 }
 
@@ -495,7 +495,7 @@
         // Update to handle the error appropriately.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
-    NSLog(@"Fetch Count: %d", self.fetchedResultsController.fetchedObjects.count);
+    NSLog(@"Fetch Count: %lu", (unsigned long)self.fetchedResultsController.fetchedObjects.count);
     
     [self refresh];
 }
@@ -656,7 +656,7 @@
     NSInteger result = 0;
     if (self.feed) {
         if ((self.feed.myIdValue == -2) && (self.folderId > 0)) {
-            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithInt:self.folderId]];
+            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
             result = folder.unreadCountValue;
         } else {
             result = self.feed.unreadCountValue;
