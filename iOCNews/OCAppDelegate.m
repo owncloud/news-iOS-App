@@ -76,6 +76,9 @@
         storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
     }
     
+    [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1.0];
+    [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
+
     UIViewController *feedController = [storyboard instantiateViewControllerWithIdentifier:@"feed"];
     UIViewController *articleController = [storyboard instantiateViewControllerWithIdentifier:@"article"];
     UIViewController *webController = [storyboard instantiateViewControllerWithIdentifier:@"web"];

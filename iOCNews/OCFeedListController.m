@@ -336,6 +336,7 @@
                     cell.textLabel.text = feed.title;
                 }
             }
+            cell.backgroundColor = [UIColor clearColor];
             cell.delegate = self;
         }
     }
@@ -354,6 +355,10 @@
     if (cell == nil) {
         cell = [[OCFeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        UIView * selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+        [selectedBackgroundView setBackgroundColor:[UIColor colorWithRed:0.87f green:0.87f blue:0.87f alpha:1.0f]]; // set color here
+        [cell setSelectedBackgroundView:selectedBackgroundView];
+        cell.backgroundColor = [UIColor clearColor];
     }
     cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
