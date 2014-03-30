@@ -393,11 +393,11 @@
 
 - (void) markRowsRead {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
-        int unreadCount = [self unreadCount];
+        long unreadCount = [self unreadCount];
         
         if (unreadCount > 0) {
             NSArray * vCells = self.tableView.indexPathsForVisibleRows;
-            __block int row = 0;
+            __block long row = 0;
             
             if (vCells.count > 0) {
                 NSIndexPath *topCell = [vCells objectAtIndex:0];
@@ -408,7 +408,7 @@
             }
             
             if ([self.fetchedResultsController fetchedObjects].count > 0) {
-                NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                __block NSMutableArray *idsToMarkRead = [NSMutableArray new];
                 
                 [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
                     if (idx >= row) {

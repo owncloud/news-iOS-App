@@ -119,190 +119,162 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)configureView
 {
-    if (self.item) {
-        if ([self.viewDeckController isAnySideOpen]) {
-            if (self.webView != nil) {
-                [self.menuController.view removeFromSuperview];
-                [self.webView removeFromSuperview];
-                self.webView.delegate =nil;
-                self.webView = nil;
-            }
-
-            CGFloat topBarOffset = self.topLayoutGuide.length;
-            CGRect frame = self.view.frame;
-            self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
-            self.automaticallyAdjustsScrollViewInsets = NO;
-
-            self.webView.scalesPageToFit = YES;
-            self.webView.delegate = self;
-            self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            self.webView.scrollView.directionalLockEnabled = YES;
-            [self.view insertSubview:self.webView atIndex:0];
-            [self.webView addSubview:self.menuController.view];
-
-        } else {
-            __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-            imageView.frame = self.view.frame;
-            imageView.image = [self screenshot];
-            [self.view insertSubview:imageView atIndex:0];
-            
-            [self.view setNeedsDisplay];
-            
-            float width = self.view.frame.size.width;
-            float height = self.view.frame.size.height;
-            
-            if (self.webView != nil) {
-                [self.menuController.view removeFromSuperview];
-                [self.webView removeFromSuperview];
-                self.webView.delegate =nil;
-                self.webView = nil;
-            }
-            __block CGFloat topBarOffset = self.topLayoutGuide.length;
-
-            self.automaticallyAdjustsScrollViewInsets = NO;
- 
-            if (_swipeDirection == SWIPE_NEXT) {
-                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(width, topBarOffset, width, height - topBarOffset)];
+    @try {
+        if (self.item) {
+            if ([self.viewDeckController isAnySideOpen]) {
+                if (self.webView != nil) {
+                    [self.menuController.view removeFromSuperview];
+                    [self.webView removeFromSuperview];
+                    self.webView.delegate =nil;
+                    self.webView = nil;
+                }
+                
+                CGFloat topBarOffset = self.topLayoutGuide.length;
+                CGRect frame = self.view.frame;
+                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
+                self.automaticallyAdjustsScrollViewInsets = NO;
+                
+                self.webView.scalesPageToFit = YES;
+                self.webView.delegate = self;
+                self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                self.webView.scrollView.directionalLockEnabled = YES;
+                [self.view insertSubview:self.webView atIndex:0];
+                [self.webView addSubview:self.menuController.view];
+                
             } else {
-                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(-width, topBarOffset, width, height - topBarOffset)];
-            }
-            self.webView.scalesPageToFit = YES;
-            self.webView.delegate = self;
-            self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            self.webView.scrollView.directionalLockEnabled = YES;
-            [self.webView addSubview:self.menuController.view];
-            [self.view insertSubview:self.webView belowSubview:imageView];
-
-            [UIView animateWithDuration:0.3f
-                                  delay:0.0f
-                                options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction
-                             animations:^{
-                                 [self.webView setFrame:CGRectMake(0.0, topBarOffset, width, height - topBarOffset)];
-                                 if (_swipeDirection == SWIPE_NEXT) {
-                                     [imageView setFrame:CGRectMake(-width, 0.0, width, height)];
-                                 } else {
-                                     [imageView setFrame:CGRectMake(width, 0.0, width, height)];
-                                 }
-                             }
-                             completion:^(BOOL finished){
-                                 // do whatever post processing you want (such as resetting what is "current" and what is "next")
-                                 [imageView removeFromSuperview];
-                                 [self.view.layer displayIfNeeded];
-                                 imageView = nil;
-                             }];
-            
-            /* old fade animation
-            [UIView transitionWithView:self.view
-                              duration:0.3
-                               options:UIViewAnimationOptionTransitionCrossDissolve
-                            animations:^{
-                                
-                                if (self.webView != nil) {
-                                    [self.menuController.view removeFromSuperview];
-                                    [self.webView removeFromSuperview];
-                                    self.webView.delegate =nil;
-                                    self.webView = nil;
-                                }
-                                if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-                                    // Load resources for iOS 6.1 or earlier
-                                    self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
-                                } else {
-                                    // Load resources for iOS 7 or later
-                                    CGFloat topBarOffset = self.topLayoutGuide.length;
-                                    CGRect frame = self.view.frame;
-                                    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
-                                    self.automaticallyAdjustsScrollViewInsets = NO;
-                                }
-                                self.webView.scalesPageToFit = YES;
-                                self.webView.delegate = self;
-                                self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                                self.webView.scrollView.directionalLockEnabled = YES;
-                                [self.webView addSubview:self.menuController.view];
-                                [self.view insertSubview:self.webView belowSubview:imageView];
-                                [imageView removeFromSuperview];
-                                [self.view.layer displayIfNeeded];
-                            }
-                            completion:^(BOOL finished) {
-                                if (finished) {
-                                    imageView = nil;
-                                }
-                            }];*/
-        }
-        
-        [self.webView addGestureRecognizer:self.nextArticleRecognizer];
-        [self.webView addGestureRecognizer:self.previousArticleRecognizer];
-
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-                self.navigationItem.title = self.item.title;
-            } else {
-                self.navigationItem.title = @"";
-            }
-        } else {
-            self.navigationItem.title = self.item.title;
-        }
-        Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
-        
-        if (feed.preferWebValue) {
-            if (feed.useReaderValue) {
-                if (self.item.readable) {
-                    [self writeAndLoadHtml:self.item.readable];
+                __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+                imageView.frame = self.view.frame;
+                imageView.image = [self screenshot];
+                [self.view insertSubview:imageView atIndex:0];
+                
+                [self.view setNeedsDisplay];
+                
+                float width = self.view.frame.size.width;
+                float height = self.view.frame.size.height;
+                
+                if (self.webView != nil) {
+                    [self.menuController.view removeFromSuperview];
+                    [self.webView removeFromSuperview];
+                    self.webView.delegate =nil;
+                    self.webView = nil;
+                }
+                __block CGFloat topBarOffset = self.topLayoutGuide.length;
+                
+                self.automaticallyAdjustsScrollViewInsets = NO;
+                
+                if (_swipeDirection == SWIPE_NEXT) {
+                    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(width, topBarOffset, width, height - topBarOffset)];
                 } else {
-                    [[OCAPIClient sharedClient] setResponseSerializer:[AFHTTPResponseSerializer serializer]];
-
-                    [[OCAPIClient sharedClient] GET:self.item.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                        NSString *html;
-                        NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
-                        if (responseObject) {
-                            html = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                            char *article;
-                            article = readable([html cStringUsingEncoding:NSUTF8StringEncoding],
-                                               [[[task.response URL] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding],
-                                               "UTF-8",
-                                               READABLE_OPTIONS_DEFAULT);
-                            if (article == NULL) {
-                                html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
-                                html = [html stringByAppendingString:self.item.body];
-                            } else {
-                                html = [NSString stringWithCString:article encoding:NSUTF8StringEncoding];
-                                html = [self fixRelativeUrl:html
-                                              baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", [[task.response URL] scheme], [[task.response URL] host], [[task.response URL] path]]];
-                            }
-                            self.item.readable = html;
-                            [[OCNewsHelper sharedHelper] saveContext];
-                        } else {
-                            html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
-                            html = [html stringByAppendingString:self.item.body];
-                        }
-                        //restore the response serializer
-                        [[OCAPIClient sharedClient] setResponseSerializer:[AFJSONResponseSerializer serializer]];
-                        [self writeAndLoadHtml:html];
-
-                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                        NSLog(@"Error: %@", error);
-                        NSString *html;
-                        html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
-                        html = [html stringByAppendingString:self.item.body];
-                        [self writeAndLoadHtml:html];
-                        //restore the response serializer
-                        [[OCAPIClient sharedClient] setResponseSerializer:[AFJSONResponseSerializer serializer]];
-                    }];
+                    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(-width, topBarOffset, width, height - topBarOffset)];
+                }
+                self.webView.scalesPageToFit = YES;
+                self.webView.delegate = self;
+                self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                self.webView.scrollView.directionalLockEnabled = YES;
+                [self.webView addSubview:self.menuController.view];
+                [self.view insertSubview:self.webView belowSubview:imageView];
+                
+                [UIView animateWithDuration:0.3f
+                                      delay:0.0f
+                                    options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction
+                                 animations:^{
+                                     [self.webView setFrame:CGRectMake(0.0, topBarOffset, width, height - topBarOffset)];
+                                     if (_swipeDirection == SWIPE_NEXT) {
+                                         [imageView setFrame:CGRectMake(-width, 0.0, width, height)];
+                                     } else {
+                                         [imageView setFrame:CGRectMake(width, 0.0, width, height)];
+                                     }
+                                 }
+                                 completion:^(BOOL finished){
+                                     // do whatever post processing you want (such as resetting what is "current" and what is "next")
+                                     [imageView removeFromSuperview];
+                                     [self.view.layer displayIfNeeded];
+                                     imageView = nil;
+                                 }];
+            }
+            
+            [self.webView addGestureRecognizer:self.nextArticleRecognizer];
+            [self.webView addGestureRecognizer:self.previousArticleRecognizer];
+            
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+                    self.navigationItem.title = self.item.title;
+                } else {
+                    self.navigationItem.title = @"";
                 }
             } else {
-                [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
+                self.navigationItem.title = self.item.title;
             }
-        } else {
-            NSString *html = self.item.body;
-            NSURL *itemURL = [NSURL URLWithString:self.item.url];
-            NSString *baseString = [NSString stringWithFormat:@"%@://%@", [itemURL scheme], [itemURL host]];
-            html = [self fixRelativeUrl:html baseUrlString:baseString];
-            [self writeAndLoadHtml:html];
+            Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
+            
+            if (feed.preferWebValue) {
+                if (feed.useReaderValue) {
+                    if (self.item.readable) {
+                        [self writeAndLoadHtml:self.item.readable];
+                    } else {
+                        [[OCAPIClient sharedClient] setResponseSerializer:[AFHTTPResponseSerializer serializer]];
+                        
+                        [[OCAPIClient sharedClient] GET:self.item.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                            NSString *html;
+                            NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+                            if (responseObject) {
+                                html = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                                char *article;
+                                article = readable([html cStringUsingEncoding:NSUTF8StringEncoding],
+                                                   [[[task.response URL] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding],
+                                                   "UTF-8",
+                                                   READABLE_OPTIONS_DEFAULT);
+                                if (article == NULL) {
+                                    html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
+                                    html = [html stringByAppendingString:self.item.body];
+                                } else {
+                                    html = [NSString stringWithCString:article encoding:NSUTF8StringEncoding];
+                                    html = [self fixRelativeUrl:html
+                                                  baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", [[task.response URL] scheme], [[task.response URL] host], [[task.response URL] path]]];
+                                }
+                                self.item.readable = html;
+                                [[OCNewsHelper sharedHelper] saveContext];
+                            } else {
+                                html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
+                                html = [html stringByAppendingString:self.item.body];
+                            }
+                            //restore the response serializer
+                            [[OCAPIClient sharedClient] setResponseSerializer:[AFJSONResponseSerializer serializer]];
+                            [self writeAndLoadHtml:html];
+                            
+                        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                            NSLog(@"Error: %@", error);
+                            NSString *html;
+                            html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
+                            html = [html stringByAppendingString:self.item.body];
+                            [self writeAndLoadHtml:html];
+                            //restore the response serializer
+                            [[OCAPIClient sharedClient] setResponseSerializer:[AFJSONResponseSerializer serializer]];
+                        }];
+                    }
+                } else {
+                    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
+                }
+            } else {
+                NSString *html = self.item.body;
+                NSURL *itemURL = [NSURL URLWithString:self.item.url];
+                NSString *baseString = [NSString stringWithFormat:@"%@://%@", [itemURL scheme], [itemURL host]];
+                html = [self fixRelativeUrl:html baseUrlString:baseString];
+                [self writeAndLoadHtml:html];
+            }
+            if ([self.viewDeckController isAnySideOpen]) {
+                
+                [self.viewDeckController closeLeftView];
+            }
+            [self updateToolbar];
         }
-        if ([self.viewDeckController isAnySideOpen]) {
         
-        [self.viewDeckController closeLeftView];
-        }
-        [self updateToolbar];
+    }
+    @catch (NSException *exception) {
+        //
+    }
+    @finally {
+        //
     }
 }
 
@@ -443,6 +415,9 @@ const int SWIPE_PREVIOUS = 1;
     if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
         url = [NSURL URLWithString:self.item.url];
     }
+    if (!url) {
+        return;
+    }
     
     TUSafariActivity *sa = [[TUSafariActivity alloc] init];
     FDiCabActivity *ia = [[FDiCabActivity alloc] init];
@@ -564,27 +539,41 @@ const int SWIPE_PREVIOUS = 1;
             
             switch (indexRow) {
                 case 0: // Keep unread
-                    if (!self.item.unreadValue) {
-                        self.item.unreadValue = YES;
-                        [[OCNewsHelper sharedHelper] markItemUnreadOffline:self.item.myId];
-                        [[rowSelected button] setSelected:YES];
-                    } else {
-                        self.item.unreadValue = NO;
-                        [[OCNewsHelper sharedHelper] markItemsReadOffline:@[self.item.myId]];
-                        [[rowSelected button] setSelected:NO];
+                    @try {
+                        if (!self.item.unreadValue) {
+                            self.item.unreadValue = YES;
+                            [[OCNewsHelper sharedHelper] markItemUnreadOffline:self.item.myId];
+                            [[rowSelected button] setSelected:YES];
+                        } else {
+                            self.item.unreadValue = NO;
+                            [[OCNewsHelper sharedHelper] markItemsReadOffline:@[self.item.myId]];
+                            [[rowSelected button] setSelected:NO];
+                        }
                     }
-                    break;
+                    @catch (NSException *exception) {
+                        //
+                    }
+                    @finally {
+                        break;
+                    }
                 case 1: // Star
-                    if (!self.item.starredValue) {
-                        self.item.starredValue = YES;
-                        [[OCNewsHelper sharedHelper] starItemOffline:self.item.myId];
-                        [[rowSelected button] setSelected:YES];
-                    } else {
-                        self.item.starredValue = NO;
-                        [[OCNewsHelper sharedHelper] unstarItemOffline:self.item.myId];
-                        [[rowSelected button] setSelected:NO];
+                    @try {
+                        if (!self.item.starredValue) {
+                            self.item.starredValue = YES;
+                            [[OCNewsHelper sharedHelper] starItemOffline:self.item.myId];
+                            [[rowSelected button] setSelected:YES];
+                        } else {
+                            self.item.starredValue = NO;
+                            [[OCNewsHelper sharedHelper] unstarItemOffline:self.item.myId];
+                            [[rowSelected button] setSelected:NO];
+                        }
                     }
-                    break;
+                    @catch (NSException *exception) {
+                        //
+                    }
+                    @finally {
+                        break;
+                    }
                 case 2: // Expand
                     [[rowSelected button] setSelected:NO];
                     break;

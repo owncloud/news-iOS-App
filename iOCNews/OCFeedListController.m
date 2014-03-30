@@ -291,52 +291,61 @@
 }
 
 - (void)configureCell:(OCFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-    if (indexPathTemp.row < [self.tableView numberOfRowsInSection:indexPath.section]) {
-        if (indexPath.section == 1) {
-            Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-            [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
-            cell.textLabel.text = folder.name;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.countBadge.value = folder.unreadCountValue;
-        } else {
-            Feed *feed;
-            if (indexPath.section == 0) {
-                if (indexPath.row < 2) {
-                    feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
-                }
+    @try {
+        NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+        if (indexPathTemp.row < [self.tableView numberOfRowsInSection:indexPath.section]) {
+            if (indexPath.section == 1) {
+                Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+                [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
+                cell.textLabel.text = folder.name;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.countBadge.value = folder.unreadCountValue;
             } else {
-                feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
-            }
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
-                NSString *faviconLink = feed.faviconLink;
-                if ([faviconLink hasPrefix:@"http"]) {
-                    NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
-                    if (faviconURL) {
-                        if (cell.tag == indexPathTemp.row) {
-                            [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
-                        }
+                Feed *feed;
+                if (indexPath.section == 0) {
+                    if (indexPath.row < 2) {
+                        feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
                     }
                 } else {
-                    if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
-                        [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
+                    feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
+                }
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
+                    NSString *faviconLink = feed.faviconLink;
+                    if ([faviconLink hasPrefix:@"http"]) {
+                        NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
+                        if (faviconURL) {
+                            if (cell.tag == indexPathTemp.row) {
+                                [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                            }
+                        }
                     } else {
-                        [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
+                        if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
+                            [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
+                        } else {
+                            [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
+                        }
                     }
                 }
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
+                    Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithInt:currentFolderIndex]];
+                    cell.countBadge.value = folder.unreadCountValue;
+                    cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+                } else {
+                    cell.countBadge.value = feed.unreadCountValue;
+                    cell.textLabel.text = feed.title;
+                }
             }
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
-                Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithInt:currentFolderIndex]];
-                cell.countBadge.value = folder.unreadCountValue;
-                cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
-            } else {
-                cell.countBadge.value = feed.unreadCountValue;
-                cell.textLabel.text = feed.title;
-            }
+            cell.delegate = self;
         }
-        cell.delegate = self;
     }
+    @catch (NSException *exception) {
+        //
+    }
+    @finally {
+        //
+    }
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
