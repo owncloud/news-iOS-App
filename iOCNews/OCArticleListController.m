@@ -121,14 +121,26 @@
 - (void)configureView
 {
     // Update the user interface for the detail item.
-    self.navigationItem.title = self.feed.title; // [self.feed objectForKey:@"title"];
-    if (self.feed.myIdValue > -2) {
-        self.refreshControl = self.feedRefreshControl;
-    } else {
-        self.refreshControl = nil;
+    @try {
+        if (self.feed.myIdValue == -2) {
+            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
+            self.navigationItem.title = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+        } else {
+            self.navigationItem.title = self.feed.title;
+        }
     }
-    [self updatePredicate];
-    [self scrollToTop];
+    @catch (NSException *exception) {
+        self.navigationItem.title = self.feed.title;
+    }
+    @finally {
+        if (self.feed.myIdValue > -2) {
+            self.refreshControl = self.feedRefreshControl;
+        } else {
+            self.refreshControl = nil;
+        }
+        [self updatePredicate];
+        [self scrollToTop];
+    }
 }
 
 - (void) scrollToTop {
