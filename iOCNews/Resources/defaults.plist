@@ -11,6 +11,7 @@
 	ItemsToMarkUnread = ();
 	ItemsToMarkRead = ();
 	FeedsToDelete = ();
+	FeedsToRename = ();
 	FeedsToAdd = ();
 	FeedsToMove = ();
 	FoldersToDelete = ();

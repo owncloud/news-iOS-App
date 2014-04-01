@@ -40,11 +40,11 @@
 
 @property (nonatomic, unsafe_unretained) id <OCFeedSettingsDelegate> delegate;
 
+@property (strong, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) IBOutlet UISwitch *fullArticleSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *readerSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *articleImagesSwitch;
 @property (strong, nonatomic) IBOutlet UITextView *urlTextView;
-@property (strong, nonatomic) IBOutlet UITextView *titleTextView;
 @property (strong, nonatomic) IBOutlet UIStepper *keepStepper;
 @property (strong, nonatomic) IBOutlet UILabel *keepLabel;
 

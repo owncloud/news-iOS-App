@@ -47,6 +47,7 @@ const int UPDATE_ALL = 3;
     NSMutableArray *foldersToRename;
     NSMutableArray *feedsToAdd;
     NSMutableArray *feedsToDelete;
+    NSMutableArray *feedsToRename;
     NSMutableArray *feedsToMove;
     NSMutableArray *itemsToMarkRead;
     NSMutableArray *itemsToMarkUnread;
@@ -132,6 +133,7 @@ const int UPDATE_ALL = 3;
     foldersToRename = [[prefs arrayForKey:@"FoldersToRename"] mutableCopy];
     feedsToAdd = [[prefs arrayForKey:@"FeedsToAdd"] mutableCopy];
     feedsToDelete = [[prefs arrayForKey:@"FeedsToDelete"] mutableCopy];
+    feedsToRename = [[prefs arrayForKey:@"FeedsToRename"] mutableCopy];
     feedsToMove = [[prefs arrayForKey:@"FeedsToMove"] mutableCopy];
     itemsToMarkRead = [[prefs arrayForKey:@"ItemsToMarkRead"] mutableCopy];
     itemsToMarkUnread = [[prefs arrayForKey:@"ItemsToMarkUnread"] mutableCopy];
@@ -188,6 +190,7 @@ const int UPDATE_ALL = 3;
     [prefs setObject:foldersToRename forKey:@"FoldersToRename"];
     [prefs setObject:feedsToAdd forKey:@"FeedsToAdd"];
     [prefs setObject:feedsToDelete forKey:@"FeedsToDelete"];
+    [prefs setObject:feedsToRename forKey:@"FeedsToRename"];
     [prefs setObject:feedsToMove forKey:@"FeedsToMove"];
     [prefs setObject:itemsToMarkRead forKey:@"ItemsToMarkRead"];
     [prefs setObject:itemsToMarkUnread forKey:@"ItemsToMarkUnread"];
@@ -489,6 +492,11 @@ const int UPDATE_ALL = 3;
     }
     [feedsToMove removeAllObjects];
     
+    for (NSDictionary *dict in feedsToRename) {
+        [self renameFeedOfflineWithId:[dict objectForKey:@"feedId"] To:[dict objectForKey:@"name"]];
+    }
+    [feedsToRename removeAllObjects];
+
 //    [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     [self updateTotalUnreadCount];
 }
@@ -1180,6 +1188,39 @@ const int UPDATE_ALL = 3;
         //offline
         [feedsToMove addObject:@{@"feedId": aFeedId, @"folderId": aFolderId}];
     }
+}
+
+- (void)renameFeedOfflineWithId:(NSNumber*)anId To:(NSString*)newName {
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
+        //online
+        NSDictionary *params = @{@"feedTitle": newName};
+        NSString *path = [NSString stringWithFormat:@"feeds/%@/rename", [anId stringValue]];
+        [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"Success");
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Failure");
+            NSString *message;
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            switch (response.statusCode) {
+                case 404:
+                    message = @"The feed does not exist.";
+                    break;
+                case 405:
+                    message = @"Please update the News app on the server to enable feed renaming.";
+                    break;
+                default:
+                    message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+                    break;
+            }
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Renaming Feed", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+        }];
+    } else {
+        //offline
+        [feedsToRename addObject:@{@"feedId": anId, @"name": newName}];
+    }
+    [[self feedWithId:anId] setTitle:newName];
+    [self saveContext];
 }
 
 - (void)markItemsReadOffline:(NSArray *)itemIds {

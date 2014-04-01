@@ -13,6 +13,7 @@
 	FeedsToDelete = ();
 	FeedsToAdd = ();
 	FeedsToMove = ();
+	FeedsToRename = ();
 	FoldersToDelete = ();
 	FoldersToAdd = ();
 	FoldersToRename = ();

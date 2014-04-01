@@ -62,7 +62,7 @@
     if (indexPath.row == 0) {
         return MAX(self.tableView.rowHeight, self.urlTextView.intrinsicContentSize.height);
     } else if (indexPath.row == 1) {
-        return MAX(self.tableView.rowHeight, self.titleTextView.intrinsicContentSize.height);
+        return MAX(self.tableView.rowHeight, self.titleTextField.intrinsicContentSize.height);
     } else {
         return tableView.rowHeight;
     }
@@ -75,7 +75,7 @@
         _feed = feed;
         
         self.urlTextView.text = feed.url;
-        self.titleTextView.text = feed.title;
+        self.titleTextField.text = feed.title;
         self.fullArticleSwitch.on = feed.preferWebValue;
         self.readerSwitch.on = feed.useReaderValue;
         self.readerSwitch.enabled = self.fullArticleSwitch.on;
@@ -92,6 +92,10 @@
     if (![self.feed.folderId isEqual:_newFolderId]) {
         self.feed.folderId = _newFolderId;
         [[OCNewsHelper sharedHelper] moveFeedOfflineWithId:self.feed.myId toFolderWithId:self.feed.folderId];
+    }
+    if (![self.feed.title isEqualToString:self.titleTextField.text] && self.titleTextField.text.length) {
+        self.feed.title = self.titleTextField.text;
+        [[OCNewsHelper sharedHelper] renameFeedOfflineWithId:self.feed.myId To:self.titleTextField.text];
     }
     [[OCNewsHelper sharedHelper] saveContext];
     if (self.delegate) {
