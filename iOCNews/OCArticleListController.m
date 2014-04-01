@@ -124,7 +124,11 @@
     @try {
         if (self.feed.myIdValue == -2) {
             Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
-            self.navigationItem.title = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+            if (folder && folder.name.length) {
+                self.navigationItem.title = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+            } else {
+                self.navigationItem.title = self.feed.title;
+            }
         } else {
             self.navigationItem.title = self.feed.title;
         }
