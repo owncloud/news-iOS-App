@@ -508,14 +508,14 @@
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Feed Title" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uHb-0o-I51">
-                                                    <rect key="frame" x="75" y="12" width="673" height="20"/>
+                                                    <rect key="frame" x="80" y="12" width="668" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="uHb-0o-I51" firstAttribute="leading" secondItem="ZkU-db-TZ0" secondAttribute="leading" constant="75" id="GO6-Gr-39O"/>
+                                                <constraint firstItem="uHb-0o-I51" firstAttribute="leading" secondItem="ZkU-db-TZ0" secondAttribute="leading" constant="80" id="GO6-Gr-39O"/>
                                                 <constraint firstAttribute="centerY" secondItem="uHb-0o-I51" secondAttribute="centerY" id="VZ0-UL-PZi"/>
                                                 <constraint firstAttribute="centerY" secondItem="f6Z-w3-ikf" secondAttribute="centerY" id="lRv-aj-lSJ"/>
                                                 <constraint firstAttribute="trailing" secondItem="uHb-0o-I51" secondAttribute="trailing" constant="20" id="xff-SV-dG2"/>
