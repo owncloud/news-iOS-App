@@ -939,6 +939,7 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)updateFolderUnreadCount {
+    self.folderRequest.predicate = nil;
     NSArray *folders = [self.context executeFetchRequest:self.folderRequest error:nil];
     [folders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
         self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folder.myId];
