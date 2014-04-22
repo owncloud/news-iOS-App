@@ -1191,34 +1191,37 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)renameFeedOfflineWithId:(NSNumber*)anId To:(NSString*)newName {
-    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
-        //online
-        NSDictionary *params = @{@"feedTitle": newName};
-        NSString *path = [NSString stringWithFormat:@"feeds/%@/rename", [anId stringValue]];
-        [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"Success");
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSLog(@"Failure");
-            NSString *message;
-            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-            switch (response.statusCode) {
-                case 404:
-                    message = @"The feed does not exist.";
-                    break;
-                case 405:
-                    message = @"Please update the News app on the server to enable feed renaming.";
-                    break;
-                default:
-                    message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-                    break;
-            }
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Renaming Feed", @"Title", message, @"Message", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
-        }];
-    } else {
-        //offline
-        [feedsToRename addObject:@{@"feedId": anId, @"name": newName}];
+    if ([anId intValue] > 0) {
+        if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
+            //online
+            NSDictionary *params = @{@"feedTitle": newName};
+            NSString *path = [NSString stringWithFormat:@"feeds/%@/rename", [anId stringValue]];
+            [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"Success");
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"Failure");
+                NSString *message;
+                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                switch (response.statusCode) {
+                    case 404:
+                        message = @"The feed does not exist.";
+                        break;
+                    case 405:
+                        message = @"Please update the News app on the server to enable feed renaming.";
+                        break;
+                    default:
+                        message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+                        break;
+                }
+                NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Renaming Feed", @"Title", message, @"Message", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+            }];
+        } else {
+            //offline
+            [feedsToRename addObject:@{@"feedId": anId, @"name": newName}];
+        }
     }
+    
     [[self feedWithId:anId] setTitle:newName];
     [self saveContext];
 }

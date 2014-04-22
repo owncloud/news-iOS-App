@@ -125,7 +125,12 @@
         if (self.feed.myIdValue == -2) {
             Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
             if (folder && folder.name.length) {
-                self.navigationItem.title = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                if ([prefs boolForKey:@"HideRead"]) {
+                    self.navigationItem.title = [NSString stringWithFormat:@"All Unread %@ Articles", folder.name];
+                } else {
+                    self.navigationItem.title = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+                }
             } else {
                 self.navigationItem.title = self.feed.title;
             }

@@ -330,7 +330,12 @@
                 if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
                     Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:currentFolderIndex]];
                     cell.countBadge.value = folder.unreadCountValue;
-                    cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+                    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                    if ([prefs boolForKey:@"HideRead"]) {
+                        cell.textLabel.text = [NSString stringWithFormat:@"All Unread %@ Articles", folder.name];
+                    } else {
+                        cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
+                    }
                 } else {
                     cell.countBadge.value = feed.unreadCountValue;
                     cell.textLabel.text = feed.title;
@@ -594,6 +599,7 @@
     BOOL hideRead = [prefs boolForKey:@"HideRead"];
     [prefs setBool:!hideRead forKey:@"HideRead"];
     [prefs synchronize];
+    [[OCNewsHelper sharedHelper] renameFeedOfflineWithId:[NSNumber numberWithInt:-2] To:hideRead == YES ? @"All Articles" : @"All Unread Articles"];
 }
 
 - (IBAction)doSettings:(id)sender {
