@@ -1231,7 +1231,26 @@ const int SWIPE_PREVIOUS = 1;
                     if (width.length > 0) {
                         widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
                     }
-                    NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/v/%@\" type=\"application/x-shockwave-flash\" %@ %@></embed>", videoID, heightString, widthString];
+                    NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/embed/%@\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
+                    result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
+                }
+            }
+            if (src && [src rangeOfString:@"vimeo"].location != NSNotFound) {
+                NSString *videoID = [self extractVimeoVideoID:src];
+                if (videoID) {
+                    NSLog(@"Raw: %@", [inputNode rawContents]);
+                    
+                    NSString *height = [inputNode getAttributeNamed:@"height"];
+                    NSString *width = [inputNode getAttributeNamed:@"width"];
+                    NSString *heightString = @"";
+                    NSString *widthString = @"";
+                    if (height.length > 0) {
+                        heightString = [NSString stringWithFormat:@"height=\"%@\"", height];
+                    }
+                    if (width.length > 0) {
+                        widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
+                    }
+                    NSString *embed = [NSString stringWithFormat:@"<iframe id=\"vimeo\" src=\"http://player.vimeo.com/video/%@\" type=\"text/html\" frameborder=\"0\" %@ %@></iframe>", videoID, heightString, widthString];
                     result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
                 }
             }
@@ -1263,6 +1282,20 @@ const int SWIPE_PREVIOUS = 1;
     NSRange rangeOfFirstMatch = [regex rangeOfFirstMatchInString:urlYoutube options:0 range:NSMakeRange(0, [urlYoutube length])];
     if(!NSEqualRanges(rangeOfFirstMatch, NSMakeRange(NSNotFound, 0))) {
         NSString *substringForFirstMatch = [urlYoutube substringWithRange:rangeOfFirstMatch];
+        return substringForFirstMatch;
+    }
+    
+    return nil;
+}
+
+//based on http://stackoverflow.com/a/16841070/2036378
+- (NSString *)extractVimeoVideoID:(NSString *)urlVimeo {
+    NSString *regexString = @"([0-9]{2,11})"; // @"(https?://)?(www.)?(player.)?vimeo.com/([a-z]*/)*([0-9]{6,11})[?]?.*";
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRange rangeOfFirstMatch = [regex rangeOfFirstMatchInString:urlVimeo options:0 range:NSMakeRange(0, [urlVimeo length])];
+    if(!NSEqualRanges(rangeOfFirstMatch, NSMakeRange(NSNotFound, 0))) {
+        NSString *substringForFirstMatch = [urlVimeo substringWithRange:rangeOfFirstMatch];
         return substringForFirstMatch;
     }
     
