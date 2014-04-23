@@ -26,6 +26,8 @@
 		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
 		D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
 		D02B42EB18E8D61C0003AAF3 /* TUSafariActivity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D02B42EA18E8D61C0003AAF3 /* TUSafariActivity.bundle */; };
+		D03689CE19087A1B00EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
+		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
 		D04AD65F1807125600FF6056 /* _Folder.m in Sources */ = {isa = PBXBuildFile; fileRef = D04AD65C1807125600FF6056 /* _Folder.m */; };
 		D04AD6601807125600FF6056 /* Folder.m in Sources */ = {isa = PBXBuildFile; fileRef = D04AD65E1807125600FF6056 /* Folder.m */; };
 		D04AD6651807403100FF6056 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA31177900C300C965F4 /* main.m */; };
@@ -514,6 +516,7 @@
 		D01ACAFA17B969FE005D1463 /* NSDictionary+HandleNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HandleNull.h"; sourceTree = "<group>"; };
 		D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HandleNull.m"; sourceTree = "<group>"; };
 		D02B42EA18E8D61C0003AAF3 /* TUSafariActivity.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TUSafariActivity.bundle; sourceTree = "<group>"; };
+		D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		D04AD65618070C4800FF6056 /* News 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 3.xcdatamodel"; sourceTree = "<group>"; };
 		D04AD65B1807125600FF6056 /* _Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Folder.h; sourceTree = "<group>"; };
 		D04AD65C1807125600FF6056 /* _Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Folder.m; sourceTree = "<group>"; };
@@ -799,6 +802,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03689CE19087A1B00EE4BAA /* MobileCoreServices.framework in Frameworks */,
 				D05EA52018FB56F70026EA5F /* StoreKit.framework in Frameworks */,
 				D05EA51E18FB2E4F0026EA5F /* libc++.dylib in Frameworks */,
 				D05EA51D18FB2E410026EA5F /* libz.dylib in Frameworks */,
@@ -821,6 +825,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */,
 				D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */,
 				D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */,
 				D0CFE5A9188F43EF00165839 /* KSCrash.framework in Frameworks */,
@@ -1011,6 +1016,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */,
 				D05EA51F18FB56F70026EA5F /* StoreKit.framework */,
 				D0CFE5A8188F43EF00165839 /* KSCrash.framework */,
 				D0A33F3B1880987C00C6DA92 /* libz.dylib */,

@@ -759,7 +759,7 @@
                                                  [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
                                              }
                                                      atPosition:TSMessageNotificationPositionTop
-                                            canBeDismisedByUser:YES];
+                                            canBeDismissedByUser:YES];
                 }
             }
         }
@@ -786,7 +786,7 @@
                                     buttonTitle:nil
                                  buttonCallback:nil
                                      atPosition:TSMessageNotificationPositionTop
-                            canBeDismisedByUser:YES];
+                            canBeDismissedByUser:YES];
 }
 
 #pragma mark - Toolbar Buttons

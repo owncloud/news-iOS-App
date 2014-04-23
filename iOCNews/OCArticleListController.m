@@ -625,7 +625,7 @@
                                     buttonTitle:nil
                                  buttonCallback:nil
                                      atPosition:TSMessageNotificationPositionTop
-                            canBeDismisedByUser:YES];
+                            canBeDismissedByUser:YES];
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
