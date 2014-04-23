@@ -411,34 +411,42 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 - (IBAction)doInfo:(id)sender {
-    NSURL *url = self.webView.request.URL;
-    if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
-        url = [NSURL URLWithString:self.item.url];
+    @try {
+        NSURL *url = self.webView.request.URL;
+        if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
+            url = [NSURL URLWithString:self.item.url];
+        }
+        if (!url) {
+            return;
+        }
+        
+        TUSafariActivity *sa = [[TUSafariActivity alloc] init];
+        FDiCabActivity *ia = [[FDiCabActivity alloc] init];
+        FDInstapaperActivity *ipa = [[FDInstapaperActivity alloc] init];
+        OCPocketActivity *pa = [[OCPocketActivity alloc] init];
+        FDReadabilityActivity *ra = [[FDReadabilityActivity alloc] init];
+        
+        NSArray *activityItems = @[url];
+        NSArray *activities = @[sa, ia, ipa, pa, ra];
+        
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            
+            if (![_activityPopover isPopoverVisible]) {
+                _activityPopover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+                _activityPopover.delegate = self;
+                [_activityPopover presentPopoverFromBarButtonItem:self.actionBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            }
+        } else {
+            [self presentViewController:activityViewController animated:YES completion:nil];
+        }
     }
-    if (!url) {
-        return;
+    @catch (NSException *exception) {
+        //
     }
-    
-    TUSafariActivity *sa = [[TUSafariActivity alloc] init];
-    FDiCabActivity *ia = [[FDiCabActivity alloc] init];
-    FDInstapaperActivity *ipa = [[FDInstapaperActivity alloc] init];
-    OCPocketActivity *pa = [[OCPocketActivity alloc] init];
-    FDReadabilityActivity *ra = [[FDReadabilityActivity alloc] init];
-    
-    NSArray *activityItems = @[url];
-    NSArray *activities = @[sa, ia, ipa, pa, ra];
-    
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
-
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-
-    if (![_activityPopover isPopoverVisible]) {
-        _activityPopover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
-		_activityPopover.delegate = self;
-		[_activityPopover presentPopoverFromBarButtonItem:self.actionBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	}
-    } else {
-        [self presentViewController:activityViewController animated:YES completion:nil];
+    @finally {
+        //
     }
 }
 
