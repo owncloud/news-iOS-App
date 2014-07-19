@@ -60,6 +60,7 @@ const int SWIPE_PREVIOUS = 1;
     UIPopoverController *_activityPopover;
     BOOL _menuIsOpen;
     int _swipeDirection;
+    BOOL loadingComplete;
 }
 
 @property (strong, nonatomic, readonly) UIPopoverController *prefPopoverController;
@@ -328,7 +329,7 @@ const int SWIPE_PREVIOUS = 1;
     NSURL *docDir = [paths objectAtIndex:0];
     NSURL *objectSaveURL = [docDir  URLByAppendingPathComponent:@"summary.html"];
     [objectHtml writeToURL:objectSaveURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
-    
+    loadingComplete = NO;
     [self.webView loadRequest:[NSURLRequest requestWithURL:objectSaveURL]];
 }
 
@@ -498,7 +499,7 @@ const int SWIPE_PREVIOUS = 1;
     if (![[request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
         [self.menuController close];
     }
-
+    loadingComplete = NO;
     return YES;
 }
 
@@ -519,6 +520,10 @@ const int SWIPE_PREVIOUS = 1;
         }
     } else {
         self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    }
+    if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"]) {
+        // UIWebView object has fully loaded.
+        loadingComplete = YES;
     }
     [self updateToolbar];
 }
@@ -930,10 +935,10 @@ const int SWIPE_PREVIOUS = 1;
     self.backBarButtonItem.enabled = self.webView.canGoBack;
     self.forwardBarButtonItem.enabled = self.webView.canGoForward;
     if ((self.item != nil)) {
-        self.actionBarButtonItem.enabled = !self.webView.isLoading;
-        self.textBarButtonItem.enabled = !self.webView.isLoading;
-        self.starBarButtonItem.enabled = !self.webView.isLoading;
-        self.unstarBarButtonItem.enabled = !self.webView.isLoading;
+        self.actionBarButtonItem.enabled = loadingComplete;
+        self.textBarButtonItem.enabled = loadingComplete;
+        self.starBarButtonItem.enabled = loadingComplete;
+        self.unstarBarButtonItem.enabled = loadingComplete;
     } else {
         self.actionBarButtonItem.enabled = NO;
         self.textBarButtonItem.enabled = NO;
@@ -941,7 +946,7 @@ const int SWIPE_PREVIOUS = 1;
         self.unstarBarButtonItem.enabled = NO;
     }
 
-    UIBarButtonItem *refreshStopBarButtonItem = self.webView.isLoading ? self.stopBarButtonItem : self.refreshBarButtonItem;
+    UIBarButtonItem *refreshStopBarButtonItem = loadingComplete ? self.refreshBarButtonItem : self.stopBarButtonItem;
     refreshStopBarButtonItem.enabled = (self.item != nil);
     self.navigationItem.leftBarButtonItems = @[self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
 
