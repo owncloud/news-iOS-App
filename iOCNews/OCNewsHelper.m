@@ -632,19 +632,19 @@ const int UPDATE_ALL = 3;
             case UPDATE_ALL: {
                 NSLog(@"Finishing all item update");
                 [self markItemsReadOffline:itemsToMarkRead];
-                [itemsToMarkRead removeAllObjects];
+                //[itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
                     [self markItemUnreadOffline:itemId];
                 }
-                [itemsToMarkUnread removeAllObjects];
+                //[itemsToMarkUnread removeAllObjects];
                 for (NSNumber *itemId in itemsToStar) {
                     [self starItemOffline:itemId];
                 }
-                [itemsToStar removeAllObjects];
+                //[itemsToStar removeAllObjects];
                 for (NSNumber *itemId in itemsToUnstar) {
                     [self unstarItemOffline:itemId];
                 }
-                [itemsToUnstar removeAllObjects];
+                //[itemsToUnstar removeAllObjects];
                 [self updateStarredCount];
                 [self updateTotalUnreadCount];
                 [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
@@ -1230,7 +1230,11 @@ const int UPDATE_ALL = 3;
 - (void)markItemsReadOffline:(NSArray *)itemIds {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:nil failure:nil];
+        [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
+            [itemsToMarkRead removeObjectsInArray:itemIds];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [itemsToMarkRead addObjectsFromArray:itemIds];
+        }];
     } else {
         //offline
         for (NSNumber *itemId in itemIds) {
@@ -1247,7 +1251,11 @@ const int UPDATE_ALL = 3;
 - (void)markItemUnreadOffline:(NSNumber*)itemId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [[OCAPIClient sharedClient] PUT:@"items/unread/multiple" parameters:[NSDictionary dictionaryWithObject:itemId forKey:@"items"] success:nil failure:nil];
+        [[OCAPIClient sharedClient] PUT:@"items/unread/multiple" parameters:[NSDictionary dictionaryWithObject:itemId forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
+            [itemsToMarkUnread removeObject:itemId];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [itemsToMarkUnread addObject:itemId];
+        }];
     } else {
         //offline
         NSInteger i = [itemsToMarkRead indexOfObject:itemId];
@@ -1265,7 +1273,11 @@ const int UPDATE_ALL = 3;
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
-            [[OCAPIClient sharedClient] PUT:path parameters:nil success:nil failure:nil];
+            [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                [itemsToStar removeObject:itemId];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [itemsToStar addObject:itemId];
+            }];
         }
     } else {
         //offline
@@ -1284,7 +1296,11 @@ const int UPDATE_ALL = 3;
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
-            [[OCAPIClient sharedClient] PUT:path parameters:nil success:nil failure:nil];
+            [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                [itemsToUnstar removeObject:itemId];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [itemsToUnstar addObject:itemId];
+            }];
         }
     } else {
         //offline
