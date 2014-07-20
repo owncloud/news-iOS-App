@@ -721,7 +721,7 @@ const int UPDATE_ALL = 3;
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     __block NSArray *allFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
     if ([aType intValue] == UPDATE_FOLDER) {
-        allFeeds = [allFeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", anId]];
+        allFeeds = [allFeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"folderId == %@", anId]];
     }
 
     NSLog(@"Building tasks");
