@@ -248,86 +248,94 @@
 }
 
 - (void)configureCell:(OCArticleCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-    cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
-    cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-
-    cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
-    [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
-    NSString *dateLabelText = @"";
-    
-    NSNumber *dateNumber = item.pubDate;
-    if (![dateNumber isKindOfClass:[NSNull class]]) {
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dateNumber doubleValue]];
-        if (date) {
-            NSLocale *currentLocale = [NSLocale currentLocale];
-            NSString *dateComponents = @"MMM d";
-            NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:currentLocale];
-            NSLog(@"Date format for %@: %@", [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]], dateFormatString);
-            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-            dateFormat.dateFormat = dateFormatString;
-            dateLabelText = [dateLabelText stringByAppendingString:[dateFormat stringFromDate:date]];
-        }
-    }
-    if (dateLabelText.length > 0) {
-        dateLabelText = [dateLabelText stringByAppendingString:@" | "];
-    }
-    
-    NSString *author = item.author;
-    if (![author isKindOfClass:[NSNull class]]) {
+    @try {
+        Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
-        if (author.length > 0) {
-            const int clipLength = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 50 : 25;
-            if([author length] > clipLength) {
-                dateLabelText = [dateLabelText stringByAppendingString:[NSString stringWithFormat:@"%@...",[author substringToIndex:clipLength]]];
-            } else {
-                dateLabelText = [dateLabelText stringByAppendingString:author];
+        cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+        cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+        
+        cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
+        [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
+        NSString *dateLabelText = @"";
+        
+        NSNumber *dateNumber = item.pubDate;
+        if (![dateNumber isKindOfClass:[NSNull class]]) {
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dateNumber doubleValue]];
+            if (date) {
+                NSLocale *currentLocale = [NSLocale currentLocale];
+                NSString *dateComponents = @"MMM d";
+                NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:currentLocale];
+                NSLog(@"Date format for %@: %@", [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]], dateFormatString);
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                dateFormat.dateFormat = dateFormatString;
+                dateLabelText = [dateLabelText stringByAppendingString:[dateFormat stringFromDate:date]];
             }
         }
-    }
-    Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:item.feedId];
-    if (feed && feed.title && ![feed.title isEqualToString:author]) {
-        if (author.length > 0) {
+        if (dateLabelText.length > 0) {
             dateLabelText = [dateLabelText stringByAppendingString:@" | "];
         }
-        dateLabelText = [dateLabelText stringByAppendingString:feed.title];
-    }
-    cell.dateLabel.text = dateLabelText;
-    
-    NSString *summary = item.body;
-    if ([summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        if ([summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-            NSRange r;
-            r.location = [summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location;
-            r.length = [summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location - r.location + 8;
-            NSString *sub = [summary substringWithRange:r];
-            summary = [summary stringByReplacingOccurrencesOfString:sub withString:@""];
+        
+        NSString *author = item.author;
+        if (![author isKindOfClass:[NSNull class]]) {
+            
+            if (author.length > 0) {
+                const int clipLength = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 50 : 25;
+                if([author length] > clipLength) {
+                    dateLabelText = [dateLabelText stringByAppendingString:[NSString stringWithFormat:@"%@...",[author substringToIndex:clipLength]]];
+                } else {
+                    dateLabelText = [dateLabelText stringByAppendingString:author];
+                }
+            }
+        }
+        Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:item.feedId];
+        if (feed && feed.title && ![feed.title isEqualToString:author]) {
+            if (author.length > 0) {
+                dateLabelText = [dateLabelText stringByAppendingString:@" | "];
+            }
+            dateLabelText = [dateLabelText stringByAppendingString:feed.title];
+        }
+        cell.dateLabel.text = dateLabelText;
+        
+        NSString *summary = item.body;
+        if ([summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            if ([summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                NSRange r;
+                r.location = [summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location;
+                r.length = [summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location - r.location + 8;
+                NSString *sub = [summary substringWithRange:r];
+                summary = [summary stringByReplacingOccurrencesOfString:sub withString:@""];
+            }
+        }
+        cell.summaryLabel.text = [summary stringByConvertingHTMLToPlainText];
+        [cell.summaryLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
+        cell.starImage.image = nil;
+        if (item.starredValue) {
+            cell.starImage.image = [UIImage imageNamed:@"star_icon"];
+        }
+        NSNumber *read = item.unread;
+        if ([read intValue] == 1) {
+            cell.summaryLabel.textColor = [UIColor darkTextColor];
+            cell.titleLabel.textColor = [UIColor darkTextColor];
+            cell.dateLabel.textColor = [UIColor darkTextColor];
+            cell.articleImage.alpha = 1.0f;
+        } else {
+            cell.summaryLabel.textColor = [UIColor colorWithHexString:@"#696969"];
+            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#696969"];
+            cell.dateLabel.textColor = [UIColor colorWithHexString:@"#696969"];
+            cell.articleImage.alpha = 0.4f;
+        }
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
+            [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]]];
+        } else {
+            [cell.articleImage setImage:nil];
         }
     }
-    cell.summaryLabel.text = [summary stringByConvertingHTMLToPlainText];
-    [cell.summaryLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
-    cell.starImage.image = nil;
-    if (item.starredValue) {
-        cell.starImage.image = [UIImage imageNamed:@"star_icon"];
+    @catch (NSException *exception) {
+        //
     }
-    NSNumber *read = item.unread;
-    if ([read intValue] == 1) {
-        cell.summaryLabel.textColor = [UIColor darkTextColor];
-        cell.titleLabel.textColor = [UIColor darkTextColor];
-        cell.dateLabel.textColor = [UIColor darkTextColor];
-        cell.articleImage.alpha = 1.0f;
-    } else {
-        cell.summaryLabel.textColor = [UIColor colorWithHexString:@"#696969"];
-        cell.titleLabel.textColor = [UIColor colorWithHexString:@"#696969"];
-        cell.dateLabel.textColor = [UIColor colorWithHexString:@"#696969"];
-        cell.articleImage.alpha = 0.4f;
-    }
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
-        [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]]];
-    } else {
-        [cell.articleImage setImage:nil];
+    @finally {
+        //
     }
 }
 
@@ -579,20 +587,28 @@
             if (indexPath.section == 0) {
                 //UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
                 //if (cell.isHighlighted) {
-                Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-                if (item.unreadValue) {
-                    NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                    item.unreadValue = NO;
-                    [idsToMarkRead addObject:item.myId];
-                    [self updateUnreadCount:idsToMarkRead];
-                } else {
-                    if (item.starredValue) {
-                        item.starredValue = NO;
-                        [[OCNewsHelper sharedHelper] unstarItemOffline:item.myId];
+                @try {
+                    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                    if (item.unreadValue) {
+                        NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                        item.unreadValue = NO;
+                        [idsToMarkRead addObject:item.myId];
+                        [self updateUnreadCount:idsToMarkRead];
                     } else {
-                        item.starredValue = YES;
-                        [[OCNewsHelper sharedHelper] starItemOffline:item.myId];
+                        if (item.starredValue) {
+                            item.starredValue = NO;
+                            [[OCNewsHelper sharedHelper] unstarItemOffline:item.myId];
+                        } else {
+                            item.starredValue = YES;
+                            [[OCNewsHelper sharedHelper] starItemOffline:item.myId];
+                        }
                     }
+                }
+                @catch (NSException *exception) {
+                    //
+                }
+                @finally {
+                    //
                 }
                 //}
             }

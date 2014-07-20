@@ -468,9 +468,16 @@ const int SWIPE_PREVIOUS = 1;
         [[self.menuController.rows objectAtIndex:2 + 2] button].hidden = YES;
         [[self.menuController.rows objectAtIndex:2 + 3] button].hidden = YES;
     } else {
-        self.keepUnread.button.selected = self.item.unreadValue;
-        self.star.button.selected = self.item.starredValue;
-        [self.menuController open];
+        @try {
+            self.keepUnread.button.selected = self.item.unreadValue;
+            self.star.button.selected = self.item.starredValue;
+        }
+        @catch (NSException *exception) {
+            //
+        }
+        @finally {
+            [self.menuController open];
+        }
     }
     _menuIsOpen = !_menuIsOpen;
 }
