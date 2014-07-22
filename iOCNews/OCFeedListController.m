@@ -315,7 +315,7 @@
                         NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
                         if (faviconURL) {
                             if (cell.tag == indexPathTemp.row) {
-                                [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                                [cell.imageView sd_setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
                             }
                         }
                     } else {
