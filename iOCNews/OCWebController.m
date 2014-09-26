@@ -108,7 +108,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)setItem:(Item*)newItem
 {
-    Item *myItem = (Item*)[[OCNewsHelper sharedHelper].context objectWithID:newItem.objectID];
+    Item *myItem = (Item*)[[OCNewsHelper sharedHelper].context objectWithID:[newItem objectID]];
     if (myItem) {
         if (_item != myItem) {
             _item = myItem;
