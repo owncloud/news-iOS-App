@@ -13,11 +13,11 @@
    height="88"
    id="svg5330"
    version="1.1"
-   inkscape:version="0.48.4 r9943 custom"
+   inkscape:version="0.91pre2+osxmenu r12797"
    sodipodi:docname="star_blue.svg"
-   inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/star_blue_filled.png"
-   inkscape:export-xdpi="45"
-   inkscape:export-ydpi="45">
+   inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/star_blue_filled.imageset/star_blue_filled@3x.png"
+   inkscape:export-xdpi="135"
+   inkscape:export-ydpi="135">
   <defs
      id="defs5332" />
   <sodipodi:namedview
@@ -28,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
-     inkscape:cx="3.1818177"
+     inkscape:cx="33.727272"
      inkscape:cy="32.181818"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -37,8 +37,8 @@
      inkscape:showpageshadow="false"
      inkscape:window-width="1450"
      inkscape:window-height="856"
-     inkscape:window-x="1400"
-     inkscape:window-y="22"
+     inkscape:window-x="72"
+     inkscape:window-y="47"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -57,7 +57,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -68,7 +68,7 @@
      transform="translate(0,24)">
     <path
        sodipodi:type="star"
-       style="fill:#007aff;stroke:#007aff;stroke-width:33.32923888999999917;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#ffcc01;stroke:#000000;stroke-width:33.32923889;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1"
        id="path2987"
        sodipodi:sides="5"
        sodipodi:cx="100"
@@ -80,7 +80,7 @@
        inkscape:flatsided="false"
        inkscape:rounded="0"
        inkscape:randomized="0"
-       d="M 100.00001,658.2496 -10.89039,433.56114 -258.84882,397.53068 -79.424408,222.63509 -121.78078,-24.321409 100.00001,92.275635 321.78076,-24.321421 279.42441,222.63511 458.84882,397.53066 210.89038,433.56115 z"
+       d="M 100.00001,658.2496 -10.89039,433.56114 -258.84882,397.53068 -79.424408,222.63509 -121.78078,-24.321409 100.00001,92.275635 321.78076,-24.321421 279.42441,222.63511 458.84882,397.53066 210.89038,433.56115 Z"
        inkscape:transform-center-y="-23.410364"
        transform="matrix(0.05852046,0,0,-0.06153206,38.147954,39.503453)"
        inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/star_open-7.png"

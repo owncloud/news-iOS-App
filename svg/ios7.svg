@@ -13,10 +13,41 @@
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9943 custom"
+   inkscape:version="0.91pre2+osxmenu r12797"
    sodipodi:docname="ios7.svg">
   <defs
-     id="defs4" />
+     id="defs4">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath11932">
+      <rect
+         transform="scale(-1,1)"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/mark.imageset/mark@3x.png"
+         y="55.319935"
+         x="-434.73138"
+         height="38.910858"
+         width="32.409458"
+         id="rect11934"
+         style="fill:#000000;stroke:none;stroke-width:0.99999994" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath11936">
+      <rect
+         transform="scale(-1,1)"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/mark.imageset/mark@3x.png"
+         y="55.319935"
+         x="-434.73138"
+         height="38.910858"
+         width="32.409458"
+         id="rect11938"
+         style="fill:#000000;stroke:none;stroke-width:0.99999994" />
+    </clipPath>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,19 +55,27 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.83906474"
-     inkscape:cx="276.70299"
-     inkscape:cy="859.88597"
+     inkscape:zoom="4.746467"
+     inkscape:cx="520.0378"
+     inkscape:cy="939.67"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1868"
-     inkscape:window-height="1036"
+     inkscape:window-height="1035"
      inkscape:window-x="52"
-     inkscape:window-y="22"
-     inkscape:window-maximized="0" />
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     guidetolerance="10000">
+    <inkscape:grid
+       type="xygrid"
+       id="grid11827"
+       spacingx="4px"
+       spacingy="4px"
+       empspacing="4" />
+  </sodipodi:namedview>
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -53,29 +92,25 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <g
-       id="g3803"
-       transform="translate(-30.986882,-443.68847)">
-      <path
-         inkscape:export-ydpi="90"
-         inkscape:export-xdpi="90"
-         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/back-7@2x.png"
-         inkscape:connector-curvature="0"
-         id="path3054"
-         d="M 82.80839,499.72763 63.753181,518.78284 82.8517,537.83805"
-         style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <rect
-         transform="scale(-1,1)"
-         inkscape:export-ydpi="90"
-         inkscape:export-xdpi="90"
-         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/back-7@2x.png"
-         y="474.78284"
-         x="-97.302444"
-         height="88"
-         width="48"
-         id="rect3824"
-         style="fill:none;stroke:#dd2d32" />
-    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 32.808403,56.03916 51.863612,75.09437 32.765093,94.14958"
+       id="path3054"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/forward.imageset/forward@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135" />
+    <rect
+       style="fill:none;stroke:#dd2d32"
+       id="rect3824"
+       width="48"
+       height="88"
+       x="-66.315559"
+       y="31.094366"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/forward.imageset/forward@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135"
+       transform="scale(-1,1)" />
     <g
        id="g3785"
        transform="translate(27.248515,-555.63213)">
@@ -141,7 +176,7 @@
          inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/star_open-7.png"
          transform="matrix(0.05852046,0,0,-0.06153206,187.95039,535.78629)"
          inkscape:transform-center-y="-23.410364"
-         d="M 100.00001,658.2496 -10.89039,433.56114 -258.84882,397.53068 -79.424408,222.63509 -121.78078,-24.321409 100.00001,92.275635 321.78076,-24.321421 279.42441,222.63511 458.84882,397.53066 210.89038,433.56115 z"
+         d="M 100.00001,658.2496 -10.89039,433.56114 -258.84882,397.53068 -79.424408,222.63509 -121.78078,-24.321409 100.00001,92.275635 321.78076,-24.321421 279.42441,222.63511 458.84882,397.53066 210.89038,433.56115 Z"
          inkscape:randomized="0"
          inkscape:rounded="0"
          inkscape:flatsided="false"
@@ -167,55 +202,522 @@
          inkscape:export-ydpi="45"
          transform="scale(-1,1)" />
     </g>
+    <path
+       label="Ebene 1"
+       stroke-miterlimit="4"
+       id="path3790"
+       d="m 169.91937,54.09777 c -0.44289,0.0302 -0.87359,0.0986 -1.30872,0.14863 l -0.86569,0 -1.04108,5.68087 c -1.69696,0.3863 -1.65025,0.33694 -3.08625,1.22819 l -4.66989,-3.36094 c -1.26267,0.97998 -3.78564,3.8024 -4.79511,5.0403 l 3.16593,4.72888 c -0.89962,1.29007 -0.8878,1.63283 -1.49819,3.24593 l -5.65136,0.89237 c -0.10345,0.84383 -0.14892,2.55221 -0.14892,3.42377 0,0.71322 0.0197,2.3547 0.0893,3.04964 l 5.65164,1.01133 c 0.40184,1.96248 0.43076,2.25377 1.49625,3.87185 l -3.3612,4.60991 c 0.96259,1.19519 3.4122,3.78828 4.60997,4.7472 l 4.7592,-3.27165 c 1.66341,1.06098 2.0803,0.90324 4.09285,1.26956 l 0.89244,5.62125 c 0.63396,0.0577 2.12059,0.0596 2.76981,0.0596 0.9163,0 2.62783,-0.0347 3.51333,-0.14861 l 1.07076,-5.74051 c 1.91077,-0.47557 2.30231,-0.32611 3.86117,-1.43506 l 4.58088,3.33127 c 1.18779,-1.0105 3.64836,-3.8515 4.58683,-5.09965 l -3.33152,-4.81845 c 0.90213,-1.55817 0.72025,-1.63403 1.03723,-3.47258 l 5.62169,-0.89237 c 0.0496,-0.58651 0.059,-2.09347 0.059,-2.69275 0,-1.04156 -0.12092,-2.89883 -0.26763,-3.89991 l -5.71125,-1.04099 c -0.44733,-1.65248 -0.57818,-1.45603 -1.50833,-2.84226 l 3.3612,-4.61021 c -1.04192,-1.27394 -3.56833,-3.95605 -4.87759,-4.95545 l -4.84851,3.33126 c -1.39357,-0.82414 -1.32221,-0.85293 -2.95039,-1.21094 l -0.89244,-5.65093 c -0.81202,-0.0956 -2.46726,-0.14891 -3.30505,-0.14891 -0.22658,0 -0.45953,-0.007 -0.68416,0 -0.10953,0.003 -0.21798,-0.007 -0.32724,0 -0.0294,0.002 -0.0599,-0.002 -0.0893,0 l 2.9e-4,2.9e-4 z m 0.77346,14.4548 c 0.10876,-0.004 0.21715,0 0.32724,0 3.52094,0 6.39515,2.874 6.39515,6.39495 0,3.52065 -2.87421,6.36498 -6.39515,6.36498 -3.52093,0 -6.36547,-2.84433 -6.36547,-6.36498 0,-3.41086 2.66954,-6.22385 6.03823,-6.39495 z"
+       inkscape:connector-curvature="0"
+       style="fill:none;stroke:#000000;stroke-width:1.99999988;stroke-miterlimit:4;stroke-dasharray:none"
+       sodipodi:nodetypes="ccccccccccsccccccccsccccccccsccccccccsccccccssssc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/gear-7@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135" />
+    <rect
+       style="fill:none;stroke:#dd2d32"
+       id="rect9052"
+       width="48"
+       height="88"
+       x="-195.01991"
+       y="31.09437"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/gear-7@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135"
+       transform="scale(-1,1)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 281.23273,80.63481 13.2847,14.95953 23.69834,-41"
+       id="path9605"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/mark.imageset/mark@3x.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       transform="scale(-1,1)"
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/mark.imageset/mark@3x.png"
+       y="31.094366"
+       x="-323.72424"
+       height="88"
+       width="48"
+       id="rect9607"
+       style="fill:none;stroke:#dd2d32" />
+    <rect
+       transform="scale(-1,1)"
+       inkscape:export-ydpi="45"
+       inkscape:export-xdpi="45"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/sidemenu.png"
+       y="31.362183"
+       x="-380"
+       height="88"
+       width="48"
+       id="rect15294"
+       style="fill:none;stroke:#dd2d32" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 336.31555,74.862183 c 40.54794,0 40,0 40,0"
+       id="path15302"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/sidemenu.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path15304"
+       d="m 336.31555,86.862183 c 40.54794,0 40,0 40,0"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/sidemenu.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 336.31555,62.862183 c 40.54794,0 40,0 40,0"
+       id="path15306"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/sidemenu.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45" />
+    <rect
+       inkscape:export-ydpi="270"
+       inkscape:export-xdpi="270"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight3.imageset/lineheight3@3x.png"
+       style="fill:none;stroke:none"
+       id="rect4146"
+       width="44"
+       height="44"
+       x="12.001386"
+       y="204.36218" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 18.001883,213.86218 31.999006,0"
+       id="path4152"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight3.imageset/lineheight3@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4154"
+       d="m 18.001386,225.86218 32,-1e-5"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight3.imageset/lineheight3@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 18.001965,237.86218 31.998842,0"
+       id="path4156"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight3.imageset/lineheight3@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       y="204.36218"
+       x="67.999901"
+       height="44"
+       width="44"
+       id="rect4163"
+       style="fill:none;stroke:none"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight2.imageset/lineheight2@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4167"
+       d="m 74.002042,216.86218 31.995718,-0.055"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight2.imageset/lineheight2@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 74.001962,225.86218 31.995878,-0.055"
+       id="path4169"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight2.imageset/lineheight2@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4171"
+       d="m 74.001962,234.86218 31.995878,-0.055"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight2.imageset/lineheight2@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       inkscape:export-ydpi="270"
+       inkscape:export-xdpi="270"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight1.imageset/lineheight1@3x.png"
+       style="fill:none;stroke:none"
+       id="rect4173"
+       width="44"
+       height="44"
+       x="123.99999"
+       y="204.36218" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 130.00206,219.86218 31.99587,-0.055"
+       id="path4177"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight1.imageset/lineheight1@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4179"
+       d="m 130.00206,225.86218 31.99587,-0.055"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight1.imageset/lineheight1@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 130.00206,231.86218 31.99628,-0.055"
+       id="path4181"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/lineheight1.imageset/lineheight1@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.99999994;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect4216"
+       width="31"
+       height="23"
+       x="22.5"
+       y="142.86218"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin1.imageset/margin1@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       y="143.61624"
+       x="27.254059"
+       height="21.49188"
+       width="21.49188"
+       id="rect4218"
+       style="fill:#000000;stroke:#000000;stroke-width:2.50811982;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin1.imageset/margin1@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       y="142.86218"
+       x="78.5"
+       height="23"
+       width="31"
+       id="rect4222"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin2.imageset/margin2@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       style="fill:#000000;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect4224"
+       width="19"
+       height="23"
+       x="84.5"
+       y="142.86218"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin2.imageset/margin2@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect4228"
+       width="31"
+       height="23"
+       x="134.5"
+       y="142.86218"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin3.imageset/margin3@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       y="142.86218"
+       x="142.5"
+       height="23"
+       width="15"
+       id="rect4230"
+       style="fill:#000000;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin3.imageset/margin3@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       y="132.36218"
+       x="16"
+       height="44"
+       width="44"
+       id="rect11829"
+       style="fill:none;stroke:none"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin1.imageset/margin1@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <rect
+       inkscape:export-ydpi="270"
+       inkscape:export-xdpi="270"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin2.imageset/margin2@3x.png"
+       style="fill:none;stroke:none"
+       id="rect11831"
+       width="44"
+       height="44"
+       x="72"
+       y="132.36218" />
+    <rect
+       y="132.36218"
+       x="128"
+       height="44"
+       width="44"
+       id="rect11833"
+       style="fill:none;stroke:none"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/margin3.imageset/margin3@3x.png"
+       inkscape:export-xdpi="270"
+       inkscape:export-ydpi="270" />
+    <path
+       inkscape:export-ydpi="45"
+       inkscape:export-xdpi="45"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path11835"
+       d="m 406.51743,95.59434 23.69834,-41"
+       style="fill:none;stroke:#000000;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       clip-path="url(#clipPath11936)" />
+    <rect
+       style="fill:none;stroke:none"
+       id="rect11837"
+       width="48"
+       height="88"
+       x="-442.36661"
+       y="31.362183"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45"
+       transform="scale(-1,1)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 430.21577,95.59434 -23.69834,-41"
+       id="path11839"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45"
+       clip-path="url(#clipPath11932)" />
+    <path
+       clip-path="url(#clipPath11936)"
+       style="fill:none;stroke:#000000;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 406.51743,95.59434 23.69834,-41"
+       id="path11940"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45" />
+    <rect
+       transform="scale(-1,1)"
+       inkscape:export-ydpi="45"
+       inkscape:export-xdpi="45"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+       y="31.362183"
+       x="-442.36661"
+       height="88"
+       width="48"
+       id="rect11942"
+       style="fill:none;stroke:none" />
+    <path
+       clip-path="url(#clipPath11932)"
+       inkscape:export-ydpi="45"
+       inkscape:export-xdpi="45"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path11944"
+       d="m 430.21577,95.59434 -23.69834,-41"
+       style="fill:none;stroke:#000000;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       transform="scale(-1,1)"
+       inkscape:export-ydpi="135"
+       inkscape:export-xdpi="135"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizem.imageset/fontsizem@3x.png"
+       y="31.362183"
+       x="-512"
+       height="88"
+       width="48"
+       id="rect11948"
+       style="fill:none;stroke:none" />
+    <rect
+       style="fill:none;stroke:none"
+       id="rect11954"
+       width="48"
+       height="88"
+       x="-512"
+       y="31.362183"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizem.imageset/fontsizem@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135"
+       transform="scale(-1,1)" />
     <g
-       id="g3795"
-       transform="translate(-22.782338,-553.18859)">
+       id="g11960"
+       transform="matrix(1.0027496,0,0,1.0279869,-2.8485107,-2.6372257)"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizem.imageset/fontsizem@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135">
       <path
+         transform="matrix(0.59947024,0,0,1.0000036,231.89513,-3.4350908e-4)"
          inkscape:export-ydpi="45"
          inkscape:export-xdpi="45"
-         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/gear-7.png"
-         sodipodi:nodetypes="ccccccccccsccccccccsccccccccsccccccccsccccccssssc"
-         style="fill:none;stroke:#000000;stroke-width:1.99999988;stroke-miterlimit:4;stroke-dasharray:none"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+         sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
-         d="m 192.70171,607.28636 c -0.44289,0.0302 -0.87359,0.0986 -1.30872,0.14863 l -0.86569,0 -1.04108,5.68087 c -1.69696,0.3863 -1.65025,0.33694 -3.08625,1.22819 l -4.66989,-3.36094 c -1.26267,0.97998 -3.78564,3.8024 -4.79511,5.0403 l 3.16593,4.72888 c -0.89962,1.29007 -0.8878,1.63283 -1.49819,3.24593 l -5.65136,0.89237 c -0.10345,0.84383 -0.14892,2.55221 -0.14892,3.42377 0,0.71322 0.0197,2.3547 0.0893,3.04964 l 5.65164,1.01133 c 0.40184,1.96248 0.43076,2.25377 1.49625,3.87185 l -3.3612,4.60991 c 0.96259,1.19519 3.4122,3.78828 4.60997,4.7472 l 4.7592,-3.27165 c 1.66341,1.06098 2.0803,0.90324 4.09285,1.26956 l 0.89244,5.62125 c 0.63396,0.0577 2.12059,0.0596 2.76981,0.0596 0.9163,0 2.62783,-0.0347 3.51333,-0.14861 l 1.07076,-5.74051 c 1.91077,-0.47557 2.30231,-0.32611 3.86117,-1.43506 l 4.58088,3.33127 c 1.18779,-1.0105 3.64836,-3.8515 4.58683,-5.09965 l -3.33152,-4.81845 c 0.90213,-1.55817 0.72025,-1.63403 1.03723,-3.47258 l 5.62169,-0.89237 c 0.0496,-0.58651 0.059,-2.09347 0.059,-2.69275 0,-1.04156 -0.12092,-2.89883 -0.26763,-3.89991 l -5.71125,-1.04099 c -0.44733,-1.65248 -0.57818,-1.45603 -1.50833,-2.84226 l 3.3612,-4.61021 c -1.04192,-1.27394 -3.56833,-3.95605 -4.87759,-4.95545 l -4.84851,3.33126 c -1.39357,-0.82414 -1.32221,-0.85293 -2.95039,-1.21094 l -0.89244,-5.65093 c -0.81202,-0.0956 -2.46726,-0.14891 -3.30505,-0.14891 -0.22658,0 -0.45953,-0.007 -0.68416,0 -0.10953,0.003 -0.21798,-0.007 -0.32724,0 -0.0294,0.002 -0.0599,-0.002 -0.0893,0 l 2.9e-4,2.9e-4 z m 0.77346,14.4548 c 0.10876,-0.004 0.21715,0 0.32724,0 3.52094,0 6.39515,2.874 6.39515,6.39495 0,3.52065 -2.87421,6.36498 -6.39515,6.36498 -3.52093,0 -6.36547,-2.84433 -6.36547,-6.36498 0,-3.41086 2.66954,-6.22385 6.03823,-6.39495 z"
-         id="path3790"
-         stroke-miterlimit="4"
-         label="Ebene 1" />
-      <rect
-         transform="scale(-1,1)"
+         id="path11946"
+         d="m 406.51743,95.59434 23.69834,-41"
+         style="fill:none;stroke:#000000;stroke-width:3.81633544;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         clip-path="url(#clipPath11936)" />
+      <path
+         transform="matrix(0.59977772,0,0,1,245.46288,0)"
+         clip-path="url(#clipPath11932)"
          inkscape:export-ydpi="45"
          inkscape:export-xdpi="45"
-         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/gear-7.png"
-         y="584.28296"
-         x="-217.80225"
-         height="88"
-         width="48"
-         id="rect9052"
-         style="fill:none;stroke:#dd2d32" />
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path11956"
+         d="m 430.21577,95.59434 -23.69834,-41"
+         style="fill:none;stroke:#000000;stroke-width:3.81536412;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.95482111;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 481.58298,77.188629 c 16.20107,0 15.98215,0 15.98215,0"
+         id="path11958"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/sidemenu.png"
+         inkscape:export-xdpi="45"
+         inkscape:export-ydpi="45" />
     </g>
+    <rect
+       style="fill:none;stroke:none"
+       id="rect11965"
+       width="48"
+       height="88"
+       x="-573.04419"
+       y="31.362183"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizes.imageset/fontsizes@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135"
+       transform="scale(-1,1)" />
+    <rect
+       transform="scale(-1,1)"
+       inkscape:export-ydpi="135"
+       inkscape:export-xdpi="135"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizes.imageset/fontsizes@3x.png"
+       y="31.362183"
+       x="-573.04419"
+       height="88"
+       width="48"
+       id="rect11967"
+       style="fill:none;stroke:none" />
     <g
-       id="g3799"
-       transform="translate(23.013118,-554.18847)">
+       transform="matrix(0.80219966,0,0,0.8223895,156.33246,16.73638)"
+       id="g11969"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizes.imageset/fontsizes@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135">
       <path
-         inkscape:export-ydpi="90"
-         inkscape:export-xdpi="90"
-         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/mark-7@2x.png"
-         sodipodi:nodetypes="ccc"
+         clip-path="url(#clipPath11936)"
+         style="fill:none;stroke:#000000;stroke-width:4.7704196;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 406.51743,95.59434 23.69834,-41"
+         id="path11971"
          inkscape:connector-curvature="0"
-         id="path9605"
-         d="m 258.21961,634.82328 13.2847,14.95953 23.69834,-41"
-         style="fill:none;stroke:#000000;stroke-width:2.99999952;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      <rect
-         style="fill:none;stroke:#dd2d32"
-         id="rect9607"
-         width="48"
-         height="88"
-         x="-300.71112"
-         y="585.28284"
-         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/mark-7@2x.png"
-         inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90"
-         transform="scale(-1,1)" />
+         sodipodi:nodetypes="cc"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+         inkscape:export-xdpi="45"
+         inkscape:export-ydpi="45"
+         transform="matrix(0.59947024,0,0,1.0000036,231.89513,-3.4350908e-4)" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:4.76920509;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 430.21577,95.59434 -23.69834,-41"
+         id="path11973"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+         inkscape:export-xdpi="45"
+         inkscape:export-ydpi="45"
+         clip-path="url(#clipPath11932)"
+         transform="matrix(0.59977772,0,0,1,245.46288,0)" />
+      <path
+         inkscape:export-ydpi="45"
+         inkscape:export-xdpi="45"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/sidemenu.png"
+         inkscape:connector-curvature="0"
+         id="path11975"
+         d="m 481.58298,77.188629 c 16.20107,0 15.98215,0 15.98215,0"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3.69352651;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <rect
+       transform="scale(-1,1)"
+       inkscape:export-ydpi="135"
+       inkscape:export-xdpi="135"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizel.imageset/fontsizel@3x.png"
+       y="31.362183"
+       x="-637.03809"
+       height="88"
+       width="48"
+       id="rect11977"
+       style="fill:none;stroke:none" />
+    <rect
+       style="fill:none;stroke:none"
+       id="rect11979"
+       width="48"
+       height="88"
+       x="-637.03809"
+       y="31.362183"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizel.imageset/fontsizel@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135"
+       transform="scale(-1,1)" />
+    <g
+       id="g11981"
+       transform="matrix(1.2032995,0,0,1.2335843,23.970535,-22.010827)"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/fontsizel.imageset/fontsizel@3x.png"
+       inkscape:export-xdpi="135"
+       inkscape:export-ydpi="135">
+      <path
+         transform="matrix(0.59947024,0,0,1.0000036,231.89513,-3.4350908e-4)"
+         inkscape:export-ydpi="45"
+         inkscape:export-xdpi="45"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path11983"
+         d="m 406.51743,95.59434 23.69834,-41"
+         style="fill:none;stroke:#000000;stroke-width:3.18027949;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         clip-path="url(#clipPath11936)" />
+      <path
+         transform="matrix(0.59977772,0,0,1,245.46288,0)"
+         clip-path="url(#clipPath11932)"
+         inkscape:export-ydpi="45"
+         inkscape:export-xdpi="45"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Images.xcassets/close_blue.imageset/close_blue.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path11985"
+         d="m 430.21577,95.59434 -23.69834,-41"
+         style="fill:none;stroke:#000000;stroke-width:3.17947006;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.46235108;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 481.58298,77.188629 c 16.20107,0 15.98215,0 15.98215,0"
+         id="path11987"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/sidemenu.png"
+         inkscape:export-xdpi="45"
+         inkscape:export-ydpi="45" />
     </g>
   </g>
 </svg>
