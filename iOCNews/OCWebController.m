@@ -76,6 +76,7 @@ const int SWIPE_PREVIOUS = 1;
 
 @implementation OCWebController
 
+@synthesize menuBarButtonItem;
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
 @synthesize nextArticleRecognizer;
 @synthesize previousArticleRecognizer;
@@ -387,6 +388,11 @@ const int SWIPE_PREVIOUS = 1;
         }
     }
 }
+
+- (IBAction)onMenu:(id)sender {
+    [self.viewDeckController toggleLeftView];
+}
+
 - (IBAction)doGoBack:(id)sender
 {
     if ([[self webView] canGoBack]) {
@@ -745,6 +751,14 @@ const int SWIPE_PREVIOUS = 1;
 
 #pragma mark - Toolbar buttons
 
+- (UIBarButtonItem *)menuBarButtonItem {
+    if (!menuBarButtonItem) {
+        menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"sideMenu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
+        menuBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
+    }
+    return menuBarButtonItem;
+}
+
 - (UIBarButtonItem *)backBarButtonItem {
     
     if (!backBarButtonItem) {
@@ -955,7 +969,7 @@ const int SWIPE_PREVIOUS = 1;
 
     UIBarButtonItem *refreshStopBarButtonItem = loadingComplete ? self.refreshBarButtonItem : self.stopBarButtonItem;
     refreshStopBarButtonItem.enabled = (self.item != nil);
-    self.navigationItem.leftBarButtonItems = @[self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
+    self.navigationItem.leftBarButtonItems = @[self.menuBarButtonItem, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
 
     self.keepUnread.button.selected = self.item.unreadValue;
     self.star.button.selected = self.item.starredValue;

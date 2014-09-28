@@ -93,7 +93,7 @@
                                                                                    leftViewController:secondDeckController];
     deckController.sizeMode = IIViewDeckLedgeSizeMode;
     secondDeckController.sizeMode = IIViewDeckViewSizeMode;
-    deckController.leftSize = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 40 : 10;
+    deckController.leftSize = 0;// (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 40 : 10;
     deckController.parallaxAmount = 0.2f;
     
     self.window.rootViewController = deckController;

@@ -67,6 +67,7 @@
 @implementation OCArticleListController
 
 @synthesize markBarButtonItem;
+@synthesize menuBarButtonItem;
 @synthesize feedRefreshControl;
 @synthesize feed = _feed;
 @synthesize fetchedResultsController;
@@ -171,7 +172,8 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.leftBarButtonItem = self.markBarButtonItem;
+    self.navigationItem.leftBarButtonItem = self.menuBarButtonItem;
+    self.navigationItem.rightBarButtonItem = self.markBarButtonItem;
     self.markBarButtonItem.enabled = NO;
     self.folderId = 0;
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
@@ -422,6 +424,10 @@
     }
 }
 
+- (IBAction)onMenu:(id)sender {
+    [self.viewDeckController toggleLeftView];
+}
+
 - (void) markRowsRead {
     @try {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
@@ -547,6 +553,14 @@
         markBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return markBarButtonItem;
+}
+
+- (UIBarButtonItem *)menuBarButtonItem {
+    if (!menuBarButtonItem) {
+        menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"sideMenu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
+        menuBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
+    }
+    return menuBarButtonItem;
 }
 
 #pragma mark - Tap navigation
