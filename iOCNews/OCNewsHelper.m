@@ -334,71 +334,73 @@ const int UPDATE_ALL = 3;
         NSError *error = nil;
         [self.folderRequest setPredicate:nil];
         NSArray *oldFolders = [self.context executeFetchRequest:self.folderRequest error:&error];
-        NSArray *knownIds = [oldFolders valueForKey:@"myId"];
-        
-        NSLog(@"Count: %lu", (unsigned long)oldFolders.count);
-        
-        //Add the new folders
-        NSDictionary *folderDict = (NSDictionary *)responseObject;
-        
-        NSArray *newFolders = [NSArray arrayWithArray:[folderDict objectForKey:@"folders"]];
-        
-        NSArray *newIds = [newFolders valueForKey:@"id"];
-        NSLog(@"Known: %@; New: %@", knownIds, newIds);
-
-        //Update folder names to those on server.
-        NSDictionary *nameDict = [NSDictionary dictionaryWithObjects:[newFolders valueForKey:@"name"] forKeys:newIds];
-        //NSLog(@"Titles: %@", titleDict);
-        [oldFolders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
-            NSString *newName = [nameDict objectForKey:folder.myId];
-            if (newName) {
-                folder.name = newName;
+        if (oldFolders) {
+            NSArray *knownIds = [oldFolders valueForKey:@"myId"];
+            
+            NSLog(@"Count: %lu", (unsigned long)oldFolders.count);
+            
+            //Add the new folders
+            NSDictionary *folderDict = (NSDictionary *)responseObject;
+            
+            NSArray *newFolders = [NSArray arrayWithArray:[folderDict objectForKey:@"folders"]];
+            
+            NSArray *newIds = [newFolders valueForKey:@"id"];
+            NSLog(@"Known: %@; New: %@", knownIds, newIds);
+            
+            //Update folder names to those on server.
+            NSDictionary *nameDict = [NSDictionary dictionaryWithObjects:[newFolders valueForKey:@"name"] forKeys:newIds];
+            //NSLog(@"Titles: %@", titleDict);
+            [oldFolders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
+                NSString *newName = [nameDict objectForKey:folder.myId];
+                if (newName) {
+                    folder.name = newName;
+                }
+            }];
+            
+            NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
+            [newOnServer removeObjectsInArray:knownIds];
+            NSLog(@"New on server: %@", newOnServer);
+            [newOnServer enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"id == %@", obj];
+                NSArray * matches = [newFolders filteredArrayUsingPredicate:predicate];
+                if (matches.count > 0) {
+                    [self addFolderFromDictionary:[matches lastObject]];
+                }
+            }];
+            
+            NSMutableArray *deletedOnServer = [NSMutableArray arrayWithArray:knownIds];
+            [deletedOnServer removeObjectsInArray:newIds];
+            [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
+            NSLog(@"Deleted on server: %@", deletedOnServer);
+            while (deletedOnServer.count > 0) {
+                Folder *folderToRemove = [self folderWithId:[deletedOnServer lastObject]];
+                [self.context deleteObject:folderToRemove];
+                [deletedOnServer removeLastObject];
             }
-        }];
-        
-        NSMutableArray *newOnServer = [NSMutableArray arrayWithArray:newIds];
-        [newOnServer removeObjectsInArray:knownIds];
-        NSLog(@"New on server: %@", newOnServer);
-        [newOnServer enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"id == %@", obj];
-            NSArray * matches = [newFolders filteredArrayUsingPredicate:predicate];
-            if (matches.count > 0) {
-                [self addFolderFromDictionary:[matches lastObject]];
+            
+            for (NSNumber *folderId in foldersToDelete) {
+                Folder *folder = [self folderWithId:folderId];
+                [self deleteFolderOffline:folder]; //the feed will have been readded as new on server
             }
-        }];
-        
-        NSMutableArray *deletedOnServer = [NSMutableArray arrayWithArray:knownIds];
-        [deletedOnServer removeObjectsInArray:newIds];
-        [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
-        NSLog(@"Deleted on server: %@", deletedOnServer);
-        while (deletedOnServer.count > 0) {
-            Folder *folderToRemove = [self folderWithId:[deletedOnServer lastObject]];
-            [self.context deleteObject:folderToRemove];
-            [deletedOnServer removeLastObject];
-        }
-        
-        for (NSNumber *folderId in foldersToDelete) {
-            Folder *folder = [self folderWithId:folderId];
-            [self deleteFolderOffline:folder]; //the feed will have been readded as new on server
-        }
-        [foldersToDelete removeAllObjects];
-        
-        for (NSString *name in foldersToAdd) {
-            [self addFolderOffline:name];
-        }
-        [foldersToAdd removeAllObjects];
-        
-        //@{@"folderId": anId, @"name": newName}
-        for (NSDictionary *dict in foldersToRename) {
-            [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
-        }
-        [foldersToRename removeAllObjects];
-        NSNumber *lastMod = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
-        if ([self itemCount] > 0) {
-            [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_ALL] andId:[NSNumber numberWithInt:0]];
-        } else {
-            [self updateItemsFirstTime];
-            [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_STARRED] andId:[NSNumber numberWithInt:0]];
+            [foldersToDelete removeAllObjects];
+            
+            for (NSString *name in foldersToAdd) {
+                [self addFolderOffline:name];
+            }
+            [foldersToAdd removeAllObjects];
+            
+            //@{@"folderId": anId, @"name": newName}
+            for (NSDictionary *dict in foldersToRename) {
+                [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
+            }
+            [foldersToRename removeAllObjects];
+            NSNumber *lastMod = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+            if ([self itemCount] > 0) {
+                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_ALL] andId:[NSNumber numberWithInt:0]];
+            } else {
+                [self updateItemsFirstTime];
+                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_STARRED] andId:[NSNumber numberWithInt:0]];
+            }
         }
         [self updateTotalUnreadCount];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -917,25 +919,28 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)updateReadItems:(NSArray *)items {
-    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", items]];
-
-    NSError *error = nil;
-    NSArray *allItems = [self.context executeFetchRequest:self.itemRequest error:&error];
-    if (!allItems || error) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    NSLog(@"Count: %lu", (unsigned long)items.count);
-    
-    [allItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-        Feed *feed = [self feedWithId:item.feedId];
-        if (item.unreadValue) {
-            ++feed.unreadCountValue;
-        } else {
-            --feed.unreadCountValue;
+    if (items) {
+        [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", items]];
+        
+        NSError *error = nil;
+        NSArray *allItems = [self.context executeFetchRequest:self.itemRequest error:&error];
+        if (!allItems || error) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
-    }];
-    [self updateTotalUnreadCount];
+        NSLog(@"Count: %lu", (unsigned long)items.count);
+        
+        if (allItems) {
+            [allItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                Feed *feed = [self feedWithId:item.feedId];
+                if (item.unreadValue) {
+                    ++feed.unreadCountValue;
+                } else {
+                    --feed.unreadCountValue;
+                }
+            }];
+        }
+        [self updateTotalUnreadCount];
+    }
 }
 
 - (void)updateFolderUnreadCount {
