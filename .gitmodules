@@ -1,9 +1,6 @@
 [submodule "AFNetworking"]
 	path = AFNetworking
 	url = https://github.com/AFNetworking/AFNetworking.git
-[submodule "KeychainItemWrapper"]
-	path = KeychainItemWrapper
-	url = git://gist.github.com/1170641.git
 [submodule "TUSafariActivity"]
 	path = TUSafariActivity
 	url = https://github.com/davbeck/TUSafariActivity.git
@@ -46,3 +43,6 @@
 [submodule "Pocket-ObjC-SDK"]
 	path = Pocket-ObjC-SDK
 	url = https://github.com/Pocket/Pocket-ObjC-SDK.git
+[submodule "PDKeychainBindingsController"]
+	path = PDKeychainBindingsController
+	url = https://github.com/carlbrown/PDKeychainBindingsController.git

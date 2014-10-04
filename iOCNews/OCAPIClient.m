@@ -31,7 +31,8 @@
  *************************************************************************/
 
 #import "OCAPIClient.h"
-#import "KeychainItemWrapper.h"
+//#import "KeychainItemWrapper.h"
+#import "PDKeychainBindings.h"
 
 //See http://twobitlabs.com/2013/01/objective-c-singleton-pattern-unit-testing/
 //Being able to reinitialize a singleton is a no no, but should happen so rarely
@@ -63,11 +64,12 @@ static dispatch_once_t oncePredicate = 0;
     BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
     self.securityPolicy.allowInvalidCertificates = allowInvalid;
 
-    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"iOCNews" accessGroup:nil];
-    [keychain setObject:(__bridge id)(kSecAttrAccessibleWhenUnlocked) forKey:(__bridge id)(kSecAttrAccessible)];
+//    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"iOCNews" accessGroup:nil];
+    [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleWhenUnlocked) forKey:(__bridge id)(kSecAttrAccessible)];
     
     [self setRequestSerializer:[AFJSONRequestSerializer serializer]];
-    [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[keychain objectForKey:(__bridge id)(kSecAttrAccount)] password:[keychain objectForKey:(__bridge id)(kSecValueData)]];
+    [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
+                                                           password:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]];
     [self.reachabilityManager startMonitoring];
     self.operationQueue.maxConcurrentOperationCount = 1;
     

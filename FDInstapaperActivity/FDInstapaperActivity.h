@@ -31,11 +31,11 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "KeychainItemWrapper.h"
+//#import "KeychainItemWrapper.h"
 
 @interface FDInstapaperActivity : UIActivity <UIAlertViewDelegate>
 
-@property (nonatomic, strong, readonly) KeychainItemWrapper *keychain;
+//@property (nonatomic, strong, readonly) KeychainItemWrapper *keychain;
 @property (nonatomic, strong, readonly) UIAlertView *loginAlertView;
 @property (nonatomic, strong, readonly) UIAlertView *infoAlertView;
 

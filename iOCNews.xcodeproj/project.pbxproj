@@ -26,6 +26,10 @@
 		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
 		D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
 		D02B42EB18E8D61C0003AAF3 /* TUSafariActivity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D02B42EA18E8D61C0003AAF3 /* TUSafariActivity.bundle */; };
+		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
+		D035160919DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
+		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
+		D035160B19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
 		D03689CE19087A1B00EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
 		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
 		D04AD65F1807125600FF6056 /* _Folder.m in Sources */ = {isa = PBXBuildFile; fileRef = D04AD65C1807125600FF6056 /* _Folder.m */; };
@@ -54,7 +58,6 @@
 		D04AD6841807403100FF6056 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812B178502D500F719D9 /* GTMNSString+HTML.m */; };
 		D04AD6851807403100FF6056 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BF491917E7DF2000CB9311 /* TSMessage.m */; };
 		D04AD6861807403100FF6056 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812D178502D500F719D9 /* NSString+HTML.m */; };
-		D04AD6871807403100FF6056 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1813C17850C6A00F719D9 /* KeychainItemWrapper.m */; };
 		D04AD6881807403100FF6056 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D04AD6891807403100FF6056 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D04AD68C1807403100FF6056 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
@@ -317,7 +320,6 @@
 		D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F181281783B12C00F719D9 /* OCLoginController.m */; };
 		D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812B178502D500F719D9 /* GTMNSString+HTML.m */; };
 		D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812D178502D500F719D9 /* NSString+HTML.m */; };
-		D0F1813D17850C6A00F719D9 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1813C17850C6A00F719D9 /* KeychainItemWrapper.m */; };
 		D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F1813E17850CAF00F719D9 /* Security.framework */; };
 		D0F25E55197D9FC300AE1F44 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F25E52197D9FC300AE1F44 /* UIImageView+HighlightedWebCache.m */; };
 		D0F25E56197D9FC300AE1F44 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F25E54197D9FC300AE1F44 /* UIView+WebCacheOperation.m */; };
@@ -361,6 +363,10 @@
 		D01ACAFA17B969FE005D1463 /* NSDictionary+HandleNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HandleNull.h"; sourceTree = "<group>"; };
 		D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HandleNull.m"; sourceTree = "<group>"; };
 		D02B42EA18E8D61C0003AAF3 /* TUSafariActivity.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TUSafariActivity.bundle; sourceTree = "<group>"; };
+		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
+		D035160519DA403E0016573F /* PDKeychainBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindings.m; sourceTree = "<group>"; };
+		D035160619DA403E0016573F /* PDKeychainBindingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindingsController.h; sourceTree = "<group>"; };
+		D035160719DA403E0016573F /* PDKeychainBindingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindingsController.m; sourceTree = "<group>"; };
 		D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		D04AD65618070C4800FF6056 /* News 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 3.xcdatamodel"; sourceTree = "<group>"; };
 		D04AD65B1807125600FF6056 /* _Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Folder.h; sourceTree = "<group>"; };
@@ -628,8 +634,6 @@
 		D0F1812B178502D500F719D9 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		D0F1812C178502D500F719D9 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		D0F1812D178502D500F719D9 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
-		D0F1813B17850C6A00F719D9 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
-		D0F1813C17850C6A00F719D9 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
 		D0F1813E17850CAF00F719D9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D0F25E51197D9FC300AE1F44 /* UIImageView+HighlightedWebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+HighlightedWebCache.h"; sourceTree = "<group>"; };
 		D0F25E52197D9FC300AE1F44 /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
@@ -713,6 +717,18 @@
 				D01ACABC17B83637005D1463 /* readable.c */,
 			);
 			path = readable;
+			sourceTree = "<group>";
+		};
+		D035160319DA403E0016573F /* PDKeychainBindingsController */ = {
+			isa = PBXGroup;
+			children = (
+				D035160419DA403E0016573F /* PDKeychainBindings.h */,
+				D035160519DA403E0016573F /* PDKeychainBindings.m */,
+				D035160619DA403E0016573F /* PDKeychainBindingsController.h */,
+				D035160719DA403E0016573F /* PDKeychainBindingsController.m */,
+			);
+			name = PDKeychainBindingsController;
+			path = PDKeychainBindingsController/PDKeychainBindingsController;
 			sourceTree = "<group>";
 		};
 		D0791AC418AABA71005227AB /* Pocket SDK */ = {
@@ -813,7 +829,7 @@
 				D01ACAB317B83637005D1463 /* readable */,
 				D0C66C6E17AB3E6300F0EC7C /* SDWebImage */,
 				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
-				D0F1813A17850C6A00F719D9 /* KeychainItemWrapper */,
+				D035160319DA403E0016573F /* PDKeychainBindingsController */,
 				D0F18130178502E000F719D9 /* HTMLString */,
 				D0BCAC021779275900C965F4 /* AFNetworking */,
 				D0BCABE417791F3400C965F4 /* TUSafariActivity */,
@@ -1235,15 +1251,6 @@
 			name = HTMLString;
 			sourceTree = "<group>";
 		};
-		D0F1813A17850C6A00F719D9 /* KeychainItemWrapper */ = {
-			isa = PBXGroup;
-			children = (
-				D0F1813B17850C6A00F719D9 /* KeychainItemWrapper.h */,
-				D0F1813C17850C6A00F719D9 /* KeychainItemWrapper.m */,
-			);
-			path = KeychainItemWrapper;
-			sourceTree = "<group>";
-		};
 		D0FB275417CE8D3700FABB09 /* HexColors */ = {
 			isa = PBXGroup;
 			children = (
@@ -1622,10 +1629,10 @@
 				D04AD6811807403100FF6056 /* OCAPIClient.m in Sources */,
 				D04AD6821807403100FF6056 /* OCArticleImage.m in Sources */,
 				D04AD6831807403100FF6056 /* OCLoginController.m in Sources */,
+				D035160919DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D04AD6841807403100FF6056 /* GTMNSString+HTML.m in Sources */,
 				D04AD6851807403100FF6056 /* TSMessage.m in Sources */,
 				D04AD6861807403100FF6056 /* NSString+HTML.m in Sources */,
-				D04AD6871807403100FF6056 /* KeychainItemWrapper.m in Sources */,
 				D04AD6881807403100FF6056 /* HTMLNode.m in Sources */,
 				D04AD6891807403100FF6056 /* HTMLParser.m in Sources */,
 				D0E8A0881842C29C005F8CAF /* AFNetworkReachabilityManager.m in Sources */,
@@ -1663,6 +1670,7 @@
 				D04AD6A61807403100FF6056 /* rd_list.c in Sources */,
 				D04AD6A71807403100FF6056 /* readable.c in Sources */,
 				D0791AE518AAC148005227AB /* OCPocketActivity.m in Sources */,
+				D035160B19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D0A33F6118876CF700C6DA92 /* OCTextView.m in Sources */,
 				D0E8A0861842C29C005F8CAF /* AFHTTPRequestOperationManager.m in Sources */,
 				D0E89F591836E03A005F8CAF /* OCSettingsController.m in Sources */,
@@ -1721,7 +1729,6 @@
 				D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */,
 				D0BF493217E7DF2000CB9311 /* TSMessage.m in Sources */,
 				D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */,
-				D0F1813D17850C6A00F719D9 /* KeychainItemWrapper.m in Sources */,
 				D0FD70791787626100EF1457 /* HTMLNode.m in Sources */,
 				D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */,
 				D0E8A0781842ABD5005F8CAF /* AFNetworkReachabilityManager.m in Sources */,
@@ -1734,6 +1741,7 @@
 				D06CB24817A2EA9300A1310B /* _Feed.m in Sources */,
 				D06CB24917A2EA9300A1310B /* _Feeds.m in Sources */,
 				D06CB24A17A2EA9300A1310B /* _Item.m in Sources */,
+				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D0E8A0771842ABD5005F8CAF /* AFHTTPSessionManager.m in Sources */,
 				D0C66C8E17AB3E6300F0EC7C /* SDImageCache.m in Sources */,
 				D0C66C8F17AB3E6300F0EC7C /* SDWebImageCompat.m in Sources */,
@@ -1766,6 +1774,7 @@
 				D0E8A0761842ABD5005F8CAF /* AFHTTPRequestOperationManager.m in Sources */,
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D0791AD218AABA71005227AB /* PocketAPILogin.m in Sources */,
+				D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
 				D0FB275717CE8D3700FABB09 /* HexColor.m in Sources */,
 				D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */,

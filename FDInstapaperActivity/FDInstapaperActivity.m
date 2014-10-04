@@ -32,12 +32,13 @@
 
 #import "FDInstapaperActivity.h"
 #import "AFNetworking.h"
+#import "PDKeychainBindings.h"
 
 @implementation FDInstapaperActivity {
     NSURL *_activityURL;
 }
 
-@synthesize keychain;
+//@synthesize keychain;
 @synthesize loginAlertView;
 @synthesize infoAlertView;
 
@@ -61,9 +62,9 @@
     //[self.keychain setObject:@"" forKey:(__bridge id)(kSecAttrAccount)];
     //[self.keychain setObject:@"" forKey:(__bridge id)(kSecValueData)];
     
-    NSString *username = [self.keychain objectForKey:(__bridge id)(kSecAttrAccount)];
+    NSString *username = [[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)];
     if ((username != nil) && (username.length > 0)) {
-        NSString *password = [self.keychain objectForKey:(__bridge id)(kSecValueData)];
+        NSString *password = [[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)];
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
@@ -79,8 +80,8 @@
                     [self.infoAlertView show];
                     break;
                 case 403:
-                    [self.keychain setObject:@"" forKey:(__bridge id)(kSecAttrAccount)];
-                    [self.keychain setObject:@"" forKey:(__bridge id)(kSecValueData)];
+                    [[PDKeychainBindings sharedKeychainBindings] setObject:@"" forKey:(__bridge id)(kSecAttrAccount)];
+                    [[PDKeychainBindings sharedKeychainBindings] setObject:@"" forKey:(__bridge id)(kSecValueData)];
                     self.infoAlertView.message = @"Invalid user name or password. Please try again.";
                     [self.infoAlertView show];
                     break;
@@ -92,8 +93,8 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
             if (operation.response.statusCode == 403) {
-                [self.keychain setObject:@"" forKey:(__bridge id)(kSecAttrAccount)];
-                [self.keychain setObject:@"" forKey:(__bridge id)(kSecValueData)];
+                [[PDKeychainBindings sharedKeychainBindings] setObject:@"" forKey:(__bridge id)(kSecAttrAccount)];
+                [[PDKeychainBindings sharedKeychainBindings] setObject:@"" forKey:(__bridge id)(kSecValueData)];
             }
             self.infoAlertView.message = @"Failed to connect to the Instapaper service.";
             [self.infoAlertView show];
@@ -104,13 +105,13 @@
     }
 }
 
-- (KeychainItemWrapper *)keychain {
-    if (!keychain) {
-        keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"iOCNews-Instapaper" accessGroup:nil];
-        [keychain setObject:(__bridge id)(kSecAttrAccessibleWhenUnlocked) forKey:(__bridge id)(kSecAttrAccessible)];
-    }
-    return keychain;
-}
+//- (KeychainItemWrapper *)keychain {
+//    if (!keychain) {
+//        keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"iOCNews-Instapaper" accessGroup:nil];
+//        [keychain setObject:(__bridge id)(kSecAttrAccessibleWhenUnlocked) forKey:(__bridge id)(kSecAttrAccessible)];
+//    }
+//    return keychain;
+//}
 
 - (UIAlertView*)loginAlertView {
     if (!loginAlertView) {
@@ -134,8 +135,8 @@
             [self activityDidFinish:YES];
         }
         if ([[alert buttonTitleAtIndex:buttonIndex] isEqualToString:@"OK"]) {
-            [self.keychain setObject:[alert textFieldAtIndex:0].text forKey:(__bridge id)(kSecAttrAccount)];
-            [self.keychain setObject:[alert textFieldAtIndex:1].text forKey:(__bridge id)(kSecValueData)];
+            [[PDKeychainBindings sharedKeychainBindings] setObject:[alert textFieldAtIndex:0].text forKey:(__bridge id)(kSecAttrAccount)];
+            [[PDKeychainBindings sharedKeychainBindings] setObject:[alert textFieldAtIndex:1].text forKey:(__bridge id)(kSecValueData)];
             [self performActivity];
         }
     }
