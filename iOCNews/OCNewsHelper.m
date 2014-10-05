@@ -55,6 +55,7 @@ const int UPDATE_ALL = 3;
     NSMutableArray *itemsToUnstar;
     
     void (^_completionHandler)(UIBackgroundFetchResult);
+    BOOL completionHandlerCalled;
 }
 
 - (int)addFolderFromDictionary:(NSDictionary*)dict;
@@ -301,15 +302,17 @@ const int UPDATE_ALL = 3;
 
 - (void)sync:(void (^)(UIBackgroundFetchResult))completionHandler {
     _completionHandler = [completionHandler copy];
+    completionHandlerCalled = NO;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             [self updateFeeds:responseObject];
             [self updateFolders];
 
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            if (_completionHandler) {
+            if (_completionHandler && !completionHandlerCalled) {
                 NSLog(@"Calling completion block");
                 _completionHandler(UIBackgroundFetchResultFailed);
+                completionHandlerCalled = YES;
             }
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -317,9 +320,10 @@ const int UPDATE_ALL = 3;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
-        if (_completionHandler) {
+        if (_completionHandler && !completionHandlerCalled) {
             NSLog(@"Calling completion block");
             _completionHandler(UIBackgroundFetchResultFailed);
+            completionHandlerCalled = YES;
         }
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Unable to Reach Server", @"Title",
                                   @"Please check network connection and login.", @"Message", nil];
@@ -404,9 +408,10 @@ const int UPDATE_ALL = 3;
         }
         [self updateTotalUnreadCount];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        if (_completionHandler) {
+        if (_completionHandler && !completionHandlerCalled) {
             NSLog(@"Calling completion block");
             _completionHandler(UIBackgroundFetchResultFailed);
+            completionHandlerCalled = YES;
         }
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
         NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -472,7 +477,11 @@ const int UPDATE_ALL = 3;
     }
     [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feedDict, NSUInteger idx, BOOL *stop) {
         Feed *feed = [self feedWithId:[feedDict objectForKey:@"id"]];
-        feed.unreadCount = [feedDict objectForKey:@"unreadCount"];
+        int unreadCount = [[feedDict objectForKey:@"unreadCount"] intValue];
+        if (unreadCount < 0) {
+            unreadCount = 0;
+        }
+        feed.unreadCountValue = unreadCount;
         feed.folderId = [feedDict objectForKey:@"folderId"];
         [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     }];
@@ -672,9 +681,10 @@ const int UPDATE_ALL = 3;
         
         [self updateStarredCount];
         [self updateTotalUnreadCount];
-        if (_completionHandler) {
+        if (_completionHandler && !completionHandlerCalled) {
             NSLog(@"Calling completion block");
             _completionHandler((newItems.count > 0) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData);
+            completionHandlerCalled = YES;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
         
@@ -695,9 +705,10 @@ const int UPDATE_ALL = 3;
             case UPDATE_FEED:
             case UPDATE_STARRED: {
                 NSLog(@"Finishing feed item update");
-                if (_completionHandler) {
+                if (_completionHandler && !completionHandlerCalled) {
                     NSLog(@"Calling completion block");
                     _completionHandler(UIBackgroundFetchResultFailed);
+                    completionHandlerCalled = YES;
                 }
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -829,17 +840,19 @@ const int UPDATE_ALL = 3;
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         if (errorCount > 0) {
-            if (_completionHandler) {
+            if (_completionHandler && !completionHandlerCalled) {
                 NSLog(@"Calling completion block");
                 _completionHandler(UIBackgroundFetchResultFailed);
+                completionHandlerCalled = YES;
             }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
-            if (_completionHandler) {
+            if (_completionHandler && !completionHandlerCalled) {
                 NSLog(@"Calling completion block");
                 _completionHandler(UIBackgroundFetchResultNewData);
+                completionHandlerCalled = YES;
             }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
@@ -899,17 +912,19 @@ const int UPDATE_ALL = 3;
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         if (errorCount > 0) {
-            if (_completionHandler) {
+            if (_completionHandler && !completionHandlerCalled) {
                 NSLog(@"Calling completion block");
                 _completionHandler(UIBackgroundFetchResultFailed);
+                completionHandlerCalled = YES;
             }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
-            if (_completionHandler) {
+            if (_completionHandler && !completionHandlerCalled) {
                 NSLog(@"Calling completion block");
                 _completionHandler(UIBackgroundFetchResultNewData);
+                completionHandlerCalled = YES;
             }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
@@ -936,6 +951,9 @@ const int UPDATE_ALL = 3;
                     ++feed.unreadCountValue;
                 } else {
                     --feed.unreadCountValue;
+                }
+                if (feed.unreadCountValue < 0) {
+                    feed.unreadCountValue = 0;
                 }
             }];
         }
@@ -1238,7 +1256,10 @@ const int UPDATE_ALL = 3;
         [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemsToMarkRead removeObjectsInArray:itemIds];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [itemsToMarkRead addObjectsFromArray:itemIds];
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+            if (response.statusCode != 200) {
+                [itemsToMarkRead addObjectsFromArray:itemIds];
+            }
         }];
     } else {
         //offline
