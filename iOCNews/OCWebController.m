@@ -434,7 +434,17 @@ const int SWIPE_PREVIOUS = 1;
         FDReadabilityActivity *ra = [[FDReadabilityActivity alloc] init];
         
         NSArray *activityItems = @[url];
-        NSArray *activities = @[sa, ia, ipa, pa, ra];
+        NSArray *activities;
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+        {
+            // Load resources for iOS 7.1 or earlier
+            activities = @[sa, ia, ipa, pa, ra];
+        }
+        else
+        {
+            // Load resources for iOS 8 or later
+            activities = @[sa, ia, ra];
+        }
         
         UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
         
