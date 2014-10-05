@@ -85,7 +85,7 @@
         
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-        [fetchRequest setFetchBatchSize:2];
+        [fetchRequest setFetchBatchSize:100];
         
         specialFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                               managedObjectContext:[OCNewsHelper sharedHelper].context
