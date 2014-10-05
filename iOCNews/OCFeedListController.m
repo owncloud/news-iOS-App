@@ -337,6 +337,7 @@
                         cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
                     }
                 } else {
+//                    NSLog(@"Unread count: %d", feed.unreadCountValue);
                     cell.countBadge.value = feed.unreadCountValue;
                     cell.textLabel.text = feed.title;
                 }

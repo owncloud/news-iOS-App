@@ -268,7 +268,7 @@
                 NSLocale *currentLocale = [NSLocale currentLocale];
                 NSString *dateComponents = @"MMM d";
                 NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:currentLocale];
-                NSLog(@"Date format for %@: %@", [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]], dateFormatString);
+//                NSLog(@"Date format for %@: %@", [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]], dateFormatString);
                 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                 dateFormat.dateFormat = dateFormatString;
                 dateLabelText = [dateLabelText stringByAppendingString:[dateFormat stringFromDate:date]];
