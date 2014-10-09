@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
+		D00A956419E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
 		D01ACAB217B8342D005D1463 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D01ACAAF17B8339D005D1463 /* libpcre.a */; };
 		D01ACADB17B83637005D1463 /* rd_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABA17B83637005D1463 /* rd_list.c */; };
 		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
@@ -354,6 +356,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSharingProvider.h; sourceTree = "<group>"; };
+		D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSharingProvider.m; sourceTree = "<group>"; };
 		D01ACAA917B8339C005D1463 /* pcre.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pcre.xcodeproj; path = iOSPorts/ports/devel/pcre/pcre.xcodeproj; sourceTree = "<group>"; };
 		D01ACAB517B83637005D1463 /* khash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = khash.h; sourceTree = "<group>"; };
 		D01ACABA17B83637005D1463 /* rd_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rd_list.c; sourceTree = "<group>"; };
@@ -909,6 +913,8 @@
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
 				D0BCAA71177909A600C965F4 /* OCWebController.h */,
 				D0BCAA72177909A600C965F4 /* OCWebController.m */,
+				D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */,
+				D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */,
 				D0F8274E17B2D83400BE84D7 /* OCFeedSettingsController.h */,
 				D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */,
 				D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */,
@@ -1601,6 +1607,7 @@
 				D04AD6651807403100FF6056 /* main.m in Sources */,
 				D04AD6661807403100FF6056 /* OCAppDelegate.m in Sources */,
 				D04AD6671807403100FF6056 /* IISideController.m in Sources */,
+				D00A956419E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D04AD6681807403100FF6056 /* IIViewDeckController.m in Sources */,
 				D0E8A0981842C2AC005F8CAF /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				D04AD6691807403100FF6056 /* IIWrapController.m in Sources */,
@@ -1712,6 +1719,7 @@
 				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
 				D0BCAAA417790C1E00C965F4 /* UILabel+VerticalAlignment.m in Sources */,
 				D0BCABBA17790F6700C965F4 /* FDiCabActivity.m in Sources */,
+				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D0BCABBD17790F6700C965F4 /* FDInstapaperActivity.m in Sources */,
 				D0516E67182988B300F6D677 /* UIImageView+OCWebCache.m in Sources */,
 				D0791AD818AABA71005227AB /* SFHFKeychainUtils.m in Sources */,

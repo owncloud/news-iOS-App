@@ -43,6 +43,7 @@
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HexColor.h"
+#import "OCSharingProvider.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
@@ -420,8 +421,10 @@ const int SWIPE_PREVIOUS = 1;
 - (IBAction)doInfo:(id)sender {
     @try {
         NSURL *url = self.webView.request.URL;
+        NSString *subject = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
         if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
             url = [NSURL URLWithString:self.item.url];
+            subject = self.item.title;
         }
         if (!url) {
             return;
@@ -433,7 +436,6 @@ const int SWIPE_PREVIOUS = 1;
         OCPocketActivity *pa = [[OCPocketActivity alloc] init];
         FDReadabilityActivity *ra = [[FDReadabilityActivity alloc] init];
         
-        NSArray *activityItems = @[url];
         NSArray *activities;
         if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
         {
@@ -446,10 +448,11 @@ const int SWIPE_PREVIOUS = 1;
             activities = @[sa, ia, ra];
         }
         
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+        OCSharingProvider *sharingProvider = [[OCSharingProvider alloc] initWithPlaceholderItem:url subject:subject];
+        
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sharingProvider] applicationActivities:activities];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            
             if (![_activityPopover isPopoverVisible]) {
                 _activityPopover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
                 _activityPopover.delegate = self;
