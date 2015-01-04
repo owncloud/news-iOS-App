@@ -27,6 +27,8 @@
 		D01ACADB17B83637005D1463 /* rd_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABA17B83637005D1463 /* rd_list.c */; };
 		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
 		D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
+		D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D023001A1A58C0E800B354E0 /* Launch Screen.xib */; };
+		D023001C1A58C0E800B354E0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D023001A1A58C0E800B354E0 /* Launch Screen.xib */; };
 		D02B42EB18E8D61C0003AAF3 /* TUSafariActivity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D02B42EA18E8D61C0003AAF3 /* TUSafariActivity.bundle */; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160919DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
@@ -366,6 +368,7 @@
 		D01ACABD17B83637005D1463 /* readable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readable.h; sourceTree = "<group>"; };
 		D01ACAFA17B969FE005D1463 /* NSDictionary+HandleNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HandleNull.h"; sourceTree = "<group>"; };
 		D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HandleNull.m"; sourceTree = "<group>"; };
+		D023001A1A58C0E800B354E0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D02B42EA18E8D61C0003AAF3 /* TUSafariActivity.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TUSafariActivity.bundle; sourceTree = "<group>"; };
 		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
 		D035160519DA403E0016573F /* PDKeychainBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindings.m; sourceTree = "<group>"; };
@@ -887,6 +890,7 @@
 				D0C66CA417B19C6A00F0EC7C /* DataModel */,
 				D0BCAA48177903F500C965F4 /* iPad.storyboard */,
 				D0968361179B3DB300EC6E60 /* iPhone.storyboard */,
+				D023001A1A58C0E800B354E0 /* Launch Screen.xib */,
 				D0BCAA34177900C400C965F4 /* OCAppDelegate.h */,
 				D0BCAA35177900C400C965F4 /* OCAppDelegate.m */,
 				D06CB23717A0A0A800A1310B /* OCNewsHelper.h */,
@@ -1439,6 +1443,7 @@
 				D04AD6CA1807403100FF6056 /* instapaper.png in Resources */,
 				D04AD6CB1807403100FF6056 /* instapaper@2x.png in Resources */,
 				D04AD6CC1807403100FF6056 /* Readability-activity-iPad.png in Resources */,
+				D023001C1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
 				D04AD6CD1807403100FF6056 /* Readability-activity-iPad@2x.png in Resources */,
 				D04AD6CE1807403100FF6056 /* Readability-activity-iPhone.png in Resources */,
 				D04AD6CF1807403100FF6056 /* Readability-activity-iPhone@2x.png in Resources */,
@@ -1490,6 +1495,7 @@
 				D0BCABBF17790F6700C965F4 /* instapaper-ipad@2x.png in Resources */,
 				D0BCABC017790F6700C965F4 /* instapaper.png in Resources */,
 				D0BCABC117790F6700C965F4 /* instapaper@2x.png in Resources */,
+				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
 				D0BCABC317790F6700C965F4 /* Readability-activity-iPad.png in Resources */,
 				D0BCABC417790F6700C965F4 /* Readability-activity-iPad@2x.png in Resources */,
 				D0BCABC517790F6700C965F4 /* Readability-activity-iPhone.png in Resources */,
