@@ -38,12 +38,12 @@
 #import "FDiCabActivity.h"
 #import "FDInstapaperActivity.h"
 #import "OCPocketActivity.h"
-#import "IIViewDeckController.h"
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HexColor.h"
 #import "OCSharingProvider.h"
+#import "UIViewController+MMDrawerController.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
@@ -57,7 +57,7 @@
 const int SWIPE_NEXT = 0;
 const int SWIPE_PREVIOUS = 1;
 
-@interface OCWebController () <UIPopoverControllerDelegate, IIViewDeckControllerDelegate> {
+@interface OCWebController () <UIPopoverControllerDelegate> {
     UIPopoverController *_activityPopover;
     BOOL _menuIsOpen;
     int _swipeDirection;
@@ -124,7 +124,7 @@ const int SWIPE_PREVIOUS = 1;
 {
     @try {
         if (self.item) {
-            if ([self.viewDeckController isAnySideOpen]) {
+            if (self.mm_drawerController.openSide != MMDrawerSideNone) {
                 if (self.webView != nil) {
                     [self.menuController.view removeFromSuperview];
                     [self.webView removeFromSuperview];
@@ -136,7 +136,7 @@ const int SWIPE_PREVIOUS = 1;
                 CGRect frame = self.view.frame;
                 self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
                 self.automaticallyAdjustsScrollViewInsets = NO;
-                
+                self.webView.scrollView.backgroundColor = [self myBackgroundColor];
                 self.webView.scalesPageToFit = YES;
                 self.webView.delegate = self;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -170,6 +170,7 @@ const int SWIPE_PREVIOUS = 1;
                 } else {
                     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(-width, topBarOffset, width, height - topBarOffset)];
                 }
+                self.webView.scrollView.backgroundColor = [self myBackgroundColor];
                 self.webView.scalesPageToFit = YES;
                 self.webView.delegate = self;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -265,9 +266,8 @@ const int SWIPE_PREVIOUS = 1;
                 html = [self fixRelativeUrl:html baseUrlString:baseString];
                 [self writeAndLoadHtml:html];
             }
-            if ([self.viewDeckController isAnySideOpen]) {
-                
-                [self.viewDeckController closeLeftView];
+            if (self.mm_drawerController.openSide != MMDrawerSideNone) {
+                [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
             }
             [self updateToolbar];
         }
@@ -340,6 +340,11 @@ const int SWIPE_PREVIOUS = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    CALayer *border = [CALayer layer];
+    border.backgroundColor = [UIColor lightGrayColor].CGColor;
+    border.frame = CGRectMake(0, 0, 1, 1024);
+    [self.mm_drawerController.centerViewController.view.layer addSublayer:border];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
@@ -348,10 +353,7 @@ const int SWIPE_PREVIOUS = 1;
     _menuIsOpen = NO;
     [self writeCss];
     [self updateToolbar];
-    self.viewDeckController.panningGestureDelegate = self;
-    self.viewDeckController.delegate = self;
-    self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
-    [self.viewDeckController toggleLeftView];
+    [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (void)viewDidUnload
@@ -391,7 +393,7 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 - (IBAction)onMenu:(id)sender {
-    [self.viewDeckController toggleLeftView];
+    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (IBAction)doGoBack:(id)sender
@@ -1093,7 +1095,7 @@ const int SWIPE_PREVIOUS = 1;
     if ([gestureRecognizer isEqual:self.previousArticleRecognizer]) {
         if (loc.y > q) {
             if (loc.y < (h - q)) {
-                return ![self.viewDeckController isAnySideOpen];
+                return (self.mm_drawerController.openSide == MMDrawerSideNone);
             }
         }
         return NO;
@@ -1120,26 +1122,6 @@ const int SWIPE_PREVIOUS = 1;
             _swipeDirection = SWIPE_NEXT;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"RightTapZone" object:self userInfo:nil];
         }
-    }
-}
-
-- (void)viewDeckController:(IIViewDeckController*)viewDeckController willOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    if (self.webView) {
-        [self.webView removeGestureRecognizer:self.nextArticleRecognizer];
-        [self.webView removeGestureRecognizer:self.previousArticleRecognizer];
-    }
-}
-
-- (void)viewDeckController:(IIViewDeckController *)viewDeckController didOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    if (self.webView) {
-        self.webView.scrollView.scrollsToTop = NO;
-    }
-}
-
-- (void)viewDeckController:(IIViewDeckController*)viewDeckController willCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    if (self.webView) {
-        [self.webView addGestureRecognizer:self.nextArticleRecognizer];
-        [self.webView addGestureRecognizer:self.previousArticleRecognizer];
     }
 }
 
@@ -1213,8 +1195,8 @@ const int SWIPE_PREVIOUS = 1;
 -(void) settingsChanged:(NSString *)setting newValue:(NSUInteger)value {
     //NSLog(@"New Setting: %@ with value %d", setting, value);
     [self writeCss];
-    self.viewDeckController.view.backgroundColor = [self myBackgroundColor];
     if ([self webView] != nil) {
+        self.webView.scrollView.backgroundColor = [self myBackgroundColor];
         [self.webView reload];
     }
 }
@@ -1227,15 +1209,6 @@ const int SWIPE_PREVIOUS = 1;
     UIGraphicsEndImageContext();
     
     return capturedScreen;
-}
-
-- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-    shadowLayer.masksToBounds = NO;
-    shadowLayer.shadowRadius = 1;
-    shadowLayer.shadowOpacity = 0.9;
-    shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
-    shadowLayer.shadowOffset = CGSizeZero;
-    shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
 }
 
 - (NSString*)replaceYTIframe:(NSString *)html {

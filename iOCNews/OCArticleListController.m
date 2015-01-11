@@ -33,7 +33,6 @@
 #import "OCArticleListController.h"
 #import "OCArticleCell.h"
 #import "OCWebController.h"
-#import "IIViewDeckController.h"
 #import "NSString+HTML.h"
 #import "UILabel+VerticalAlignment.h"
 #import "AFNetworking.h"
@@ -44,6 +43,7 @@
 #import "objc/runtime.h"
 #import "UIImageView+OCWebCache.h"
 #import "HexColor.h"
+#import "UIViewController+MMDrawerController.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
@@ -172,6 +172,11 @@
 {
     [super viewDidLoad];
 
+    CALayer *border = [CALayer layer];
+    border.backgroundColor = [UIColor lightGrayColor].CGColor;
+    border.frame = CGRectMake(0, 0, 1, 1024);
+    [self.mm_drawerController.centerViewController.view.layer addSublayer:border];
+
     self.navigationItem.leftBarButtonItem = self.menuBarButtonItem;
     self.navigationItem.rightBarButtonItem = self.markBarButtonItem;
     self.markBarButtonItem.enabled = NO;
@@ -181,8 +186,7 @@
     self.tableView.scrollsToTop = NO;
     [self.tableView addGestureRecognizer:self.markGesture];
 
-    IIViewDeckController *deckController = (IIViewDeckController*)self.viewDeckController.viewDeckController;
-    UINavigationController *navController = (UINavigationController*)deckController.centerController;
+    UINavigationController *navController = (UINavigationController*)self.mm_drawerController.mm_drawerController.centerViewController;
     self.detailViewController = (OCWebController*)navController.topViewController;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
@@ -358,7 +362,7 @@
     Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (selectedItem) {
         self.detailViewController.item = selectedItem;
-        [self.viewDeckController.viewDeckController closeLeftView];
+        [self.mm_drawerController.mm_drawerController closeDrawerAnimated:YES completion:nil];
         if (selectedItem.unreadValue) {
             selectedItem.unreadValue = NO;
             [self updateUnreadCount:[NSArray arrayWithObject:selectedItem.myId]];
@@ -391,7 +395,7 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     BOOL result = YES;
     if ([gestureRecognizer isEqual:self.markGesture]) {
-        if (![self.viewDeckController isSideClosed:IIViewDeckLeftSide]) {
+        if (self.mm_drawerController.openSide != MMDrawerSideNone) {
             result = NO;
         }
     }
@@ -425,7 +429,7 @@
 }
 
 - (IBAction)onMenu:(id)sender {
-    [self.viewDeckController toggleLeftView];
+    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (void) markRowsRead {

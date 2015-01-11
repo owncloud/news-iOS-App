@@ -32,13 +32,14 @@
 
 #import "OCAppDelegate.h"
 #import "AFNetworkActivityIndicatorManager.h"
-#import "IIViewDeckController.h"
 #import "OCNewsHelper.h"
 #import "UAAppReviewManager.h"
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationEmail.h>
 #import "PocketAPI.h"
 #import "PocketCredentials.h"
+#import "FDTopDrawerController.h"
+#import "FDBottomDrawerController.h"
 
 @implementation OCAppDelegate
 
@@ -67,8 +68,8 @@
     [installation install];
 	[[PocketAPI sharedAPI] setConsumerKey:CONSUMER_KEY];
 
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//
     UIStoryboard *storyboard;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
@@ -79,25 +80,28 @@
     [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
     [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
 
-    UIViewController *feedController = [storyboard instantiateViewControllerWithIdentifier:@"feed"];
-    UIViewController *articleController = [storyboard instantiateViewControllerWithIdentifier:@"article"];
-    UIViewController *webController = [storyboard instantiateViewControllerWithIdentifier:@"web"];
-    
-    IIViewDeckController* secondDeckController = [[IIViewDeckController alloc] initWithCenterViewController:articleController
-                                                                                          leftViewController:feedController];
+    UINavigationController *feedController = [storyboard instantiateViewControllerWithIdentifier:@"feed"];
+    UINavigationController *articleController = [storyboard instantiateViewControllerWithIdentifier:@"article"];
+    UINavigationController *webController = [storyboard instantiateViewControllerWithIdentifier:@"web"];
 
-    secondDeckController.panningCancelsTouchesInView = YES;
-    secondDeckController.parallaxAmount = 0.2f;
-
-    IIViewDeckController* deckController = [[IIViewDeckController alloc] initWithCenterViewController:webController
-                                                                                   leftViewController:secondDeckController];
-    deckController.sizeMode = IIViewDeckLedgeSizeMode;
-    secondDeckController.sizeMode = IIViewDeckViewSizeMode;
-    deckController.leftSize = 0;// (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 40 : 10;
-    deckController.parallaxAmount = 0.2f;
+    FDBottomDrawerController *bottomDrawerController = [[FDBottomDrawerController alloc] initWithCenterViewController:articleController leftDrawerViewController:feedController];
+    [bottomDrawerController willRotateToInterfaceOrientation:application.statusBarOrientation duration:0];
+    bottomDrawerController.feedListController = (OCFeedListController*)feedController.topViewController;
+    bottomDrawerController.articleListController = (OCArticleListController*)articleController.topViewController;
     
-    self.window.rootViewController = deckController;
+    FDTopDrawerController *topDrawerController = [[FDTopDrawerController alloc] initWithCenterViewController:webController leftDrawerViewController:bottomDrawerController];
+    [topDrawerController willRotateToInterfaceOrientation:application.statusBarOrientation duration:0];
+    topDrawerController.webController = (OCWebController*)webController.topViewController;
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.rootViewController = topDrawerController;
     [self.window makeKeyAndVisible];
+    
+    self.window.frame = [UIScreen mainScreen].bounds;
+
+    [bottomDrawerController willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
+    [topDrawerController willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
+
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncInBackground"]) {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];

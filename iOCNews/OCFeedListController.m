@@ -31,7 +31,6 @@
  *************************************************************************/
 
 #import "OCFeedListController.h"
-#import "IIViewDeckController.h"
 #import "OCFeedCell.h"
 #import "OCLoginController.h"
 #import "TSMessage.h"
@@ -40,8 +39,9 @@
 #import "Feed.h"
 #import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
+#import "UIViewController+MMDrawerController.h"
 
-@interface OCFeedListController () <IIViewDeckControllerDelegate, UIActionSheetDelegate> {
+@interface OCFeedListController () <UIActionSheetDelegate> {
     long currentFolderIndex;
     NSNumber *currentRenameId;
     long currentIndex;
@@ -200,11 +200,11 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 
-    UINavigationController *navController = (UINavigationController*)self.viewDeckController.centerController;
+    UINavigationController *navController = (UINavigationController*)self.mm_drawerController.centerViewController;
     self.detailViewController = (OCArticleListController *)navController.topViewController;
+    
+    [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
     [self updatePredicate];
-    self.viewDeckController.delegate = self;
-    [self.viewDeckController openLeftView];
     [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
 }
 
@@ -223,38 +223,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        
-        if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            CGRect frame = self.navigationController.view.frame;
-            frame.size.width = 320;
-            self.navigationController.view.frame = frame;
-            self.viewDeckController.leftSize = 320;
-        } else {
-            CGRect frame = self.navigationController.view.frame;
-            frame.size.width = 320;
-            self.navigationController.view.frame = frame;
-            self.viewDeckController.leftSize = 320;
-        }
-    } else {
-        if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            CGRect frame = self.navigationController.view.frame;
-            frame.size.width = 300;
-            self.navigationController.view.frame = frame;
-            self.viewDeckController.leftSize = 300;
-            self.viewDeckController.viewDeckController.leftSize = 20;
-        } else {
-            CGRect frame = self.navigationController.view.frame;
-            frame.size.width = 300;
-            self.navigationController.view.frame = frame;
-            self.viewDeckController.leftSize = 300;
-            self.viewDeckController.viewDeckController.leftSize = 0;
-        }
-    }
 }
 
 #pragma mark - Table view data source
@@ -418,7 +386,7 @@
         switch (indexPath.section) {
             case 0:
                 @try {
-                    [self.viewDeckController closeLeftView];
+                    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
                     feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
                     if (currentFolderIndex > 0) {
                         self.detailViewController.folderId = currentFolderIndex;
@@ -443,7 +411,7 @@
                 break;
             case 2:
                 @try {
-                    [self.viewDeckController closeLeftView];
+                    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
                     feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                     self.detailViewController.feed = feed;
                     
@@ -484,7 +452,7 @@
         [settingsController loadView];
         settingsController.feed = feed;
         settingsController.delegate = self;
-        [self.viewDeckController presentViewController:navController animated:YES completion:nil];
+        [self.mm_drawerController presentViewController:navController animated:YES completion:nil];
     }
 }
 
@@ -507,7 +475,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.gearActionSheet showFromBarButtonItem:sender animated:YES];
     } else {
-        [self.gearActionSheet showInView:self.viewDeckController.view];
+        [self.gearActionSheet showInView:self.view];
     }
 }
 
@@ -618,7 +586,7 @@
         nav = [[UINavigationController alloc] initWithRootViewController:lc];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    [self.viewDeckController presentViewController:nav animated:YES completion:nil];
+    [self.mm_drawerController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)doRefresh:(id)sender {
@@ -824,39 +792,6 @@
         [settingsPopover setPopoverContentSize:CGSizeMake(320, 220)];
     }
     return settingsPopover;
-}
-
-- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-    shadowLayer.masksToBounds = NO;
-    shadowLayer.shadowRadius = 1;
-    shadowLayer.shadowOpacity = 0.9;
-    shadowLayer.shadowColor = [[UIColor blackColor] CGColor];
-    shadowLayer.shadowOffset = CGSizeZero;
-    shadowLayer.shadowPath = [[UIBezierPath bezierPathWithRect:rect] CGPath];
-}
-
-- (void)viewDeckController:(IIViewDeckController*)viewDeckController didOpenViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    if (viewDeckSide == IIViewDeckLeftSide) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.detailViewController name:@"NetworkSuccess" object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self.detailViewController name:@"NetworkError" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
-        OCArticleListController *alc = self.detailViewController;
-        alc.tableView.scrollsToTop = NO;
-        self.tableView.scrollsToTop = YES;
-    }
-}
-
-- (void)viewDeckController:(IIViewDeckController*)viewDeckController didCloseViewSide:(IIViewDeckSide)viewDeckSide animated:(BOOL)animated {
-    if (viewDeckSide == IIViewDeckLeftSide) {
-        OCArticleListController *alc = self.detailViewController;
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkSuccess" object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:alc selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:alc selector:@selector(networkError:) name:@"NetworkError" object:nil];
-        alc.tableView.scrollsToTop = YES;
-        self.tableView.scrollsToTop = NO;
-    }
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
