@@ -43,13 +43,18 @@
             block(drawerController, drawerSide, percentVisible);
         }
     }];
-    [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
+    self.maximumLeftDrawerWidth = [UIScreen mainScreen].bounds.size.width;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    self.maximumLeftDrawerWidth = size.width;
 }
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -72,17 +77,6 @@
         
     }
     return result;
-}
-
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-//    int width;
-//    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-//        width = CGRectGetHeight([UIScreen mainScreen].bounds);
-//    } else {
-//        width = CGRectGetWidth([UIScreen mainScreen].bounds);
-//    }
-    self.maximumLeftDrawerWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
 }
 
 - (void)openDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL))completion
