@@ -53,6 +53,8 @@
 @property (nonatomic, strong, readonly) UIAlertView *renameFolderAlertView;
 @property (nonatomic, strong, readonly) UIAlertView *addFeedAlertView;
 
+@property (nonatomic, assign) NSInteger folderId;
+
 - (IBAction) doRefresh:(id)sender;
 - (IBAction) doSettings:(id)sender;
 

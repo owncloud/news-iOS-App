@@ -42,7 +42,6 @@
 #import "UIViewController+MMDrawerController.h"
 
 @interface OCFeedListController () <UIActionSheetDelegate> {
-    long currentFolderIndex;
     NSNumber *currentRenameId;
     long currentIndex;
     BOOL networkHasBeenUnreachable;
@@ -73,6 +72,7 @@
 @synthesize addFolderAlertView;
 @synthesize renameFolderAlertView;
 @synthesize addFeedAlertView;
+@synthesize folderId;
 
 - (NSFetchedResultsController *)specialFetchedResultsController {
     if (!specialFetchedResultsController) {
@@ -155,7 +155,7 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 
     currentIndex = -1;
-    currentFolderIndex = 0;
+    self.folderId = 0;
     networkHasBeenUnreachable = NO;
     
     int imageViewOffset = 14;
@@ -205,24 +205,12 @@
     
     [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
     [self updatePredicate];
-    [self willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
 }
 
-- (void)viewDidUnload
+- (void)dealloc
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    self.specialFetchedResultsController = nil;
-    self.foldersFetchedResultsController = nil;
-    self.feedsFetchedResultsController = nil;
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 #pragma mark - Table view data source
@@ -231,11 +219,7 @@
     // Return the number of sections.
     return 3;
 }
-/*
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return @[@"Special", @"Folders", @"Feeds"];
-}
-*/
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
@@ -287,7 +271,7 @@
                             }
                         }
                     } else {
-                        if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
+                        if ((self.folderId > 0) && (indexPath.section == 0) && indexPath.row == 0) {
                             [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
                         } else {
                             [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
@@ -295,8 +279,8 @@
                     }
                 }
                 cell.accessoryType = UITableViewCellAccessoryNone;
-                if ((currentFolderIndex > 0) && (indexPath.section == 0) && indexPath.row == 0) {
-                    Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:currentFolderIndex]];
+                if ((self.folderId > 0) && (indexPath.section == 0) && indexPath.row == 0) {
+                    Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
                     cell.countBadge.value = folder.unreadCountValue;
                     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
                     if ([prefs boolForKey:@"HideRead"]) {
@@ -388,8 +372,8 @@
                 @try {
                     [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
                     feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    if (currentFolderIndex > 0) {
-                        self.detailViewController.folderId = currentFolderIndex;
+                    if (self.folderId > 0) {
+                        self.detailViewController.folderId = self.folderId;
                     }
                     self.detailViewController.feed = feed;
                 }
@@ -400,7 +384,7 @@
             case 1:
                 @try {
                     folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    currentFolderIndex = folder.myIdValue;
+                    self.folderId = folder.myIdValue;
                     self.navigationItem.title = folder.name;
                     self.navigationItem.leftBarButtonItem = self.backBarButtonItem;
                     [self updatePredicate];
@@ -557,7 +541,7 @@
 }
 
 - (void)doGoBack {
-    currentFolderIndex = 0;
+    self.folderId = 0;
     self.navigationItem.leftBarButtonItem = nil;
     self.navigationItem.title = @"Feeds";
     [self updatePredicate];
@@ -590,10 +574,10 @@
 }
 
 - (IBAction)doRefresh:(id)sender {
-    if (currentFolderIndex == 0) {
+    if (self.folderId == 0) {
         [[OCNewsHelper sharedHelper] sync:nil];
     } else {
-        [[OCNewsHelper sharedHelper] updateFolderWithId:[NSNumber numberWithLong:currentFolderIndex]];
+        [[OCNewsHelper sharedHelper] updateFolderWithId:[NSNumber numberWithLong:self.folderId]];
     }
 }
 
@@ -606,7 +590,7 @@
 }
 
 - (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
-    if (currentFolderIndex > 0) {
+    if (self.folderId > 0) {
         [self doGoBack];
     }
 }
@@ -643,7 +627,7 @@
     [NSFetchedResultsController deleteCacheWithName:@"SpecialCache"];
     [NSFetchedResultsController deleteCacheWithName:@"FolderCache"];
     [NSFetchedResultsController deleteCacheWithName:@"FeedCache"];
-    NSPredicate *predFolder = [NSPredicate predicateWithFormat:@"folderId == %@", [NSNumber numberWithLong:currentFolderIndex]];
+    NSPredicate *predFolder = [NSPredicate predicateWithFormat:@"folderId == %@", [NSNumber numberWithLong:self.folderId]];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
         NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"myId > 0"];
         NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unreadCount == 0"];
@@ -660,7 +644,7 @@
         [[self.feedsFetchedResultsController fetchRequest] setPredicate:pred3];
     }
     
-    if (currentFolderIndex > 0) {
+    if (self.folderId > 0) {
         self.specialFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithFormat:@"myId == -2"];
         self.foldersFetchedResultsController.fetchRequest.predicate = [NSPredicate predicateWithValue:NO];
     } else {
