@@ -7,9 +7,6 @@
 [submodule "UILabel-VerticalAlignment"]
 	path = UILabel-VerticalAlignment
 	url = https://github.com/ecentinela/UILabel-VerticalAlignment
-[submodule "ViewDeck"]
-	path = ViewDeck
-	url = https://github.com/Inferis/ViewDeck.git
 [submodule "Objective-C-HTML-Parser"]
 	path = Objective-C-HTML-Parser
 	url = git://github.com/tresni/Objective-C-HMTL-Parser.git
