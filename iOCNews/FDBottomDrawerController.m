@@ -73,10 +73,12 @@
 - (void)openDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL))completion
 {
     [super openDrawerSide:drawerSide animated:animated velocity:velocity animationOptions:options completion:completion];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.articleListController name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.articleListController name:@"NetworkError" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self.feedListController selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self.feedListController selector:@selector(networkError:) name:@"NetworkError" object:nil];
+    UIViewController *centerVC = ((UINavigationController*)self.centerViewController).topViewController;
+    [[NSNotificationCenter defaultCenter] removeObserver:centerVC name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:centerVC name:@"NetworkError" object:nil];
+    UIViewController *leftTopVC = ((UINavigationController*)self.leftDrawerViewController).topViewController;
+    [[NSNotificationCenter defaultCenter] addObserver:leftTopVC selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:leftTopVC selector:@selector(networkError:) name:@"NetworkError" object:nil];
     self.articleListController.tableView.scrollsToTop = NO;
     self.feedListController.tableView.scrollsToTop = YES;
 }
@@ -84,10 +86,13 @@
 - (void)closeDrawerAnimated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL))completion
 {
     [super closeDrawerAnimated:animated velocity:velocity animationOptions:options completion:completion];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.feedListController name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self.feedListController name:@"NetworkError" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self.articleListController selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self.articleListController selector:@selector(networkError:) name:@"NetworkError" object:nil];
+    [((UINavigationController*)self.leftDrawerViewController).viewControllers enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL *stop) {
+        [[NSNotificationCenter defaultCenter] removeObserver:vc name:@"NetworkSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:vc name:@"NetworkError" object:nil];
+    }];
+    UIViewController *centerVC = ((UINavigationController*)self.centerViewController).topViewController;
+    [[NSNotificationCenter defaultCenter] addObserver:centerVC selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:centerVC selector:@selector(networkError:) name:@"NetworkError" object:nil];
     self.articleListController.tableView.scrollsToTop = YES;
     self.feedListController.tableView.scrollsToTop = NO;
 }

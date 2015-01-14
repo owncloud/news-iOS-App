@@ -869,10 +869,10 @@
             </objects>
             <point key="canvasLocation" x="860" y="2344"/>
         </scene>
-        <!--Feed List Controller-->
+        <!--Feeds-->
         <scene sceneID="KOe-sh-Lrf">
             <objects>
-                <tableViewController id="oLO-mQ-w7P" customClass="OCFeedListController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="feed_list" id="oLO-mQ-w7P" customClass="OCFeedListController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Td5-Wp-SiK">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -890,7 +890,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" id="jBD-Ef-Ryz"/>
+                    <navigationItem key="navigationItem" title="Feeds" id="jBD-Ef-Ryz"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0mV-AG-Cc3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

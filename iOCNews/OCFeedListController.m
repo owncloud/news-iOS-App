@@ -51,7 +51,6 @@
 - (void) networkError:(NSNotification*)n;
 - (void) showMenu:(UIBarButtonItem*)sender event:(UIEvent*)event;
 - (void) doHideRead;
-- (void) doGoBack;
 - (void) updatePredicate;
 - (void) reachabilityChanged:(NSNotification *)n;
 - (void) didBecomeActive:(NSNotification *)n;
@@ -155,7 +154,7 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 
     currentIndex = -1;
-    self.folderId = 0;
+//    self.folderId = 0;
     networkHasBeenUnreachable = NO;
     
     int imageViewOffset = 14;
@@ -167,13 +166,9 @@
     self.refreshControl = self.feedRefreshControl;
     
     self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
-    self.navigationItem.title = @"Feeds";
+//    self.navigationItem.title = @"Feeds";
     self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
-    UISwipeGestureRecognizer *swgr = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableviewSwipe:)];
-    swgr.delegate = self;
-    [self.tableView addGestureRecognizer:swgr];
-    
     //Notifications
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
@@ -201,7 +196,9 @@
                                                object:nil];
 
     UINavigationController *navController = (UINavigationController*)self.mm_drawerController.centerViewController;
-    self.detailViewController = (OCArticleListController *)navController.topViewController;
+    if (!self.detailViewController) {
+        self.detailViewController = (OCArticleListController *)navController.topViewController;
+    }
     
     [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
     [self updatePredicate];
@@ -383,11 +380,15 @@
                 break;
             case 1:
                 @try {
+                    OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
                     folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    self.folderId = folder.myIdValue;
-                    self.navigationItem.title = folder.name;
-                    self.navigationItem.leftBarButtonItem = self.backBarButtonItem;
-                    [self updatePredicate];
+                    folderController.folderId = folder.myIdValue;
+//                    self.folderId = folder.myIdValue;
+                    folderController.navigationItem.title = folder.name;
+//                    folderController.navigationItem.leftBarButtonItem = folderController.backBarButtonItem;
+                    [folderController updatePredicate];
+                    folderController.detailViewController = self.detailViewController;
+                    [self.navigationController pushViewController:folderController animated:YES];
                 }
                 @catch (NSException *exception) {
                     //
@@ -540,12 +541,12 @@
     }
 }
 
-- (void)doGoBack {
-    self.folderId = 0;
-    self.navigationItem.leftBarButtonItem = nil;
-    self.navigationItem.title = @"Feeds";
-    [self updatePredicate];
-}
+//- (void)doGoBack {
+//    self.folderId = 0;
+//    self.navigationItem.leftBarButtonItem = nil;
+//    self.navigationItem.title = @"Feeds";
+//    [self updatePredicate];
+//}
 
 - (void)doHideRead {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -565,6 +566,7 @@
     }
     if ([sender isEqual:self.gearActionSheet]) {
         nav = [storyboard instantiateViewControllerWithIdentifier:@"login"];
+        [nav loadView];
     } else {
         OCLoginController *lc = [storyboard instantiateViewControllerWithIdentifier:@"server"];
         nav = [[UINavigationController alloc] initWithRootViewController:lc];
@@ -589,11 +591,11 @@
 
 }
 
-- (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
-    if (self.folderId > 0) {
-        [self doGoBack];
-    }
-}
+//- (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
+//    if (self.folderId > 0) {
+//        [self doGoBack];
+//    }
+//}
 
 - (void) feedSettingsUpdate:(OCFeedSettingsController *)settings {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -756,7 +758,7 @@
 
 - (UIBarButtonItem *)backBarButtonItem {
     if (!backBarButtonItem) {
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Feeds" style:UIBarButtonItemStyleBordered target:self action:@selector(doGoBack)];
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Feeds" style:UIBarButtonItemStylePlain target:self action:@selector(doGoBack)];
     }
     return backBarButtonItem;
 }
