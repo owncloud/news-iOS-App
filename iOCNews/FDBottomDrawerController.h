@@ -12,7 +12,7 @@
 
 @interface FDBottomDrawerController : MMDrawerController
 
-@property (strong, nonatomic) OCFeedListController *feedListController;
-@property (strong, nonatomic) OCArticleListController *articleListController;
+//@property (strong, nonatomic) OCFeedListController *feedListController;
+//@property (strong, nonatomic) OCArticleListController *articleListController;
 
 @end

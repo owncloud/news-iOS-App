@@ -195,6 +195,16 @@
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(drawerOpened:)
+                                                 name:@"DrawerOpened"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(drawerClosed:)
+                                                 name:@"DrawerClosed"
+                                               object:nil];
+
     UINavigationController *navController = (UINavigationController*)self.mm_drawerController.centerViewController;
     if (!self.detailViewController) {
         self.detailViewController = (OCArticleListController *)navController.topViewController;
@@ -719,6 +729,20 @@
             }
         }
     }
+}
+
+- (void)drawerOpened:(NSNotification *)n {
+    if ([self.navigationController.topViewController isEqual:self]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
+    }
+    self.tableView.scrollsToTop = YES;
+}
+
+- (void)drawerClosed:(NSNotification *)n {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
+    self.tableView.scrollsToTop = NO;
 }
 
 #pragma mark - Feeds maintenance

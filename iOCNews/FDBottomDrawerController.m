@@ -15,8 +15,8 @@
 
 @implementation FDBottomDrawerController
 
-@synthesize feedListController;
-@synthesize articleListController;
+//@synthesize feedListController;
+//@synthesize articleListController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -73,28 +73,13 @@
 - (void)openDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL))completion
 {
     [super openDrawerSide:drawerSide animated:animated velocity:velocity animationOptions:options completion:completion];
-    UIViewController *centerVC = ((UINavigationController*)self.centerViewController).topViewController;
-    [[NSNotificationCenter defaultCenter] removeObserver:centerVC name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:centerVC name:@"NetworkError" object:nil];
-    UIViewController *leftTopVC = ((UINavigationController*)self.leftDrawerViewController).topViewController;
-    [[NSNotificationCenter defaultCenter] addObserver:leftTopVC selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:leftTopVC selector:@selector(networkError:) name:@"NetworkError" object:nil];
-    self.articleListController.tableView.scrollsToTop = NO;
-    self.feedListController.tableView.scrollsToTop = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DrawerOpened" object:self];
 }
 
 - (void)closeDrawerAnimated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL))completion
 {
     [super closeDrawerAnimated:animated velocity:velocity animationOptions:options completion:completion];
-    [((UINavigationController*)self.leftDrawerViewController).viewControllers enumerateObjectsUsingBlock:^(UIViewController *vc, NSUInteger idx, BOOL *stop) {
-        [[NSNotificationCenter defaultCenter] removeObserver:vc name:@"NetworkSuccess" object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:vc name:@"NetworkError" object:nil];
-    }];
-    UIViewController *centerVC = ((UINavigationController*)self.centerViewController).topViewController;
-    [[NSNotificationCenter defaultCenter] addObserver:centerVC selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:centerVC selector:@selector(networkError:) name:@"NetworkError" object:nil];
-    self.articleListController.tableView.scrollsToTop = YES;
-    self.feedListController.tableView.scrollsToTop = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DrawerClosed" object:self];
 }
 
 @end

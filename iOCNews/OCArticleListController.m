@@ -209,7 +209,15 @@
                                                   usingBlock:^(NSNotification *notification) {
                                                       [self.tableView reloadData];
                                                   }];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(drawerOpened:)
+                                                 name:@"DrawerOpened"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(drawerClosed:)
+                                                 name:@"DrawerClosed"
+                                               object:nil];
 }
 
 - (void)viewDidUnload
@@ -643,6 +651,18 @@
     }
     
     return feedRefreshControl;
+}
+
+- (void)drawerOpened:(NSNotification *)n {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
+    self.tableView.scrollsToTop = NO;
+}
+
+- (void)drawerClosed:(NSNotification *)n {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
+    self.tableView.scrollsToTop = YES;
 }
 
 - (void) networkSuccess:(NSNotification *)n {
