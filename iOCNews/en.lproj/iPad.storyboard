@@ -71,7 +71,6 @@
         <scene sceneID="ztq-fe-g2I">
             <objects>
                 <navigationController storyboardIdentifier="login" definesPresentationContext="YES" modalPresentationStyle="formSheet" id="h31-gI-j5w" sceneMemberID="viewController">
-                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8gB-Aq-swP">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -88,14 +87,14 @@
             <objects>
                 <tableViewController storyboardIdentifier="server" modalPresentationStyle="formSheet" id="Lfe-mn-rFK" customClass="OCLoginController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4dc-ba-QAv">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableFooterView" opaque="NO" contentMode="scaleToFill" id="KNh-ch-HsP">
-                            <rect key="frame" x="0.0" y="372" width="540" height="291"/>
+                            <rect key="frame" x="0.0" y="372" width="768" height="291"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Currently not connected to an ownCloud News server." lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="460" translatesAutoresizingMaskIntoConstraints="NO" id="zDJ-Ip-i6b">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" text="Currently not connected to an ownCloud News server." lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="460" translatesAutoresizingMaskIntoConstraints="NO" id="zDJ-Ip-i6b">
                                     <rect key="frame" x="80" y="10" width="460" height="70"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="70" id="FWv-Cm-R13"/>
@@ -248,18 +247,18 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6VW-gY-hFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3986" y="-1260"/>
+            <point key="canvasLocation" x="4566" y="-1260"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Dkj-Yg-TTn">
             <objects>
-                <tableViewController modalPresentationStyle="formSheet" id="P5u-kO-eoc" customClass="OCSettingsController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="settings" modalPresentationStyle="formSheet" id="P5u-kO-eoc" customClass="OCSettingsController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="f69-Qh-5TO">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="PdR-eD-Vwc">
-                            <rect key="frame" x="0.0" y="526" width="540" height="94"/>
+                            <rect key="frame" x="0.0" y="526" width="768" height="94"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
@@ -449,7 +448,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duK-Zx-C63" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3354" y="-1260"/>
+            <point key="canvasLocation" x="3626" y="-1265"/>
         </scene>
         <!--Feed Settings-->
         <scene sceneID="teH-Xq-aMz">

@@ -399,6 +399,8 @@
                     [folderController updatePredicate];
                     folderController.detailViewController = self.detailViewController;
                     [self.navigationController pushViewController:folderController animated:YES];
+                    [folderController drawerOpened:nil];
+                    [self drawerClosed:nil];
                 }
                 @catch (NSException *exception) {
                     //
@@ -463,15 +465,71 @@
 #pragma mark - Actions
 
 - (void)showMenu:(UIBarButtonItem *)sender event:(UIEvent *)event {
-    self.gearActionSheet = nil;
-    NSString *hideReadTitle = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read";
-    self.gearActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Settings", @"Add Folder", @"Add Feed", hideReadTitle, nil];
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:@"Settings"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              [self doSettings:action];
+                                                              
+                                                          }];
+    
+    [alert addAction:settingsAction];
+ 
+    UIAlertAction* addFolderAction = [UIAlertAction actionWithTitle:@"Add Folder"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               [self.addFolderAlertView show];
+                                                               
+                                                           }];
+    
+    [alert addAction:addFolderAction];
 
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.gearActionSheet showFromBarButtonItem:sender animated:YES];
-    } else {
-        [self.gearActionSheet showInView:self.view];
+    UIAlertAction* addFeedAction = [UIAlertAction actionWithTitle:@"Add Feed"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                [self.addFeedAlertView show];
+                                                                
+                                                            }];
+    
+    [alert addAction:addFeedAction];
+
+    NSString *hideReadTitle = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read";
+    UIAlertAction* hideReadAction = [UIAlertAction actionWithTitle:hideReadTitle
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              [self doHideRead];
+                                                              
+                                                          }];
+    
+    [alert addAction:hideReadAction];
+
+if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    alert.modalPresentationStyle = UIModalPresentationPopover;
+    
+    UIPopoverPresentationController *popover = alert.popoverPresentationController;
+    if (popover)
+    {
+        popover.barButtonItem = self.addBarButtonItem;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
     }
+    
+}
+    [self.mm_drawerController presentViewController:alert animated:YES completion:nil];
+    
+    
+    //    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    //        [self.gearActionSheet showFromBarButtonItem:sender animated:YES];
+//    } else {
+//        [self.gearActionSheet showInView:self.view];
+//    }
 }
 
 - (UIAlertView*)addFolderAlertView {
@@ -507,27 +565,6 @@
     return addFeedAlertView;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet isEqual:self.gearActionSheet]) {
-        switch (buttonIndex) {
-            case 0:
-                [self doSettings:self.gearActionSheet];
-                break;
-            case 1:
-                [self.addFolderAlertView show];
-                break;
-            case 2:
-                [self.addFeedAlertView show];
-                break;
-            case 3:
-                [self doHideRead];
-                break;
-            default:
-                break;
-        }
-    }
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 //
@@ -551,13 +588,6 @@
     }
 }
 
-//- (void)doGoBack {
-//    self.folderId = 0;
-//    self.navigationItem.leftBarButtonItem = nil;
-//    self.navigationItem.title = @"Feeds";
-//    [self updatePredicate];
-//}
-
 - (void)doHideRead {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     BOOL hideRead = [prefs boolForKey:@"HideRead"];
@@ -574,15 +604,16 @@
     } else {
         storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
     }
-    if ([sender isEqual:self.gearActionSheet]) {
+    if ([sender isKindOfClass:[UIAlertAction class]]) {
         nav = [storyboard instantiateViewControllerWithIdentifier:@"login"];
-        [nav loadView];
+        [nav.topViewController loadView];
+        nav.modalPresentationStyle = UIModalPresentationFormSheet;
     } else {
         OCLoginController *lc = [storyboard instantiateViewControllerWithIdentifier:@"server"];
         nav = [[UINavigationController alloc] initWithRootViewController:lc];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    [self.mm_drawerController presentViewController:nav animated:YES completion:nil];
+    [self.mm_drawerController.leftDrawerViewController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)doRefresh:(id)sender {

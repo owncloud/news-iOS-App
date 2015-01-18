@@ -58,4 +58,7 @@
 - (IBAction) doRefresh:(id)sender;
 - (IBAction) doSettings:(id)sender;
 
+- (void)drawerOpened:(NSNotification *)n;
+- (void)drawerClosed:(NSNotification *)n;
+
 @end
