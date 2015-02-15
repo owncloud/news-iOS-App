@@ -10,12 +10,6 @@ const struct FolderAttributes FolderAttributes = {
 	.unreadCount = @"unreadCount",
 };
 
-const struct FolderRelationships FolderRelationships = {
-};
-
-const struct FolderFetchedProperties FolderFetchedProperties = {
-};
-
 @implementation FolderID
 @end
 
@@ -41,7 +35,7 @@ const struct FolderFetchedProperties FolderFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"lastModifiedValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"lastModified"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -61,12 +55,7 @@ const struct FolderFetchedProperties FolderFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic lastModified;
-
-
 
 - (int32_t)lastModifiedValue {
 	NSNumber *result = [self lastModified];
@@ -86,13 +75,7 @@ const struct FolderFetchedProperties FolderFetchedProperties = {
 	[self setPrimitiveLastModified:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic myId;
-
-
 
 - (int32_t)myIdValue {
 	NSNumber *result = [self myId];
@@ -112,20 +95,9 @@ const struct FolderFetchedProperties FolderFetchedProperties = {
 	[self setPrimitiveMyId:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic name;
 
-
-
-
-
-
 @dynamic unreadCount;
-
-
 
 - (int32_t)unreadCountValue {
 	NSNumber *result = [self unreadCount];
@@ -145,13 +117,5 @@ const struct FolderFetchedProperties FolderFetchedProperties = {
 	[self setPrimitiveUnreadCount:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
-
-
-
-
-
 @end
+

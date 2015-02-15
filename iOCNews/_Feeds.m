@@ -8,12 +8,6 @@ const struct FeedsAttributes FeedsAttributes = {
 	.starredCount = @"starredCount",
 };
 
-const struct FeedsRelationships FeedsRelationships = {
-};
-
-const struct FeedsFetchedProperties FeedsFetchedProperties = {
-};
-
 @implementation FeedsID
 @end
 
@@ -39,7 +33,7 @@ const struct FeedsFetchedProperties FeedsFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"newestItemIdValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"newestItemId"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -54,12 +48,7 @@ const struct FeedsFetchedProperties FeedsFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic newestItemId;
-
-
 
 - (int32_t)newestItemIdValue {
 	NSNumber *result = [self newestItemId];
@@ -79,13 +68,7 @@ const struct FeedsFetchedProperties FeedsFetchedProperties = {
 	[self setPrimitiveNewestItemId:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic starredCount;
-
-
 
 - (int32_t)starredCountValue {
 	NSNumber *result = [self starredCount];
@@ -105,13 +88,5 @@ const struct FeedsFetchedProperties FeedsFetchedProperties = {
 	[self setPrimitiveStarredCount:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
-
-
-
-
-
 @end
+

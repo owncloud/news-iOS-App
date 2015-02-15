@@ -21,12 +21,6 @@ const struct ItemAttributes ItemAttributes = {
 	.url = @"url",
 };
 
-const struct ItemRelationships ItemRelationships = {
-};
-
-const struct ItemFetchedProperties ItemFetchedProperties = {
-};
-
 @implementation ItemID
 @end
 
@@ -52,7 +46,7 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"feedIdValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"feedId"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -87,40 +81,15 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic author;
-
-
-
-
-
 
 @dynamic body;
 
-
-
-
-
-
 @dynamic enclosureLink;
-
-
-
-
-
 
 @dynamic enclosureMime;
 
-
-
-
-
-
 @dynamic feedId;
-
-
 
 - (int32_t)feedIdValue {
 	NSNumber *result = [self feedId];
@@ -140,27 +109,11 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 	[self setPrimitiveFeedId:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic guid;
-
-
-
-
-
 
 @dynamic guidHash;
 
-
-
-
-
-
 @dynamic lastModified;
-
-
 
 - (int32_t)lastModifiedValue {
 	NSNumber *result = [self lastModified];
@@ -180,13 +133,7 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 	[self setPrimitiveLastModified:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic myId;
-
-
 
 - (int32_t)myIdValue {
 	NSNumber *result = [self myId];
@@ -206,13 +153,7 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 	[self setPrimitiveMyId:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic pubDate;
-
-
 
 - (int32_t)pubDateValue {
 	NSNumber *result = [self pubDate];
@@ -232,20 +173,9 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 	[self setPrimitivePubDate:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic readable;
 
-
-
-
-
-
 @dynamic starred;
-
-
 
 - (BOOL)starredValue {
 	NSNumber *result = [self starred];
@@ -265,20 +195,9 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 	[self setPrimitiveStarred:[NSNumber numberWithBool:value_]];
 }
 
-
-
-
-
 @dynamic title;
 
-
-
-
-
-
 @dynamic unread;
-
-
 
 - (BOOL)unreadValue {
 	NSNumber *result = [self unread];
@@ -298,20 +217,7 @@ const struct ItemFetchedProperties ItemFetchedProperties = {
 	[self setPrimitiveUnread:[NSNumber numberWithBool:value_]];
 }
 
-
-
-
-
 @dynamic url;
 
-
-
-
-
-
-
-
-
-
-
 @end
+
