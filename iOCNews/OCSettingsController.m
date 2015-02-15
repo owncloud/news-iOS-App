@@ -42,11 +42,13 @@
 @synthesize showFaviconsSwitch;
 @synthesize showThumbnailsSwitch;
 @synthesize markWhileScrollingSwitch;
+@synthesize reverseItemOrderSwitch;
 @synthesize syncOnStartCell;
 @synthesize syncInBackgroundCell;
 @synthesize showFaviconsCell;
 @synthesize showThumbnailsCell;
 @synthesize markWhileScrollingCell;
+@synthesize reverseItemOrderCell;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -71,6 +73,7 @@
     self.showFaviconsCell.accessoryView = self.showFaviconsSwitch;
     self.showThumbnailsCell.accessoryView = self.showThumbnailsSwitch;
     self.markWhileScrollingCell.accessoryView = self.markWhileScrollingSwitch;
+    self.reverseItemOrderCell.accessoryView = self.reverseItemOrderSwitch;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,6 +84,7 @@
     self.showFaviconsSwitch.on = [prefs boolForKey:@"ShowFavicons"];
     self.showThumbnailsSwitch.on = [prefs boolForKey:@"ShowThumbnails"];
     self.markWhileScrollingSwitch.on = [prefs boolForKey:@"MarkWhileScrolling"];
+    self.reverseItemOrderSwitch.on = [prefs boolForKey:@"ReverseItemOrder"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -209,9 +213,14 @@
     [[NSUserDefaults standardUserDefaults] setBool:self.markWhileScrollingSwitch.on forKey:@"MarkWhileScrolling"];
 }
 
+- (IBAction)reverseItemOrderChanged:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:self.reverseItemOrderSwitch.on forKey:@"ReverseItemOrder"];
+}
+
 - (IBAction)didTapDone:(id)sender {
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 
 @end

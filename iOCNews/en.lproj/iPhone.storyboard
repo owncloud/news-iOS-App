@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14C81f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="06a-I0-Bs1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="06a-I0-Bs1">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Feed List Controller-->
@@ -478,6 +477,27 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yLU-DW-AZr">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yLU-DW-AZr" id="hUW-zO-juq">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reverse Item Order" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzv-No-Xbr">
+                                                    <rect key="frame" x="15" y="0.0" width="225" height="43"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QbD-sV-PFc">
+                                                    <rect key="frame" x="251" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="reverseItemOrderChanged:" destination="3DC-0x-9ex" eventType="valueChanged" id="iky-zN-FeX"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="SUPPORT" id="7Og-ZE-fd8">
@@ -517,6 +537,8 @@
                     <connections>
                         <outlet property="markWhileScrollingCell" destination="SI2-qz-n6V" id="4jw-cP-mD1"/>
                         <outlet property="markWhileScrollingSwitch" destination="EZK-eu-V5A" id="dwq-Mm-8ud"/>
+                        <outlet property="reverseItemOrderCell" destination="yLU-DW-AZr" id="sUT-di-vjm"/>
+                        <outlet property="reverseItemOrderSwitch" destination="QbD-sV-PFc" id="ChA-Wc-Bfe"/>
                         <outlet property="showFaviconsCell" destination="Ebl-Jn-saK" id="bT3-LA-guJ"/>
                         <outlet property="showFaviconsSwitch" destination="DHb-ii-oxe" id="kYC-PE-k1L"/>
                         <outlet property="showThumbnailsCell" destination="ULE-Hs-z5w" id="D5R-M6-2OP"/>

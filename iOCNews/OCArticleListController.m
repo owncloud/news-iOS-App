@@ -107,14 +107,19 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Item" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
         
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ReverseItemOrder"]) {
+            NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
+            [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        } else {
+            NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
+            [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        }
         [fetchRequest setFetchBatchSize:500];
         
         fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                        managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
                                                                                   cacheName:@"ArticleCache"];
-        
+
     }
     return fetchedResultsController;
 }
@@ -195,6 +200,11 @@
     
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
+    
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"ReverseItemOrder"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
     
@@ -498,6 +508,17 @@
     }
     if([keyPath isEqual:@"ShowThumbnails"]) {
         [self refresh];
+    }
+    if([keyPath isEqual:@"ReverseItemOrder"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ReverseItemOrder"]) {
+            NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
+            [self.fetchedResultsController.fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        } else {
+            NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
+            [self.fetchedResultsController.fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        }
+        [self updatePredicate];
+
     }
 }
 

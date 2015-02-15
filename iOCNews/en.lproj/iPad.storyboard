@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14C94b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="iFj-kL-GWg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="iFj-kL-GWg">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Article List Controller-->
@@ -403,6 +402,27 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1wg-mu-nD7">
+                                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1wg-mu-nD7" id="z5W-QC-XJg">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reverse Item Order" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lhT-m0-DFQ">
+                                                    <rect key="frame" x="14" y="3" width="324" height="38"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6uY-ox-2t8">
+                                                    <rect key="frame" x="471" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="reverseItemOrderChanged:" destination="P5u-kO-eoc" eventType="valueChanged" id="dIg-zj-SV7"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="SUPPORT" id="MxM-y9-gJi">
@@ -440,6 +460,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="markWhileScrollingSwitch" destination="hEo-4F-MxB" id="fRa-Yt-vnM"/>
+                        <outlet property="reverseItemOrderCell" destination="1wg-mu-nD7" id="Efm-pb-Bo6"/>
+                        <outlet property="reverseItemOrderSwitch" destination="6uY-ox-2t8" id="6oh-Oh-s05"/>
                         <outlet property="showFaviconsSwitch" destination="pXV-IP-MNW" id="78I-o4-gl1"/>
                         <outlet property="showThumbnailsSwitch" destination="XO5-tM-la8" id="Jve-U1-GGl"/>
                         <outlet property="syncOnStartSwitch" destination="iZP-kh-20q" id="suF-bn-cNx"/>
