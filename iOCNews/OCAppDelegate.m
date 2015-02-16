@@ -165,7 +165,7 @@
 }
 
 - (KSCrashInstallation*) makeEmailInstallation {
-    NSString* emailAddress = @"farkas@c3e.cs.tu-bs.de";
+    NSString* emailAddress = @"support@peterandlinda.com";
     
     KSCrashInstallationEmail* email = [KSCrashInstallationEmail sharedInstance];
     email.recipients = @[emailAddress];

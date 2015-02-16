@@ -18,6 +18,12 @@ const struct FeedAttributes FeedAttributes = {
 	.useReader = @"useReader",
 };
 
+const struct FeedRelationships FeedRelationships = {
+};
+
+const struct FeedFetchedProperties FeedFetchedProperties = {
+};
+
 @implementation FeedID
 @end
 
@@ -43,7 +49,7 @@ const struct FeedAttributes FeedAttributes = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-
+	
 	if ([key isEqualToString:@"addedValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"added"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -88,7 +94,12 @@ const struct FeedAttributes FeedAttributes = {
 	return keyPaths;
 }
 
+
+
+
 @dynamic added;
+
+
 
 - (int32_t)addedValue {
 	NSNumber *result = [self added];
@@ -108,7 +119,13 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitiveAdded:[NSNumber numberWithInt:value_]];
 }
 
+
+
+
+
 @dynamic articleCount;
+
+
 
 - (int32_t)articleCountValue {
 	NSNumber *result = [self articleCount];
@@ -128,9 +145,20 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitiveArticleCount:[NSNumber numberWithInt:value_]];
 }
 
+
+
+
+
 @dynamic faviconLink;
 
+
+
+
+
+
 @dynamic folderId;
+
+
 
 - (int32_t)folderIdValue {
 	NSNumber *result = [self folderId];
@@ -150,7 +178,13 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitiveFolderId:[NSNumber numberWithInt:value_]];
 }
 
+
+
+
+
 @dynamic lastModified;
+
+
 
 - (int32_t)lastModifiedValue {
 	NSNumber *result = [self lastModified];
@@ -170,9 +204,20 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitiveLastModified:[NSNumber numberWithInt:value_]];
 }
 
+
+
+
+
 @dynamic link;
 
+
+
+
+
+
 @dynamic myId;
+
+
 
 - (int32_t)myIdValue {
 	NSNumber *result = [self myId];
@@ -192,7 +237,13 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitiveMyId:[NSNumber numberWithInt:value_]];
 }
 
+
+
+
+
 @dynamic preferWeb;
+
+
 
 - (BOOL)preferWebValue {
 	NSNumber *result = [self preferWeb];
@@ -212,9 +263,20 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitivePreferWeb:[NSNumber numberWithBool:value_]];
 }
 
+
+
+
+
 @dynamic title;
 
+
+
+
+
+
 @dynamic unreadCount;
+
+
 
 - (int32_t)unreadCountValue {
 	NSNumber *result = [self unreadCount];
@@ -234,9 +296,20 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitiveUnreadCount:[NSNumber numberWithInt:value_]];
 }
 
+
+
+
+
 @dynamic url;
 
+
+
+
+
+
 @dynamic useReader;
+
+
 
 - (BOOL)useReaderValue {
 	NSNumber *result = [self useReader];
@@ -256,5 +329,13 @@ const struct FeedAttributes FeedAttributes = {
 	[self setPrimitiveUseReader:[NSNumber numberWithBool:value_]];
 }
 
-@end
 
+
+
+
+
+
+
+
+
+@end

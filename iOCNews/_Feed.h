@@ -3,6 +3,7 @@
 
 #import <CoreData/CoreData.h>
 
+
 extern const struct FeedAttributes {
 	__unsafe_unretained NSString *added;
 	__unsafe_unretained NSString *articleCount;
@@ -18,6 +19,26 @@ extern const struct FeedAttributes {
 	__unsafe_unretained NSString *useReader;
 } FeedAttributes;
 
+extern const struct FeedRelationships {
+} FeedRelationships;
+
+extern const struct FeedFetchedProperties {
+} FeedFetchedProperties;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @interface FeedID : NSManagedObjectID {}
 @end
 
@@ -25,91 +46,173 @@ extern const struct FeedAttributes {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) FeedID* objectID;
+- (FeedID*)objectID;
+
+
+
+
 
 @property (nonatomic, strong) NSNumber* added;
 
-@property (atomic) int32_t addedValue;
+
+
+@property int32_t addedValue;
 - (int32_t)addedValue;
 - (void)setAddedValue:(int32_t)value_;
 
 //- (BOOL)validateAdded:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSNumber* articleCount;
 
-@property (atomic) int32_t articleCountValue;
+
+
+@property int32_t articleCountValue;
 - (int32_t)articleCountValue;
 - (void)setArticleCountValue:(int32_t)value_;
 
 //- (BOOL)validateArticleCount:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSString* faviconLink;
+
+
 
 //- (BOOL)validateFaviconLink:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSNumber* folderId;
 
-@property (atomic) int32_t folderIdValue;
+
+
+@property int32_t folderIdValue;
 - (int32_t)folderIdValue;
 - (void)setFolderIdValue:(int32_t)value_;
 
 //- (BOOL)validateFolderId:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSNumber* lastModified;
 
-@property (atomic) int32_t lastModifiedValue;
+
+
+@property int32_t lastModifiedValue;
 - (int32_t)lastModifiedValue;
 - (void)setLastModifiedValue:(int32_t)value_;
 
 //- (BOOL)validateLastModified:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSString* link;
+
+
 
 //- (BOOL)validateLink:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSNumber* myId;
 
-@property (atomic) int32_t myIdValue;
+
+
+@property int32_t myIdValue;
 - (int32_t)myIdValue;
 - (void)setMyIdValue:(int32_t)value_;
 
 //- (BOOL)validateMyId:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSNumber* preferWeb;
 
-@property (atomic) BOOL preferWebValue;
+
+
+@property BOOL preferWebValue;
 - (BOOL)preferWebValue;
 - (void)setPreferWebValue:(BOOL)value_;
 
 //- (BOOL)validatePreferWeb:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSString* title;
+
+
 
 //- (BOOL)validateTitle:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSNumber* unreadCount;
 
-@property (atomic) int32_t unreadCountValue;
+
+
+@property int32_t unreadCountValue;
 - (int32_t)unreadCountValue;
 - (void)setUnreadCountValue:(int32_t)value_;
 
 //- (BOOL)validateUnreadCount:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSString* url;
+
+
 
 //- (BOOL)validateUrl:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
 @property (nonatomic, strong) NSNumber* useReader;
 
-@property (atomic) BOOL useReaderValue;
+
+
+@property BOOL useReaderValue;
 - (BOOL)useReaderValue;
 - (void)setUseReaderValue:(BOOL)value_;
 
 //- (BOOL)validateUseReader:(id*)value_ error:(NSError**)error_;
 
+
+
+
+
+
+@end
+
+@interface _Feed (CoreDataGeneratedAccessors)
+
 @end
 
 @interface _Feed (CoreDataGeneratedPrimitiveAccessors)
+
 
 - (NSNumber*)primitiveAdded;
 - (void)setPrimitiveAdded:(NSNumber*)value;
@@ -117,14 +220,23 @@ extern const struct FeedAttributes {
 - (int32_t)primitiveAddedValue;
 - (void)setPrimitiveAddedValue:(int32_t)value_;
 
+
+
+
 - (NSNumber*)primitiveArticleCount;
 - (void)setPrimitiveArticleCount:(NSNumber*)value;
 
 - (int32_t)primitiveArticleCountValue;
 - (void)setPrimitiveArticleCountValue:(int32_t)value_;
 
+
+
+
 - (NSString*)primitiveFaviconLink;
 - (void)setPrimitiveFaviconLink:(NSString*)value;
+
+
+
 
 - (NSNumber*)primitiveFolderId;
 - (void)setPrimitiveFolderId:(NSNumber*)value;
@@ -132,14 +244,23 @@ extern const struct FeedAttributes {
 - (int32_t)primitiveFolderIdValue;
 - (void)setPrimitiveFolderIdValue:(int32_t)value_;
 
+
+
+
 - (NSNumber*)primitiveLastModified;
 - (void)setPrimitiveLastModified:(NSNumber*)value;
 
 - (int32_t)primitiveLastModifiedValue;
 - (void)setPrimitiveLastModifiedValue:(int32_t)value_;
 
+
+
+
 - (NSString*)primitiveLink;
 - (void)setPrimitiveLink:(NSString*)value;
+
+
+
 
 - (NSNumber*)primitiveMyId;
 - (void)setPrimitiveMyId:(NSNumber*)value;
@@ -147,14 +268,23 @@ extern const struct FeedAttributes {
 - (int32_t)primitiveMyIdValue;
 - (void)setPrimitiveMyIdValue:(int32_t)value_;
 
+
+
+
 - (NSNumber*)primitivePreferWeb;
 - (void)setPrimitivePreferWeb:(NSNumber*)value;
 
 - (BOOL)primitivePreferWebValue;
 - (void)setPrimitivePreferWebValue:(BOOL)value_;
 
+
+
+
 - (NSString*)primitiveTitle;
 - (void)setPrimitiveTitle:(NSString*)value;
+
+
+
 
 - (NSNumber*)primitiveUnreadCount;
 - (void)setPrimitiveUnreadCount:(NSNumber*)value;
@@ -162,13 +292,22 @@ extern const struct FeedAttributes {
 - (int32_t)primitiveUnreadCountValue;
 - (void)setPrimitiveUnreadCountValue:(int32_t)value_;
 
+
+
+
 - (NSString*)primitiveUrl;
 - (void)setPrimitiveUrl:(NSString*)value;
+
+
+
 
 - (NSNumber*)primitiveUseReader;
 - (void)setPrimitiveUseReader:(NSNumber*)value;
 
 - (BOOL)primitiveUseReaderValue;
 - (void)setPrimitiveUseReaderValue:(BOOL)value_;
+
+
+
 
 @end

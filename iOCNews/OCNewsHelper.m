@@ -798,6 +798,7 @@ const int UPDATE_ALL = 3;
             
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+            
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
                 
                 Feed *feed = [self feedWithId:feedId];
