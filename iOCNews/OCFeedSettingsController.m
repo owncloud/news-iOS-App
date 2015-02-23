@@ -61,8 +61,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
         return MAX(self.tableView.rowHeight, self.urlTextView.intrinsicContentSize.height);
-    } else if (indexPath.row == 1) {
-        return MAX(self.tableView.rowHeight, self.titleTextField.intrinsicContentSize.height);
     } else {
         return tableView.rowHeight;
     }
