@@ -44,6 +44,7 @@
 #import "HexColor.h"
 #import "OCSharingProvider.h"
 #import "UIViewController+MMDrawerController.h"
+#import "FDTopDrawerController.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
@@ -345,6 +346,8 @@ const int SWIPE_PREVIOUS = 1;
     border.backgroundColor = [UIColor lightGrayColor].CGColor;
     border.frame = CGRectMake(0, 0, 1, 1024);
     [self.mm_drawerController.centerViewController.view.layer addSublayer:border];
+    FDTopDrawerController *myDrawerController = (FDTopDrawerController*)self.mm_drawerController;
+    myDrawerController.webController = self;
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
@@ -1085,7 +1088,6 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    //[_gmController close];
     CGPoint loc = [gestureRecognizer locationInView:self.webView];
     float h = self.webView.frame.size.height;
     float q = h / 4;
@@ -1097,15 +1099,6 @@ const int SWIPE_PREVIOUS = 1;
             if (loc.y < (h - q)) {
                 return (self.mm_drawerController.openSide == MMDrawerSideNone);
             }
-        }
-        return NO;
-    }
-    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        if (loc.y < q) {
-            return YES;
-        }
-        if (loc.y > (3 * q)) {
-            return YES;
         }
         return NO;
     }

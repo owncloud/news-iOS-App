@@ -61,8 +61,8 @@
     BOOL result = [super gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
 
     if (self.openSide == MMDrawerSideNone) {
-        CGPoint loc = [touch locationInView:webController.webView];
-        float h = self.webController.webView.frame.size.height;
+        CGPoint loc = [touch locationInView:self.centerViewController.view];
+        float h = self.centerViewController.view.frame.size.height;
         float q = h / 4;
         if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
             if (loc.y < q) {
@@ -74,7 +74,6 @@
             //result = NO;
         }
         //result = NO;
-        
     }
     return result;
 }
