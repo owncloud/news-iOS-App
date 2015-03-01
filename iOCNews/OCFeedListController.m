@@ -448,7 +448,7 @@
         Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
         NSLog(@"Feed title: %@", feed.title);
         NSLog(@"Feed title: %@", feed.title);
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
         OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
         [settingsController loadView];
@@ -597,7 +597,7 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 }
 
 - (IBAction)doSettings:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UINavigationController *nav;
     if ([sender isKindOfClass:[UIAlertAction class]]) {
         nav = [storyboard instantiateViewControllerWithIdentifier:@"login"];
@@ -823,7 +823,7 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 
 - (UIPopoverController *) settingsPopover {
     if (!settingsPopover) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle: nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         settingsPopover = [[UIPopoverController alloc] initWithContentViewController:[storyboard instantiateViewControllerWithIdentifier: @"feedextra"]];
         [settingsPopover setPopoverContentSize:CGSizeMake(320, 220)];
     }

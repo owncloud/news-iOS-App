@@ -161,7 +161,7 @@
 		D04AD6C01807403100FF6056 /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
 		D04AD6C11807403100FF6056 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
 		D04AD6C21807403100FF6056 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA2E177900C300C965F4 /* InfoPlist.strings */; };
-		D04AD6C31807403100FF6056 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* iPad.storyboard */; };
+		D04AD6C31807403100FF6056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* Main.storyboard */; };
 		D04AD6C61807403100FF6056 /* icab-activity.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCABAA17790F6600C965F4 /* icab-activity.png */; };
 		D04AD6C71807403100FF6056 /* icab-activity@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCABAB17790F6600C965F4 /* icab-activity@2x.png */; };
 		D04AD6C81807403100FF6056 /* instapaper-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D0BCABAF17790F6600C965F4 /* instapaper-ipad.png */; };
@@ -237,7 +237,7 @@
 		D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA2E177900C300C965F4 /* InfoPlist.strings */; };
 		D0BCAA32177900C400C965F4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA31177900C300C965F4 /* main.m */; };
 		D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA35177900C400C965F4 /* OCAppDelegate.m */; };
-		D0BCAA4A177903F500C965F4 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* iPad.storyboard */; };
+		D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* Main.storyboard */; };
 		D0BCAA681779091000C965F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA671779091000C965F4 /* QuartzCore.framework */; };
 		D0BCAA73177909A600C965F4 /* OCArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6A177909A500C965F4 /* OCArticleCell.m */; };
 		D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6C177909A500C965F4 /* OCArticleListController.m */; };
@@ -501,7 +501,7 @@
 		D0BCAA33177900C400C965F4 /* iOCNews-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOCNews-Prefix.pch"; sourceTree = "<group>"; };
 		D0BCAA34177900C400C965F4 /* OCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCAppDelegate.h; sourceTree = "<group>"; };
 		D0BCAA35177900C400C965F4 /* OCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCAppDelegate.m; sourceTree = "<group>"; };
-		D0BCAA49177903F500C965F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/iPad.storyboard; sourceTree = "<group>"; };
+		D0BCAA49177903F500C965F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D0BCAA671779091000C965F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0BCAA69177909A500C965F4 /* OCArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCArticleCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA6A177909A500C965F4 /* OCArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCArticleCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -958,7 +958,7 @@
 			isa = PBXGroup;
 			children = (
 				D0C66CA417B19C6A00F0EC7C /* DataModel */,
-				D0BCAA48177903F500C965F4 /* iPad.storyboard */,
+				D0BCAA48177903F500C965F4 /* Main.storyboard */,
 				D023001A1A58C0E800B354E0 /* Launch Screen.xib */,
 				D0BCAA34177900C400C965F4 /* OCAppDelegate.h */,
 				D0BCAA35177900C400C965F4 /* OCAppDelegate.m */,
@@ -1442,7 +1442,7 @@
 				D04AD6C01807403100FF6056 /* script.js in Resources */,
 				D04AD6C11807403100FF6056 /* Images.xcassets in Resources */,
 				D04AD6C21807403100FF6056 /* InfoPlist.strings in Resources */,
-				D04AD6C31807403100FF6056 /* iPad.storyboard in Resources */,
+				D04AD6C31807403100FF6056 /* Main.storyboard in Resources */,
 				D0791AF118AAC148005227AB /* PocketActivity~iphone.png in Resources */,
 				D04AD6C61807403100FF6056 /* icab-activity.png in Resources */,
 				D08D83B818161453005A75F0 /* Settings.bundle in Resources */,
@@ -1498,7 +1498,7 @@
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
 				D00795B91AA2A02800A590C1 /* NotificationBackgroundError.png in Resources */,
 				D00795D71AA2A02800A590C1 /* NotificationButtonBackground@2x.png in Resources */,
-				D0BCAA4A177903F500C965F4 /* iPad.storyboard in Resources */,
+				D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */,
 				D00795BB1AA2A02800A590C1 /* NotificationBackgroundError@2x.png in Resources */,
 				D00795CD1AA2A02800A590C1 /* NotificationBackgroundWarning.png in Resources */,
 				D0791AF018AAC148005227AB /* PocketActivity~iphone.png in Resources */,
@@ -1842,12 +1842,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		D0BCAA48177903F500C965F4 /* iPad.storyboard */ = {
+		D0BCAA48177903F500C965F4 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				D0BCAA49177903F500C965F4 /* en */,
 			);
-			name = iPad.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		D0E8A0D5184BF09B005F8CAF /* UAAppReviewManagerLocalizable.strings */ = {
