@@ -570,11 +570,6 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
     return addFeedAlertView;
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-//
-}
-
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if ([alertView isEqual:self.addFolderAlertView]) {
         if (buttonIndex == 1) {

@@ -167,7 +167,6 @@ const int UPDATE_ALL = 3;
         coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self objectModel]];
         if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
             NSLog(@"Error %@, %@", error, [error localizedDescription]);
-            abort();
         }
     }
     return coordinator;
@@ -203,7 +202,6 @@ const int UPDATE_ALL = 3;
     if (self.context != nil) {
         if ([self.context hasChanges] && ![self.context save:&error]) {
             NSLog(@"Error saving data %@, %@", error, [error userInfo]);
-            //abort();
         } else {
             NSLog(@"Data saved");
         }
@@ -988,7 +986,6 @@ const int UPDATE_ALL = 3;
     NSArray *starredItems = [self.context executeFetchRequest:self.itemRequest error:&error];
     if (!starredItems || error) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
     }
     NSLog(@"Starred Count: %lu", (unsigned long)starredItems.count);
     
@@ -996,7 +993,6 @@ const int UPDATE_ALL = 3;
     NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
     if (!feeds || error) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
     }
 
     Feeds *theFeeds = [feeds lastObject];
