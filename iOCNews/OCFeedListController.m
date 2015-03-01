@@ -597,13 +597,8 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 }
 
 - (IBAction)doSettings:(id)sender {
-    UIStoryboard *storyboard;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
     UINavigationController *nav;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
-    } else {
-        storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
-    }
     if ([sender isKindOfClass:[UIAlertAction class]]) {
         nav = [storyboard instantiateViewControllerWithIdentifier:@"login"];
         [nav.topViewController loadView];

@@ -67,43 +67,12 @@
     KSCrashInstallation* installation = [self makeEmailInstallation];
     [installation install];
 	[[PocketAPI sharedAPI] setConsumerKey:CONSUMER_KEY];
-
-//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//
-    UIStoryboard *storyboard;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
-    } else {
-        storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
-    }
     
     [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
     [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
 
     [[UIView appearanceWhenContainedIn:[UIAlertController class], nil] setTintColor:[UINavigationBar appearance].tintColor];
     
-//    UINavigationController *feedController = [storyboard instantiateViewControllerWithIdentifier:@"feed"];
-//    UINavigationController *articleController = [storyboard instantiateViewControllerWithIdentifier:@"article"];
-//    UINavigationController *webController = [storyboard instantiateViewControllerWithIdentifier:@"web"];
-//
-//    FDBottomDrawerController *bottomDrawerController = [[FDBottomDrawerController alloc] initWithCenterViewController:articleController leftDrawerViewController:feedController];
-//    [bottomDrawerController willRotateToInterfaceOrientation:application.statusBarOrientation duration:0];
-//    bottomDrawerController.feedListController = (OCFeedListController*)feedController.topViewController;
-//    bottomDrawerController.articleListController = (OCArticleListController*)articleController.topViewController;
-//    
-//    FDTopDrawerController *topDrawerController = [[FDTopDrawerController alloc] initWithCenterViewController:webController leftDrawerViewController:bottomDrawerController];
-//    [topDrawerController willRotateToInterfaceOrientation:application.statusBarOrientation duration:0];
-//    topDrawerController.webController = (OCWebController*)webController.topViewController;
-//    
-//    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//    self.window.rootViewController = topDrawerController;
-//    [self.window makeKeyAndVisible];
-//    
-//    self.window.frame = [UIScreen mainScreen].bounds;
-//
-//    [bottomDrawerController willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
-//    [topDrawerController willRotateToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation duration:0];
-
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncInBackground"]) {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
@@ -183,7 +152,5 @@
     
     return email;
 }
-
-
 
 @end

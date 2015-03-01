@@ -96,6 +96,11 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    return 44.0f;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1) {
