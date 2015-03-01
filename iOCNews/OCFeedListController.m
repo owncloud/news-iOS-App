@@ -204,6 +204,11 @@
                                              selector:@selector(drawerClosed:)
                                                  name:@"DrawerClosed"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(doRefresh:)
+                                                 name:@"SyncNews"
+                                               object:nil];
 
     UINavigationController *navController = (UINavigationController*)self.mm_drawerController.centerViewController;
     if (!self.detailViewController) {

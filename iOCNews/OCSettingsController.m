@@ -30,23 +30,13 @@
  *************************************************************************/
 
 #import "OCSettingsController.h"
+#import "OCAPIClient.h"
 
 @interface OCSettingsController ()
 
 @end
 
 @implementation OCSettingsController
-
-@synthesize syncOnStartSwitch;
-@synthesize syncinBackgroundSwitch;
-@synthesize showFaviconsSwitch;
-@synthesize showThumbnailsSwitch;
-@synthesize markWhileScrollingSwitch;
-@synthesize syncOnStartCell;
-@synthesize syncInBackgroundCell;
-@synthesize showFaviconsCell;
-@synthesize showThumbnailsCell;
-@synthesize markWhileScrollingCell;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -66,11 +56,6 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.syncOnStartCell.accessoryView = self.syncOnStartSwitch;
-    self.syncInBackgroundCell.accessoryView = self.syncinBackgroundSwitch;
-    self.showFaviconsCell.accessoryView = self.showFaviconsSwitch;
-    self.showThumbnailsCell.accessoryView = self.showThumbnailsSwitch;
-    self.markWhileScrollingCell.accessoryView = self.markWhileScrollingSwitch;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,6 +66,11 @@
     self.showFaviconsSwitch.on = [prefs boolForKey:@"ShowFavicons"];
     self.showThumbnailsSwitch.on = [prefs boolForKey:@"ShowThumbnails"];
     self.markWhileScrollingSwitch.on = [prefs boolForKey:@"MarkWhileScrolling"];
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
+        self.statusLabel.text = NSLocalizedString(@"Logged In", @"A status label indicating that the user is logged in");
+    } else {
+        self.statusLabel.text =  NSLocalizedString(@"Not Logged In", @"A status label indicating that the user is not logged in");
+    }
 }
 
 - (void)didReceiveMemoryWarning

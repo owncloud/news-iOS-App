@@ -186,6 +186,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XzG-y2-lr9">
                                                     <rect key="frame" x="701" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="onCertificateSwitch:" destination="Lfe-mn-rFK" eventType="valueChanged" id="bjq-49-9n7"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -244,6 +247,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="certificateSwitch" destination="XzG-y2-lr9" id="tAk-d8-C3o"/>
+                        <outlet property="connectLabel" destination="wQ3-rD-Q2m" id="Xd8-gS-wdl"/>
                         <outlet property="connectionActivityIndicator" destination="PV1-Gd-hNc" id="whp-uD-nKY"/>
                         <outlet property="passwordTextField" destination="7fz-fA-oAA" id="2DS-m2-lCQ"/>
                         <outlet property="serverTextField" destination="RmU-IS-n75" id="WQy-Cb-XeK"/>
@@ -265,7 +269,7 @@
                         <sections>
                             <tableViewSection headerTitle="SYNCING" id="h76-uL-HKk">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Gtd-Ie-Cj0" style="IBUITableViewCellStyleDefault" id="yjf-KB-jlo">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Gtd-Ie-Cj0" detailTextLabel="fpW-qm-T1i" style="IBUITableViewCellStyleValue1" id="yjf-KB-jlo">
                                         <rect key="frame" x="0.0" y="86" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yjf-KB-jlo" id="a3X-bM-oz2">
@@ -277,6 +281,12 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fpW-qm-T1i">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -462,6 +472,7 @@
                         <outlet property="markWhileScrollingSwitch" destination="hEo-4F-MxB" id="fRa-Yt-vnM"/>
                         <outlet property="showFaviconsSwitch" destination="pXV-IP-MNW" id="78I-o4-gl1"/>
                         <outlet property="showThumbnailsSwitch" destination="XO5-tM-la8" id="Jve-U1-GGl"/>
+                        <outlet property="statusLabel" destination="fpW-qm-T1i" id="UWV-zC-ihb"/>
                         <outlet property="syncOnStartSwitch" destination="iZP-kh-20q" id="suF-bn-cNx"/>
                         <outlet property="syncinBackgroundSwitch" destination="xhV-La-N9L" id="hTm-Jh-pAu"/>
                     </connections>
