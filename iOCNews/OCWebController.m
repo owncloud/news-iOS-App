@@ -63,6 +63,7 @@ const int SWIPE_PREVIOUS = 1;
     BOOL _menuIsOpen;
     int _swipeDirection;
     BOOL loadingComplete;
+    BOOL loadingSummary;
 }
 
 @property (strong, nonatomic, readonly) UIPopoverController *prefPopoverController;
@@ -141,7 +142,6 @@ const int SWIPE_PREVIOUS = 1;
                 self.webView.scalesPageToFit = YES;
                 self.webView.delegate = self;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                self.webView.scrollView.directionalLockEnabled = YES;
                 [self.view insertSubview:self.webView atIndex:0];
                 [self.webView addSubview:self.menuController.view];
                 
@@ -175,7 +175,6 @@ const int SWIPE_PREVIOUS = 1;
                 self.webView.scalesPageToFit = YES;
                 self.webView.delegate = self;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                self.webView.scrollView.directionalLockEnabled = YES;
                 [self.webView addSubview:self.menuController.view];
                 [self.view insertSubview:self.webView belowSubview:imageView];
                 
@@ -258,6 +257,7 @@ const int SWIPE_PREVIOUS = 1;
                         }];
                     }
                 } else {
+                    [self updateContentInsetForSummary:NO screenSize:[UIScreen mainScreen].applicationFrame.size];
                     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
                 }
             } else {
@@ -333,6 +333,7 @@ const int SWIPE_PREVIOUS = 1;
     NSURL *objectSaveURL = [docDir  URLByAppendingPathComponent:@"summary.html"];
     [objectHtml writeToURL:objectSaveURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
     loadingComplete = NO;
+    [self updateContentInsetForSummary:YES screenSize:[UIScreen mainScreen].applicationFrame.size];
     [self.webView loadRequest:[NSURLRequest requestWithURL:objectSaveURL]];
 }
 
@@ -351,6 +352,9 @@ const int SWIPE_PREVIOUS = 1;
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"defaults" withExtension:@"plist"]]];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _menuIsOpen = NO;
@@ -374,6 +378,8 @@ const int SWIPE_PREVIOUS = 1;
 {
     [self.webView stopLoading];
  	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     self.webView.delegate = nil;
 }
 
@@ -529,6 +535,9 @@ const int SWIPE_PREVIOUS = 1;
     }
     if (![[request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
         [self.menuController close];
+        loadingSummary = NO;
+    } else {
+        loadingSummary = YES;
     }
     loadingComplete = NO;
     return YES;
@@ -556,6 +565,7 @@ const int SWIPE_PREVIOUS = 1;
         // UIWebView object has fully loaded.
         loadingComplete = YES;
     }
+    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
     [self updateToolbar];
 }
 
@@ -564,6 +574,16 @@ const int SWIPE_PREVIOUS = 1;
     [self updateToolbar];
 }
 
+- (BOOL)isShowingASummary {
+    BOOL result = NO;
+    if (self.webView) {
+        NSLog(@"Request: %@", self.webView.request.URL.absoluteString);
+        if ([[self.webView.request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
+            result = YES;
+        }
+    }
+    return result;
+}
 
 #pragma mark - JCGridMenuController Delegate
 
@@ -1129,8 +1149,8 @@ const int SWIPE_PREVIOUS = 1;
     long fontSize =[[NSUserDefaults standardUserDefaults] integerForKey:@"FontSize"];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$FONTSIZE$" withString:[NSString stringWithFormat:@"%ldpx", fontSize]];
     
-    long margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", margin]];
+//    long margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
+//    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", margin]];
     
     double lineHeight =[[NSUserDefaults standardUserDefaults] doubleForKey:@"LineHeight"];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$LINEHEIGHT$" withString:[NSString stringWithFormat:@"%fem", lineHeight]];
@@ -1191,7 +1211,28 @@ const int SWIPE_PREVIOUS = 1;
     if ([self webView] != nil) {
         self.webView.scrollView.backgroundColor = [self myBackgroundColor];
         [self.webView reload];
+        [self updateContentInsetForSummary:[self isShowingASummary] screenSize:[UIScreen mainScreen].applicationFrame.size];
     }
+}
+
+- (void)updateContentInsetForSummary:(BOOL)summary screenSize:(CGSize)screenSize
+{
+    if (summary) {
+        NSInteger contentWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Margin"] integerValue];
+        NSInteger screenWidth = screenSize.width;
+        NSInteger contentInset = (320 - contentWidth) / 2;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            contentInset = (NSInteger)(screenWidth - contentWidth) / 2;
+        }
+        self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, contentInset, 0, contentInset);
+    } else {
+        self.webView.scrollView.contentInset = UIEdgeInsetsZero;
+    }
+
+}
+
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
 }
 
 - (UIImage*)screenshot {

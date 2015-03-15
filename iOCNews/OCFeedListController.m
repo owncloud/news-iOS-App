@@ -286,7 +286,9 @@
                         if ((self.folderId > 0) && (indexPath.section == 0) && indexPath.row == 0) {
                             [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
                         } else {
-                            [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
+                            if (faviconLink && faviconLink.length > 0) {
+                                [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
+                            }
                         }
                     }
                 }
