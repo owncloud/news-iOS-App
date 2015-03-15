@@ -389,18 +389,6 @@ const int SWIPE_PREVIOUS = 1;
 	return YES;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-            if (self.item != nil) {
-                self.navigationItem.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-            }
-        } else {
-            self.navigationItem.title = @"";
-        }
-    }
-}
-
 - (IBAction)onMenu:(id)sender {
     [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
@@ -1228,7 +1216,17 @@ const int SWIPE_PREVIOUS = 1;
     } else {
         self.webView.scrollView.contentInset = UIEdgeInsetsZero;
     }
-
+    if (screenSize.width > 414) { //should cover any phone in landscape
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (self.item != nil) {
+                self.navigationItem.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+            }
+        } else {
+            self.navigationItem.title = @"";
+        }
+    } else {
+        self.navigationItem.title = @"";
+    }
 }
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
