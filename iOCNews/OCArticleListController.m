@@ -432,6 +432,7 @@
             }];
             [self updateUnreadCount:idsToMarkRead];
             self.markBarButtonItem.enabled = NO;
+            [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
         }
     }
 }
