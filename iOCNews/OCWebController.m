@@ -521,12 +521,11 @@ const int SWIPE_PREVIOUS = 1;
             return NO;
         }
     }
+//    NSLog(@"Request: %@", request.URL.absoluteString);
     if (![[request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
         [self.menuController close];
-        loadingSummary = NO;
-    } else {
-        loadingSummary = YES;
     }
+    loadingSummary = [request.URL.scheme isEqualToString:@"file"] || [request.URL.scheme isEqualToString:@"about"];
     loadingComplete = NO;
     return YES;
 }
@@ -566,9 +565,7 @@ const int SWIPE_PREVIOUS = 1;
     BOOL result = NO;
     if (self.webView) {
         NSLog(@"Request: %@", self.webView.request.URL.absoluteString);
-        if ([[self.webView.request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
-            result = YES;
-        }
+        result = [self.webView.request.URL.scheme isEqualToString:@"file"] || [self.webView.request.URL.scheme isEqualToString:@"about"];
     }
     return result;
 }
@@ -577,11 +574,11 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)jcGridMenuRowSelected:(NSInteger)indexTag indexRow:(NSInteger)indexRow isExpand:(BOOL)isExpand
 {
-    if (isExpand) {
-        NSLog(@"jcGridMenuRowSelected %li %li isExpand", (long)indexTag, (long)indexRow);
-    } else {
-        NSLog(@"jcGridMenuRowSelected %li %li !isExpand", (long)indexTag, (long)indexRow);
-    }
+//    if (isExpand) {
+//        NSLog(@"jcGridMenuRowSelected %li %li isExpand", (long)indexTag, (long)indexRow);
+//    } else {
+//        NSLog(@"jcGridMenuRowSelected %li %li !isExpand", (long)indexTag, (long)indexRow);
+//    }
     
     if (indexTag==1002) {
         JCGridMenuRow *rowSelected = (JCGridMenuRow *)[self.menuController.rows objectAtIndex:indexRow];
@@ -1263,7 +1260,7 @@ const int SWIPE_PREVIOUS = 1;
             if (src && [src rangeOfString:@"youtu"].location != NSNotFound) {
                 NSString *videoID = [self extractYoutubeVideoID:src];
                 if (videoID) {
-                    NSLog(@"Raw: %@", [inputNode rawContents]);
+//                    NSLog(@"Raw: %@", [inputNode rawContents]);
                     
                     NSString *height = [inputNode getAttributeNamed:@"height"];
                     NSString *width = [inputNode getAttributeNamed:@"width"];
