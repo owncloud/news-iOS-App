@@ -47,7 +47,6 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
-@property (nonatomic, strong, readonly) UIPopoverController *settingsPopover;
 @property (strong, nonatomic) UIActionSheet *gearActionSheet;
 @property (nonatomic, strong, readonly) UIAlertView *addFolderAlertView;
 @property (nonatomic, strong, readonly) UIAlertView *renameFolderAlertView;

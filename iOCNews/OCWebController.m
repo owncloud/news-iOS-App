@@ -257,7 +257,8 @@ const int SWIPE_PREVIOUS = 1;
                         }];
                     }
                 } else {
-                    [self updateContentInsetForSummary:NO screenSize:[UIScreen mainScreen].applicationFrame.size];
+                    loadingSummary = NO;
+                    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
                     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
                 }
             } else {
@@ -333,7 +334,8 @@ const int SWIPE_PREVIOUS = 1;
     NSURL *objectSaveURL = [docDir  URLByAppendingPathComponent:@"summary.html"];
     [objectHtml writeToURL:objectSaveURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
     loadingComplete = NO;
-    [self updateContentInsetForSummary:YES screenSize:[UIScreen mainScreen].applicationFrame.size];
+    loadingSummary = YES;
+    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
     [self.webView loadRequest:[NSURLRequest requestWithURL:objectSaveURL]];
 }
 
@@ -525,34 +527,38 @@ const int SWIPE_PREVIOUS = 1;
     if (![[request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
         [self.menuController close];
     }
-    loadingSummary = [request.URL.scheme isEqualToString:@"file"] || [request.URL.scheme isEqualToString:@"about"];
+
+    if (navigationType != UIWebViewNavigationTypeOther) {
+        loadingSummary = [request.URL.scheme isEqualToString:@"file"] || [request.URL.scheme isEqualToString:@"about"];
+    }
     loadingComplete = NO;
     return YES;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webViewDidStartLoad:(UIWebView *)webView {       
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [self updateToolbar];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if (([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft) ||
-            ([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeRight)) {
-                self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-        } else {
-            self.navigationItem.title = @"";
-        }
-    } else {
-        self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    }
     if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"]) {
         // UIWebView object has fully loaded.
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if (([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft) ||
+                ([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeRight)) {
+                self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+            } else {
+                self.navigationItem.title = @"";
+            }
+        } else {
+            self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+        }
+
         loadingComplete = YES;
+        [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
     }
-    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
     [self updateToolbar];
 }
 

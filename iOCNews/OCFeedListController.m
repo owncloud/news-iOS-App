@@ -45,6 +45,7 @@
     NSNumber *currentRenameId;
     long currentIndex;
     BOOL networkHasBeenUnreachable;
+    NSIndexPath *editingPath;
 }
 
 - (void) networkSuccess:(NSNotification*)n;
@@ -62,7 +63,6 @@
 @synthesize addBarButtonItem;
 @synthesize backBarButtonItem;
 @synthesize editBarButtonItem;
-@synthesize settingsPopover;
 @synthesize feedRefreshControl;
 @synthesize specialFetchedResultsController;
 @synthesize foldersFetchedResultsController;
@@ -458,6 +458,7 @@
         settingsController.delegate = self;
         [self.mm_drawerController presentViewController:navController animated:YES completion:nil];
     }
+    editingPath = indexPath;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForMoreOptionButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -579,6 +580,8 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         }
     }
     if ([alertView isEqual:self.renameFolderAlertView]) {
+        MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
+        [cell hideDeleteConfirmation];
         if (buttonIndex == 1) {
             [[OCNewsHelper sharedHelper] renameFolderOfflineWithId:currentRenameId To:[[alertView textFieldAtIndex:0] text]];
         }
@@ -629,17 +632,10 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 
 }
 
-//- (IBAction)handleTableviewSwipe:(UISwipeGestureRecognizer *)gestureRecognizer {
-//    if (self.folderId > 0) {
-//        [self doGoBack];
-//    }
-//}
-
 - (void) feedSettingsUpdate:(OCFeedSettingsController *)settings {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.settingsPopover dismissPopoverAnimated:YES];
-    }
-    [self.tableView reloadData]; // reloadRowsAtIndexPaths:@[[self.feedsFetchedResultsController indexPathForObject:settings.feed]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadData];
+    MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
+    [cell hideDeleteConfirmation];
 }
 
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
@@ -821,15 +817,6 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [feedRefreshControl addTarget:self action:@selector(doRefresh:) forControlEvents:UIControlEventValueChanged];
     }    
     return feedRefreshControl;
-}
-
-- (UIPopoverController *) settingsPopover {
-    if (!settingsPopover) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        settingsPopover = [[UIPopoverController alloc] initWithContentViewController:[storyboard instantiateViewControllerWithIdentifier: @"feedextra"]];
-        [settingsPopover setPopoverContentSize:CGSizeMake(320, 220)];
-    }
-    return settingsPopover;
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {

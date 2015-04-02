@@ -113,6 +113,9 @@
 }
 
 - (IBAction)doCancel:(id)sender {
+    if (self.delegate) {
+        [self.delegate feedSettingsUpdate:self];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
