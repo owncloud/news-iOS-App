@@ -42,17 +42,17 @@ const int UPDATE_STARRED = 2;
 const int UPDATE_ALL = 3;
 
 @interface OCNewsHelper () {
-    NSMutableArray *foldersToAdd;
-    NSMutableArray *foldersToDelete;
-    NSMutableArray *foldersToRename;
-    NSMutableArray *feedsToAdd;
-    NSMutableArray *feedsToDelete;
-    NSMutableArray *feedsToRename;
-    NSMutableArray *feedsToMove;
-    NSMutableSet   *itemsToMarkRead;
-    NSMutableArray *itemsToMarkUnread;
-    NSMutableArray *itemsToStar;
-    NSMutableArray *itemsToUnstar;
+    NSMutableSet *foldersToAdd;
+    NSMutableSet *foldersToDelete;
+    NSMutableSet *foldersToRename;
+    NSMutableSet *feedsToAdd;
+    NSMutableSet *feedsToDelete;
+    NSMutableSet *feedsToRename;
+    NSMutableSet *feedsToMove;
+    NSMutableSet *itemsToMarkRead;
+    NSMutableSet *itemsToMarkUnread;
+    NSMutableSet *itemsToStar;
+    NSMutableSet *itemsToUnstar;
     
     void (^_completionHandler)(UIBackgroundFetchResult);
     BOOL completionHandlerCalled;
@@ -129,17 +129,17 @@ const int UPDATE_ALL = 3;
     }
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    foldersToAdd = [[prefs arrayForKey:@"FoldersToAdd"] mutableCopy];
-    foldersToDelete = [[prefs arrayForKey:@"FoldersToDelete"] mutableCopy];
-    foldersToRename = [[prefs arrayForKey:@"FoldersToRename"] mutableCopy];
-    feedsToAdd = [[prefs arrayForKey:@"FeedsToAdd"] mutableCopy];
-    feedsToDelete = [[prefs arrayForKey:@"FeedsToDelete"] mutableCopy];
-    feedsToRename = [[prefs arrayForKey:@"FeedsToRename"] mutableCopy];
-    feedsToMove = [[prefs arrayForKey:@"FeedsToMove"] mutableCopy];
-    itemsToMarkRead = [NSMutableSet setWithArray:[[prefs arrayForKey:@"ItemsToMarkRead"] mutableCopy]];
-    itemsToMarkUnread = [[prefs arrayForKey:@"ItemsToMarkUnread"] mutableCopy];
-    itemsToStar = [[prefs arrayForKey:@"ItemsToStar"] mutableCopy];
-    itemsToUnstar = [[prefs arrayForKey:@"ItemsToUnstar"] mutableCopy];
+    foldersToAdd =      [NSMutableSet setWithArray:[[prefs arrayForKey:@"FoldersToAdd"] mutableCopy]];
+    foldersToDelete =   [NSMutableSet setWithArray:[[prefs arrayForKey:@"FoldersToDelete"] mutableCopy]];
+    foldersToRename =   [NSMutableSet setWithArray:[[prefs arrayForKey:@"FoldersToRename"] mutableCopy]];
+    feedsToAdd =        [NSMutableSet setWithArray:[[prefs arrayForKey:@"FeedsToAdd"] mutableCopy]];
+    feedsToDelete =     [NSMutableSet setWithArray:[[prefs arrayForKey:@"FeedsToDelete"] mutableCopy]];
+    feedsToRename =     [NSMutableSet setWithArray:[[prefs arrayForKey:@"FeedsToRename"] mutableCopy]];
+    feedsToMove =       [NSMutableSet setWithArray:[[prefs arrayForKey:@"FeedsToMove"] mutableCopy]];
+    itemsToMarkRead =   [NSMutableSet setWithArray:[[prefs arrayForKey:@"ItemsToMarkRead"] mutableCopy]];
+    itemsToMarkUnread = [NSMutableSet setWithArray:[[prefs arrayForKey:@"ItemsToMarkUnread"] mutableCopy]];
+    itemsToStar =       [NSMutableSet setWithArray:[[prefs arrayForKey:@"ItemsToStar"] mutableCopy]];
+    itemsToUnstar =     [NSMutableSet setWithArray:[[prefs arrayForKey:@"ItemsToUnstar"] mutableCopy]];
 
     [self updateStarredCount];
     [self saveContext];
@@ -185,17 +185,17 @@ const int UPDATE_ALL = 3;
 
 - (void)saveContext {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:foldersToAdd forKey:@"FoldersToAdd"];
-    [prefs setObject:foldersToDelete forKey:@"FoldersToDelete"];
-    [prefs setObject:foldersToRename forKey:@"FoldersToRename"];
-    [prefs setObject:feedsToAdd forKey:@"FeedsToAdd"];
-    [prefs setObject:feedsToDelete forKey:@"FeedsToDelete"];
-    [prefs setObject:feedsToRename forKey:@"FeedsToRename"];
-    [prefs setObject:feedsToMove forKey:@"FeedsToMove"];
+    [prefs setObject:[NSArray arrayWithArray:[foldersToAdd allObjects]] forKey:@"FoldersToAdd"];
+    [prefs setObject:[NSArray arrayWithArray:[foldersToDelete allObjects]] forKey:@"FoldersToDelete"];
+    [prefs setObject:[NSArray arrayWithArray:[foldersToRename allObjects]] forKey:@"FoldersToRename"];
+    [prefs setObject:[NSArray arrayWithArray:[feedsToAdd allObjects]] forKey:@"FeedsToAdd"];
+    [prefs setObject:[NSArray arrayWithArray:[feedsToDelete allObjects]] forKey:@"FeedsToDelete"];
+    [prefs setObject:[NSArray arrayWithArray:[feedsToRename allObjects]] forKey:@"FeedsToRename"];
+    [prefs setObject:[NSArray arrayWithArray:[feedsToMove allObjects]] forKey:@"FeedsToMove"];
     [prefs setObject:[NSArray arrayWithArray:[itemsToMarkRead allObjects]] forKey:@"ItemsToMarkRead"];
-    [prefs setObject:itemsToMarkUnread forKey:@"ItemsToMarkUnread"];
-    [prefs setObject:itemsToStar forKey:@"ItemsToStar"];
-    [prefs setObject:itemsToUnstar forKey:@"ItemsToUnstar"];
+    [prefs setObject:[NSArray arrayWithArray:[itemsToMarkUnread allObjects]] forKey:@"ItemsToMarkUnread"];
+    [prefs setObject:[NSArray arrayWithArray:[itemsToStar allObjects]] forKey:@"ItemsToStar"];
+    [prefs setObject:[NSArray arrayWithArray:[itemsToUnstar allObjects]] forKey:@"ItemsToUnstar"];
     [prefs synchronize];
     
     NSError *error = nil;
@@ -263,8 +263,8 @@ const int UPDATE_ALL = 3;
         self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folder.myId];
         NSMutableArray *feedsToBeDeleted = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.feedRequest error:nil]];
         while (feedsToBeDeleted.count > 0) {
-            [self deleteFeed:[feedsToDelete lastObject]];
-            [feedsToBeDeleted removeLastObject];
+            Feed *feed = [feedsToBeDeleted lastObject];
+            [self deleteFeed:feed];
         }
         [self.context deleteObject:folder];
         [self updateTotalUnreadCount];
@@ -302,6 +302,7 @@ const int UPDATE_ALL = 3;
     _completionHandler = [completionHandler copy];
     completionHandlerCalled = NO;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
+        [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
         [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             [self updateFeeds:responseObject];
             [self updateFolders];
@@ -330,6 +331,7 @@ const int UPDATE_ALL = 3;
 }
 
 - (void)updateFolders {
+    [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
     [[OCAPIClient sharedClient] GET:@"folders" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         //Remove previous
         //TODO: only fetch myId
@@ -389,7 +391,7 @@ const int UPDATE_ALL = 3;
             for (NSString *name in foldersToAdd) {
                 [self addFolderOffline:name];
             }
-            [foldersToAdd removeAllObjects];
+//            [foldersToAdd removeAllObjects];
             
             //@{@"folderId": anId, @"name": newName}
             for (NSDictionary *dict in foldersToRename) {
@@ -583,6 +585,7 @@ const int UPDATE_ALL = 3;
                                          @"type": aType,
                                            @"id": anId};
     
+    [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
     [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"URL: %@", task.currentRequest.URL.absoluteString);
         NSDictionary *itemDict = (NSDictionary*)responseObject;
@@ -863,6 +866,7 @@ const int UPDATE_ALL = 3;
     __block NSMutableArray *addedItems = [NSMutableArray new];
     __block NSMutableArray *responseObjects = [NSMutableArray new];
     __block OCAPIClient *client = [OCAPIClient sharedClient];
+    client.responseSerializer = [AFJSONResponseSerializer serializer];
     NSError *error = nil;
     [self.feedRequest setPredicate:nil];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
@@ -1006,11 +1010,10 @@ const int UPDATE_ALL = 3;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"name": name};
-        
+        [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
         [[OCAPIClient sharedClient] POST:@"folders" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
-            //NSLog(@"Folders: %@", responseObject);
             __unused int newFolderId = [self addFolder:responseObject];
-
+            [foldersToAdd removeObject:name];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSString *message;
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
@@ -1028,7 +1031,6 @@ const int UPDATE_ALL = 3;
             
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Adding Folder", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
-
         }];
         
     } else {
@@ -1045,6 +1047,7 @@ const int UPDATE_ALL = 3;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"folders/%@", [folder.myId stringValue]];
+        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1074,6 +1077,7 @@ const int UPDATE_ALL = 3;
         //online
         NSDictionary *params = @{@"name": newName};
         NSString *path = [NSString stringWithFormat:@"folders/%@", [anId stringValue]];
+        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
              NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1109,7 +1113,7 @@ const int UPDATE_ALL = 3;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:urlString, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
-        
+        [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
         [[OCAPIClient sharedClient] POST:@"feeds" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             //NSLog(@"Feeds: %@", responseObject);
             
@@ -1175,6 +1179,7 @@ const int UPDATE_ALL = 3;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"feeds/%@", [feed.myId stringValue]];
+        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1196,6 +1201,7 @@ const int UPDATE_ALL = 3;
         //online
         NSDictionary *params = @{@"folderId": aFolderId};
         NSString *path = [NSString stringWithFormat:@"feeds/%@/move", [aFeedId stringValue]];
+        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1216,6 +1222,7 @@ const int UPDATE_ALL = 3;
             //online
             NSDictionary *params = @{@"feedTitle": newName};
             NSString *path = [NSString stringWithFormat:@"feeds/%@/rename", [anId stringValue]];
+            [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
             [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"Success");
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1252,29 +1259,20 @@ const int UPDATE_ALL = 3;
     }
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
+        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[itemIds allObjects] forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
                 [itemsToMarkRead removeObject:itemId];
             }];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-            if (response.statusCode == 200) {
-                [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
-                    [itemsToMarkRead removeObject:itemId];
-                }];
-            } else {
-                [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
-                    [itemsToMarkRead addObject:itemId];
-                }];
-            }
+            [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
+                [itemsToMarkRead addObject:itemId];
+            }];
         }];
     } else {
         //offline
         for (NSNumber *itemId in itemIds) {
-            NSInteger i = [itemsToMarkUnread indexOfObject:itemId];
-            if (i != NSNotFound) {
-                [itemsToMarkUnread removeObject:itemId];
-            }
+            [itemsToMarkUnread removeObject:itemId];
         }
         [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
             [itemsToMarkRead addObject:itemId];
@@ -1286,17 +1284,14 @@ const int UPDATE_ALL = 3;
 - (void)markItemUnreadOffline:(NSNumber*)itemId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [[OCAPIClient sharedClient] PUT:@"items/unread/multiple" parameters:[NSDictionary dictionaryWithObject:itemId forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
+        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
+        [[OCAPIClient sharedClient] PUT:@"items/unread/multiple" parameters:@{@"items": itemId} success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemsToMarkUnread removeObject:itemId];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [itemsToMarkUnread addObject:itemId];
         }];
     } else {
-        //offline
-//        NSInteger i = [itemsToMarkRead indexOfObject:itemId];
-//        if (i != NSNotFound) {
-            [itemsToMarkRead removeObject:itemId];
-//        }
+        [itemsToMarkRead removeObject:itemId];
         [itemsToMarkUnread addObject:itemId];
     }
     [self updateReadItems:@[itemId]];
@@ -1308,6 +1303,7 @@ const int UPDATE_ALL = 3;
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
+            [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 [itemsToStar removeObject:itemId];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1316,10 +1312,7 @@ const int UPDATE_ALL = 3;
         }
     } else {
         //offline
-        NSInteger i = [itemsToUnstar indexOfObject:itemId];
-        if (i != NSNotFound) {
-            [itemsToUnstar removeObject:itemId];
-        }
+        [itemsToUnstar removeObject:itemId];
         [itemsToStar addObject:itemId];
     }
     [self updateStarredCount];
@@ -1331,6 +1324,7 @@ const int UPDATE_ALL = 3;
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
+            [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 [itemsToUnstar removeObject:itemId];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1339,10 +1333,7 @@ const int UPDATE_ALL = 3;
         }
     } else {
         //offline
-        NSInteger i = [itemsToStar indexOfObject:itemId];
-        if (i != NSNotFound) {
-            [itemsToStar removeObject:itemId];
-        }
+        [itemsToStar removeObject:itemId];
         [itemsToUnstar addObject:itemId];
     }
     [self updateStarredCount];
