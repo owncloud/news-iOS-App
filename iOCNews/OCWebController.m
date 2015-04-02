@@ -595,7 +595,7 @@ const int SWIPE_PREVIOUS = 1;
                             [[rowSelected button] setSelected:YES];
                         } else {
                             self.item.unreadValue = NO;
-                            [[OCNewsHelper sharedHelper] markItemsReadOffline:@[self.item.myId]];
+                            [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithObject:self.item.myId]];
                             [[rowSelected button] setSelected:NO];
                         }
                     }

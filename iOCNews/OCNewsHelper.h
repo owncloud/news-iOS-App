@@ -84,7 +84,7 @@
 - (void)deleteFeedOffline:(Feed*)feed;
 - (void)moveFeedOfflineWithId:(NSNumber*)aFeedId toFolderWithId:(NSNumber*)aFolderId;
 - (void)renameFeedOfflineWithId:(NSNumber*)anId To:(NSString*)newName;
-- (void)markItemsReadOffline:(NSArray*)itemIds;
+- (void)markItemsReadOffline:(NSMutableSet*)itemIds;
 - (void)markItemUnreadOffline:(NSNumber*)itemId;
 - (void)starItemOffline:(NSNumber*)itemId;
 - (void)unstarItemOffline:(NSNumber*)itemId;

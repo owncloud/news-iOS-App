@@ -49,7 +49,7 @@ const int UPDATE_ALL = 3;
     NSMutableArray *feedsToDelete;
     NSMutableArray *feedsToRename;
     NSMutableArray *feedsToMove;
-    NSMutableArray *itemsToMarkRead;
+    NSMutableSet   *itemsToMarkRead;
     NSMutableArray *itemsToMarkUnread;
     NSMutableArray *itemsToStar;
     NSMutableArray *itemsToUnstar;
@@ -136,7 +136,7 @@ const int UPDATE_ALL = 3;
     feedsToDelete = [[prefs arrayForKey:@"FeedsToDelete"] mutableCopy];
     feedsToRename = [[prefs arrayForKey:@"FeedsToRename"] mutableCopy];
     feedsToMove = [[prefs arrayForKey:@"FeedsToMove"] mutableCopy];
-    itemsToMarkRead = [[prefs arrayForKey:@"ItemsToMarkRead"] mutableCopy];
+    itemsToMarkRead = [NSMutableSet setWithArray:[[prefs arrayForKey:@"ItemsToMarkRead"] mutableCopy]];
     itemsToMarkUnread = [[prefs arrayForKey:@"ItemsToMarkUnread"] mutableCopy];
     itemsToStar = [[prefs arrayForKey:@"ItemsToStar"] mutableCopy];
     itemsToUnstar = [[prefs arrayForKey:@"ItemsToUnstar"] mutableCopy];
@@ -192,7 +192,7 @@ const int UPDATE_ALL = 3;
     [prefs setObject:feedsToDelete forKey:@"FeedsToDelete"];
     [prefs setObject:feedsToRename forKey:@"FeedsToRename"];
     [prefs setObject:feedsToMove forKey:@"FeedsToMove"];
-    [prefs setObject:itemsToMarkRead forKey:@"ItemsToMarkRead"];
+    [prefs setObject:[NSArray arrayWithArray:[itemsToMarkRead allObjects]] forKey:@"ItemsToMarkRead"];
     [prefs setObject:itemsToMarkUnread forKey:@"ItemsToMarkUnread"];
     [prefs setObject:itemsToStar forKey:@"ItemsToStar"];
     [prefs setObject:itemsToUnstar forKey:@"ItemsToUnstar"];
@@ -820,7 +820,7 @@ const int UPDATE_ALL = 3;
             }];
             if ([aType intValue] == UPDATE_ALL) {
                 [self markItemsReadOffline:itemsToMarkRead];
-                [itemsToMarkRead removeAllObjects];
+//                [itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
                     [self markItemUnreadOffline:itemId];
                 }
@@ -1094,7 +1094,7 @@ const int UPDATE_ALL = 3;
                     message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'.", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                     break;
             }
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Moving Feed", @"Title", message, @"Message", nil];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Renaming Feed", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
@@ -1246,15 +1246,26 @@ const int UPDATE_ALL = 3;
     [self saveContext];
 }
 
-- (void)markItemsReadOffline:(NSArray *)itemIds {
+- (void)markItemsReadOffline:(NSMutableSet *)itemIds {
+    if (!itemIds || itemIds.count == 0) {
+        return;
+    }
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:itemIds forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
-            [itemsToMarkRead removeObjectsInArray:itemIds];
+        [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[itemIds allObjects] forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
+            [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
+                [itemsToMarkRead removeObject:itemId];
+            }];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-            if (response.statusCode != 200) {
-                [itemsToMarkRead addObjectsFromArray:itemIds];
+            if (response.statusCode == 200) {
+                [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
+                    [itemsToMarkRead removeObject:itemId];
+                }];
+            } else {
+                [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
+                    [itemsToMarkRead addObject:itemId];
+                }];
             }
         }];
     } else {
@@ -1265,9 +1276,11 @@ const int UPDATE_ALL = 3;
                 [itemsToMarkUnread removeObject:itemId];
             }
         }
-        [itemsToMarkRead addObjectsFromArray:itemIds];
+        [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
+            [itemsToMarkRead addObject:itemId];
+        }];
     }
-    [self updateReadItems:itemIds];
+    [self updateReadItems:[itemIds allObjects]];
 }
 
 - (void)markItemUnreadOffline:(NSNumber*)itemId {
@@ -1280,10 +1293,10 @@ const int UPDATE_ALL = 3;
         }];
     } else {
         //offline
-        NSInteger i = [itemsToMarkRead indexOfObject:itemId];
-        if (i != NSNotFound) {
+//        NSInteger i = [itemsToMarkRead indexOfObject:itemId];
+//        if (i != NSNotFound) {
             [itemsToMarkRead removeObject:itemId];
-        }
+//        }
         [itemsToMarkUnread addObject:itemId];
     }
     [self updateReadItems:@[itemId]];

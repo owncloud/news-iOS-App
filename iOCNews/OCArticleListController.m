@@ -489,7 +489,7 @@
 }
 
 - (void) updateUnreadCount:(NSArray *)itemsToUpdate {
-    [[OCNewsHelper sharedHelper] markItemsReadOffline:itemsToUpdate];
+    [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithArray:itemsToUpdate]];
     [self refresh];
 }
 
