@@ -199,16 +199,8 @@ const int SWIPE_PREVIOUS = 1;
             
             [self.webView addGestureRecognizer:self.nextArticleRecognizer];
             [self.webView addGestureRecognizer:self.previousArticleRecognizer];
+            [self updateNavigationItemTitle];
             
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-                if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-                    self.navigationItem.title = self.item.title;
-                } else {
-                    self.navigationItem.title = @"";
-                }
-            } else {
-                self.navigationItem.title = self.item.title;
-            }
             Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
             
             if (feed.preferWebValue) {
@@ -258,7 +250,6 @@ const int SWIPE_PREVIOUS = 1;
                     }
                 } else {
                     loadingSummary = NO;
-                    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
                     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
                 }
             } else {
@@ -335,7 +326,6 @@ const int SWIPE_PREVIOUS = 1;
     [objectHtml writeToURL:objectSaveURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
     loadingComplete = NO;
     loadingSummary = YES;
-    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
     [self.webView loadRequest:[NSURLRequest requestWithURL:objectSaveURL]];
 }
 
@@ -544,20 +534,8 @@ const int SWIPE_PREVIOUS = 1;
     if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"]) {
         // UIWebView object has fully loaded.
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            if (([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft) ||
-                ([UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeRight)) {
-                self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-            } else {
-                self.navigationItem.title = @"";
-            }
-        } else {
-            self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-        }
-
         loadingComplete = YES;
-        [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
+        [self updateNavigationItemTitle];
     }
     [self updateToolbar];
 }
@@ -1139,9 +1117,17 @@ const int SWIPE_PREVIOUS = 1;
     
     long fontSize =[[NSUserDefaults standardUserDefaults] integerForKey:@"FontSize"];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$FONTSIZE$" withString:[NSString stringWithFormat:@"%ldpx", fontSize]];
-    
-//    long margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
-//    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", margin]];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:@"auto"];
+        NSInteger contentWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Margin"] integerValue];
+        NSInteger contentInset = (320 - contentWidth) / 2;
+        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN2$" withString:[NSString stringWithFormat:@"%ldpx", contentInset]];
+    } else {
+        long margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
+        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", margin]];
+        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN2$" withString:@"auto"];
+    }
     
     double lineHeight =[[NSUserDefaults standardUserDefaults] doubleForKey:@"LineHeight"];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$LINEHEIGHT$" withString:[NSString stringWithFormat:@"%fem", lineHeight]];
@@ -1202,30 +1188,18 @@ const int SWIPE_PREVIOUS = 1;
     if ([self webView] != nil) {
         self.webView.scrollView.backgroundColor = [self myBackgroundColor];
         [self.webView reload];
-        [self updateContentInsetForSummary:[self isShowingASummary] screenSize:[UIScreen mainScreen].applicationFrame.size];
     }
 }
 
-- (void)updateContentInsetForSummary:(BOOL)summary screenSize:(CGSize)screenSize
+- (void)updateNavigationItemTitle
 {
-    if (summary) {
-        NSInteger contentWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Margin"] integerValue];
-        NSInteger screenWidth = screenSize.width;
-        NSInteger contentInset = (320 - contentWidth) / 2;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            contentInset = (NSInteger)(screenWidth - contentWidth) / 2;
-        }
-        self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, contentInset, 0, contentInset);
-    } else {
-        self.webView.scrollView.contentInset = UIEdgeInsetsZero;
-    }
-    if (screenSize.width > 414) { //should cover any phone in landscape
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            if (self.item != nil) {
+    if ([UIScreen mainScreen].applicationFrame.size.width > 414) { //should cover any phone in landscape and iPad
+        if (self.item != nil) {
+            if (!loadingComplete && loadingSummary) {
+                self.navigationItem.title = self.item.title;
+            } else {
                 self.navigationItem.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
             }
-        } else {
-            self.navigationItem.title = @"";
         }
     } else {
         self.navigationItem.title = @"";
@@ -1233,7 +1207,7 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
-    [self updateContentInsetForSummary:loadingSummary screenSize:[UIScreen mainScreen].applicationFrame.size];
+    [self updateNavigationItemTitle];
 }
 
 - (UIImage*)screenshot {

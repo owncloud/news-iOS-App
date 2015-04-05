@@ -9,11 +9,11 @@ body {
     font-family:Palatino;
     font-size:$FONTSIZE$;
     align: center;
-    width: 99%;
+    width: $MARGIN$;
     margin-top: 40px;
     margin-bottom: 40px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: $MARGIN2$;
+    margin-right: $MARGIN2$;
 }
 
 h1 {
@@ -28,21 +28,18 @@ h2 {
     font-size:110%;
     /*margin-top:-0.8em;*/
     line-height:$LINEHEIGHT$;
-    
 }
 
 h3 {
     font-family:"HelveticaNeue";
     font-size:100%;
     line-height:$LINEHEIGHT$;
-    
 }
 
 h4 {
     font-family:"Arial";
     font-size:80%;
     line-height:$LINEHEIGHT$;
-    
 }
 
 p {
@@ -75,9 +72,9 @@ sub {
 }
 
 div.header {
-    width:99%;
-    margin-left:auto;
-    margin-right:auto;
+    width:$MARGIN$;
+    margin-left:$MARGIN2$;
+    margin-right:$MARGIN2$;
     margin-top:30px;
 }
 
