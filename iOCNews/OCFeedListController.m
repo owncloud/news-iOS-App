@@ -40,6 +40,7 @@
 #import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
 #import "UIViewController+MMDrawerController.h"
+#import "UIImageView+WebCache.h"
 
 @interface OCFeedListController () <UIActionSheetDelegate> {
     NSNumber *currentRenameId;

@@ -44,6 +44,7 @@
 #import "UIImageView+OCWebCache.h"
 #import "HexColor.h"
 #import "UIViewController+MMDrawerController.h"
+#import "UIImageView+WebCache.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
@@ -202,6 +203,12 @@
                                             forKeyPath:@"ShowThumbnails"
                                                options:NSKeyValueObservingOptionNew
                                                context:NULL];
+
+    [[NSUserDefaults standardUserDefaults] addObserver:self
+                                            forKeyPath:@"ShowFavicons"
+                                               options:NSKeyValueObservingOptionNew
+                                               context:NULL];
+
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification
                                                       object:nil
@@ -269,6 +276,7 @@
         cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
         cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
         
+        cell.titleLabel.preferredMaxLayoutWidth = 320.0f;
         cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
         [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
         NSString *dateLabelText = @"";
@@ -303,11 +311,29 @@
             }
         }
         Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:item.feedId];
-        if (feed && feed.title && ![feed.title isEqualToString:author]) {
-            if (author.length > 0) {
-                dateLabelText = [dateLabelText stringByAppendingString:@" | "];
+        if (feed) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
+                NSString *faviconLink = feed.faviconLink;
+                if ([faviconLink hasPrefix:@"http"]) {
+                    NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
+                    if (faviconURL) {
+                        if (cell.tag == indexPath.row) {
+                            [cell.favIconImage sd_setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                        }
+                    }
+                } else {
+                    if (faviconLink && faviconLink.length > 0) {
+                        [cell.favIconImage setImage:[UIImage imageNamed:faviconLink]];
+                    }
+                }
             }
-            dateLabelText = [dateLabelText stringByAppendingString:feed.title];
+            
+            if (feed.title && ![feed.title isEqualToString:author]) {
+                if (author.length > 0) {
+                    dateLabelText = [dateLabelText stringByAppendingString:@" | "];
+                }
+                dateLabelText = [dateLabelText stringByAppendingString:feed.title];
+            }
         }
         cell.dateLabel.text = dateLabelText;
         
@@ -333,14 +359,23 @@
             cell.titleLabel.textColor = [UIColor darkTextColor];
             cell.dateLabel.textColor = [UIColor darkTextColor];
             cell.articleImage.alpha = 1.0f;
+            cell.favIconImage.alpha = 1.0f;
         } else {
             cell.summaryLabel.textColor = [UIColor colorWithHexString:@"#696969"];
             cell.titleLabel.textColor = [UIColor colorWithHexString:@"#696969"];
             cell.dateLabel.textColor = [UIColor colorWithHexString:@"#696969"];
             cell.articleImage.alpha = 0.4f;
+            cell.favIconImage.alpha = 0.4f;
         }
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
-            [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:[OCArticleImage findImage:summary]]];
+            NSString *urlString = [OCArticleImage findImage:summary];
+            if (urlString) {
+                if (cell.tag == indexPath.row) {
+                    [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
+                }
+            } else {
+                [cell.articleImage setImage:nil];
+            }
         } else {
             [cell.articleImage setImage:nil];
         }
@@ -356,6 +391,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
+    cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
@@ -497,7 +533,7 @@
     if([keyPath isEqual:@"HideRead"]) {
         [self updatePredicate];
     }
-    if([keyPath isEqual:@"ShowThumbnails"]) {
+    if([keyPath isEqual:@"ShowThumbnails"] || [keyPath isEqual:@"ShowFavicons"]) {
         [self refresh];
     }
 }

@@ -36,11 +36,16 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *articleImage;
 @property (strong, nonatomic) IBOutlet UIImageView *starImage;
+@property (strong, nonatomic) IBOutlet UIImageView *favIconImage;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *summaryLabel;
+@property (strong, nonatomic) IBOutlet UIView *containerView;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeftConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *articleImageWidthConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *favIconWidthConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *favIconLeftConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *summaryTopConstraint;
 
 @end

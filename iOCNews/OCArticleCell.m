@@ -40,6 +40,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        
     }
     return self;
 }
@@ -54,23 +55,47 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"] && self.articleImage.image) {
             [self.articleImageWidthConstraint setConstant:56.0f];
             [self.titleLabelLeftConstraint setConstant:76.0f];
+            [self.favIconLeftConstraint setConstant:28.0f];
+            self.summaryTopConstraint.constant = 4.0f;
         } else {
             [self.articleImageWidthConstraint setConstant:0.0f];
             [self.titleLabelLeftConstraint setConstant:10.0f];
+            [self.favIconLeftConstraint setConstant:0.0f];
+            self.summaryTopConstraint.constant = -4.0f;
         }
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"] && self.favIconImage.image) {
+            [self.favIconWidthConstraint setConstant:16.0f];
+            [self.favIconLeftConstraint setConstant:28.0f];
+        } else {
+            [self.favIconWidthConstraint setConstant:0.0f];
+            [self.favIconLeftConstraint setConstant:0.0f];
+        }
+        self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width;
+
     }
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"] && self.articleImage.image) {
             [self.articleImageWidthConstraint setConstant:112.0f];
             [self.titleLabelLeftConstraint setConstant:152.0f];
         } else {
             [self.articleImageWidthConstraint setConstant:112.0f];
             [self.titleLabelLeftConstraint setConstant:20.0f];
         }
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"] && self.favIconImage.image) {
+            [self.favIconWidthConstraint setConstant:16.0f];
+            [self.favIconLeftConstraint setConstant:28.0f];
+        } else {
+            [self.favIconWidthConstraint setConstant:0.0f];
+            [self.favIconLeftConstraint setConstant:0.0f];
+        }
+        self.titleLabel.preferredMaxLayoutWidth = self.containerView.frame.size.width - 20;
     }
+    self.summaryLabel.preferredMaxLayoutWidth = self.summaryLabel.frame.size.width;
+
+    [super layoutSubviews];
 }
 
 @end
