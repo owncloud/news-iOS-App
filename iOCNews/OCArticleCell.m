@@ -91,7 +91,7 @@
             [self.favIconWidthConstraint setConstant:0.0f];
             [self.favIconLeftConstraint setConstant:0.0f];
         }
-        self.titleLabel.preferredMaxLayoutWidth = self.containerView.frame.size.width - 20;
+        self.titleLabel.preferredMaxLayoutWidth = self.containerView.frame.size.width - self.titleLabelLeftConstraint.constant - 20;
     }
     self.summaryLabel.preferredMaxLayoutWidth = self.summaryLabel.frame.size.width;
 
