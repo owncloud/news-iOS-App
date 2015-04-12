@@ -409,7 +409,7 @@
         [self.mm_drawerController.mm_drawerController closeDrawerAnimated:YES completion:nil];
         if (selectedItem.unreadValue) {
             selectedItem.unreadValue = NO;
-            [self updateUnreadCount:[NSArray arrayWithObject:selectedItem.myId]];
+            [self updateUnreadCount:@[selectedItem.myId]];
         }
     }
 }
@@ -524,7 +524,7 @@
     }
 }
 
-- (void) updateUnreadCount:(NSArray *)itemsToUpdate {
+- (void)updateUnreadCount:(NSArray *)itemsToUpdate {
     [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithArray:itemsToUpdate]];
     [self refresh];
 }
@@ -650,15 +650,11 @@
             NSLog(@"swipe on table view but not on a row");
         } else {
             if (indexPath.section == 0) {
-                //UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                //if (cell.isHighlighted) {
                 @try {
                     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
                     if (item.unreadValue) {
-                        NSMutableArray *idsToMarkRead = [NSMutableArray new];
                         item.unreadValue = NO;
-                        [idsToMarkRead addObject:item.myId];
-                        [self updateUnreadCount:idsToMarkRead];
+                        [self updateUnreadCount:@[item.myId]];
                     } else {
                         if (item.starredValue) {
                             item.starredValue = NO;
