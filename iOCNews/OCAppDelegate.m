@@ -36,8 +36,6 @@
 #import "UAAppReviewManager.h"
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationEmail.h>
-#import "PocketAPI.h"
-#import "PocketCredentials.h"
 #import "FDTopDrawerController.h"
 #import "FDBottomDrawerController.h"
 
@@ -66,7 +64,6 @@
 {
     KSCrashInstallation* installation = [self makeEmailInstallation];
     [installation install];
-	[[PocketAPI sharedAPI] setConsumerKey:CONSUMER_KEY];
     
     [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
     [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
@@ -90,15 +87,6 @@
     }];
     
     return YES;
-}
-
--(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-	if([[PocketAPI sharedAPI] handleOpenURL:url]) {
-		return YES;
-	} else {
-		// if you handle your own URLs, do it here
-		return NO;
-	}
 }
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler

@@ -34,10 +34,6 @@
 #import "readable.h"
 #import "HTMLParser.h"
 #import "TUSafariActivity.h"
-#import "FDReadabilityActivity.h"
-#import "FDiCabActivity.h"
-#import "FDInstapaperActivity.h"
-#import "OCPocketActivity.h"
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
@@ -422,22 +418,7 @@ const int SWIPE_PREVIOUS = 1;
         }
         
         TUSafariActivity *sa = [[TUSafariActivity alloc] init];
-        FDiCabActivity *ia = [[FDiCabActivity alloc] init];
-        FDInstapaperActivity *ipa = [[FDInstapaperActivity alloc] init];
-        OCPocketActivity *pa = [[OCPocketActivity alloc] init];
-        FDReadabilityActivity *ra = [[FDReadabilityActivity alloc] init];
-        
-        NSArray *activities;
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
-        {
-            // Load resources for iOS 7.1 or earlier
-            activities = @[sa, ia, ipa, pa, ra];
-        }
-        else
-        {
-            // Load resources for iOS 8 or later
-            activities = @[sa, ia, ra];
-        }
+        NSArray *activities = @[sa];
         
         OCSharingProvider *sharingProvider = [[OCSharingProvider alloc] initWithPlaceholderItem:url subject:subject];
         
