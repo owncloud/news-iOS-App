@@ -978,7 +978,11 @@ const int UPDATE_ALL = 3;
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
     int totalUnreadCount = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
     [self feedWithId:[NSNumber numberWithInt:-2]].unreadCountValue = totalUnreadCount;
-    [UIApplication sharedApplication].applicationIconBadgeNumber = totalUnreadCount;
+
+    UIUserNotificationSettings *currentSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    if (currentSettings.types & UIUserNotificationTypeBadge) {
+        [UIApplication sharedApplication].applicationIconBadgeNumber = totalUnreadCount;
+    }
     [self updateFolderUnreadCount];
     [self saveContext];
 }
