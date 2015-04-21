@@ -225,6 +225,15 @@
                                              selector:@selector(drawerClosed:)
                                                  name:@"DrawerClosed"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contextSaved:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:[OCNewsHelper sharedHelper].context];    
+}
+
+- (void)contextSaved:(NSNotification*)notification {
+    [self updatePredicate];
 }
 
 - (void)viewDidUnload
@@ -456,21 +465,18 @@
 }
 
 - (IBAction)doMarkRead:(id)sender {
-    if ([self unreadCount] > 0) {
-        if ([self.fetchedResultsController fetchedObjects].count > 0) {
-            NSMutableArray *idsToMarkRead = [NSMutableArray new];
-            
-            [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-                if (item.unreadValue) {
-                    item.unreadValue = NO;
-                    [idsToMarkRead addObject:item.myId];
-                }
-            }];
-            [self updateUnreadCount:idsToMarkRead];
-            self.markBarButtonItem.enabled = NO;
-            [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+    if (self.folderId > 0) {
+        [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFolder feedOrFolderId:@(self.folderId)];
+    } else {
+        if (self.feed.myIdValue == -2) {
+            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeAll feedOrFolderId:nil];
+        } else {
+            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFeed feedOrFolderId:self.feed.myId];
         }
     }
+    
+    self.markBarButtonItem.enabled = NO;
+    [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (IBAction)onMenu:(id)sender {
@@ -770,6 +776,7 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
+    self.markBarButtonItem.enabled = ([self unreadCount] > 0);
 }
 
 - (NSInteger)unreadCount {

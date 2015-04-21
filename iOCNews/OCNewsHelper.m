@@ -35,12 +35,6 @@
 #import "Feeds.h"
 #import "NSDictionary+HandleNull.h"
 
-// the type of the query (Feed: 0, Folder: 1, Starred: 2, All: 3)
-const int UPDATE_FEED = 0;
-const int UPDATE_FOLDER = 1;
-const int UPDATE_STARRED = 2;
-const int UPDATE_ALL = 3;
-
 @interface OCNewsHelper () {
     NSMutableSet *foldersToAdd;
     NSMutableSet *foldersToDelete;
@@ -400,10 +394,10 @@ const int UPDATE_ALL = 3;
             [foldersToRename removeAllObjects];
             NSNumber *lastMod = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
             if ([self itemCount] > 0) {
-                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_ALL] andId:[NSNumber numberWithInt:0]];
+                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeAll] andId:[NSNumber numberWithInt:0]];
             } else {
                 [self updateItemsFirstTime];
-                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_STARRED] andId:[NSNumber numberWithInt:0]];
+                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeStarred] andId:[NSNumber numberWithInt:0]];
             }
         }
         [self updateTotalUnreadCount];
@@ -554,15 +548,15 @@ const int UPDATE_ALL = 3;
 
 - (void)updateFolderWithId:(NSNumber *)anId {
     NSNumber *lastMod = [self folderLastModified:anId];
-    [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_FOLDER] andId:anId];
+    [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeFolder] andId:anId];
 }
 
 - (void)updateFeedWithId:(NSNumber*)anId {
     NSNumber *lastMod = [self feedLastModified:anId];
     if ([anId intValue] == -1) {
-        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_STARRED] andId:[NSNumber numberWithInt:0]];
+        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeStarred] andId:[NSNumber numberWithInt:0]];
     } else {
-        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:UPDATE_FEED] andId:anId];
+        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeFeed] andId:anId];
     }
 }
 
@@ -641,9 +635,9 @@ const int UPDATE_ALL = 3;
         }
         
         switch ([aType intValue]) {
-            case UPDATE_ALL: {
+            case OCUpdateTypeAll: {
                 NSLog(@"Finishing all item update");
-                [self markItemsReadOffline:itemsToMarkRead];
+                [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
                 //[itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
                     [self markItemUnreadOffline:itemId];
@@ -662,14 +656,14 @@ const int UPDATE_ALL = 3;
                 [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             }
                 break;
-            case UPDATE_FOLDER: {
+            case OCUpdateTypeFolder: {
                 NSLog(@"Finishing folder item update");
                 Folder *folder = [self folderWithId:anId];
                 folder.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
             }
                 break;
-            case UPDATE_FEED:
-            case UPDATE_STARRED: {
+            case OCUpdateTypeFeed:
+            case OCUpdateTypeStarred: {
                 NSLog(@"Finishing feed item update");
                 Feed *feed = [self feedWithId:anId];
                 feed.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
@@ -693,18 +687,18 @@ const int UPDATE_ALL = 3;
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         //feedsToUpdate;
         switch ([aType intValue]) {
-            case UPDATE_ALL:
+            case OCUpdateTypeAll:
                 NSLog(@"Doing single feed all item update");
                 [self updateFeedItemsWithLastModified:lastMod type:aType andId:anId];
                 break;
-            case UPDATE_FOLDER: {
+            case OCUpdateTypeFolder: {
                 NSLog(@"Doing single feed folder item update");
                 //update feeds individually
                 [self updateFeedItemsWithLastModified:lastMod type:aType andId:anId];
             }
                 break;
-            case UPDATE_FEED:
-            case UPDATE_STARRED: {
+            case OCUpdateTypeFeed:
+            case OCUpdateTypeStarred: {
                 NSLog(@"Finishing feed item update");
                 if (_completionHandler && !completionHandlerCalled) {
                     NSLog(@"Calling completion block");
@@ -734,7 +728,7 @@ const int UPDATE_ALL = 3;
     //update feeds individually
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     __block NSArray *allFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-    if ([aType intValue] == UPDATE_FOLDER) {
+    if ([aType intValue] == OCUpdateTypeFolder) {
         allFeeds = [allFeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"folderId == %@", anId]];
     }
 
@@ -821,8 +815,8 @@ const int UPDATE_ALL = 3;
                 }
                 [self saveContext];
             }];
-            if ([aType intValue] == UPDATE_ALL) {
-                [self markItemsReadOffline:itemsToMarkRead];
+            if ([aType intValue] == OCUpdateTypeAll) {
+                [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
 //                [itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
                     [self markItemUnreadOffline:itemId];
@@ -1283,6 +1277,109 @@ const int UPDATE_ALL = 3;
         }];
     }
     [self updateReadItems:[itemIds allObjects]];
+}
+
+- (void)markAllItemsRead:(OCUpdateType)updateType feedOrFolderId:(NSNumber *)feedOrFolderId {
+
+    NSError *error = nil;
+    NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
+    
+    Feeds *theFeeds = [feeds objectAtIndex:0];
+    NSNumber *newestItem = theFeeds.newestItemId;
+    NSString *path;
+    
+    NSBatchUpdateRequest *req = [[NSBatchUpdateRequest alloc] initWithEntityName:@"Item"];
+    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"unread == %@", @(YES)];
+    
+    switch (updateType) {
+        case OCUpdateTypeAll:
+        {
+            req.predicate = pred1;
+            path = @"items/read";
+            [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
+            NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
+            [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+                feed.unreadCountValue = 0;
+            }];
+        }
+            break;
+        case OCUpdateTypeFolder:
+        {
+            NSMutableArray *feedsArray = [NSMutableArray new];
+            NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:feedOrFolderId];
+            [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
+                [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feedId], pred1]]];
+            }];
+            req.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+            path = [NSString stringWithFormat:@"folders/%@/read", feedOrFolderId];
+            self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", feedOrFolderId];
+            NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
+            [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+                feed.unreadCountValue = 0;
+            }];
+        }
+            break;
+        case OCUpdateTypeFeed:
+        {
+            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"feedId == %@", feedOrFolderId];
+            req.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+            path = [NSString stringWithFormat:@"feeds/%@/read", feedOrFolderId];
+            Feed *feed = [self feedWithId:feedOrFolderId];
+            feed.unreadCountValue = 0;
+        }
+            break;
+        case OCUpdateTypeStarred:
+            //
+            break;
+            
+        default:
+            break;
+    }
+    
+    req.propertiesToUpdate = @{@"unread": [NSNumber numberWithInt:0]};
+    req.resultType = NSUpdatedObjectIDsResultType;
+    NSBatchUpdateResult *res = (NSBatchUpdateResult *)[self.context executeRequest:req error:nil];
+    NSLog(@"%@ objects updated", res.result);
+    
+    __block NSMutableArray *itemIds = [NSMutableArray new];
+    [(NSArray *)res.result enumerateObjectsUsingBlock:^(NSManagedObjectID *objID, NSUInteger idx, BOOL *stop) {
+        Item *obj = (Item*)[context objectWithID:objID];
+        if (![obj isFault]) {
+            [self.context refreshObject:obj mergeChanges:YES];
+        }
+        [itemIds addObject:obj.myId];
+    }];
+    
+    [self updateTotalUnreadCount];
+
+    // /feeds/{feedId}/read
+    // /folders/{folderId}/read
+    // /items/read
+    /*{
+        // mark all items read lower than equal that id
+        // this is mean to prevent marking items as read which the client/user does not yet know of
+        "newestItemId": 10
+    }*/    
+    
+    if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
+        //online
+        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
+        [[OCAPIClient sharedClient] PUT:path parameters:@{@"newestItemId": newestItem} success:^(NSURLSessionDataTask *task, id responseObject) {
+            [itemIds enumerateObjectsUsingBlock:^(NSNumber *objID, NSUInteger idx, BOOL *stop) {
+                [itemsToMarkRead removeObject:objID];
+            }];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [itemIds enumerateObjectsUsingBlock:^(NSNumber *objID, NSUInteger idx, BOOL *stop) {
+                [itemsToMarkRead addObject:objID];
+            }];
+        }];
+    } else {
+        //offline
+        [itemIds enumerateObjectsUsingBlock:^(NSNumber *objID, NSUInteger idx, BOOL *stop) {
+            [itemsToMarkRead addObject:objID];
+            [itemsToMarkUnread removeObject:objID];
+        }];
+    }
 }
 
 - (void)markItemUnreadOffline:(NSNumber*)itemId {

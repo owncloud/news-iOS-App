@@ -36,6 +36,14 @@
 #import "Feed.h"
 #import "Item.h"
 
+// the type of the query (Feed: 0, Folder: 1, Starred: 2, All: 3)
+typedef NS_ENUM(NSInteger, OCUpdateType) {
+    OCUpdateTypeFeed,
+    OCUpdateTypeFolder,
+    OCUpdateTypeStarred,
+    OCUpdateTypeAll
+};
+
 @interface OCNewsHelper : NSObject
 
 @property (nonatomic,retain) NSManagedObjectContext *context;
@@ -85,6 +93,7 @@
 - (void)moveFeedOfflineWithId:(NSNumber*)aFeedId toFolderWithId:(NSNumber*)aFolderId;
 - (void)renameFeedOfflineWithId:(NSNumber*)anId To:(NSString*)newName;
 - (void)markItemsReadOffline:(NSMutableSet*)itemIds;
+- (void)markAllItemsRead:(OCUpdateType)updateType feedOrFolderId:(NSNumber *)feedOrFolderId;
 - (void)markItemUnreadOffline:(NSNumber*)itemId;
 - (void)starItemOffline:(NSNumber*)itemId;
 - (void)unstarItemOffline:(NSNumber*)itemId;
