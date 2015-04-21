@@ -208,7 +208,6 @@ const int SWIPE_PREVIOUS = 1;
                         
                         [[OCAPIClient sharedClient] GET:self.item.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                             NSString *html;
-                            NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
                             if (responseObject) {
                                 html = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
                                 char *article;
@@ -235,7 +234,6 @@ const int SWIPE_PREVIOUS = 1;
                             [self writeAndLoadHtml:html];
                             
                         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                            NSLog(@"Error: %@", error);
                             NSString *html;
                             html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
                             html = [html stringByAppendingString:self.item.body];
@@ -529,7 +527,6 @@ const int SWIPE_PREVIOUS = 1;
 - (BOOL)isShowingASummary {
     BOOL result = NO;
     if (self.webView) {
-        NSLog(@"Request: %@", self.webView.request.URL.absoluteString);
         result = [self.webView.request.URL.scheme isEqualToString:@"file"] || [self.webView.request.URL.scheme isEqualToString:@"about"];
     }
     return result;
@@ -652,8 +649,6 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)jcGridMenuColumnSelected:(NSInteger)indexTag indexRow:(NSInteger)indexRow indexColumn:(NSInteger)indexColumn
 {
-    NSLog(@"jcGridMenuColumnSelected %li %li %li", (long)indexTag, (long)indexRow, (long)indexColumn);
-    
     if (indexTag==1002) {
         [self.menuController setIsRowModal:YES];
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -1239,9 +1234,7 @@ const int SWIPE_PREVIOUS = 1;
             }
             if (src && [src rangeOfString:@"vimeo"].location != NSNotFound) {
                 NSString *videoID = [self extractVimeoVideoID:src];
-                if (videoID) {
-                    NSLog(@"Raw: %@", [inputNode rawContents]);
-                    
+                if (videoID) {                    
                     NSString *height = [inputNode getAttributeNamed:@"height"];
                     NSString *width = [inputNode getAttributeNamed:@"width"];
                     NSString *heightString = @"";

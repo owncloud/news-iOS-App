@@ -103,12 +103,10 @@
                 ++currentFontSize;
             }
         }
-        NSLog(@"FS: %ld", currentFontSize);
         [prefs setInteger:currentFontSize forKey:@"FontSize"];
     }
     
     if (seg == lineHeightSegmented) {
-        //NSLog(@"LH: %d", newValue);
         double currentLineHeight = [[prefs valueForKey:@"LineHeight"] doubleValue];
         if (newValue == 0) {
             if (currentLineHeight > MIN_LINE_HEIGHT) {
@@ -119,12 +117,10 @@
                 currentLineHeight = currentLineHeight + 0.2f;
             }
         }
-        NSLog(@"FS: %f", currentLineHeight);
         [prefs setDouble:currentLineHeight forKey:@"LineHeight"];
     }
     
     if (seg == marginSegmented) {
-        //NSLog(@"M: %d", newValue);
         long currentMargin = [[prefs valueForKey:@"Margin"] integerValue];
         if (newValue == 0) {
             if (currentMargin < MAX_WIDTH) {
@@ -135,7 +131,6 @@
                 currentMargin = currentMargin - 20;
             }
         }
-        NSLog(@"FS: %ld", currentMargin);
         [prefs setInteger:currentMargin forKey:@"Margin"];
     }
 

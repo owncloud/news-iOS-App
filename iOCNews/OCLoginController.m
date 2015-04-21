@@ -123,7 +123,6 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         client.securityPolicy.allowInvalidCertificates = allowInvalid;
         
         [client GET:@"version" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSLog(@"Version: %@", responseObject);
             NSDictionary *jsonDict = (NSDictionary *) responseObject;
             NSString *version = [jsonDict valueForKey:@"version"];
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -134,7 +133,6 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
             [prefs synchronize];
             [OCAPIClient setSharedClient:nil];
             int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
-            NSLog(@"Server status (version %@): %i", version, status);
             [self.connectionActivityIndicator stopAnimating];
             [TSMessage showNotificationInViewController:self
                                                   title:NSLocalizedString(@"Success", @"A message title")
@@ -181,7 +179,6 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                     message = NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message");
                     break;
             }
-            NSLog(@"Error: %@, response: %ld", [error localizedDescription], (long)[response statusCode]);
             [self.connectionActivityIndicator stopAnimating];
             [TSMessage showNotificationInViewController:self
                                                   title:title

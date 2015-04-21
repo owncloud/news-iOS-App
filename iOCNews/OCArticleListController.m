@@ -452,7 +452,6 @@
             result = NO;
         }
     }
-    NSLog(@"Swipe Result: %d", result);
     return result;
 }
 
@@ -582,7 +581,6 @@
                     fetchPredicate = nil;
                 }
             } else {
-                NSLog(@"Feed Id: %@", self.feed.myId);
                 fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
             }
             self.fetchedResultsController.delegate = self;
@@ -595,8 +593,6 @@
         // Update to handle the error appropriately.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
-    NSLog(@"Fetch Count: %lu", (unsigned long)self.fetchedResultsController.fetchedObjects.count);
-    
     [self refresh];
 }
 
@@ -653,7 +649,7 @@
         
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
         if (indexPath == nil) {
-            NSLog(@"swipe on table view but not on a row");
+//            NSLog(@"swipe on table view but not on a row");
         } else {
             if (indexPath.section == 0) {
                 @try {

@@ -449,8 +449,6 @@
         [self.renameFolderAlertView show];
     } else if (indexPath.section == 2) {
         Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
-        NSLog(@"Feed title: %@", feed.title);
-        NSLog(@"Feed title: %@", feed.title);
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
         OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
@@ -734,7 +732,6 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             if (![board.URL.absoluteString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"PreviousPasteboardURL"]]) {
                 [[NSUserDefaults standardUserDefaults] setObject:board.URL.absoluteString forKey:@"PreviousPasteboardURL"];
                 NSArray *feedURLStrings = [self.feedsFetchedResultsController.fetchedObjects valueForKey:@"url"];
-                NSLog(@"URLs: %@", feedURLStrings);
                 if ([feedURLStrings indexOfObject:[board.URL absoluteString]] == NSNotFound) {
                     NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
                     [TSMessage showNotificationInViewController:self.navigationController
@@ -827,7 +824,6 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    NSLog(@"Section: %ld; Row: %ld", (long)indexPath.section, (long)indexPath.row);
 
     UITableView *tableView = self.tableView;
     if (newIndexPath != nil && controller == self.foldersFetchedResultsController) {
