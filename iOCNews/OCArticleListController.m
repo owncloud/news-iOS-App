@@ -48,6 +48,7 @@
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
+    BOOL markingAllItemsRead;
 }
 
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
@@ -190,6 +191,8 @@
     UINavigationController *navController = (UINavigationController*)self.mm_drawerController.mm_drawerController.centerViewController;
     self.detailViewController = (OCWebController*)navController.topViewController;
     
+    markingAllItemsRead = NO;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextArticle:) name:@"RightTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(articleChangeInFeed:) name:@"ArticleChangeInFeed" object:nil];
@@ -233,7 +236,10 @@
 }
 
 - (void)contextSaved:(NSNotification*)notification {
-    [self updatePredicate];
+    if (markingAllItemsRead) {
+        markingAllItemsRead = NO;
+        [self updatePredicate];
+    }
 }
 
 - (void)viewDidUnload
@@ -464,6 +470,8 @@
 }
 
 - (IBAction)doMarkRead:(id)sender {
+    markingAllItemsRead = YES;
+
     if (self.folderId > 0) {
         [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFolder feedOrFolderId:@(self.folderId)];
     } else {
