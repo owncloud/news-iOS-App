@@ -185,23 +185,23 @@
 
 
 - (IBAction)syncOnStartChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.syncOnStartSwitch.on forKey:@"SyncOnStart"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.syncOnStartSwitch.isOn forKey:@"SyncOnStart"];
 }
 
 - (IBAction)syncInBackgroundChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.syncinBackgroundSwitch.on forKey:@"SyncInBackground"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.syncinBackgroundSwitch.isOn forKey:@"SyncInBackground"];
 }
 
 - (IBAction)showFaviconsChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.showFaviconsSwitch.on forKey:@"ShowFavicons"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.showFaviconsSwitch.isOn forKey:@"ShowFavicons"];
 }
 
 - (IBAction)showThumbnailsChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.showThumbnailsSwitch.on forKey:@"ShowThumbnails"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.showThumbnailsSwitch.isOn forKey:@"ShowThumbnails"];
 }
 
 - (IBAction)markWhileScrollingChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.markWhileScrollingSwitch.on forKey:@"MarkWhileScrolling"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.markWhileScrollingSwitch.isOn forKey:@"MarkWhileScrolling"];
 }
 
 - (IBAction)didTapDone:(id)sender {
