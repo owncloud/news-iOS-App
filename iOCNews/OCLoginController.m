@@ -124,7 +124,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         
         [client GET:@"version" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *jsonDict = (NSDictionary *) responseObject;
-            NSString *version = [jsonDict valueForKey:@"version"];
+            __unused NSString *version = [jsonDict valueForKey:@"version"];
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             [prefs setObject:self.serverTextField.text forKey:@"Server"];
             [[PDKeychainBindings sharedKeychainBindings] setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
@@ -132,7 +132,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
             [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
             [prefs synchronize];
             [OCAPIClient setSharedClient:nil];
-            int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
+            __unused int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
             [self.connectionActivityIndicator stopAnimating];
             [TSMessage showNotificationInViewController:self
                                                   title:NSLocalizedString(@"Success", @"A message title")

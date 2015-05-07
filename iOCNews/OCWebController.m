@@ -1098,7 +1098,7 @@ const int SWIPE_PREVIOUS = 1;
         cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:@"auto"];
         NSInteger contentWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Margin"] integerValue];
         NSInteger contentInset = (320 - contentWidth) / 2;
-        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN2$" withString:[NSString stringWithFormat:@"%ldpx", contentInset]];
+        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN2$" withString:[NSString stringWithFormat:@"%ldpx", (long)contentInset]];
     } else {
         long margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
         cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", margin]];

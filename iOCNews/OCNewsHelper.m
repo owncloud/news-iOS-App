@@ -605,7 +605,7 @@
                 NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
                 filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
                 while (filteredArray.count > feed.articleCountValue) {
-                    Item *itemToRemove = [filteredArray lastObject];
+//                    Item *itemToRemove = [filteredArray lastObject];
 //                    [self.context deleteObject:itemToRemove];
                     [filteredArray removeLastObject];
                 }
