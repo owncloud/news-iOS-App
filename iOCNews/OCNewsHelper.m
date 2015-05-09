@@ -296,7 +296,6 @@
     _completionHandler = [completionHandler copy];
     completionHandlerCalled = NO;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
-        [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
         [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             [self updateFeeds:responseObject];
             [self updateFolders];
@@ -309,6 +308,7 @@
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
@@ -318,12 +318,12 @@
         }
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Unable to Reach Server", @"Title",
                                   @"Please check network connection and login.", @"Message", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
     }
 }
 
 - (void)updateFolders {
-    [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
     [[OCAPIClient sharedClient] GET:@"folders" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         //Remove previous
         //TODO: only fetch myId
@@ -402,6 +402,7 @@
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
         NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Feeds", @"Title", message, @"Message", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
 
     }];
@@ -567,7 +568,6 @@
                                          @"type": aType,
                                            @"id": anId};
     
-    [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
     [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
         NSDictionary *itemDict = (NSDictionary*)responseObject;
         //NSLog(@"New Items: %@", itemDict);
@@ -659,7 +659,7 @@
             _completionHandler((newItems.count > 0) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData);
             completionHandlerCalled = YES;
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
         
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -682,6 +682,7 @@
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
             }
                 break;
@@ -813,6 +814,7 @@
             }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
             if (_completionHandler && !completionHandlerCalled) {
@@ -820,7 +822,7 @@
                 completionHandlerCalled = YES;
             }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
         }
     });
 }
@@ -830,7 +832,6 @@
     __block NSMutableArray *addedItems = [NSMutableArray new];
     __block NSMutableArray *responseObjects = [NSMutableArray new];
     __block OCAPIClient *client = [OCAPIClient sharedClient];
-    client.responseSerializer = [AFJSONResponseSerializer serializer];
     NSError *error = nil;
     [self.feedRequest setPredicate:nil];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
@@ -884,6 +885,7 @@
             }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
             if (_completionHandler && !completionHandlerCalled) {
@@ -891,7 +893,7 @@
                 completionHandlerCalled = YES;
             }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkSuccess" object:self userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
         }
 
     });
@@ -976,7 +978,6 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"name": name};
-        [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
         [[OCAPIClient sharedClient] POST:@"folders" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             __unused int newFolderId = [self addFolder:responseObject];
             [foldersToAdd removeObject:name];
@@ -996,6 +997,7 @@
             }
             
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Adding Folder", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
         
@@ -1013,7 +1015,6 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"folders/%@", [folder.myId stringValue]];
-        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1029,6 +1030,7 @@
                     break;
             }
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Deleting Folder", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
@@ -1043,7 +1045,6 @@
         //online
         NSDictionary *params = @{@"name": newName};
         NSString *path = [NSString stringWithFormat:@"folders/%@", [anId stringValue]];
-        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //             NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1065,6 +1066,7 @@
                     break;
             }
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Renaming Feed", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
@@ -1079,7 +1081,6 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:urlString, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
-        [OCAPIClient sharedClient].responseSerializer = [AFJSONResponseSerializer serializer];
         [[OCAPIClient sharedClient] POST:@"feeds" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
             //NSLog(@"Feeds: %@", responseObject);
             
@@ -1102,6 +1103,7 @@
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Retrieving Items", @"Title", message, @"Message", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
             }];
 
@@ -1121,6 +1123,7 @@
             }
             
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Adding Feed", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     
@@ -1145,13 +1148,13 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"feeds/%@", [feed.myId stringValue]];
-        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
 //            NSLog(@"Failure");
             NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Deleting Feed", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
@@ -1167,13 +1170,13 @@
         //online
         NSDictionary *params = @{@"folderId": aFolderId};
         NSString *path = [NSString stringWithFormat:@"feeds/%@/move", [aFeedId stringValue]];
-        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
 //            NSLog(@"Failure");
             NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Moving Feed", @"Title", message, @"Message", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         }];
     } else {
@@ -1188,7 +1191,6 @@
             //online
             NSDictionary *params = @{@"feedTitle": newName};
             NSString *path = [NSString stringWithFormat:@"feeds/%@/rename", [anId stringValue]];
-            [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
             [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //                NSLog(@"Success");
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1207,6 +1209,7 @@
                         break;
                 }
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Renaming Feed", @"Title", message, @"Message", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
             }];
         } else {
@@ -1225,7 +1228,6 @@
     }
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[itemIds allObjects] forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
                 [itemsToMarkRead removeObject:itemId];
@@ -1331,7 +1333,6 @@
     
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:path parameters:@{@"newestItemId": newestItem} success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *objID, NSUInteger idx, BOOL *stop) {
                 [itemsToMarkRead removeObject:objID];
@@ -1353,7 +1354,6 @@
 - (void)markItemUnreadOffline:(NSNumber*)itemId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
         [[OCAPIClient sharedClient] PUT:@"items/unread/multiple" parameters:@{@"items": itemId} success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemsToMarkUnread removeObject:itemId];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1372,7 +1372,6 @@
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
-            [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 [itemsToStar removeObject:itemId];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1393,7 +1392,6 @@
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
-            [OCAPIClient sharedClient].responseSerializer = [AFHTTPResponseSerializer serializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 [itemsToUnstar removeObject:itemId];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {

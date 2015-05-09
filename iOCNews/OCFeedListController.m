@@ -49,7 +49,7 @@
     NSIndexPath *editingPath;
 }
 
-- (void) networkSuccess:(NSNotification*)n;
+- (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
 - (void) showMenu:(UIBarButtonItem*)sender event:(UIEvent*)event;
 - (void) doHideRead;
@@ -209,6 +209,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(doRefresh:)
                                                  name:@"SyncNews"
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(networkCompleted:)
+                                                 name:@"NetworkCompleted"
                                                object:nil];
 
     UINavigationController *navController = (UINavigationController*)self.mm_drawerController.centerViewController;
@@ -755,28 +760,24 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 
 - (void)drawerOpened:(NSNotification *)n {
     if ([self.navigationController.topViewController isEqual:self]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
     }
     self.tableView.scrollsToTop = YES;
 }
 
 - (void)drawerClosed:(NSNotification *)n {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
     self.tableView.scrollsToTop = NO;
 }
 
 #pragma mark - Feeds maintenance
 
-- (void) networkSuccess:(NSNotification *)n {
+- (void) networkCompleted:(NSNotification *)n {
     [self.refreshControl endRefreshing];
     [self.detailViewController.refreshControl endRefreshing];
 }
 
 - (void)networkError:(NSNotification *)n {
-    [self.refreshControl endRefreshing];
-    [self.detailViewController.refreshControl endRefreshing];
     [TSMessage showNotificationInViewController:self.navigationController
                                           title:[n.userInfo objectForKey:@"Title"]
                                        subtitle:[n.userInfo objectForKey:@"Message"]

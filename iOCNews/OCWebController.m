@@ -204,8 +204,6 @@ const int SWIPE_PREVIOUS = 1;
                     if (self.item.readable) {
                         [self writeAndLoadHtml:self.item.readable];
                     } else {
-                        [[OCAPIClient sharedClient] setResponseSerializer:[AFHTTPResponseSerializer serializer]];
-                        
                         [[OCAPIClient sharedClient] GET:self.item.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                             NSString *html;
                             if (responseObject) {
@@ -229,8 +227,6 @@ const int SWIPE_PREVIOUS = 1;
                                 html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
                                 html = [html stringByAppendingString:self.item.body];
                             }
-                            //restore the response serializer
-                            [[OCAPIClient sharedClient] setResponseSerializer:[AFJSONResponseSerializer serializer]];
                             [self writeAndLoadHtml:html];
                             
                         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -238,8 +234,6 @@ const int SWIPE_PREVIOUS = 1;
                             html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
                             html = [html stringByAppendingString:self.item.body];
                             [self writeAndLoadHtml:html];
-                            //restore the response serializer
-                            [[OCAPIClient sharedClient] setResponseSerializer:[AFJSONResponseSerializer serializer]];
                         }];
                     }
                 } else {

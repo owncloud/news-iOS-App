@@ -70,6 +70,11 @@ static dispatch_once_t oncePredicate = 0;
     [self setRequestSerializer:[AFJSONRequestSerializer serializer]];
     [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
                                                            password:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]];
+    
+    AFCompoundResponseSerializer *compoundSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[[AFJSONResponseSerializer serializer],
+                                                                                                                                 [AFHTTPResponseSerializer serializer]]];
+    self.responseSerializer = compoundSerializer;
+    
     [self.reachabilityManager startMonitoring];
     self.operationQueue.maxConcurrentOperationCount = 1;
     

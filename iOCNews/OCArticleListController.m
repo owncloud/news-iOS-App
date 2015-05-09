@@ -59,7 +59,7 @@
 - (void) nextArticle:(NSNotification*)n;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 - (void) updatePredicate;
-- (void) networkSuccess:(NSNotification*)n;
+- (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
 - (IBAction)handleCellSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
 - (NSInteger) unreadCount;
@@ -196,6 +196,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextArticle:) name:@"RightTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(articleChangeInFeed:) name:@"ArticleChangeInFeed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkCompleted:) name:@"NetworkCompleted" object:nil];
     
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
@@ -697,23 +698,20 @@
 }
 
 - (void)drawerOpened:(NSNotification *)n {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
     self.tableView.scrollsToTop = NO;
 }
 
 - (void)drawerClosed:(NSNotification *)n {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkSuccess:) name:@"NetworkSuccess" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
     self.tableView.scrollsToTop = YES;
 }
 
-- (void) networkSuccess:(NSNotification *)n {
+- (void) networkCompleted:(NSNotification *)n {
     [self.refreshControl endRefreshing];
 }
 
 - (void)networkError:(NSNotification *)n {
-    [self.refreshControl endRefreshing];
     [TSMessage showNotificationInViewController:self.navigationController
                                           title:[n.userInfo objectForKey:@"Title"]
                                        subtitle:[n.userInfo objectForKey:@"Message"]
