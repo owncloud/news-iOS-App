@@ -297,6 +297,19 @@
     completionHandlerCalled = NO;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (![responseObject isKindOfClass:[NSDictionary class]])
+            {
+                if (_completionHandler && !completionHandlerCalled) {
+                    _completionHandler(UIBackgroundFetchResultFailed);
+                    completionHandlerCalled = YES;
+                }
+                NSDictionary *userInfo = @{@"Title": @"Error Updating Feeds",
+                                           @"Message": @"Unknown data returned from the server"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
+                return;
+            }
+
             [self updateFeeds:responseObject];
             [self updateFolders];
 
@@ -332,10 +345,24 @@
         NSArray *oldFolders = [self.context executeFetchRequest:self.folderRequest error:&error];
         if (oldFolders) {
             NSArray *knownIds = [oldFolders valueForKey:@"myId"];
+            NSDictionary *folderDict;
             
-            //Add the new folders
-            NSDictionary *folderDict = (NSDictionary *)responseObject;
-            
+            if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
+            {
+                folderDict = (NSDictionary*)responseObject;
+            }
+            else
+            {
+                //            NSString *responseString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                //            NSLog(@"Response: %@", responseString);
+                id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                if (json && [json isKindOfClass:[NSDictionary class]]) {
+                    folderDict = (NSDictionary*)json;
+                } else {
+                    folderDict = @{@"folders": @""};
+                }
+            }
+
             NSArray *newFolders = [NSArray arrayWithArray:[folderDict objectForKey:@"folders"]];
             
             NSArray *newIds = [newFolders valueForKey:@"id"];
@@ -569,7 +596,24 @@
                                            @"id": anId};
     
     [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSDictionary *itemDict = (NSDictionary*)responseObject;
+        NSDictionary *itemDict;
+
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
+        {
+            itemDict = (NSDictionary*)responseObject;
+        }
+        else
+        {
+//            NSString *responseString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//            NSLog(@"Response: %@", responseString);
+            id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+            if (json && [json isKindOfClass:[NSDictionary class]]) {
+                itemDict = (NSDictionary*)json;
+            } else {
+                itemDict = @{@"items": @""};
+            }
+        }
+        
         //NSLog(@"New Items: %@", itemDict);
         NSArray *newItems = [NSArray arrayWithArray:[itemDict objectForKey:@"items"]];
         if (newItems.count > 0) {
@@ -736,8 +780,26 @@
                 ++errorCount;
             }
         }];
-        [responseObjects enumerateObjectsUsingBlock:^(NSDictionary *JSON, NSUInteger idx, BOOL *stop) {
-            NSArray *newItems = [NSArray arrayWithArray:[JSON objectForKey:@"items"]];
+        [responseObjects enumerateObjectsUsingBlock:^(id respObject, NSUInteger idx, BOOL *stop) {
+            NSDictionary *itemDict;
+            
+            if (respObject && [respObject isKindOfClass:[NSDictionary class]])
+            {
+                itemDict = (NSDictionary*)respObject;
+            }
+            else
+            {
+                //NSString *responseString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                //NSLog(@"Response: %@", responseString);
+                id json = [NSJSONSerialization JSONObjectWithData:respObject options:0 error:nil];
+                if (json && [json isKindOfClass:[NSDictionary class]]) {
+                    itemDict = (NSDictionary*)json;
+                } else {
+                    itemDict = @{@"items": @""};
+                }
+            }
+
+            NSArray *newItems = [NSArray arrayWithArray:[itemDict objectForKey:@"items"]];
             if (newItems.count > 0) {
                 [feedsWithNewItems addObject:[(NSDictionary*)[newItems objectAtIndex:0] objectForKey:@"feedId"]];
                 [addedItems addObjectsFromArray:newItems];
