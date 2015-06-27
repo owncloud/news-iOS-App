@@ -115,7 +115,7 @@
         
         fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                        managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
-                                                                                  cacheName:@"ArticleCache"];
+                                                                                  cacheName:nil];
         
     }
     return fetchedResultsController;
@@ -553,56 +553,61 @@
 }
 
 - (void)updatePredicate {
-    NSError *error;
-    NSPredicate *fetchPredicate;
-    if (self.feed.myIdValue == -1) {
-        fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
-    } else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
-            if (self.feed.myIdValue == -2) {
-                if (self.folderId > 0) {
-                    NSMutableArray *feedsArray = [NSMutableArray new];
-                    NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
-                    [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
-                        [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feedId],[NSPredicate predicateWithFormat:@"unread == 1"] ]]];
-                    }];
-                    fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-                } else {
-                    fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
-                }
-            } else {
-                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
-                NSArray *predArray = @[pred1, pred2];
-                fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-            }
-            self.fetchedResultsController.delegate = nil;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSError *error;
+        NSPredicate *fetchPredicate;
+        if (self.feed.myIdValue == -1) {
+            fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
         } else {
-            if (self.feed.myIdValue == -2) {
-                if (self.folderId > 0) {
-                    NSMutableArray *feedsArray = [NSMutableArray new];
-                    NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
-                    [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
-                        [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feedId]];
-                    }];
-                    fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+                if (self.feed.myIdValue == -2) {
+                    if (self.folderId > 0) {
+                        NSMutableArray *feedsArray = [NSMutableArray new];
+                        NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
+                        [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
+                            [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feedId],[NSPredicate predicateWithFormat:@"unread == 1"] ]]];
+                        }];
+                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                    } else {
+                        fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
+                    }
                 } else {
-                    fetchPredicate = nil;
+                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
+                    NSArray *predArray = @[pred1, pred2];
+                    fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
                 }
+                self.fetchedResultsController.delegate = nil;
             } else {
-                fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                if (self.feed.myIdValue == -2) {
+                    if (self.folderId > 0) {
+                        NSMutableArray *feedsArray = [NSMutableArray new];
+                        NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
+                        [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
+                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feedId]];
+                        }];
+                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                    } else {
+                        fetchPredicate = nil;
+                    }
+                } else {
+                    fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                }
+                self.fetchedResultsController.delegate = self;
             }
-            self.fetchedResultsController.delegate = self;
         }
-    }
-    [NSFetchedResultsController deleteCacheWithName:@"ArticleCache"];
-    self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
-    
-    if (![self.fetchedResultsController performFetch:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    [self refresh];
+//        [NSFetchedResultsController deleteCacheWithName:@"ArticleCache"];
+        self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
+        self.fetchedResultsController.fetchRequest.fetchBatchSize = 25;
+        
+        if (![self.fetchedResultsController performFetch:&error]) {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self refresh];
+        });
+    });
 }
 
 #pragma mark - Toolbar buttons

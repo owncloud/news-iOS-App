@@ -390,7 +390,9 @@
         switch (indexPath.section) {
             case 0:
                 @try {
-                    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+                    });
                     feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
                     if (self.folderId > 0) {
                         self.detailViewController.folderId = self.folderId;
@@ -421,7 +423,9 @@
                 break;
             case 2:
                 @try {
-                    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+                    });
                     feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                     self.detailViewController.feed = feed;
                     
