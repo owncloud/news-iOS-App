@@ -243,12 +243,8 @@
     }
 }
 
-- (void)viewDidUnload
+- (void)dealloc
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    self.fetchedResultsController = nil;
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

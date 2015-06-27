@@ -60,16 +60,6 @@
     [self.backgroundSegmented setImage:[[UIImage imageNamed:@"background2"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal ]  forSegmentAtIndex:1];
 }
 
-- (void)viewDidUnload
-{
-    [self setBackgroundSegmented:nil];
-    [self setFontSizeSegmented:nil];
-    [self setLineHeightSegmented:nil];
-    [self setMarginSegmented:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
