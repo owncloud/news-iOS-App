@@ -69,9 +69,6 @@
 @synthesize foldersFetchedResultsController;
 @synthesize feedsFetchedResultsController;
 @synthesize gearActionSheet;
-@synthesize addFolderAlertView;
-@synthesize renameFolderAlertView;
-@synthesize addFeedAlertView;
 @synthesize folderId;
 
 - (NSFetchedResultsController *)specialFetchedResultsController {
@@ -454,8 +451,8 @@
     if ((indexPath.section == 1)) {
         Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
         currentRenameId = folder.myId;
-        [[self.renameFolderAlertView textFieldAtIndex:0] setText:folder.name];
-        [self.renameFolderAlertView show];
+        [[self.renameFolderAlertView.textFields objectAtIndex:0] setText:folder.name];
+        [self presentViewController:self.renameFolderAlertView animated:YES completion:nil];
     } else if (indexPath.section == 2) {
         Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
@@ -500,7 +497,7 @@
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
-                                                               [self.addFolderAlertView show];
+                                                               [self presentViewController:self.addFolderAlertView animated:YES completion:nil];
                                                                
                                                            }];
     
@@ -510,7 +507,7 @@
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
                                                                 
-                                                                [self.addFeedAlertView show];
+                                                                [self presentViewController:self.addFeedAlertView animated:YES completion:nil];
                                                                 
                                                             }];
     
@@ -527,7 +524,6 @@
     
     [alert addAction:hideReadAction];
 
-if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
     alert.modalPresentationStyle = UIModalPresentationPopover;
     
     UIPopoverPresentationController *popover = alert.popoverPresentationController;
@@ -537,68 +533,75 @@ if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
     }
     
-}
     [self.mm_drawerController presentViewController:alert animated:YES completion:nil];
+}
+
+- (UIAlertController*)addFolderAlertView {
+    static UIAlertController *alertController;
+    static dispatch_once_t onceToken;
     
+    dispatch_once(&onceToken, ^{
+        alertController = [UIAlertController alertControllerWithTitle:@"Add New Folder" message:@"Enter the name of the folder to add." preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.keyboardType = UIKeyboardTypeDefault;
+            textField.placeholder = @"Folder name";
+        }];
+        
+        UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *addButton = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[OCNewsHelper sharedHelper] addFolderOffline:[[alertController.textFields objectAtIndex:0] text]];
+        }];
+        [alertController addAction:cancelButton];
+        [alertController addAction:addButton];
+    });
+    return alertController;
+}
+
+- (UIAlertController*)renameFolderAlertView {
+    static UIAlertController *alertController;
+    static dispatch_once_t onceToken;
     
-    //    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-    //        [self.gearActionSheet showFromBarButtonItem:sender animated:YES];
-//    } else {
-//        [self.gearActionSheet showInView:self.view];
-//    }
+    dispatch_once(&onceToken, ^{
+        alertController = [UIAlertController alertControllerWithTitle:@"Rename Folder" message:@"Enter the new name of the folder." preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.keyboardType = UIKeyboardTypeDefault;
+            textField.placeholder = @"Folder name";
+        }];
+        
+        UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
+            [cell hideDeleteConfirmation];
+        }];
+        UIAlertAction *renameButton = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
+            [cell hideDeleteConfirmation];
+            [[OCNewsHelper sharedHelper] renameFolderOfflineWithId:currentRenameId To:[[alertController.textFields objectAtIndex:0] text]];
+        }];
+        [alertController addAction:cancelButton];
+        [alertController addAction:renameButton];
+    });
+    return alertController;
 }
 
-- (UIAlertView*)addFolderAlertView {
-    if (!addFolderAlertView) {
-        addFolderAlertView = [[UIAlertView alloc] initWithTitle:@"Add New Folder" message:@"Enter the name of the folder to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
-        addFolderAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField * alertTextField = [addFolderAlertView textFieldAtIndex:0];
-        alertTextField.keyboardType = UIKeyboardTypeDefault;
-        alertTextField.placeholder = @"Folder name";
-    }
-    return addFolderAlertView;
-}
-
-- (UIAlertView*)renameFolderAlertView {
-    if (!renameFolderAlertView) {
-        renameFolderAlertView = [[UIAlertView alloc] initWithTitle:@"Rename Folder" message:@"Enter the new name of the folder." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Rename", nil];
-        renameFolderAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField * alertTextField = [renameFolderAlertView textFieldAtIndex:0];
-        alertTextField.keyboardType = UIKeyboardTypeDefault;
-        alertTextField.placeholder = @"Folder name";
-    }
-    return renameFolderAlertView;
-}
-
-- (UIAlertView*)addFeedAlertView {
-    if (!addFeedAlertView) {
-        addFeedAlertView = [[UIAlertView alloc] initWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add",nil];
-        addFeedAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField * alertTextField = [addFeedAlertView textFieldAtIndex:0];
-        alertTextField.keyboardType = UIKeyboardTypeURL;
-        alertTextField.placeholder = @"http://example.com/feed";
-    }
-    return addFeedAlertView;
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([alertView isEqual:self.addFolderAlertView]) {
-        if (buttonIndex == 1) {
-            [[OCNewsHelper sharedHelper] addFolderOffline:[[alertView textFieldAtIndex:0] text]];
-        }
-    }
-    if ([alertView isEqual:self.renameFolderAlertView]) {
-        MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
-        [cell hideDeleteConfirmation];
-        if (buttonIndex == 1) {
-            [[OCNewsHelper sharedHelper] renameFolderOfflineWithId:currentRenameId To:[[alertView textFieldAtIndex:0] text]];
-        }
-    }
-    if ([alertView isEqual:self.addFeedAlertView]) {
-        if (buttonIndex == 1) {
-            [[OCNewsHelper sharedHelper] addFeedOffline:[[alertView textFieldAtIndex:0] text]];
-        }
-    }
+- (UIAlertController*)addFeedAlertView {
+    static UIAlertController *alertController;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        alertController = [UIAlertController alertControllerWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.keyboardType = UIKeyboardTypeURL;
+            textField.placeholder = @"http://example.com/feed";
+        }];
+        
+        UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *addButton = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[OCNewsHelper sharedHelper] addFeedOffline:[[alertController.textFields objectAtIndex:0] text]];
+        }];
+        [alertController addAction:cancelButton];
+        [alertController addAction:addButton];
+    });
+    return alertController;
 }
 
 - (void)doHideRead {

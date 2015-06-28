@@ -48,9 +48,9 @@
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
 @property (strong, nonatomic) UIActionSheet *gearActionSheet;
-@property (nonatomic, strong, readonly) UIAlertView *addFolderAlertView;
-@property (nonatomic, strong, readonly) UIAlertView *renameFolderAlertView;
-@property (nonatomic, strong, readonly) UIAlertView *addFeedAlertView;
+@property (nonatomic, strong, readonly) UIAlertController *addFolderAlertView;
+@property (nonatomic, strong, readonly) UIAlertController *renameFolderAlertView;
+@property (nonatomic, strong, readonly) UIAlertController *addFeedAlertView;
 
 @property (nonatomic, assign) NSInteger folderId;
 
