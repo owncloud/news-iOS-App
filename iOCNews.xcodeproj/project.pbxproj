@@ -371,6 +371,7 @@
 		D02300301A5A099D00B354E0 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
 		D02300391A5A09BA00B354E0 /* MMDrawerController+Storyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MMDrawerController+Storyboard.h"; path = "../../MMDrawerController-Storyboard/MMDrawerController+Storyboard.h"; sourceTree = "<group>"; };
 		D023003A1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MMDrawerController+Storyboard.m"; path = "../../MMDrawerController-Storyboard/MMDrawerController+Storyboard.m"; sourceTree = "<group>"; };
+		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
 		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
 		D035160519DA403E0016573F /* PDKeychainBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindings.m; sourceTree = "<group>"; };
 		D035160619DA403E0016573F /* PDKeychainBindingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindingsController.h; sourceTree = "<group>"; };
@@ -1924,13 +1925,14 @@
 		D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */,
 				D0622FE418C29BD40032E622 /* News 5.xcdatamodel */,
 				D0A33F2B187F5BF900C6DA92 /* News 4.xcdatamodel */,
 				D04AD65618070C4800FF6056 /* News 3.xcdatamodel */,
 				D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */,
 				D06CB22D17A06E4F00A1310B /* News.xcdatamodel */,
 			);
-			currentVersion = D0622FE418C29BD40032E622 /* News 5.xcdatamodel */;
+			currentVersion = D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */;
 			path = News.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

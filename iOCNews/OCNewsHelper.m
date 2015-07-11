@@ -534,14 +534,14 @@
     return (Feed*)[myFeeds lastObject];
 }
 
-- (NSArray*)feedIdsWithFolderId:(NSNumber*)folderId {
-    NSMutableArray *idArray = [NSMutableArray new];
+- (NSArray*)feedsInFolderWithId:(NSNumber*)folderId {
+//    NSMutableArray *idArray = [NSMutableArray new];
     self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folderId];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-    [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-        [idArray addObject:feed.myId];
-    }];
-    return [NSArray arrayWithArray:idArray];
+//    [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+//        [idArray addObject:feed.myId];
+//    }];
+    return feeds;
 }
 
 - (Item*)itemWithId:(NSNumber *)anId {
@@ -1004,7 +1004,8 @@
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
     int totalUnreadCount = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
     [self feedWithId:[NSNumber numberWithInt:-2]].unreadCountValue = totalUnreadCount;
-
+    [self feedWithId:[NSNumber numberWithInt:-2]].articleCountValue = (int)[self itemCount];
+    
     UIUserNotificationSettings *currentSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     if (currentSettings.types & UIUserNotificationTypeBadge) {
         [UIApplication sharedApplication].applicationIconBadgeNumber = totalUnreadCount;
@@ -1338,9 +1339,9 @@
         case OCUpdateTypeFolder:
         {
             NSMutableArray *feedsArray = [NSMutableArray new];
-            NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:feedOrFolderId];
-            [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
-                [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feedId], pred1]]];
+            NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:feedOrFolderId];
+            [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+                [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId], pred1]]];
             }];
             req.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
             path = [NSString stringWithFormat:@"folders/%@/read", feedOrFolderId];

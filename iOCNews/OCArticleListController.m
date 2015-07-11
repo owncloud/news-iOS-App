@@ -58,7 +58,6 @@
 - (void) previousArticle:(NSNotification*)n;
 - (void) nextArticle:(NSNotification*)n;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
-- (void) updatePredicate;
 - (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
 - (IBAction)handleCellSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
@@ -72,53 +71,93 @@
 @synthesize menuBarButtonItem;
 @synthesize feedRefreshControl;
 @synthesize feed = _feed;
-@synthesize fetchedResultsController;
+@synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize markGesture;
 @synthesize folderId;
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
 
 #pragma mark - Managing the detail item
 
 - (void)setFeed:(Feed *)feed {
-    //if (_feed != feed) {
-        _feed = feed;
-
-        [self configureView];
-    //}
+    _feed = feed;
+    [self configureView];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
-    if (!fetchedResultsController) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    if (_fetchedResultsController) {
+        return _fetchedResultsController;
+    }
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Item" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         [fetchRequest setEntity:entity];
         
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-        [fetchRequest setFetchBatchSize:500];
+        fetchRequest.sortDescriptors = @[sort];
+        fetchRequest.fetchBatchSize = 25;
         
-        fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                       managedObjectContext:[OCNewsHelper sharedHelper].context sectionNameKeyPath:nil
-                                                                                  cacheName:nil];
+        NSError *error;
+        NSPredicate *fetchPredicate;
+        if (self.feed.myIdValue == -1) {
+            fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
+            fetchRequest.fetchLimit = self.feed.unreadCountValue;
+        } else {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
+                if (self.feed.myIdValue == -2) {
+                    if (self.folderId > 0) {
+                        NSMutableArray *feedsArray = [NSMutableArray new];
+                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
+                        __block NSInteger fetchLimit = 0;
+                        [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+                            [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId], [NSPredicate predicateWithFormat:@"unread == 1"] ]]];
+                            fetchLimit += feed.articleCountValue;
+                        }];
+                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                        fetchRequest.fetchLimit = fetchLimit;
+                    } else {
+                        fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
+                    }
+                } else {
+                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
+                    NSArray *predArray = @[pred1, pred2];
+                    fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+                    fetchRequest.fetchLimit = self.feed.articleCountValue;
+                }
+            } else {
+                if (self.feed.myIdValue == -2) {
+                    if (self.folderId > 0) {
+                        NSMutableArray *feedsArray = [NSMutableArray new];
+                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
+                        __block NSInteger fetchLimit = 0;
+                        [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
+                            fetchLimit += feed.articleCountValue;
+                        }];
+                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                        fetchRequest.fetchLimit = fetchLimit;
+                    } else {
+                        fetchPredicate = nil;
+                        fetchRequest.fetchLimit = self.feed.articleCountValue;
+                    }
+                } else {
+                    fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                    fetchRequest.fetchLimit = self.feed.articleCountValue;
+                }
+            }
+        }
+        fetchRequest.predicate = fetchPredicate;
         
-    }
-    return fetchedResultsController;
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                managedObjectContext:[OCNewsHelper sharedHelper].context
+                                                                  sectionNameKeyPath:nil
+                                                                           cacheName:nil];
+        _fetchedResultsController.delegate = self;
+        if (![_fetchedResultsController performFetch:&error]) {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+        
+    return _fetchedResultsController;
 }
 
 - (void)configureView
@@ -150,7 +189,7 @@
         } else {
             self.refreshControl = nil;
         }
-        [self updatePredicate];
+        [self refresh];
         [self scrollToTop];
     }
 }
@@ -163,9 +202,13 @@
 }
 
 - (void) refresh {
-    [self.tableView reloadData];
+    self.fetchedResultsController = nil;
     long unreadCount = [self unreadCount];
-    self.markBarButtonItem.enabled = (unreadCount > 0);    
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        self.markBarButtonItem.enabled = (unreadCount > 0);
+    });
 }
 
 #pragma mark - View lifecycle
@@ -239,7 +282,7 @@
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
-        [self updatePredicate];
+        [self refresh];
     }
 }
 
@@ -541,69 +584,11 @@
 
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
     if([keyPath isEqual:@"HideRead"]) {
-        [self updatePredicate];
+        [self refresh];
     }
     if([keyPath isEqual:@"ShowThumbnails"] || [keyPath isEqual:@"ShowFavicons"]) {
         [self refresh];
     }
-}
-
-- (void)updatePredicate {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSError *error;
-        NSPredicate *fetchPredicate;
-        if (self.feed.myIdValue == -1) {
-            fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
-        } else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
-                if (self.feed.myIdValue == -2) {
-                    if (self.folderId > 0) {
-                        NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
-                        [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feedId],[NSPredicate predicateWithFormat:@"unread == 1"] ]]];
-                        }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-                    } else {
-                        fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
-                    }
-                } else {
-                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
-                    NSArray *predArray = @[pred1, pred2];
-                    fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-                }
-                self.fetchedResultsController.delegate = nil;
-            } else {
-                if (self.feed.myIdValue == -2) {
-                    if (self.folderId > 0) {
-                        NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *feedIds = [[OCNewsHelper sharedHelper] feedIdsWithFolderId:[NSNumber numberWithInteger:self.folderId]];
-                        [feedIds enumerateObjectsUsingBlock:^(NSNumber *feedId, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feedId]];
-                        }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-                    } else {
-                        fetchPredicate = nil;
-                    }
-                } else {
-                    fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                }
-                self.fetchedResultsController.delegate = self;
-            }
-        }
-//        [NSFetchedResultsController deleteCacheWithName:@"ArticleCache"];
-        self.fetchedResultsController.fetchRequest.predicate = fetchPredicate;
-        self.fetchedResultsController.fetchRequest.fetchBatchSize = 25;
-        
-        if (![self.fetchedResultsController performFetch:&error]) {
-            // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self refresh];
-        });
-    });
 }
 
 #pragma mark - Toolbar buttons

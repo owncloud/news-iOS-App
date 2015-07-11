@@ -67,7 +67,7 @@ typedef NS_ENUM(NSInteger, OCUpdateType) {
 - (Folder*)folderWithId:(NSNumber*)anId;
 - (NSArray*)folders;
 - (Feed*)feedWithId:(NSNumber*)anId;
-- (NSArray*)feedIdsWithFolderId:(NSNumber*)folderId;
+- (NSArray*)feedsInFolderWithId:(NSNumber*)folderId;
 - (Item*)itemWithId:(NSNumber*)anId;
 
 - (int)addFolder:(id)JSON;
