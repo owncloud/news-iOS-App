@@ -41,10 +41,10 @@
 #import "OCNewsHelper.h"
 #import "Item.h"
 #import "objc/runtime.h"
-#import "UIImageView+OCWebCache.h"
 #import "HexColor.h"
 #import "UIViewController+MMDrawerController.h"
-#import "UIImageView+WebCache.h"
+#import "UIImageView+AFNetworking.h"
+#import "OCRoundedImageResponseSerializer.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
@@ -204,11 +204,8 @@
 - (void) refresh {
     self.fetchedResultsController = nil;
     long unreadCount = [self unreadCount];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-        self.markBarButtonItem.enabled = (unreadCount > 0);
-    });
+    [self.tableView reloadData];
+    self.markBarButtonItem.enabled = (unreadCount > 0);
 }
 
 #pragma mark - View lifecycle
@@ -373,7 +370,7 @@
                     NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
                     if (faviconURL) {
                         if (cell.tag == indexPath.row) {
-                            [cell.favIconImage sd_setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                            [cell.favIconImage setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
                         }
                     }
                 } else {
@@ -426,7 +423,19 @@
             NSString *urlString = [OCArticleImage findImage:summary];
             if (urlString) {
                 if (cell.tag == indexPath.row) {
-                    [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
+                    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+                    cell.articleImage.imageResponseSerializer = [OCRoundedImageResponseSerializer serializerWithSize:cell.articleImage.bounds.size];
+                    [cell.articleImage setImageWithURLRequest:urlRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            cell.articleImage.image = image;
+                            [cell setNeedsLayout];
+                            [cell layoutIfNeeded];
+                        });
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                        cell.articleImage.image = nil;
+                        [cell setNeedsLayout];
+                        [cell layoutIfNeeded];
+                    }];
                 }
             } else {
                 [cell.articleImage setImage:nil];
@@ -448,7 +457,6 @@
     OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
     cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
-    
     return cell;
 }
 

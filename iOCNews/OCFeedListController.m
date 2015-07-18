@@ -37,10 +37,9 @@
 #import "OCNewsHelper.h"
 #import "Folder.h"
 #import "Feed.h"
-#import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
+#import "UIImageView+AFNetworking.h"
 #import "UIViewController+MMDrawerController.h"
-#import "UIImageView+WebCache.h"
 
 @interface OCFeedListController () <UIActionSheetDelegate> {
     NSNumber *currentRenameId;
@@ -282,7 +281,7 @@
                         NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
                         if (faviconURL) {
                             if (cell.tag == indexPathTemp.row) {
-                                [cell.imageView sd_setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                                [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
                             }
                         }
                     } else {

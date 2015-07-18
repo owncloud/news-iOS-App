@@ -13,9 +13,6 @@
 [submodule "TSMessages"]
 	path = TSMessages
 	url = https://github.com/toursprung/TSMessages.git
-[submodule "SDWebImage"]
-	path = SDWebImage
-	url = https://github.com/rs/SDWebImage.git
 [submodule "iOSPorts"]
 	path = iOSPorts
 	url = https://github.com/bindle/iOSPorts.git
