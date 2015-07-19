@@ -34,7 +34,6 @@
 #import "OCArticleCell.h"
 #import "OCWebController.h"
 #import "NSString+HTML.h"
-#import "UILabel+VerticalAlignment.h"
 #import "AFNetworking.h"
 #import "OCArticleImage.h"
 #import "TSMessage.h"
@@ -329,7 +328,6 @@
         
         cell.titleLabel.preferredMaxLayoutWidth = 320.0f;
         cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
-        [cell.titleLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
         NSString *dateLabelText = @"";
         
         NSNumber *dateNumber = item.pubDate;
@@ -399,7 +397,6 @@
             }
         }
         cell.summaryLabel.text = [summary stringByConvertingHTMLToPlainText];
-        [cell.summaryLabel setTextVerticalAlignment:UITextVerticalAlignmentTop];
         cell.starImage.image = nil;
         if (item.starredValue) {
             cell.starImage.image = [UIImage imageNamed:@"star_icon"];

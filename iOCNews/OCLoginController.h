@@ -43,7 +43,6 @@
 @property (strong, nonatomic) IBOutlet UISwitch *certificateSwitch;
 @property (strong, nonatomic) IBOutlet UITableViewCell *certificateCell;
 
-@property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *connectionActivityIndicator;
 
 - (IBAction)doDone:(id)sender;

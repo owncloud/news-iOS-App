@@ -101,7 +101,6 @@
 		D04AD66D1807403100FF6056 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D04AD66E1807403100FF6056 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D04AD66F1807403100FF6056 /* OCWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA72177909A600C965F4 /* OCWebController.m */; };
-		D04AD6711807403100FF6056 /* UILabel+VerticalAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */; };
 		D04AD6761807403100FF6056 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
 		D04AD6811807403100FF6056 /* OCAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */; };
 		D04AD6821807403100FF6056 /* OCArticleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC301780E97200C965F4 /* OCArticleImage.m */; };
@@ -202,7 +201,6 @@
 		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA72177909A600C965F4 /* OCWebController.m */; };
-		D0BCAAA417790C1E00C965F4 /* UILabel+VerticalAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */; };
 		D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAADA17790C9100C965F4 /* libxml2.dylib */; };
 		D0BCABC8177910C000C965F4 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABC7177910C000C965F4 /* ImageIO.framework */; };
 		D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
@@ -427,8 +425,6 @@
 		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA71177909A600C965F4 /* OCWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCWebController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA72177909A600C965F4 /* OCWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCWebController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D0BCAAA217790C1E00C965F4 /* UILabel+VerticalAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+VerticalAlignment.h"; sourceTree = "<group>"; };
-		D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+VerticalAlignment.m"; sourceTree = "<group>"; };
 		D0BCAADA17790C9100C965F4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		D0BCABC7177910C000C965F4 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D0BCABD41779112000C965F4 /* PHPrefViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHPrefViewController.h; sourceTree = "<group>"; };
@@ -741,7 +737,6 @@
 				D0F18130178502E000F719D9 /* HTMLString */,
 				D0BCAC021779275900C965F4 /* AFNetworking */,
 				D0BCABE417791F3400C965F4 /* TUSafariActivity */,
-				D0BCAAA117790C1E00C965F4 /* UILabel-VerticalAlignment */,
 				D07D651517DFEFE700C40D76 /* JCGridMenu */,
 				D0BCAA2B177900C300C965F4 /* iOCNews */,
 				D0BCAA24177900C300C965F4 /* Frameworks */,
@@ -849,15 +844,6 @@
 				D0BCAA33177900C400C965F4 /* iOCNews-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D0BCAAA117790C1E00C965F4 /* UILabel-VerticalAlignment */ = {
-			isa = PBXGroup;
-			children = (
-				D0BCAAA217790C1E00C965F4 /* UILabel+VerticalAlignment.h */,
-				D0BCAAA317790C1E00C965F4 /* UILabel+VerticalAlignment.m */,
-			);
-			path = "UILabel-VerticalAlignment";
 			sourceTree = "<group>";
 		};
 		D0BCABE417791F3400C965F4 /* TUSafariActivity */ = {
@@ -1346,7 +1332,6 @@
 				D04AD66D1807403100FF6056 /* OCFeedCell.m in Sources */,
 				D04AD66E1807403100FF6056 /* OCFeedListController.m in Sources */,
 				D04AD66F1807403100FF6056 /* OCWebController.m in Sources */,
-				D04AD6711807403100FF6056 /* UILabel+VerticalAlignment.m in Sources */,
 				D02300261A5A097500B354E0 /* FDTopDrawerController.m in Sources */,
 				D0E8A08C1842C29C005F8CAF /* AFURLResponseSerialization.m in Sources */,
 				D0E8A09C1842C2AC005F8CAF /* UIProgressView+AFNetworking.m in Sources */,
@@ -1423,7 +1408,6 @@
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
-				D0BCAAA417790C1E00C965F4 /* UILabel+VerticalAlignment.m in Sources */,
 				D02300231A5A097500B354E0 /* FDBottomDrawerController.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D0E8A07C1842ABD5005F8CAF /* AFURLResponseSerialization.m in Sources */,
