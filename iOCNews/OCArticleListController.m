@@ -41,7 +41,6 @@
 #import "OCNewsHelper.h"
 #import "Item.h"
 #import "objc/runtime.h"
-#import "HexColor.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIImageView+AFNetworking.h"
 #import "OCRoundedImageResponseSerializer.h"
@@ -413,9 +412,9 @@
             cell.articleImage.alpha = 1.0f;
             cell.favIconImage.alpha = 1.0f;
         } else {
-            cell.summaryLabel.textColor = [UIColor colorWithHexString:@"#696969"];
-            cell.titleLabel.textColor = [UIColor colorWithHexString:@"#696969"];
-            cell.dateLabel.textColor = [UIColor colorWithHexString:@"#696969"];
+            cell.summaryLabel.textColor = [UIColor colorWithWhite:0.41 alpha:1.0];
+            cell.titleLabel.textColor = [UIColor colorWithWhite:0.41 alpha:1.0];
+            cell.dateLabel.textColor = [UIColor colorWithWhite:0.41 alpha:1.0];
             cell.articleImage.alpha = 0.4f;
             cell.favIconImage.alpha = 0.4f;
         }

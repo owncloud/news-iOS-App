@@ -124,7 +124,6 @@
 		D04AD6A61807403100FF6056 /* rd_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABA17B83637005D1463 /* rd_list.c */; };
 		D04AD6A71807403100FF6056 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
 		D04AD6AA1807403100FF6056 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
-		D04AD6AB1807403100FF6056 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FB275617CE8D3700FABB09 /* HexColor.m */; };
 		D04AD6AC1807403100FF6056 /* JCGridMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D651817DFEFE700C40D76 /* JCGridMenuController.m */; };
 		D04AD6AD1807403100FF6056 /* UIButton+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D655E17DFEFE700C40D76 /* UIButton+JCUI.m */; };
 		D04AD6AE1807403100FF6056 /* UILabel+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656017DFEFE700C40D76 /* UILabel+JCUI.m */; };
@@ -188,6 +187,8 @@
 		D0A33F6118876CF700C6DA92 /* OCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F5F18876CF700C6DA92 /* OCTextView.m */; };
 		D0A9E67C1B55EDFD00908991 /* OCRoundedImageResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A9E67B1B55EDFD00908991 /* OCRoundedImageResponseSerializer.m */; };
 		D0A9E67D1B55EDFD00908991 /* OCRoundedImageResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A9E67B1B55EDFD00908991 /* OCRoundedImageResponseSerializer.m */; };
+		D0A9E6841B5B230100908991 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A9E6831B5B230100908991 /* HexColor.m */; };
+		D0A9E6851B5B230100908991 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A9E6831B5B230100908991 /* HexColor.m */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -261,7 +262,6 @@
 		D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812D178502D500F719D9 /* NSString+HTML.m */; };
 		D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F1813E17850CAF00F719D9 /* Security.framework */; };
 		D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */; };
-		D0FB275717CE8D3700FABB09 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FB275617CE8D3700FABB09 /* HexColor.m */; };
 		D0FD70791787626100EF1457 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
@@ -403,6 +403,8 @@
 		D0A33F5F18876CF700C6DA92 /* OCTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTextView.m; sourceTree = "<group>"; };
 		D0A9E67A1B55EDFD00908991 /* OCRoundedImageResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCRoundedImageResponseSerializer.h; sourceTree = "<group>"; };
 		D0A9E67B1B55EDFD00908991 /* OCRoundedImageResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCRoundedImageResponseSerializer.m; sourceTree = "<group>"; };
+		D0A9E6821B5B230100908991 /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HexColor.h; path = TSMessages/Submodules/HexColors/Classes/HexColor.h; sourceTree = SOURCE_ROOT; };
+		D0A9E6831B5B230100908991 /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HexColor.m; path = TSMessages/Submodules/HexColors/Classes/HexColor.m; sourceTree = SOURCE_ROOT; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -526,8 +528,6 @@
 		D0F1813E17850CAF00F719D9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D0F8274E17B2D83400BE84D7 /* OCFeedSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFeedSettingsController.h; sourceTree = "<group>"; };
 		D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFeedSettingsController.m; sourceTree = "<group>"; };
-		D0FB275517CE8D3700FABB09 /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColor.h; sourceTree = "<group>"; };
-		D0FB275617CE8D3700FABB09 /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
 		D0FD70741787626100EF1457 /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLNode.h; sourceTree = "<group>"; };
 		D0FD70751787626100EF1457 /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
 		D0FD70761787626100EF1457 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
@@ -735,7 +735,6 @@
 				D0E8A0D0184BF09B005F8CAF /* UAAppReviewManager */,
 				D0E89F4F1833FDD4005F8CAF /* MSCMoreOptionTableViewCell */,
 				D0BF491617E7DF2000CB9311 /* TSMessages */,
-				D0FB275417CE8D3700FABB09 /* HexColors */,
 				D01ACAB317B83637005D1463 /* readable */,
 				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
@@ -897,6 +896,8 @@
 		D0BF491617E7DF2000CB9311 /* TSMessages */ = {
 			isa = PBXGroup;
 			children = (
+				D0A9E6821B5B230100908991 /* HexColor.h */,
+				D0A9E6831B5B230100908991 /* HexColor.m */,
 				D007959C1AA2A02800A590C1 /* Assets */,
 				D00795AF1AA2A02800A590C1 /* Classes */,
 			);
@@ -1016,16 +1017,6 @@
 				D0F1812D178502D500F719D9 /* NSString+HTML.m */,
 			);
 			name = HTMLString;
-			sourceTree = "<group>";
-		};
-		D0FB275417CE8D3700FABB09 /* HexColors */ = {
-			isa = PBXGroup;
-			children = (
-				D0FB275517CE8D3700FABB09 /* HexColor.h */,
-				D0FB275617CE8D3700FABB09 /* HexColor.m */,
-			);
-			name = HexColors;
-			path = HexColors/Classes;
 			sourceTree = "<group>";
 		};
 		D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */ = {
@@ -1343,6 +1334,7 @@
 				D04AD6651807403100FF6056 /* main.m in Sources */,
 				D04AD6661807403100FF6056 /* OCAppDelegate.m in Sources */,
 				D00A956419E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
+				D0A9E6851B5B230100908991 /* HexColor.m in Sources */,
 				D0E8A0981842C2AC005F8CAF /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				D04AD66A1807403100FF6056 /* OCArticleCell.m in Sources */,
 				D0E8A0991842C2AC005F8CAF /* UIAlertView+AFNetworking.m in Sources */,
@@ -1402,7 +1394,6 @@
 				D00795E21AA2A02800A590C1 /* TSMessageView.m in Sources */,
 				D0E89F591836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D04AD6AA1807403100FF6056 /* NSDictionary+HandleNull.m in Sources */,
-				D04AD6AB1807403100FF6056 /* HexColor.m in Sources */,
 				D04AD6AC1807403100FF6056 /* JCGridMenuController.m in Sources */,
 				D04AD6AD1807403100FF6056 /* UIButton+JCUI.m in Sources */,
 				D04AD6AE1807403100FF6056 /* UILabel+JCUI.m in Sources */,
@@ -1472,6 +1463,7 @@
 				D0E8A07A1842ABD5005F8CAF /* AFURLConnectionOperation.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D0E89F541833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */,
+				D0A9E6841B5B230100908991 /* HexColor.m in Sources */,
 				D0E8A0821842ABD5005F8CAF /* UIImageView+AFNetworking.m in Sources */,
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
 				D02300331A5A099D00B354E0 /* MMDrawerController.m in Sources */,
@@ -1485,7 +1477,6 @@
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
-				D0FB275717CE8D3700FABB09 /* HexColor.m in Sources */,
 				D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */,
 				D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */,
 				D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */,

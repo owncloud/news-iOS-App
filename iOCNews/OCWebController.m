@@ -37,7 +37,6 @@
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
-#import "HexColor.h"
 #import "OCSharingProvider.h"
 #import "UIViewController+MMDrawerController.h"
 #import "FDTopDrawerController.h"
@@ -1119,7 +1118,12 @@ const int SWIPE_PREVIOUS = 1;
     NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
     long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
     NSString *background = [backgrounds objectAtIndex:backgroundIndex];
-    UIColor *backColor = [UIColor colorWithHexString:background];
+    UIColor *backColor = [UIColor blackColor];
+    if ([background isEqualToString:@"#FFFFFF"]) {
+        backColor = [UIColor whiteColor];
+    } else if ([background isEqualToString:@"#F5EFDC"]) {
+        backColor = [UIColor colorWithRed:0.96 green:0.94 blue:0.86 alpha:1];
+    }
     return backColor;
 }
 
