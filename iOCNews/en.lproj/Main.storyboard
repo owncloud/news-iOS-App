@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="iFj-kL-GWg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F6a" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="iFj-kL-GWg">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -464,7 +464,7 @@
                     <navigationItem key="navigationItem" title="Settings" id="goP-ec-pAs">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="SGF-Oo-oNf">
                             <connections>
-                                <action selector="didTapDone:" destination="P5u-kO-eoc" id="pCJ-qL-Gbx"/>
+                                <action selector="onDone:" destination="P5u-kO-eoc" id="Rt6-KP-oXW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

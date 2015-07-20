@@ -46,6 +46,6 @@
 - (IBAction)showFaviconsChanged:(id)sender;
 - (IBAction)showThumbnailsChanged:(id)sender;
 - (IBAction)markWhileScrollingChanged:(id)sender;
-- (IBAction)didTapDone:(id)sender;
+- (IBAction)onDone:(id)sender;
 
 @end
