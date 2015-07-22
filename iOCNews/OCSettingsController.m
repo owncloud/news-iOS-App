@@ -4,7 +4,7 @@
 
 /************************************************************************
  
- Copyright 2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2013-2015 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -89,27 +89,27 @@
 #pragma mark - Switches
 
 - (IBAction)syncOnStartChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.syncOnStartSwitch.isOn forKey:@"SyncOnStart"];
+    [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"SyncOnStart"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)syncInBackgroundChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.syncinBackgroundSwitch.isOn forKey:@"SyncInBackground"];
+    [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"SyncInBackground"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)showFaviconsChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.showFaviconsSwitch.isOn forKey:@"ShowFavicons"];
+    [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"ShowFavicons"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)showThumbnailsChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.showThumbnailsSwitch.isOn forKey:@"ShowThumbnails"];
+    [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"ShowThumbnails"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)markWhileScrollingChanged:(id)sender {
-    [[NSUserDefaults standardUserDefaults] setBool:self.markWhileScrollingSwitch.isOn forKey:@"MarkWhileScrolling"];
+    [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"MarkWhileScrolling"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
