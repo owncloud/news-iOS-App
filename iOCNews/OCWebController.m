@@ -924,24 +924,23 @@ const int SWIPE_PREVIOUS = 1;
 - (void)updateToolbar {
     self.backBarButtonItem.enabled = self.webView.canGoBack;
     self.forwardBarButtonItem.enabled = self.webView.canGoForward;
+    UIBarButtonItem *refreshStopBarButtonItem = loadingComplete ? self.refreshBarButtonItem : self.stopBarButtonItem;
     if ((self.item != nil)) {
         self.actionBarButtonItem.enabled = loadingComplete;
         self.textBarButtonItem.enabled = loadingComplete;
         self.starBarButtonItem.enabled = loadingComplete;
         self.unstarBarButtonItem.enabled = loadingComplete;
+        refreshStopBarButtonItem.enabled = YES;
+        self.keepUnread.button.selected = self.item.unreadValue;
+        self.star.button.selected = self.item.starredValue;
     } else {
         self.actionBarButtonItem.enabled = NO;
         self.textBarButtonItem.enabled = NO;
         self.starBarButtonItem.enabled = NO;
         self.unstarBarButtonItem.enabled = NO;
+        refreshStopBarButtonItem.enabled = NO;
     }
-
-    UIBarButtonItem *refreshStopBarButtonItem = loadingComplete ? self.refreshBarButtonItem : self.stopBarButtonItem;
-    refreshStopBarButtonItem.enabled = (self.item != nil);
     self.navigationItem.leftBarButtonItems = @[self.menuBarButtonItem, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
-
-    self.keepUnread.button.selected = self.item.unreadValue;
-    self.star.button.selected = self.item.starredValue;
     self.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
 }
 
