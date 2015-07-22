@@ -41,7 +41,7 @@
     HTMLParser *parser = [[HTMLParser alloc] initWithString:htmlString error:&error];
     
     if (error) {
-        NSLog(@"Error: %@", error);
+//        NSLog(@"Error: %@", error);
         return result;
     }
     

@@ -160,7 +160,7 @@
         NSError *error = nil;
         coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self objectModel]];
         if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-            NSLog(@"Error %@, %@", error, [error localizedDescription]);
+//            NSLog(@"Error %@, %@", error, [error localizedDescription]);
         }
     }
     return coordinator;
@@ -968,7 +968,7 @@
         NSError *error = nil;
         NSArray *allItems = [self.context executeFetchRequest:self.itemRequest error:&error];
         if (!allItems || error) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
 //        NSLog(@"Count: %lu", (unsigned long)items.count);
         
@@ -1020,14 +1020,14 @@
     NSError *error = nil;
     NSArray *starredItems = [self.context executeFetchRequest:self.itemRequest error:&error];
     if (!starredItems || error) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 //    NSLog(@"Starred Count: %lu", (unsigned long)starredItems.count);
     
     error = nil;
     NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
     if (!feeds || error) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
 
     Feeds *theFeeds = [feeds lastObject];

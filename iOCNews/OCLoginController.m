@@ -188,7 +188,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSString *message = @"";
             NSString *title = @"";
-            NSLog(@"Status code: %ld", (long)response.statusCode);
+//            NSLog(@"Status code: %ld", (long)response.statusCode);
             switch (response.statusCode) {
                 case 200:
                     title = NSLocalizedString(@"News not found", @"An error message title");

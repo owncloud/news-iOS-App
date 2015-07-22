@@ -152,7 +152,7 @@
         _fetchedResultsController.delegate = self;
         if (![_fetchedResultsController performFetch:&error]) {
             // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         }
         
     return _fetchedResultsController;

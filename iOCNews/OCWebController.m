@@ -950,7 +950,7 @@ const int SWIPE_PREVIOUS = 1;
     HTMLParser *parser = [[HTMLParser alloc] initWithString:htmlString error:&error];
     
     if (error) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         return result;
     }
 
@@ -1192,7 +1192,7 @@ const int SWIPE_PREVIOUS = 1;
     HTMLParser *parser = [[HTMLParser alloc] initWithString:html error:&error];
     
     if (error) {
-        NSLog(@"Error: %@", error);
+//        NSLog(@"Error: %@", error);
         return html;
     }
     

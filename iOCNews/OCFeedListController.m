@@ -701,15 +701,15 @@
     NSError *error;
     if (![[self specialFetchedResultsController] performFetch:&error]) {
         // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     if (![[self foldersFetchedResultsController] performFetch:&error]) {
         // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     if (![[self feedsFetchedResultsController] performFetch:&error]) {
         // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     }
     
     [self.tableView reloadData];
