@@ -34,6 +34,7 @@
 #import "OCAPIClient.h"
 #import "Feeds.h"
 #import "NSDictionary+HandleNull.h"
+#import "AFNetworking.h"
 
 @interface OCNewsHelper () {
     NSMutableSet *foldersToAdd;
@@ -218,12 +219,57 @@
     newFeed.myId = [dict objectForKey:@"id"];
     newFeed.url = [dict objectForKeyNotNull:@"url" fallback:@""];
     newFeed.title = [dict objectForKeyNotNull:@"title" fallback:@""];
-    newFeed.faviconLink = [dict objectForKeyNotNull:@"faviconLink" fallback:@"favicon"];
+    newFeed.faviconLink = [dict objectForKeyNotNull:@"faviconLink" fallback:@""];
+    if (!newFeed.faviconLink.length) {
+        newFeed.faviconLink = @"favicon";
+    }
     newFeed.added = [dict objectForKey:@"added"];
     newFeed.folderId = [dict objectForKey:@"folderId"];
     newFeed.unreadCount = [dict objectForKey:@"unreadCount"];
     newFeed.link = [dict objectForKeyNotNull:@"link" fallback:@""];
     return newFeed.myIdValue;
+}
+
+- (void)faviconForFeedWithId:(NSNumber *)feedId completion:(void(^)(UIImage *image, BOOL success))completion
+{
+    NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feedId.stringValue];
+    faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:faviconSaveUrl.path]) {
+        completion([UIImage imageWithContentsOfFile:faviconSaveUrl.path], YES);
+        return;
+    }
+    
+    Feed *feed = [self feedWithId:feedId];
+    if ([feed.faviconLink isEqualToString:@"favicon"] || [feed.faviconLink isEqualToString:@""]) {
+        completion([UIImage imageNamed:@"favicon"], YES);
+        return;
+    }
+    if ([feed.faviconLink isEqualToString:@"star_icon"] || [feed.faviconLink isEqualToString:@""]) {
+        completion([UIImage imageNamed:@"star_icon"], YES);
+        return;
+    }
+
+    NSURL *faviconUrl = [NSURL URLWithString:feed.faviconLink];
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:faviconUrl];
+    AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
+    AFImageResponseSerializer *imageResponseSerializer = [AFImageResponseSerializer serializer];
+    NSSet *acceptableContentTypes = imageResponseSerializer.acceptableContentTypes;
+    acceptableContentTypes = [acceptableContentTypes setByAddingObject:@"image/vnd.microsoft.icon"];
+    imageResponseSerializer.acceptableContentTypes = acceptableContentTypes;
+    requestOperation.responseSerializer = imageResponseSerializer;
+    [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Response: %@", responseObject);
+        if ([responseObject isKindOfClass:[UIImage class]]) {
+            NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feed.myId.stringValue];
+            faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
+            [UIImagePNGRepresentation(responseObject) writeToURL:faviconSaveUrl atomically:YES];
+            completion([UIImage imageWithContentsOfFile:faviconSaveUrl.path], YES);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Image error: %@", error);
+        completion([UIImage imageNamed:@"favicon"], NO);
+    }];
+    [requestOperation start];
 }
 
 - (void)addItemFromDictionary:(NSDictionary *)dict {
@@ -280,9 +326,14 @@
 
 - (void)deleteFeed:(Feed*)feed {
     if (feed) {
+        NSError *error = nil;
+        NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feed.myId.stringValue];
+        faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:faviconSaveUrl.path]) {
+            [[NSFileManager defaultManager] removeItemAtURL:faviconSaveUrl error:&error];
+        }
         [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
         
-        NSError *error = nil;
         NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
         for (Item *item in feedItems) {
             [self.context deleteObject:item];

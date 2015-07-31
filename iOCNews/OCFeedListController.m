@@ -38,7 +38,6 @@
 #import "Folder.h"
 #import "Feed.h"
 #import "AFNetworking.h"
-#import "UIImageView+AFNetworking.h"
 #import "UIViewController+MMDrawerController.h"
 
 @interface OCFeedListController () <UIActionSheetDelegate> {
@@ -276,22 +275,12 @@
                     feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                 }
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
-                    NSString *faviconLink = feed.faviconLink;
-                    if ([faviconLink hasPrefix:@"http"]) {
-                        NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
-                        if (faviconURL) {
-                            if (cell.tag == indexPathTemp.row) {
-                                [cell.imageView setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                    if (cell.tag == indexPathTemp.row) {
+                        [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId completion:^(UIImage *image, BOOL success) {
+                            if (image) {
+                                cell.imageView.image = image;
                             }
-                        }
-                    } else {
-                        if ((self.folderId > 0) && (indexPath.section == 0) && indexPath.row == 0) {
-                            [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
-                        } else {
-                            if (faviconLink && faviconLink.length > 0) {
-                                [cell.imageView setImage:[UIImage imageNamed:faviconLink]];
-                            }
-                        }
+                        }];
                     }
                 }
                 cell.accessoryType = UITableViewCellAccessoryNone;

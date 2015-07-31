@@ -362,18 +362,12 @@
         Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:item.feedId];
         if (feed) {
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
-                NSString *faviconLink = feed.faviconLink;
-                if ([faviconLink hasPrefix:@"http"]) {
-                    NSURL *faviconURL = [NSURL URLWithString:faviconLink] ;
-                    if (faviconURL) {
-                        if (cell.tag == indexPath.row) {
-                            [cell.favIconImage setImageWithURL:faviconURL placeholderImage:[UIImage imageNamed:@"favicon"]];
+                if (cell.tag == indexPath.row) {
+                    [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId completion:^(UIImage *image, BOOL success) {
+                        if (image) {
+                            cell.favIconImage.image = image;
                         }
-                    }
-                } else {
-                    if (faviconLink && faviconLink.length > 0) {
-                        [cell.favIconImage setImage:[UIImage imageNamed:faviconLink]];
-                    }
+                    }];
                 }
             }
             
