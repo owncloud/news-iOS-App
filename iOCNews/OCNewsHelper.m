@@ -1196,31 +1196,54 @@
         //online
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:urlString, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
         [[OCAPIClient sharedClient] POST:@"feeds" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
-            //NSLog(@"Feeds: %@", responseObject);
-            
-            int newFeedId = [self addFeed:responseObject];
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
-                                    [NSNumber numberWithInt:0], @"offset",
-                                    [NSNumber numberWithInt:0], @"type",
-                                    [NSNumber numberWithInt:newFeedId], @"id",
-                                    [NSNumber numberWithInt:1], @"getRead", nil];
-            
-            [[OCAPIClient sharedClient] GET:@"items" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
-                NSDictionary *jsonDict = (NSDictionary *) responseObject;
-                NSArray *newItems = [NSArray arrayWithArray:[jsonDict objectForKey:@"items"]];
-                [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
-                    [self addItemFromDictionary:item];
+            NSDictionary *feedDict = nil;
+            if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
+            {
+                feedDict = (NSDictionary*)responseObject;
+            }
+            else
+            {
+                id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                if (json && [json isKindOfClass:[NSDictionary class]]) {
+                    feedDict = (NSDictionary*)json;
+                }
+            }
+            if (feedDict) {
+                int newFeedId = [self addFeed:feedDict];
+                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:200], @"batchSize",
+                                        [NSNumber numberWithInt:0], @"offset",
+                                        [NSNumber numberWithInt:0], @"type",
+                                        [NSNumber numberWithInt:newFeedId], @"id",
+                                        [NSNumber numberWithInt:1], @"getRead", nil];
+                
+                [[OCAPIClient sharedClient] GET:@"items" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+                    NSDictionary *itemsDict = nil;
+                    if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
+                    {
+                        itemsDict = (NSDictionary*)responseObject;
+                    }
+                    else
+                    {
+                        id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                        if (json && [json isKindOfClass:[NSDictionary class]]) {
+                            itemsDict = (NSDictionary*)json;
+                        }
+                    }
+                    if (itemsDict) {
+                        NSArray *newItems = [NSArray arrayWithArray:[itemsDict objectForKey:@"items"]];
+                        [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+                            [self addItemFromDictionary:item];
+                        }];
+                        [self saveContext];
+                    }
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                    NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
+                    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Retrieving Items", @"Title", message, @"Message", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
                 }];
-                [self saveContext];
-            
-            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-                NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
-                NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Retrieving Items", @"Title", message, @"Message", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
-            }];
-
+            }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSString *message;
