@@ -432,7 +432,7 @@
                     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
                     __unsafe_unretained OCArticleCell *weakCell = cell;
                     cell.articleImage.imageResponseSerializer = [OCRoundedImageResponseSerializer serializerWithSize:cell.articleImage.bounds.size];
-                    [cell.articleImage setImageWithURLRequest:urlRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                    [cell.articleImage setImageWithURLRequest:urlRequest placeholderImage:[UIImage imageNamed:@"placeholder"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             weakCell.articleImage.image = image;
                             [weakCell setNeedsLayout];
