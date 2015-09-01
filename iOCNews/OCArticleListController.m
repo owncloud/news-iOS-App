@@ -47,6 +47,8 @@
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
     BOOL markingAllItemsRead;
+    BOOL hideRead;
+    NSArray *fetchedItems;
 }
 
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
@@ -80,81 +82,81 @@
     [self configureView];
 }
 
-- (NSFetchedResultsController *)fetchedResultsController {
-    if (_fetchedResultsController) {
-        return _fetchedResultsController;
-    }
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+- (NSFetchRequest *)fetchRequest {
+    static NSFetchRequest *request;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        request = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Item" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
-        [fetchRequest setEntity:entity];
-        
+        request.entity = entity;
+        request.fetchBatchSize = 25;
         NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
-        fetchRequest.sortDescriptors = @[sort];
-        fetchRequest.fetchBatchSize = 25;
-        
-        NSError *error;
-        NSPredicate *fetchPredicate;
-        if (self.feed.myIdValue == -1) {
-            fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
-            fetchRequest.fetchLimit = self.feed.unreadCountValue;
-        } else {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
-                if (self.feed.myIdValue == -2) {
-                    if (self.folderId > 0) {
-                        NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
-                        __block NSInteger fetchLimit = 0;
-                        [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId], [NSPredicate predicateWithFormat:@"unread == 1"] ]]];
-                            fetchLimit += feed.articleCountValue;
-                        }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-                        fetchRequest.fetchLimit = fetchLimit;
-                    } else {
-                        fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
-                    }
+        request.sortDescriptors = @[sort];
+    });
+    return request;
+}
+
+- (NSFetchedResultsController *)fetchedResultsController {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest
+                                                                    managedObjectContext:[OCNewsHelper sharedHelper].context
+                                                                      sectionNameKeyPath:nil
+                                                                               cacheName:nil];
+    });
+//    NSError *error;
+    NSPredicate *fetchPredicate;
+    if (self.feed.myIdValue == -1) {
+        fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
+        self.fetchRequest.fetchLimit = self.feed.unreadCountValue;
+    } else {
+        if (hideRead) {
+            if (self.feed.myIdValue == -2) {
+                if (self.folderId > 0) {
+                    NSMutableArray *feedsArray = [NSMutableArray new];
+                    NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
+                    __block NSInteger fetchLimit = 0;
+                    [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+                        [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId], [NSPredicate predicateWithFormat:@"unread == 1"] ]]];
+                        fetchLimit += feed.articleCountValue;
+                    }];
+                    fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                    _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
                 } else {
-                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
-                    NSArray *predArray = @[pred1, pred2];
-                    fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-                    fetchRequest.fetchLimit = self.feed.articleCountValue;
+                    fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
                 }
             } else {
-                if (self.feed.myIdValue == -2) {
-                    if (self.folderId > 0) {
-                        NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
-                        __block NSInteger fetchLimit = 0;
-                        [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
-                            fetchLimit += feed.articleCountValue;
-                        }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-                        fetchRequest.fetchLimit = fetchLimit;
-                    } else {
-                        fetchPredicate = nil;
-                        fetchRequest.fetchLimit = self.feed.articleCountValue;
-                    }
-                } else {
-                    fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                    fetchRequest.fetchLimit = self.feed.articleCountValue;
-                }
+                NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
+                NSArray *predArray = @[pred1, pred2];
+                fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
+                _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
             }
+            _fetchedResultsController.delegate = nil;
+        } else {
+            if (self.feed.myIdValue == -2) {
+                if (self.folderId > 0) {
+                    NSMutableArray *feedsArray = [NSMutableArray new];
+                    NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
+                    __block NSInteger fetchLimit = 0;
+                    [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
+                        [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
+                        fetchLimit += feed.articleCountValue;
+                    }];
+                    fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                    _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
+                } else {
+                    fetchPredicate = nil;
+                    _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
+                }
+            } else {
+                fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
+            }
+            _fetchedResultsController.delegate = self;
         }
-        fetchRequest.predicate = fetchPredicate;
-        
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                managedObjectContext:[OCNewsHelper sharedHelper].context
-                                                                  sectionNameKeyPath:nil
-                                                                           cacheName:nil];
-        _fetchedResultsController.delegate = self;
-        if (![_fetchedResultsController performFetch:&error]) {
-            // Update to handle the error appropriately.
-//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-        
+    }
+    _fetchedResultsController.fetchRequest.predicate = fetchPredicate;
     return _fetchedResultsController;
 }
 
@@ -177,6 +179,16 @@
         } else {
             self.navigationItem.title = self.feed.title;
         }
+        hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
+        BOOL success = [self.fetchedResultsController performFetch:nil];
+        if (success) {
+            fetchedItems = self.fetchedResultsController.fetchedObjects;
+            long unreadCount = [self unreadCount];
+            [self.tableView reloadData];
+            self.markBarButtonItem.enabled = (unreadCount > 0);
+        } else {
+            fetchedItems = [NSArray new];
+        }
     }
     @catch (NSException *exception) {
         self.navigationItem.title = self.feed.title;
@@ -194,13 +206,12 @@
 
 - (void) scrollToTop {
     self.markBarButtonItem.enabled = ([self unreadCount] > 0);
-    if ([[self.fetchedResultsController fetchedObjects] count] > 0) {
+    if (fetchedItems.count > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
 
 - (void) refresh {
-    self.fetchedResultsController = nil;
     long unreadCount = [self unreadCount];
     [self.tableView reloadData];
     self.markBarButtonItem.enabled = (unreadCount > 0);
@@ -277,6 +288,11 @@
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
+        hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
+        BOOL success = [self.fetchedResultsController performFetch:nil];
+        if (success) {
+            fetchedItems = self.fetchedResultsController.fetchedObjects;
+        }
         [self refresh];
     }
 }
@@ -414,17 +430,18 @@
             if (urlString) {
                 if (cell.tag == indexPath.row) {
                     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+                    __unsafe_unretained OCArticleCell *weakCell = cell;
                     cell.articleImage.imageResponseSerializer = [OCRoundedImageResponseSerializer serializerWithSize:cell.articleImage.bounds.size];
                     [cell.articleImage setImageWithURLRequest:urlRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            cell.articleImage.image = image;
-                            [cell setNeedsLayout];
-                            [cell layoutIfNeeded];
+                            weakCell.articleImage.image = image;
+                            [weakCell setNeedsLayout];
+                            [weakCell layoutIfNeeded];
                         });
                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                        cell.articleImage.image = nil;
-                        [cell setNeedsLayout];
-                        [cell layoutIfNeeded];
+                        weakCell.articleImage.image = nil;
+                        [weakCell setNeedsLayout];
+                        [weakCell layoutIfNeeded];
                     }];
                 }
             } else {
@@ -469,6 +486,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     //NSLog(@"We have scrolled");
+    hideRead = false;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -519,7 +537,6 @@
             [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFeed feedOrFolderId:self.feed.myId];
         }
     }
-    
     self.markBarButtonItem.enabled = NO;
     [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
@@ -545,10 +562,10 @@
                     }
                 }
                 
-                if ([self.fetchedResultsController fetchedObjects].count > 0) {
+                if (fetchedItems.count > 0) {
                     __block NSMutableArray *idsToMarkRead = [NSMutableArray new];
                     
-                    [[self.fetchedResultsController fetchedObjects] enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+                    [fetchedItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
                         if (idx >= row) {
                             *stop = YES;
                         }
