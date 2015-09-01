@@ -22,9 +22,6 @@
 [submodule "MSCMoreOptionTableViewCell"]
 	path = MSCMoreOptionTableViewCell
 	url = https://github.com/scheinem/MSCMoreOptionTableViewCell.git
-[submodule "UAAppReviewManager"]
-	path = UAAppReviewManager
-	url = https://github.com/UrbanApps/UAAppReviewManager.git
 [submodule "KSCrash"]
 	path = KSCrash
 	url = https://github.com/kstenerud/KSCrash.git
