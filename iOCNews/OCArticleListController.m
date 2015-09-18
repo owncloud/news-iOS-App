@@ -300,6 +300,8 @@
 - (void)dealloc
 {
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"SyncInBackground"];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowFavicons"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
