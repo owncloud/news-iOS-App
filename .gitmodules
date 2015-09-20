@@ -10,9 +10,6 @@
 [submodule "TSMessages"]
 	path = TSMessages
 	url = https://github.com/toursprung/TSMessages.git
-[submodule "iOSPorts"]
-	path = iOSPorts
-	url = https://github.com/bindle/iOSPorts.git
 [submodule "readable"]
 	path = readable
 	url = https://github.com/JanX2/readable.git
