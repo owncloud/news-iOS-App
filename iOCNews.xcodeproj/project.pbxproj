@@ -108,38 +108,32 @@
 		D04AD70F1807403100FF6056 /* rss.html in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC60178104FC00C965F4 /* rss.html */; };
 		D04AD7231807403100FF6056 /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
 		D04AD7261807403100FF6056 /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
-		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; settings = {ASSET_TAGS = (); }; };
-		D04C7DD61BABBEFC000FB342 /* libpcre.la in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DCC1BABBEFC000FB342 /* libpcre.la */; settings = {ASSET_TAGS = (); }; };
-		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; settings = {ASSET_TAGS = (); }; };
-		D04C7DD81BABBEFC000FB342 /* libpcrecpp.la in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DCE1BABBEFC000FB342 /* libpcrecpp.la */; settings = {ASSET_TAGS = (); }; };
-		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; settings = {ASSET_TAGS = (); }; };
-		D04C7DDA1BABBEFC000FB342 /* libpcreposix.la in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DD01BABBEFC000FB342 /* libpcreposix.la */; settings = {ASSET_TAGS = (); }; };
-		D04C7DDB1BABBEFC000FB342 /* libpcre.pc in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DD21BABBEFC000FB342 /* libpcre.pc */; settings = {ASSET_TAGS = (); }; };
-		D04C7DDC1BABBEFC000FB342 /* libpcrecpp.pc in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DD31BABBEFC000FB342 /* libpcrecpp.pc */; settings = {ASSET_TAGS = (); }; };
-		D04C7DDD1BABBEFC000FB342 /* libpcreposix.pc in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DD41BABBEFC000FB342 /* libpcreposix.pc */; settings = {ASSET_TAGS = (); }; };
-		D04C7DFC1BABC185000FB342 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE01BABC185000FB342 /* .gitkeep */; settings = {ASSET_TAGS = (); }; };
-		D04C7DFD1BABC185000FB342 /* NotificationBackgroundError.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE11BABC185000FB342 /* NotificationBackgroundError.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7DFE1BABC185000FB342 /* NotificationBackgroundError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE21BABC185000FB342 /* NotificationBackgroundError@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7DFF1BABC185000FB342 /* NotificationBackgroundErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE31BABC185000FB342 /* NotificationBackgroundErrorIcon.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E001BABC185000FB342 /* NotificationBackgroundErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE41BABC185000FB342 /* NotificationBackgroundErrorIcon@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E011BABC185000FB342 /* NotificationBackgroundMessage.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE51BABC185000FB342 /* NotificationBackgroundMessage.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E021BABC185000FB342 /* NotificationBackgroundMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE61BABC185000FB342 /* NotificationBackgroundMessage@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E031BABC185000FB342 /* NotificationBackgroundSuccess.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE71BABC185000FB342 /* NotificationBackgroundSuccess.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E041BABC185000FB342 /* NotificationBackgroundSuccess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE81BABC185000FB342 /* NotificationBackgroundSuccess@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E051BABC185000FB342 /* NotificationBackgroundSuccessIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE91BABC185000FB342 /* NotificationBackgroundSuccessIcon.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E061BABC185000FB342 /* NotificationBackgroundSuccessIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEA1BABC185000FB342 /* NotificationBackgroundSuccessIcon@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E071BABC185000FB342 /* NotificationBackgroundWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEB1BABC185000FB342 /* NotificationBackgroundWarning.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E081BABC185000FB342 /* NotificationBackgroundWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEC1BABC185000FB342 /* NotificationBackgroundWarning@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E091BABC185000FB342 /* NotificationBackgroundWarningIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DED1BABC185000FB342 /* NotificationBackgroundWarningIcon.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E0A1BABC185000FB342 /* NotificationBackgroundWarningIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEE1BABC185000FB342 /* NotificationBackgroundWarningIcon@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E0B1BABC185000FB342 /* NotificationButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEF1BABC185000FB342 /* NotificationButtonBackground.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E0C1BABC185000FB342 /* NotificationButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF01BABC185000FB342 /* NotificationButtonBackground@2x.png */; settings = {ASSET_TAGS = (); }; };
-		D04C7E0D1BABC185000FB342 /* TSMessagesDefaultDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF11BABC185000FB342 /* TSMessagesDefaultDesign.json */; settings = {ASSET_TAGS = (); }; };
-		D04C7E0E1BABC185000FB342 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF31BABC185000FB342 /* .gitkeep */; settings = {ASSET_TAGS = (); }; };
-		D04C7E0F1BABC185000FB342 /* TSBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF51BABC185000FB342 /* TSBlurView.m */; settings = {ASSET_TAGS = (); }; };
-		D04C7E101BABC185000FB342 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF71BABC185000FB342 /* TSMessage.m */; settings = {ASSET_TAGS = (); }; };
-		D04C7E111BABC185000FB342 /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF91BABC185000FB342 /* TSMessageView.m */; settings = {ASSET_TAGS = (); }; };
-		D04C7E121BABC185000FB342 /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DFB1BABC185000FB342 /* HexColors.m */; settings = {ASSET_TAGS = (); }; };
+		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
+		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
+		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
+		D04C7DFC1BABC185000FB342 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE01BABC185000FB342 /* .gitkeep */; };
+		D04C7DFD1BABC185000FB342 /* NotificationBackgroundError.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE11BABC185000FB342 /* NotificationBackgroundError.png */; };
+		D04C7DFE1BABC185000FB342 /* NotificationBackgroundError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE21BABC185000FB342 /* NotificationBackgroundError@2x.png */; };
+		D04C7DFF1BABC185000FB342 /* NotificationBackgroundErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE31BABC185000FB342 /* NotificationBackgroundErrorIcon.png */; };
+		D04C7E001BABC185000FB342 /* NotificationBackgroundErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE41BABC185000FB342 /* NotificationBackgroundErrorIcon@2x.png */; };
+		D04C7E011BABC185000FB342 /* NotificationBackgroundMessage.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE51BABC185000FB342 /* NotificationBackgroundMessage.png */; };
+		D04C7E021BABC185000FB342 /* NotificationBackgroundMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE61BABC185000FB342 /* NotificationBackgroundMessage@2x.png */; };
+		D04C7E031BABC185000FB342 /* NotificationBackgroundSuccess.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE71BABC185000FB342 /* NotificationBackgroundSuccess.png */; };
+		D04C7E041BABC185000FB342 /* NotificationBackgroundSuccess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE81BABC185000FB342 /* NotificationBackgroundSuccess@2x.png */; };
+		D04C7E051BABC185000FB342 /* NotificationBackgroundSuccessIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE91BABC185000FB342 /* NotificationBackgroundSuccessIcon.png */; };
+		D04C7E061BABC185000FB342 /* NotificationBackgroundSuccessIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEA1BABC185000FB342 /* NotificationBackgroundSuccessIcon@2x.png */; };
+		D04C7E071BABC185000FB342 /* NotificationBackgroundWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEB1BABC185000FB342 /* NotificationBackgroundWarning.png */; };
+		D04C7E081BABC185000FB342 /* NotificationBackgroundWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEC1BABC185000FB342 /* NotificationBackgroundWarning@2x.png */; };
+		D04C7E091BABC185000FB342 /* NotificationBackgroundWarningIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DED1BABC185000FB342 /* NotificationBackgroundWarningIcon.png */; };
+		D04C7E0A1BABC185000FB342 /* NotificationBackgroundWarningIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEE1BABC185000FB342 /* NotificationBackgroundWarningIcon@2x.png */; };
+		D04C7E0B1BABC185000FB342 /* NotificationButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEF1BABC185000FB342 /* NotificationButtonBackground.png */; };
+		D04C7E0C1BABC185000FB342 /* NotificationButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF01BABC185000FB342 /* NotificationButtonBackground@2x.png */; };
+		D04C7E0D1BABC185000FB342 /* TSMessagesDefaultDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF11BABC185000FB342 /* TSMessagesDefaultDesign.json */; };
+		D04C7E0E1BABC185000FB342 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF31BABC185000FB342 /* .gitkeep */; };
+		D04C7E0F1BABC185000FB342 /* TSBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF51BABC185000FB342 /* TSBlurView.m */; };
+		D04C7E101BABC185000FB342 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF71BABC185000FB342 /* TSMessage.m */; };
+		D04C7E111BABC185000FB342 /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF91BABC185000FB342 /* TSMessageView.m */; };
+		D04C7E121BABC185000FB342 /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DFB1BABC185000FB342 /* HexColors.m */; };
 		D05EA51D18FB2E410026EA5F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
 		D05EA51E18FB2E4F0026EA5F /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F391880987000C6DA92 /* libc++.dylib */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
@@ -296,14 +290,8 @@
 		D04C7DC81BABBEFC000FB342 /* pcrecpparg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpparg.h; sourceTree = "<group>"; };
 		D04C7DC91BABBEFC000FB342 /* pcreposix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcreposix.h; sourceTree = "<group>"; };
 		D04C7DCB1BABBEFC000FB342 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
-		D04C7DCC1BABBEFC000FB342 /* libpcre.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libpcre.la; sourceTree = "<group>"; };
 		D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
-		D04C7DCE1BABBEFC000FB342 /* libpcrecpp.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libpcrecpp.la; sourceTree = "<group>"; };
 		D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcreposix.a; sourceTree = "<group>"; };
-		D04C7DD01BABBEFC000FB342 /* libpcreposix.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libpcreposix.la; sourceTree = "<group>"; };
-		D04C7DD21BABBEFC000FB342 /* libpcre.pc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libpcre.pc; sourceTree = "<group>"; };
-		D04C7DD31BABBEFC000FB342 /* libpcrecpp.pc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libpcrecpp.pc; sourceTree = "<group>"; };
-		D04C7DD41BABBEFC000FB342 /* libpcreposix.pc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libpcreposix.pc; sourceTree = "<group>"; };
 		D04C7DE01BABC185000FB342 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		D04C7DE11BABC185000FB342 /* NotificationBackgroundError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundError.png; sourceTree = "<group>"; };
 		D04C7DE21BABC185000FB342 /* NotificationBackgroundError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundError@2x.png"; sourceTree = "<group>"; };
@@ -368,6 +356,8 @@
 		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
 		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
 		D08D83B618161453005A75F0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		D09B149A1C30D0DB0019DB51 /* pcre_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_internal.h; sourceTree = "<group>"; };
+		D09B149B1C30D0DB0019DB51 /* pcrecpp_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpp_internal.h; sourceTree = "<group>"; };
 		D0A33F2B187F5BF900C6DA92 /* News 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 4.xcdatamodel"; sourceTree = "<group>"; };
 		D0A33F391880987000C6DA92 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		D0A33F3B1880987C00C6DA92 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -576,6 +566,8 @@
 		D04C7DC31BABBEFC000FB342 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				D09B149A1C30D0DB0019DB51 /* pcre_internal.h */,
+				D09B149B1C30D0DB0019DB51 /* pcrecpp_internal.h */,
 				D04C7DC41BABBEFC000FB342 /* pcre.h */,
 				D04C7DC51BABBEFC000FB342 /* pcre_scanner.h */,
 				D04C7DC61BABBEFC000FB342 /* pcre_stringpiece.h */,
@@ -590,24 +582,10 @@
 			isa = PBXGroup;
 			children = (
 				D04C7DCB1BABBEFC000FB342 /* libpcre.a */,
-				D04C7DCC1BABBEFC000FB342 /* libpcre.la */,
 				D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */,
-				D04C7DCE1BABBEFC000FB342 /* libpcrecpp.la */,
 				D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */,
-				D04C7DD01BABBEFC000FB342 /* libpcreposix.la */,
-				D04C7DD11BABBEFC000FB342 /* pkgconfig */,
 			);
 			path = lib;
-			sourceTree = "<group>";
-		};
-		D04C7DD11BABBEFC000FB342 /* pkgconfig */ = {
-			isa = PBXGroup;
-			children = (
-				D04C7DD21BABBEFC000FB342 /* libpcre.pc */,
-				D04C7DD31BABBEFC000FB342 /* libpcrecpp.pc */,
-				D04C7DD41BABBEFC000FB342 /* libpcreposix.pc */,
-			);
-			path = pkgconfig;
 			sourceTree = "<group>";
 		};
 		D04C7DDE1BABC185000FB342 /* TSMessages */ = {
@@ -1132,7 +1110,6 @@
 				D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */,
 				D04C7E0A1BABC185000FB342 /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
-				D04C7DD61BABBEFC000FB342 /* libpcre.la in Resources */,
 				D04C7E091BABC185000FB342 /* NotificationBackgroundWarningIcon.png in Resources */,
 				D04C7E041BABC185000FB342 /* NotificationBackgroundSuccess@2x.png in Resources */,
 				D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */,
@@ -1152,21 +1129,16 @@
 				D04C7E0E1BABC185000FB342 /* .gitkeep in Resources */,
 				D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */,
 				D04C7E071BABC185000FB342 /* NotificationBackgroundWarning.png in Resources */,
-				D04C7DDD1BABBEFC000FB342 /* libpcreposix.pc in Resources */,
 				D04C7E0B1BABC185000FB342 /* NotificationButtonBackground.png in Resources */,
 				D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */,
 				D0BCAC8A178104FC00C965F4 /* rss.css in Resources */,
 				D0BCAC8B178104FC00C965F4 /* rss.html in Resources */,
 				D04C7E0D1BABC185000FB342 /* TSMessagesDefaultDesign.json in Resources */,
 				D04C7E031BABC185000FB342 /* NotificationBackgroundSuccess.png in Resources */,
-				D04C7DDC1BABBEFC000FB342 /* libpcrecpp.pc in Resources */,
-				D04C7DD81BABBEFC000FB342 /* libpcrecpp.la in Resources */,
 				D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */,
 				D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */,
 				D04C7E0C1BABC185000FB342 /* NotificationButtonBackground@2x.png in Resources */,
-				D04C7DDB1BABBEFC000FB342 /* libpcre.pc in Resources */,
 				D04C7E001BABC185000FB342 /* NotificationBackgroundErrorIcon@2x.png in Resources */,
-				D04C7DDA1BABBEFC000FB342 /* libpcreposix.la in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1495,7 +1467,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Peter Hedlund (9NWDB37N7L)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1533,7 +1505,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Peter Hedlund (9NWDB37N7L)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
