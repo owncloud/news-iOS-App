@@ -3,6 +3,7 @@
 ####Device####
 
 `$ export IPHONEOS_DEPLOYMENT_TARGET="8.0"`
+
 `$ export MACOSX_DEPLOYMENT_TARGET="10.4"`
 
 `$ ./configure --disable-shared --enable-utf8 --host=arm-apple-darwin CFLAGS="-arch armv7 -fembed-bitcode -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk" CXXFLAGS="-arch armv7 -fembed-bitcode -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk" LDFLAGS="-L." CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc" CXX="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++"`
