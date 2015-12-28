@@ -2,6 +2,9 @@
 
 ####Device####
 
+`$ export IPHONEOS_DEPLOYMENT_TARGET="8.0"`
+`$ export MACOSX_DEPLOYMENT_TARGET="10.4"`
+
 `$ ./configure --disable-shared --enable-utf8 --host=arm-apple-darwin CFLAGS="-arch armv7 -fembed-bitcode -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk" CXXFLAGS="-arch armv7 -fembed-bitcode -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk" LDFLAGS="-L." CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc" CXX="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++"`
 
 `$ make`
@@ -21,6 +24,8 @@
 `$ mv .libs/ libs3`
 
 ####Simulator####
+
+`$ unset MACOSX_DEPLOYMENT_TARGET`
 
 `$ ./configure --disable-shared --enable-utf8 CFLAGS="-miphoneos-version-min=8.0 -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk" CXXFLAGS="-miphoneos-version-min=8.0 -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk" LDFLAGS="-L." CC="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang" CXX="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++"`
 
