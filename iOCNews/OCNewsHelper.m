@@ -647,6 +647,7 @@
                                            @"id": anId};
     
     [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        __block int errorCount = 0;
         NSDictionary *itemDict;
 
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
@@ -707,6 +708,9 @@
                 
                 NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
 //                NSLog(@"Unread item count: %lu", (unsigned long)unreadItems.count);
+                if (feed.unreadCountValue != unreadItems.count) {
+                    ++errorCount;
+                }
                 feed.unreadCountValue = (int)unreadItems.count;
             }];
         }
@@ -729,7 +733,9 @@
                 //[itemsToUnstar removeAllObjects];
                 [self updateStarredCount];
                 [self updateTotalUnreadCount];
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
+                if (errorCount == 0) {
+                    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
+                }
             }
                 break;
             case OCUpdateTypeFolder: {
@@ -739,8 +745,10 @@
                 break;
             case OCUpdateTypeFeed:
             case OCUpdateTypeStarred: {
-                Feed *feed = [self feedWithId:anId];
-                feed.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+                if (errorCount == 0) {
+                    Feed *feed = [self feedWithId:anId];
+                    feed.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+                }
             }
                 break;
                 
