@@ -49,6 +49,7 @@
     BOOL markingAllItemsRead;
     BOOL hideRead;
     NSArray *fetchedItems;
+    BOOL aboutToFetch;
 }
 
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
@@ -105,6 +106,10 @@
                                                                                cacheName:nil];
     });
 //    NSError *error;
+    if (!aboutToFetch) {
+        return _fetchedResultsController;
+    }
+    
     NSPredicate *fetchPredicate;
     if (self.feed.myIdValue == -1) {
         fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
@@ -180,7 +185,9 @@
             self.navigationItem.title = self.feed.title;
         }
         hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
+        aboutToFetch = YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
+        aboutToFetch = NO;
         if (success) {
             fetchedItems = self.fetchedResultsController.fetchedObjects;
             long unreadCount = [self unreadCount];
@@ -241,6 +248,7 @@
     self.detailViewController = (OCWebController*)navController.topViewController;
     
     markingAllItemsRead = NO;
+    aboutToFetch = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextArticle:) name:@"RightTapZone" object:nil];
@@ -289,7 +297,9 @@
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
         hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
+        aboutToFetch= YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
+        aboutToFetch = NO;
         if (success) {
             fetchedItems = self.fetchedResultsController.fetchedObjects;
         }
@@ -320,8 +330,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo numberOfObjects];
+    NSInteger result = 0;
+    if (self.feed)
+    {
+        id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+        result = [sectionInfo numberOfObjects];
+    }
+    return result;
 }
 
 - (UIFont*) makeItalic:(UIFont*)font {
