@@ -35,6 +35,7 @@
 #import "Feeds.h"
 #import "NSDictionary+HandleNull.h"
 #import "AFNetworking.h"
+#import "SDWebImageDownloader.h"
 
 @interface OCNewsHelper () {
     NSMutableSet *foldersToAdd;
@@ -250,26 +251,24 @@
     }
 
     NSURL *faviconUrl = [NSURL URLWithString:feed.faviconLink];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:faviconUrl];
-    AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
-    AFImageResponseSerializer *imageResponseSerializer = [AFImageResponseSerializer serializer];
-    NSSet *acceptableContentTypes = imageResponseSerializer.acceptableContentTypes;
-    acceptableContentTypes = [acceptableContentTypes setByAddingObject:@"image/vnd.microsoft.icon"];
-    imageResponseSerializer.acceptableContentTypes = acceptableContentTypes;
-    requestOperation.responseSerializer = imageResponseSerializer;
-    [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Response: %@", responseObject);
-        if ([responseObject isKindOfClass:[UIImage class]]) {
-            NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feed.myId.stringValue];
-            faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
-            [UIImagePNGRepresentation(responseObject) writeToURL:faviconSaveUrl atomically:YES];
-            completion([UIImage imageWithContentsOfFile:faviconSaveUrl.path], YES);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Image error: %@", error);
-        completion([UIImage imageNamed:@"favicon"], NO);
-    }];
-    [requestOperation start];
+    SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+    [downloader downloadImageWithURL:faviconUrl
+                             options:0
+                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                // progression tracking code
+                            }
+                           completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+                               if (image && finished) {
+                                   NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feed.myId.stringValue];
+                                   faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
+                                   [UIImagePNGRepresentation(image) writeToURL:faviconSaveUrl atomically:YES];
+                                   completion([UIImage imageWithContentsOfFile:faviconSaveUrl.path], YES);
+                               }
+                               else
+                               {
+                                   completion([UIImage imageNamed:@"favicon"], NO);                                   
+                               }
+                           }];
 }
 
 - (void)addItemFromDictionary:(NSDictionary *)dict {

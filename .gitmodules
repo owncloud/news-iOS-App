@@ -31,3 +31,6 @@
 [submodule "MMDrawerController-Storyboard"]
 	path = MMDrawerController-Storyboard
 	url = https://github.com/TomSwift/MMDrawerController-Storyboard.git
+[submodule "SDWebImage"]
+	path = SDWebImage
+	url = https://github.com/rs/SDWebImage.git

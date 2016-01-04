@@ -41,8 +41,7 @@
 #import "Item.h"
 #import "objc/runtime.h"
 #import "UIViewController+MMDrawerController.h"
-#import "UIImageView+AFNetworking.h"
-#import "OCRoundedImageResponseSerializer.h"
+#import "UIImageView+OCWebCache.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
@@ -446,20 +445,7 @@
             NSString *urlString = [OCArticleImage findImage:summary];
             if (urlString) {
                 if (cell.tag == indexPath.row) {
-                    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-                    __unsafe_unretained OCArticleCell *weakCell = cell;
-                    cell.articleImage.imageResponseSerializer = [OCRoundedImageResponseSerializer serializerWithSize:cell.articleImage.bounds.size];
-                    [cell.articleImage setImageWithURLRequest:urlRequest placeholderImage:[UIImage imageNamed:@"placeholder"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            weakCell.articleImage.image = image;
-                            [weakCell setNeedsLayout];
-                            [weakCell layoutIfNeeded];
-                        });
-                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                        weakCell.articleImage.image = nil;
-                        [weakCell setNeedsLayout];
-                        [weakCell layoutIfNeeded];
-                    }];
+                    [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
                 }
             } else {
                 [cell.articleImage setImage:nil];
