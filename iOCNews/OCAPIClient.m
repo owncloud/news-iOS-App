@@ -31,7 +31,6 @@
  *************************************************************************/
 
 #import "OCAPIClient.h"
-//#import "KeychainItemWrapper.h"
 #import "PDKeychainBindings.h"
 
 //See http://twobitlabs.com/2013/01/objective-c-singleton-pattern-unit-testing/
@@ -64,8 +63,7 @@ static dispatch_once_t oncePredicate = 0;
     BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
     self.securityPolicy.allowInvalidCertificates = allowInvalid;
 
-//    KeychainItemWrapper *keychain = [[KeychainItemWrapper alloc] initWithIdentifier:@"iOCNews" accessGroup:nil];
-    [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleWhenUnlocked) forKey:(__bridge id)(kSecAttrAccessible)];
+    [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
     
     [self setRequestSerializer:[AFJSONRequestSerializer serializer]];
     [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
