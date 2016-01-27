@@ -717,19 +717,15 @@
         switch ([aType intValue]) {
             case OCUpdateTypeAll: {
                 [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
-                //[itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
                     [self markItemUnreadOffline:itemId];
                 }
-                //[itemsToMarkUnread removeAllObjects];
                 for (NSNumber *itemId in itemsToStar) {
                     [self starItemOffline:itemId];
                 }
-                //[itemsToStar removeAllObjects];
                 for (NSNumber *itemId in itemsToUnstar) {
                     [self unstarItemOffline:itemId];
                 }
-                //[itemsToUnstar removeAllObjects];
                 [self updateStarredCount];
                 [self updateTotalUnreadCount];
                 if (errorCount == 0) {
@@ -910,19 +906,15 @@
             }];
             if ([aType intValue] == OCUpdateTypeAll) {
                 [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
-//                [itemsToMarkRead removeAllObjects];
                 for (NSNumber *itemId in itemsToMarkUnread) {
                     [self markItemUnreadOffline:itemId];
                 }
-                [itemsToMarkUnread removeAllObjects];
                 for (NSNumber *itemId in itemsToStar) {
                     [self starItemOffline:itemId];
                 }
-                [itemsToStar removeAllObjects];
                 for (NSNumber *itemId in itemsToUnstar) {
                     [self unstarItemOffline:itemId];
                 }
-                [itemsToUnstar removeAllObjects];
             }
         }
         [self updateStarredCount];
