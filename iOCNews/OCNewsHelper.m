@@ -346,7 +346,7 @@
     _completionHandler = [completionHandler copy];
     completionHandlerCalled = NO;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
-        [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (![responseObject isKindOfClass:[NSDictionary class]])
             {
                 if (_completionHandler && !completionHandlerCalled) {
@@ -387,7 +387,7 @@
 }
 
 - (void)updateFolders {
-    [[OCAPIClient sharedClient] GET:@"folders" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[OCAPIClient sharedClient] GET:@"folders" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         //Remove previous
         //TODO: only fetch myId
         NSError *error = nil;
@@ -645,7 +645,7 @@
                                          @"type": aType,
                                            @"id": anId};
     
-    [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         __block int errorCount = 0;
         NSDictionary *itemDict;
 
@@ -813,7 +813,7 @@
                                     feed.myId, @"id", nil];
         
         
-        NSURLSessionDataTask *task = [client GET:@"items/updated" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSURLSessionDataTask *task = [client GET:@"items/updated" parameters:itemParams progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             dispatch_group_leave(group);
             @synchronized(responseObjects) {
                 [responseObjects addObject:responseObject];
@@ -960,7 +960,7 @@
                                     feed.myId, @"id",
                                     @"true", @"getRead", nil];
         
-        NSURLSessionDataTask *task = [client GET:@"items" parameters:itemParams success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSURLSessionDataTask *task = [client GET:@"items" parameters:itemParams progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             dispatch_group_leave(group);
             @synchronized(responseObjects) {
                 [responseObjects addObject:responseObject];
@@ -1091,7 +1091,7 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"name": name};
-        [[OCAPIClient sharedClient] POST:@"folders" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[OCAPIClient sharedClient] POST:@"folders" parameters:params progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             __unused int newFolderId = [self addFolder:responseObject];
             [foldersToAdd removeObject:name];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1194,7 +1194,7 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:urlString, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
-        [[OCAPIClient sharedClient] POST:@"feeds" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[OCAPIClient sharedClient] POST:@"feeds" parameters:params progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *feedDict = nil;
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
             {
@@ -1215,7 +1215,7 @@
                                         [NSNumber numberWithInt:newFeedId], @"id",
                                         [NSNumber numberWithInt:1], @"getRead", nil];
                 
-                [[OCAPIClient sharedClient] GET:@"items" parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+                [[OCAPIClient sharedClient] GET:@"items" parameters:params progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                     NSDictionary *itemsDict = nil;
                     if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
                     {

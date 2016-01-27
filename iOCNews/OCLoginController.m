@@ -120,7 +120,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         BOOL allowInvalid = self.certificateSwitch.on;
         client.securityPolicy.allowInvalidCertificates = allowInvalid;
         
-        [client GET:@"version" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [client GET:@"version" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *jsonDict = nil;
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
             {

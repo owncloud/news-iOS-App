@@ -203,7 +203,7 @@ const int SWIPE_PREVIOUS = 1;
                     if (self.item.readable) {
                         [self writeAndLoadHtml:self.item.readable];
                     } else {
-                        [[OCAPIClient sharedClient] GET:self.item.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                        [[OCAPIClient sharedClient] GET:self.item.url parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                             NSString *html;
                             if (responseObject) {
                                 html = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
