@@ -346,6 +346,7 @@
     _completionHandler = [completionHandler copy];
     completionHandlerCalled = NO;
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
         [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (![responseObject isKindOfClass:[NSDictionary class]])
             {
@@ -387,6 +388,7 @@
 }
 
 - (void)updateFolders {
+    [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
     [[OCAPIClient sharedClient] GET:@"folders" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         //Remove previous
         //TODO: only fetch myId
@@ -645,6 +647,7 @@
                                          @"type": aType,
                                            @"id": anId};
     
+    [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
     [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         __block int errorCount = 0;
         NSDictionary *itemDict;
@@ -797,7 +800,8 @@
     __block NSMutableArray *addedItems = [NSMutableArray new];
     __block NSMutableArray *responseObjects = [NSMutableArray new];
     __block OCAPIClient *client = [OCAPIClient sharedClient];
-    
+    client.requestSerializer = [OCAPIClient jsonRequestSerializer];
+
     //update feeds individually
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     __block NSArray *allFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
@@ -944,6 +948,8 @@
     __block NSMutableArray *addedItems = [NSMutableArray new];
     __block NSMutableArray *responseObjects = [NSMutableArray new];
     __block OCAPIClient *client = [OCAPIClient sharedClient];
+    client.requestSerializer = [OCAPIClient jsonRequestSerializer];
+
     NSError *error = nil;
     [self.feedRequest setPredicate:nil];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:&error];
@@ -1091,6 +1097,7 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"name": name};
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] POST:@"folders" parameters:params progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             __unused int newFolderId = [self addFolder:responseObject];
             [foldersToAdd removeObject:name];
@@ -1128,6 +1135,7 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"folders/%@", [folder.myId stringValue]];
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1158,6 +1166,7 @@
         //online
         NSDictionary *params = @{@"name": newName};
         NSString *path = [NSString stringWithFormat:@"folders/%@", [anId stringValue]];
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //             NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1194,6 +1203,7 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:urlString, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] POST:@"feeds" parameters:params progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *feedDict = nil;
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
@@ -1215,6 +1225,7 @@
                                         [NSNumber numberWithInt:newFeedId], @"id",
                                         [NSNumber numberWithInt:1], @"getRead", nil];
                 
+                [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
                 [[OCAPIClient sharedClient] GET:@"items" parameters:params progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                     NSDictionary *itemsDict = nil;
                     if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
@@ -1284,6 +1295,7 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSString *path = [NSString stringWithFormat:@"feeds/%@", [feed.myId stringValue]];
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1306,6 +1318,7 @@
         //online
         NSDictionary *params = @{@"folderId": aFolderId};
         NSString *path = [NSString stringWithFormat:@"feeds/%@/move", [aFeedId stringValue]];
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1327,6 +1340,7 @@
             //online
             NSDictionary *params = @{@"feedTitle": newName};
             NSString *path = [NSString stringWithFormat:@"feeds/%@/rename", [anId stringValue]];
+            [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //                NSLog(@"Success");
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1364,6 +1378,7 @@
     }
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[itemIds allObjects] forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
                 [itemsToMarkRead removeObject:itemId];
@@ -1469,6 +1484,7 @@
     
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
+        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:path parameters:@{@"newestItemId": newestItem} success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *objID, NSUInteger idx, BOOL *stop) {
                 [itemsToMarkRead removeObject:objID];
@@ -1490,11 +1506,16 @@
 - (void)markItemUnreadOffline:(NSNumber*)itemId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        [[OCAPIClient sharedClient] PUT:@"items/unread/multiple" parameters:@{@"items": itemId} success:^(NSURLSessionDataTask *task, id responseObject) {
-            [itemsToMarkUnread removeObject:itemId];
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [itemsToMarkUnread addObject:itemId];
-        }];
+        Item *item = [self itemWithId:itemId];
+        if (item) {
+            NSString *path = [NSString stringWithFormat:@"items/%@/unread", item.myId];
+            [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
+            [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                [itemsToMarkUnread removeObject:itemId];
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [itemsToMarkUnread addObject:itemId];
+            }];
+        }
     } else {
         [itemsToMarkRead removeObject:itemId];
         [itemsToMarkUnread addObject:itemId];
@@ -1508,6 +1529,7 @@
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
+            [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 [itemsToStar removeObject:itemId];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -1528,6 +1550,7 @@
         Item *item = [self itemWithId:itemId];
         if (item) {
             NSString *path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
+            [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 [itemsToUnstar removeObject:itemId];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {

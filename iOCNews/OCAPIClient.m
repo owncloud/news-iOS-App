@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2016 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -44,7 +44,7 @@ static dispatch_once_t oncePredicate = 0;
 
 @implementation OCAPIClient
 
-+(OCAPIClient *)sharedClient {
++ (OCAPIClient *)sharedClient {
     //static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         NSString *serverURLString = [[NSUserDefaults standardUserDefaults] stringForKey:@"Server"];
@@ -55,7 +55,7 @@ static dispatch_once_t oncePredicate = 0;
     return _sharedClient;
 }
 
--(id)initWithBaseURL:(NSURL *)url {
+- (id)initWithBaseURL:(NSURL *)url {
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
@@ -64,11 +64,8 @@ static dispatch_once_t oncePredicate = 0;
     self.securityPolicy.allowInvalidCertificates = allowInvalid;
 
     [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
-    
-    [self setRequestSerializer:[AFJSONRequestSerializer serializer]];
-    [self.requestSerializer setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
-                                                           password:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]];
-    
+
+    self.requestSerializer = [OCAPIClient jsonRequestSerializer];
     AFCompoundResponseSerializer *compoundSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[[AFJSONResponseSerializer serializer],
                                                                                                                                  [AFHTTPResponseSerializer serializer]]];
     self.responseSerializer = compoundSerializer;
@@ -79,7 +76,23 @@ static dispatch_once_t oncePredicate = 0;
     return self;
 }
 
-+(void)setSharedClient:(OCAPIClient *)client {
++ (AFHTTPRequestSerializer*)httpRequestSerializer
+{
+    AFHTTPRequestSerializer *result = [AFHTTPRequestSerializer serializer];
+    [result setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
+                                           password:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]];
+    return result;
+}
+
++ (AFJSONRequestSerializer*)jsonRequestSerializer
+{
+    AFJSONRequestSerializer *result = [AFJSONRequestSerializer serializer];
+    [result setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
+                                           password:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]];
+    return result;
+}
+
++ (void)setSharedClient:(OCAPIClient *)client {
     oncePredicate = 0; // resets the once_token so dispatch_once will run again
     _sharedClient = client;
 }

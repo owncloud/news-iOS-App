@@ -203,6 +203,7 @@ const int SWIPE_PREVIOUS = 1;
                     if (self.item.readable) {
                         [self writeAndLoadHtml:self.item.readable];
                     } else {
+                        [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
                         [[OCAPIClient sharedClient] GET:self.item.url parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                             NSString *html;
                             if (responseObject) {
