@@ -396,15 +396,17 @@
                 break;
             case 1:
                 @try {
-                    OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
-                    folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    folderController.folderId = folder.myIdValue;
-                    folderController.navigationItem.title = folder.name;
-                    [folderController updatePredicate];
-                    folderController.detailViewController = self.detailViewController;
-                    [self.navigationController pushViewController:folderController animated:YES];
-                    [folderController drawerOpened:nil];
-                    [self drawerClosed:nil];
+                    if (self.folderId == 0) {
+                        OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
+                        folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+                        folderController.folderId = folder.myIdValue;
+                        folderController.navigationItem.title = folder.name;
+                        [folderController updatePredicate];
+                        folderController.detailViewController = self.detailViewController;
+                        [self.navigationController pushViewController:folderController animated:YES];
+                        [folderController drawerOpened:nil];
+                        [self drawerClosed:nil];
+                    }
                 }
                 @catch (NSException *exception) {
                     //
