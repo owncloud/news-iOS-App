@@ -111,7 +111,6 @@
 		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
 		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
-		D04C7DFC1BABC185000FB342 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE01BABC185000FB342 /* .gitkeep */; };
 		D04C7DFD1BABC185000FB342 /* NotificationBackgroundError.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE11BABC185000FB342 /* NotificationBackgroundError.png */; };
 		D04C7DFE1BABC185000FB342 /* NotificationBackgroundError@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE21BABC185000FB342 /* NotificationBackgroundError@2x.png */; };
 		D04C7DFF1BABC185000FB342 /* NotificationBackgroundErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DE31BABC185000FB342 /* NotificationBackgroundErrorIcon.png */; };
@@ -129,11 +128,9 @@
 		D04C7E0B1BABC185000FB342 /* NotificationButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DEF1BABC185000FB342 /* NotificationButtonBackground.png */; };
 		D04C7E0C1BABC185000FB342 /* NotificationButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF01BABC185000FB342 /* NotificationButtonBackground@2x.png */; };
 		D04C7E0D1BABC185000FB342 /* TSMessagesDefaultDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF11BABC185000FB342 /* TSMessagesDefaultDesign.json */; };
-		D04C7E0E1BABC185000FB342 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = D04C7DF31BABC185000FB342 /* .gitkeep */; };
 		D04C7E0F1BABC185000FB342 /* TSBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF51BABC185000FB342 /* TSBlurView.m */; };
 		D04C7E101BABC185000FB342 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF71BABC185000FB342 /* TSMessage.m */; };
 		D04C7E111BABC185000FB342 /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF91BABC185000FB342 /* TSMessageView.m */; };
-		D04C7E121BABC185000FB342 /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DFB1BABC185000FB342 /* HexColors.m */; };
 		D05EA51D18FB2E410026EA5F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
 		D05EA51E18FB2E4F0026EA5F /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F391880987000C6DA92 /* libc++.dylib */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
@@ -161,6 +158,7 @@
 		D08D83301810B27B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D08D83B818161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
+		D08DDA451C5E8B2E00B0E90C /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D08DDA441C5E8B2E00B0E90C /* HexColors.m */; };
 		D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D09B14A21C39E2A50019DB51 /* UIImageView+OCWebCache.m */; };
 		D09B14C81C39E2CD0019DB51 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = D09B14A91C39E2CD0019DB51 /* NSData+ImageContentType.m */; };
 		D09B14C91C39E2CD0019DB51 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D09B14AB1C39E2CD0019DB51 /* SDImageCache.m */; };
@@ -209,8 +207,6 @@
 		D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
 		D0CFE5A9188F43EF00165839 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CFE5A8188F43EF00165839 /* KSCrash.framework */; };
 		D0CFE5AA188F43F000165839 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CFE5A8188F43EF00165839 /* KSCrash.framework */; };
-		D0E89F541833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
-		D0E89F551833FFCD005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */; };
 		D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F571836E03A005F8CAF /* OCSettingsController.m */; };
 		D0E89F591836E03A005F8CAF /* OCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F571836E03A005F8CAF /* OCSettingsController.m */; };
 		D0E8A0771842ABD5005F8CAF /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E8A0571842ABD5005F8CAF /* AFHTTPSessionManager.m */; };
@@ -288,7 +284,6 @@
 		D04C7DCB1BABBEFC000FB342 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
 		D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
 		D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcreposix.a; sourceTree = "<group>"; };
-		D04C7DE01BABC185000FB342 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		D04C7DE11BABC185000FB342 /* NotificationBackgroundError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundError.png; sourceTree = "<group>"; };
 		D04C7DE21BABC185000FB342 /* NotificationBackgroundError@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationBackgroundError@2x.png"; sourceTree = "<group>"; };
 		D04C7DE31BABC185000FB342 /* NotificationBackgroundErrorIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationBackgroundErrorIcon.png; sourceTree = "<group>"; };
@@ -306,15 +301,12 @@
 		D04C7DEF1BABC185000FB342 /* NotificationButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotificationButtonBackground.png; sourceTree = "<group>"; };
 		D04C7DF01BABC185000FB342 /* NotificationButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationButtonBackground@2x.png"; sourceTree = "<group>"; };
 		D04C7DF11BABC185000FB342 /* TSMessagesDefaultDesign.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TSMessagesDefaultDesign.json; sourceTree = "<group>"; };
-		D04C7DF31BABC185000FB342 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		D04C7DF41BABC185000FB342 /* TSBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSBlurView.h; sourceTree = "<group>"; };
 		D04C7DF51BABC185000FB342 /* TSBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSBlurView.m; sourceTree = "<group>"; };
 		D04C7DF61BABC185000FB342 /* TSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessage.h; sourceTree = "<group>"; };
 		D04C7DF71BABC185000FB342 /* TSMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessage.m; sourceTree = "<group>"; };
 		D04C7DF81BABC185000FB342 /* TSMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMessageView.h; sourceTree = "<group>"; };
 		D04C7DF91BABC185000FB342 /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
-		D04C7DFA1BABC185000FB342 /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColors.h; sourceTree = "<group>"; };
-		D04C7DFB1BABC185000FB342 /* HexColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColors.m; sourceTree = "<group>"; };
 		D0622FE418C29BD40032E622 /* News 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 5.xcdatamodel"; sourceTree = "<group>"; };
 		D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = News.xcmappingmodel; sourceTree = "<group>"; };
 		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
@@ -352,6 +344,8 @@
 		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
 		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
 		D08D83B618161453005A75F0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		D08DDA431C5E8B2E00B0E90C /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColors.h; sourceTree = "<group>"; };
+		D08DDA441C5E8B2E00B0E90C /* HexColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColors.m; sourceTree = "<group>"; };
 		D09B149A1C30D0DB0019DB51 /* pcre_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_internal.h; sourceTree = "<group>"; };
 		D09B149B1C30D0DB0019DB51 /* pcrecpp_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpp_internal.h; sourceTree = "<group>"; };
 		D09B14A21C39E2A50019DB51 /* UIImageView+OCWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+OCWebCache.m"; sourceTree = "<group>"; };
@@ -433,9 +427,6 @@
 		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 2.xcdatamodel"; sourceTree = "<group>"; };
 		D0CFE5A8188F43EF00165839 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KSCrash.framework; sourceTree = "<group>"; };
-		D0E89F511833FDD4005F8CAF /* MSCMoreOptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCell.h; sourceTree = "<group>"; };
-		D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCMoreOptionTableViewCell.m; sourceTree = "<group>"; };
-		D0E89F531833FDD4005F8CAF /* MSCMoreOptionTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCMoreOptionTableViewCellDelegate.h; sourceTree = "<group>"; };
 		D0E89F561836E03A005F8CAF /* OCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSettingsController.h; sourceTree = "<group>"; };
 		D0E89F571836E03A005F8CAF /* OCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSettingsController.m; sourceTree = "<group>"; };
 		D0E8A04218385457005F8CAF /* iOCNews copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOCNews copy2-Info.plist"; path = "/Users/peter/Projects/iOCNews/iOCNews copy2-Info.plist"; sourceTree = "<absolute>"; };
@@ -599,10 +590,10 @@
 		D04C7DDE1BABC185000FB342 /* TSMessages */ = {
 			isa = PBXGroup;
 			children = (
+				D08DDA431C5E8B2E00B0E90C /* HexColors.h */,
+				D08DDA441C5E8B2E00B0E90C /* HexColors.m */,
 				D04C7DDF1BABC185000FB342 /* Assets */,
 				D04C7DF21BABC185000FB342 /* Classes */,
-				D04C7DFA1BABC185000FB342 /* HexColors.h */,
-				D04C7DFB1BABC185000FB342 /* HexColors.m */,
 			);
 			path = TSMessages;
 			sourceTree = "<group>";
@@ -610,7 +601,6 @@
 		D04C7DDF1BABC185000FB342 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				D04C7DE01BABC185000FB342 /* .gitkeep */,
 				D04C7DE11BABC185000FB342 /* NotificationBackgroundError.png */,
 				D04C7DE21BABC185000FB342 /* NotificationBackgroundError@2x.png */,
 				D04C7DE31BABC185000FB342 /* NotificationBackgroundErrorIcon.png */,
@@ -635,7 +625,6 @@
 		D04C7DF21BABC185000FB342 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D04C7DF31BABC185000FB342 /* .gitkeep */,
 				D04C7DF41BABC185000FB342 /* TSBlurView.h */,
 				D04C7DF51BABC185000FB342 /* TSBlurView.m */,
 				D04C7DF61BABC185000FB342 /* TSMessage.h */,
@@ -746,7 +735,6 @@
 				D04C7DDE1BABC185000FB342 /* TSMessages */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D02300271A5A099D00B354E0 /* MMDrawerController */,
-				D0E89F4F1833FDD4005F8CAF /* MSCMoreOptionTableViewCell */,
 				D01ACAB317B83637005D1463 /* readable */,
 				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
@@ -917,17 +905,6 @@
 				D06CB23317A073C400A1310B /* Item.m */,
 			);
 			name = DataModel;
-			sourceTree = "<group>";
-		};
-		D0E89F4F1833FDD4005F8CAF /* MSCMoreOptionTableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				D0E89F511833FDD4005F8CAF /* MSCMoreOptionTableViewCell.h */,
-				D0E89F521833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m */,
-				D0E89F531833FDD4005F8CAF /* MSCMoreOptionTableViewCellDelegate.h */,
-			);
-			name = MSCMoreOptionTableViewCell;
-			path = MSCMoreOptionTableViewCell/MSCMoreOptionTableViewCell;
 			sourceTree = "<group>";
 		};
 		D0E8A0511842ABD5005F8CAF /* AFNetworking */ = {
@@ -1145,7 +1122,6 @@
 				D01E9A801ADB4375008D50E1 /* TUSafariActivity.bundle in Resources */,
 				D04C7E021BABC185000FB342 /* NotificationBackgroundMessage@2x.png in Resources */,
 				D04C7DFE1BABC185000FB342 /* NotificationBackgroundError@2x.png in Resources */,
-				D04C7DFC1BABC185000FB342 /* .gitkeep in Resources */,
 				D04C7DFF1BABC185000FB342 /* NotificationBackgroundErrorIcon.png in Resources */,
 				D04C7DFD1BABC185000FB342 /* NotificationBackgroundError.png in Resources */,
 				D04C7E011BABC185000FB342 /* NotificationBackgroundMessage.png in Resources */,
@@ -1155,7 +1131,6 @@
 				D04C7E051BABC185000FB342 /* NotificationBackgroundSuccessIcon.png in Resources */,
 				D04C7E061BABC185000FB342 /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				D0BCAC2A1780E02600C965F4 /* OCArticleCell.xib in Resources */,
-				D04C7E0E1BABC185000FB342 /* .gitkeep in Resources */,
 				D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */,
 				D04C7E071BABC185000FB342 /* NotificationBackgroundWarning.png in Resources */,
 				D04C7E0B1BABC185000FB342 /* NotificationButtonBackground.png in Resources */,
@@ -1246,7 +1221,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0E89F551833FFCD005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */,
 				D0E8A0971842C2AC005F8CAF /* AFNetworkActivityIndicatorManager.m in Sources */,
 				D04AD6651807403100FF6056 /* main.m in Sources */,
 				D04AD6661807403100FF6056 /* OCAppDelegate.m in Sources */,
@@ -1356,6 +1330,7 @@
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D0E8A0771842ABD5005F8CAF /* AFHTTPSessionManager.m in Sources */,
 				D09B14CA1C39E2CD0019DB51 /* SDWebImageCompat.m in Sources */,
+				D08DDA451C5E8B2E00B0E90C /* HexColors.m in Sources */,
 				D09B14D41C39E2CD0019DB51 /* UIImageView+HighlightedWebCache.m in Sources */,
 				D09B14D61C39E2CD0019DB51 /* UIView+WebCacheOperation.m in Sources */,
 				D0E8A07D1842ABD5005F8CAF /* AFURLSessionManager.m in Sources */,
@@ -1365,9 +1340,7 @@
 				D02300351A5A099D00B354E0 /* MMDrawerVisualState.m in Sources */,
 				D02300251A5A097500B354E0 /* FDTopDrawerController.m in Sources */,
 				D02300371A5A099D00B354E0 /* UIViewController+MMDrawerController.m in Sources */,
-				D04C7E121BABC185000FB342 /* HexColors.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
-				D0E89F541833FDD4005F8CAF /* MSCMoreOptionTableViewCell.m in Sources */,
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
 				D02300331A5A099D00B354E0 /* MMDrawerController.m in Sources */,
 				D04AD6601807125600FF6056 /* Folder.m in Sources */,
