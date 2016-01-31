@@ -189,7 +189,6 @@
 		D04AD65C1807125600FF6056 /* _Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Folder.m; sourceTree = "<group>"; };
 		D04AD65D1807125600FF6056 /* Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Folder.h; sourceTree = "<group>"; };
 		D04AD65E1807125600FF6056 /* Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Folder.m; sourceTree = "<group>"; };
-		D04AD7421807403100FF6056 /* iOCNews copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOCNews copy-Info.plist"; path = "/Users/peter/Projects/iOCNews/iOCNews copy-Info.plist"; sourceTree = "<absolute>"; };
 		D04C7DC41BABBEFC000FB342 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
 		D04C7DC51BABBEFC000FB342 /* pcre_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_scanner.h; sourceTree = "<group>"; };
 		D04C7DC61BABBEFC000FB342 /* pcre_stringpiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_stringpiece.h; sourceTree = "<group>"; };
@@ -344,7 +343,6 @@
 		D0CFE5A8188F43EF00165839 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KSCrash.framework; sourceTree = "<group>"; };
 		D0E89F561836E03A005F8CAF /* OCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSettingsController.h; sourceTree = "<group>"; };
 		D0E89F571836E03A005F8CAF /* OCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSettingsController.m; sourceTree = "<group>"; };
-		D0E8A04218385457005F8CAF /* iOCNews copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "iOCNews copy2-Info.plist"; path = "/Users/peter/Projects/iOCNews/iOCNews copy2-Info.plist"; sourceTree = "<absolute>"; };
 		D0E8A0561842ABD5005F8CAF /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		D0E8A0571842ABD5005F8CAF /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
 		D0E8A0581842ABD5005F8CAF /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
@@ -733,8 +731,6 @@
 			isa = PBXGroup;
 			children = (
 				D0BCAA2D177900C300C965F4 /* iOCNews-Info.plist */,
-				D04AD7421807403100FF6056 /* iOCNews copy-Info.plist */,
-				D0E8A04218385457005F8CAF /* iOCNews copy2-Info.plist */,
 				D0BCAA2E177900C300C965F4 /* InfoPlist.strings */,
 				D0BCAA31177900C300C965F4 /* main.m */,
 				D0BCAA33177900C400C965F4 /* iOCNews-Prefix.pch */,
