@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2016 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -68,6 +68,8 @@
 @synthesize feedsFetchedResultsController;
 @synthesize gearActionSheet;
 @synthesize folderId;
+@synthesize feedSettingsAction;
+@synthesize feedDeleteAction;
 
 - (NSFetchedResultsController *)specialFetchedResultsController {
     if (!specialFetchedResultsController) {
@@ -150,7 +152,6 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 
     currentIndex = -1;
-//    self.folderId = 0;
     networkHasBeenUnreachable = NO;
     
     int imageViewOffset = 14;
@@ -162,7 +163,6 @@
     self.refreshControl = self.feedRefreshControl;
     
     self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
-//    self.navigationItem.title = @"Feeds";
     self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 
     //Notifications
@@ -302,7 +302,6 @@
                 }
             }
             cell.backgroundColor = [UIColor clearColor];
-            cell.delegate = self;
         }
     }
     @catch (NSException *exception) {
@@ -328,6 +327,11 @@
     cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
+}
+
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @[self.feedDeleteAction, self.feedSettingsAction];
 }
 
 // Override to support conditional editing of the table view.
@@ -395,9 +399,7 @@
                     OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
                     folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
                     folderController.folderId = folder.myIdValue;
-//                    self.folderId = folder.myIdValue;
                     folderController.navigationItem.title = folder.name;
-//                    folderController.navigationItem.leftBarButtonItem = folderController.backBarButtonItem;
                     [folderController updatePredicate];
                     folderController.detailViewController = self.detailViewController;
                     [self.navigationController pushViewController:folderController animated:YES];
@@ -432,11 +434,7 @@
     return UITableViewCellEditingStyleDelete;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"Delete";
-}
-
-- (void)tableView:(UITableView *)tableView moreOptionButtonPressedInRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView settingsActionPressedInRowAtIndexPath:(NSIndexPath *)indexPath {
     NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     if ((indexPath.section == 1)) {
         Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
@@ -455,15 +453,6 @@
     }
     editingPath = indexPath;
 }
-
-- (NSString *)tableView:(UITableView *)tableView titleForMoreOptionButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"More";
-}
-/*
--(UIColor *)tableView:(UITableView *)tableView backgroundColorForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [UIColor colorWithRed:0.18f green:0.67f blue:0.84f alpha:1.0f];
-}
-*/
 
 #pragma mark - Actions
 
@@ -559,12 +548,10 @@
         }];
         
         UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
-            [cell hideDeleteConfirmation];
+            [self.tableView setEditing:NO animated:YES];
         }];
         UIAlertAction *renameButton = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
-            [cell hideDeleteConfirmation];
+            [self.tableView setEditing:NO animated:YES];
             [[OCNewsHelper sharedHelper] renameFolderOfflineWithId:currentRenameId To:[[alertController.textFields objectAtIndex:0] text]];
         }];
         [alertController addAction:cancelButton];
@@ -635,8 +622,7 @@
 
 - (void) feedSettingsUpdate:(OCFeedSettingsController *)settings {
     [self.tableView reloadData];
-    MSCMoreOptionTableViewCell *cell = (MSCMoreOptionTableViewCell*)[self.tableView cellForRowAtIndexPath:editingPath];
-    [cell hideDeleteConfirmation];
+    [self.tableView setEditing:NO animated:YES];
 }
 
 - (void)observeValueForKeyPath:(NSString *) keyPath ofObject:(id) object change:(NSDictionary *) change context:(void *) context {
@@ -805,6 +791,28 @@
         backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Feeds" style:UIBarButtonItemStylePlain target:self action:@selector(doGoBack)];
     }
     return backBarButtonItem;
+}
+
+- (UITableViewRowAction *)feedSettingsAction {
+    if (!feedSettingsAction) {
+        feedSettingsAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                title:@"Settings"
+                                                              handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                  [self tableView:self.tableView settingsActionPressedInRowAtIndexPath:indexPath];
+                                                              }];
+    }
+    return feedSettingsAction;
+}
+
+- (UITableViewRowAction *)feedDeleteAction {
+    if (!feedDeleteAction) {
+        feedDeleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                                              title:@"Delete"
+                                                            handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                [self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
+                                                            }];
+    }
+    return feedDeleteAction;
 }
 
 - (UIRefreshControl *)feedRefreshControl {

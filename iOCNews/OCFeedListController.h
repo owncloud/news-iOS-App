@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2016 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -33,9 +33,8 @@
 #import <UIKit/UIKit.h>
 #import "OCArticleListController.h"
 #import "OCFeedSettingsController.h"
-#import "MSCMoreOptionTableViewCellDelegate.h"
 
-@interface OCFeedListController : UITableViewController <NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, OCFeedSettingsDelegate, MSCMoreOptionTableViewCellDelegate>
+@interface OCFeedListController : UITableViewController <NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, OCFeedSettingsDelegate>
 
 @property (strong, nonatomic) OCArticleListController *detailViewController;
 @property (nonatomic, retain) NSFetchedResultsController *specialFetchedResultsController;
@@ -46,6 +45,9 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *backBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
+
+@property (nonatomic, strong, readonly) UITableViewRowAction *feedSettingsAction;
+@property (nonatomic, strong, readonly) UITableViewRowAction *feedDeleteAction;
 
 @property (strong, nonatomic) UIActionSheet *gearActionSheet;
 @property (nonatomic, strong, readonly) UIAlertController *addFolderAlertView;
