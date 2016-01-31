@@ -37,6 +37,7 @@
 #import <KSCrash/KSCrashInstallationEmail.h>
 #import "FDTopDrawerController.h"
 #import "FDBottomDrawerController.h"
+#import "PDKeychainBindings.h"
 
 @implementation OCAppDelegate
 
@@ -56,6 +57,8 @@
     } else {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
     }
+
+    [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
 
     [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
         if(completed) {

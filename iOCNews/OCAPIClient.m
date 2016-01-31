@@ -63,8 +63,6 @@ static dispatch_once_t oncePredicate = 0;
     BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
     self.securityPolicy.allowInvalidCertificates = allowInvalid;
 
-    [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
-
     self.requestSerializer = [OCAPIClient jsonRequestSerializer];
     AFCompoundResponseSerializer *compoundSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[[AFJSONResponseSerializer serializer],
                                                                                                                                  [AFHTTPResponseSerializer serializer]]];
