@@ -113,12 +113,14 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         }
         [tableView deselectRowAtIndexPath:indexPath animated:true];
         [self.connectionActivityIndicator startAnimating];
+
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
+        [prefs synchronize];
+
         OCAPIClient *client = [[OCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
         [client setRequestSerializer:[AFJSONRequestSerializer serializer]];
         [client.requestSerializer setAuthorizationHeaderFieldWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
-
-        BOOL allowInvalid = self.certificateSwitch.on;
-        client.securityPolicy.allowInvalidCertificates = allowInvalid;
         
         [client GET:@"version" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *jsonDict = nil;
@@ -204,7 +206,11 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                     break;
                 default:
                     title = NSLocalizedString(@"Connection failure", @"An error message title");
-                    message = NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message");
+                    if (error) {
+                        message = error.localizedDescription;
+                    } else {
+                        message = NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message");
+                    }
                     break;
             }
             [self.connectionActivityIndicator stopAnimating];

@@ -60,7 +60,7 @@ static dispatch_once_t oncePredicate = 0;
     if (!self) {
         return nil;
     }
-    BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
+    __block BOOL allowInvalid = [[NSUserDefaults standardUserDefaults] boolForKey:@"AllowInvalidSSLCertificate"];
     self.securityPolicy.allowInvalidCertificates = allowInvalid;
 
     self.requestSerializer = [OCAPIClient jsonRequestSerializer];
@@ -70,6 +70,15 @@ static dispatch_once_t oncePredicate = 0;
     
     [self.reachabilityManager startMonitoring];
     self.operationQueue.maxConcurrentOperationCount = 1;
+    
+    [self setSessionDidReceiveAuthenticationChallengeBlock:^NSURLSessionAuthChallengeDisposition(NSURLSession * _Nonnull session, NSURLAuthenticationChallenge * _Nonnull challenge, NSURLCredential *__autoreleasing  _Nullable * _Nullable credential) {
+        if (allowInvalid) {
+            *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+            return NSURLSessionAuthChallengeUseCredential;
+        } else {
+            return NSURLSessionAuthChallengePerformDefaultHandling;
+        }
+     }];
     
     return self;
 }
