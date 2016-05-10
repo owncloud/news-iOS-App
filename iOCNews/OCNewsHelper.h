@@ -69,7 +69,7 @@ typedef NS_ENUM(NSInteger, OCUpdateType) {
 - (Feed*)feedWithId:(NSNumber*)anId;
 - (NSArray*)feedsInFolderWithId:(NSNumber*)folderId;
 - (Item*)itemWithId:(NSNumber*)anId;
-- (void)faviconForFeedWithId:(NSNumber *)feedId completion:(void(^)(UIImage *image, BOOL success))completion;
+- (void)faviconForFeedWithId:(NSNumber *)feedId imageView:(UIImageView *)imageView;
 - (int)addFolder:(id)JSON;
 - (void)deleteFolder:(Folder*)folder;
 - (void)updateFolders;

@@ -278,11 +278,7 @@
                 }
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
                     if (cell.tag == indexPathTemp.row) {
-                        [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId completion:^(UIImage *image, BOOL success) {
-                            if (image) {
-                                cell.imageView.image = image;
-                            }
-                        }];
+                        [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId imageView:cell.imageView];
                     }
                 }
                 cell.accessoryType = UITableViewCellAccessoryNone;

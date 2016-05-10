@@ -36,6 +36,7 @@
 #import "NSDictionary+HandleNull.h"
 #import "AFNetworking.h"
 #import "SDWebImageDownloader.h"
+#import "UIImageView+WebCache.h"
 
 @interface OCNewsHelper () {
     NSMutableSet *foldersToAdd;
@@ -231,44 +232,21 @@
     return newFeed.myIdValue;
 }
 
-- (void)faviconForFeedWithId:(NSNumber *)feedId completion:(void(^)(UIImage *image, BOOL success))completion
+- (void)faviconForFeedWithId:(NSNumber *)feedId imageView:(UIImageView *)imageView
 {
-    NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feedId.stringValue];
-    faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:faviconSaveUrl.path]) {
-        completion([UIImage imageWithContentsOfFile:faviconSaveUrl.path], YES);
-        return;
-    }
-    
     Feed *feed = [self feedWithId:feedId];
-    if ([feed.faviconLink isEqualToString:@"favicon"] || [feed.faviconLink isEqualToString:@""]) {
-        completion([UIImage imageNamed:@"favicon"], YES);
-        return;
+    if (feed && feed.myId) {
+        if ([feed.faviconLink isEqualToString:@"favicon"] || [feed.faviconLink isEqualToString:@""]) {
+            imageView.image = [UIImage imageNamed:@"favicon"];
+        }
+        else if ([feed.faviconLink isEqualToString:@"star_icon"] || [feed.faviconLink isEqualToString:@""]) {
+            imageView.image = [UIImage imageNamed:@"star_icon"];
+        }
+        else {
+            NSURL *faviconUrl = [NSURL URLWithString:feed.faviconLink];
+            [imageView sd_setImageWithURL:faviconUrl placeholderImage:[UIImage imageNamed:@"favicon"]];
+        }
     }
-    if ([feed.faviconLink isEqualToString:@"star_icon"] || [feed.faviconLink isEqualToString:@""]) {
-        completion([UIImage imageNamed:@"star_icon"], YES);
-        return;
-    }
-
-    NSURL *faviconUrl = [NSURL URLWithString:feed.faviconLink];
-    SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
-    [downloader downloadImageWithURL:faviconUrl
-                             options:0
-                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                // progression tracking code
-                            }
-                           completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                               if (image && finished) {
-                                   NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feed.myId.stringValue];
-                                   faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
-                                   [UIImagePNGRepresentation(image) writeToURL:faviconSaveUrl atomically:YES];
-                                   completion([UIImage imageWithContentsOfFile:faviconSaveUrl.path], YES);
-                               }
-                               else
-                               {
-                                   completion([UIImage imageNamed:@"favicon"], NO);                                   
-                               }
-                           }];
 }
 
 - (void)addItemFromDictionary:(NSDictionary *)dict {
@@ -324,13 +302,8 @@
 }
 
 - (void)deleteFeed:(Feed*)feed {
-    if (feed) {
+    if (feed && feed.myId) {
         NSError *error = nil;
-        NSURL *faviconSaveUrl = [[self documentsDirectoryURL] URLByAppendingPathComponent:feed.myId.stringValue];
-        faviconSaveUrl = [faviconSaveUrl URLByAppendingPathExtension:@"png"];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:faviconSaveUrl.path]) {
-            [[NSFileManager defaultManager] removeItemAtURL:faviconSaveUrl error:&error];
-        }
         [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
         
         NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];

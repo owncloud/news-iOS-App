@@ -395,11 +395,7 @@
         if (feed) {
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
                 if (cell.tag == indexPath.row) {
-                    [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId completion:^(UIImage *image, BOOL success) {
-                        if (image) {
-                            cell.favIconImage.image = image;
-                        }
-                    }];
+                    [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId imageView: cell.favIconImage];
                 }
             }
             
