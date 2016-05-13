@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2016 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -358,7 +358,6 @@
         cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
         cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
         
-        cell.titleLabel.preferredMaxLayoutWidth = 320.0f;
         cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
         NSString *dateLabelText = @"";
         
@@ -369,7 +368,6 @@
                 NSLocale *currentLocale = [NSLocale currentLocale];
                 NSString *dateComponents = @"MMM d";
                 NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:currentLocale];
-//                NSLog(@"Date format for %@: %@", [currentLocale displayNameForKey:NSLocaleIdentifier value:[currentLocale localeIdentifier]], dateFormatString);
                 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                 dateFormat.dateFormat = dateFormatString;
                 dateLabelText = [dateLabelText stringByAppendingString:[dateFormat stringFromDate:date]];
@@ -396,7 +394,11 @@
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
                 if (cell.tag == indexPath.row) {
                     [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId imageView: cell.favIconImage];
+                    cell.favIconImage.hidden = NO;
                 }
+            }
+            else {
+                cell.favIconImage.hidden = YES;
             }
             
             if (feed.title && ![feed.title isEqualToString:author]) {
@@ -442,12 +444,16 @@
             if (urlString) {
                 if (cell.tag == indexPath.row) {
                     [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
+                    cell.articleImageStackView.hidden = NO;
+                    cell.articleImage.hidden = NO;
                 }
             } else {
-                [cell.articleImage setImage:nil];
+                cell.articleImageStackView.hidden = YES;
+                cell.articleImage.hidden = YES;
             }
         } else {
-            [cell.articleImage setImage:nil];
+            cell.articleImageStackView.hidden = YES;
+            cell.articleImage.hidden = YES;
         }
     }
     @catch (NSException *exception) {
