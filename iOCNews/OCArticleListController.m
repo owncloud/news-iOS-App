@@ -480,7 +480,7 @@
 {
     currentIndex = indexPath.row;
     Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if (selectedItem) {
+    if (selectedItem && selectedItem.myId) {
         self.detailViewController.item = selectedItem;
         [self.mm_drawerController.mm_drawerController closeDrawerAnimated:YES completion:nil];
         if (selectedItem.unreadValue) {
@@ -670,16 +670,18 @@
             if (indexPath.section == 0) {
                 @try {
                     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-                    if (item.unreadValue) {
-                        item.unreadValue = NO;
-                        [self updateUnreadCount:@[item.myId]];
-                    } else {
-                        if (item.starredValue) {
-                            item.starredValue = NO;
-                            [[OCNewsHelper sharedHelper] unstarItemOffline:item.myId];
+                    if (item && item.myId) {
+                        if (item.unreadValue) {
+                            item.unreadValue = NO;
+                            [self updateUnreadCount:@[item.myId]];
                         } else {
-                            item.starredValue = YES;
-                            [[OCNewsHelper sharedHelper] starItemOffline:item.myId];
+                            if (item.starredValue) {
+                                item.starredValue = NO;
+                                [[OCNewsHelper sharedHelper] unstarItemOffline:item.myId];
+                            } else {
+                                item.starredValue = YES;
+                                [[OCNewsHelper sharedHelper] starItemOffline:item.myId];
+                            }
                         }
                     }
                 }
