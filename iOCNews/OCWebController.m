@@ -230,9 +230,10 @@ const int SWIPE_PREVIOUS = 1;
                             [self writeAndLoadHtml:html];
                             
                         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                            NSString *html;
-                            html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
-                            html = [html stringByAppendingString:self.item.body];
+                            NSString *html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
+                            if (self.item.body != nil) {
+                                html = [html stringByAppendingString:self.item.body];
+                            }
                             [self writeAndLoadHtml:html];
                         }];
                     }
