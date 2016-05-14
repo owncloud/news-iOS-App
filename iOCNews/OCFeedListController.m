@@ -226,6 +226,7 @@
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"SyncInBackground"];
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowFavicons"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.feedsFetchedResultsController.delegate = nil;
 }
 
 #pragma mark - Table view data source
