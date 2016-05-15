@@ -135,7 +135,6 @@ const int SWIPE_PREVIOUS = 1;
                 self.automaticallyAdjustsScrollViewInsets = NO;
                 self.webView.scrollView.backgroundColor = [self myBackgroundColor];
                 self.webView.navigationDelegate = self;
-                self.webView.allowsBackForwardNavigationGestures = YES;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [self.view insertSubview:self.webView atIndex:0];
                 [self.webView addSubview:self.menuController.view];
@@ -168,7 +167,6 @@ const int SWIPE_PREVIOUS = 1;
                 }
                 self.webView.scrollView.backgroundColor = [self myBackgroundColor];
                 self.webView.navigationDelegate = self;
-                self.webView.allowsBackForwardNavigationGestures = YES;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [self.webView addSubview:self.menuController.view];
                 [self.view insertSubview:self.webView belowSubview:imageView];
