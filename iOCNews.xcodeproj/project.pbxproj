@@ -35,6 +35,7 @@
 		D02300351A5A099D00B354E0 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = D023002E1A5A099D00B354E0 /* MMDrawerVisualState.m */; };
 		D02300371A5A099D00B354E0 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D02300301A5A099D00B354E0 /* UIViewController+MMDrawerController.m */; };
 		D023003B1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = D023003A1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m */; };
+		D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02CCAF31CE7E27300F6CCEC /* WebKit.framework */; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
 		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
@@ -179,6 +180,7 @@
 		D02300391A5A09BA00B354E0 /* MMDrawerController+Storyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MMDrawerController+Storyboard.h"; path = "../../MMDrawerController-Storyboard/MMDrawerController+Storyboard.h"; sourceTree = "<group>"; };
 		D023003A1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MMDrawerController+Storyboard.m"; path = "../../MMDrawerController-Storyboard/MMDrawerController+Storyboard.m"; sourceTree = "<group>"; };
 		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
+		D02CCAF31CE7E27300F6CCEC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
 		D035160519DA403E0016573F /* PDKeychainBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindings.m; sourceTree = "<group>"; };
 		D035160619DA403E0016573F /* PDKeychainBindingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindingsController.h; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */,
 				D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */,
 				D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */,
 				D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */,
@@ -651,6 +654,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D02CCAF31CE7E27300F6CCEC /* WebKit.framework */,
 				D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */,
 				D0CFE5A8188F43EF00165839 /* KSCrash.framework */,
 				D0A33F3B1880987C00C6DA92 /* libz.dylib */,
