@@ -61,9 +61,6 @@ const int SWIPE_PREVIOUS = 1;
     BOOL loadingSummary;
 }
 
-@property (strong, nonatomic, readonly) UIPopoverController *prefPopoverController;
-@property (strong, nonatomic, readonly) PHPrefViewController *prefViewController;
-
 - (void)configureView;
 - (void) writeAndLoadHtml:(NSString*)html;
 - (NSString *)replaceYTIframe:(NSString *)html;
@@ -78,8 +75,6 @@ const int SWIPE_PREVIOUS = 1;
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
 @synthesize nextArticleRecognizer;
 @synthesize previousArticleRecognizer;
-@synthesize prefPopoverController;
-@synthesize prefViewController;
 @synthesize item = _item;
 @synthesize menuController;
 @synthesize keepUnread;
@@ -1137,28 +1132,6 @@ const int SWIPE_PREVIOUS = 1;
         backColor = [UIColor colorWithRed:0.96 green:0.94 blue:0.86 alpha:1];
     }
     return backColor;
-}
-
-- (PHPrefViewController*)prefViewController {
-    if (!prefViewController) {
-        UIStoryboard *storyboard;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            storyboard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
-        } else {
-            storyboard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
-        }
-        prefViewController = [storyboard instantiateViewControllerWithIdentifier:@"preferences"];
-        prefViewController.delegate = self;
-    }
-    return prefViewController;
-}
-
-- (UIPopoverController*)prefPopoverController {
-    if (!prefPopoverController) {
-        prefPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.prefViewController];
-        prefPopoverController.popoverContentSize = CGSizeMake(240.0f, 260.0f);
-    }
-    return prefPopoverController;
 }
 
 -(void) settingsChanged:(NSString *)setting newValue:(NSUInteger)value {
