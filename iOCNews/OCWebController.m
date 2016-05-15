@@ -53,7 +53,7 @@
 const int SWIPE_NEXT = 0;
 const int SWIPE_PREVIOUS = 1;
 
-@interface OCWebController () <UIPopoverControllerDelegate> {
+@interface OCWebController () <UIPopoverControllerDelegate, WKNavigationDelegate> {
     UIPopoverController *_activityPopover;
     BOOL _menuIsOpen;
     int _swipeDirection;
@@ -125,17 +125,17 @@ const int SWIPE_PREVIOUS = 1;
                 if (self.webView != nil) {
                     [self.menuController.view removeFromSuperview];
                     [self.webView removeFromSuperview];
-                    self.webView.delegate =nil;
+                    self.webView.navigationDelegate =nil;
                     self.webView = nil;
                 }
                 
                 CGFloat topBarOffset = self.topLayoutGuide.length;
                 CGRect frame = self.view.frame;
-                self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
+                self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
                 self.automaticallyAdjustsScrollViewInsets = NO;
                 self.webView.scrollView.backgroundColor = [self myBackgroundColor];
-                self.webView.scalesPageToFit = YES;
-                self.webView.delegate = self;
+                self.webView.navigationDelegate = self;
+                self.webView.allowsBackForwardNavigationGestures = YES;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [self.view insertSubview:self.webView atIndex:0];
                 [self.webView addSubview:self.menuController.view];
@@ -154,7 +154,7 @@ const int SWIPE_PREVIOUS = 1;
                 if (self.webView != nil) {
                     [self.menuController.view removeFromSuperview];
                     [self.webView removeFromSuperview];
-                    self.webView.delegate =nil;
+                    self.webView.navigationDelegate = nil;
                     self.webView = nil;
                 }
                 __block CGFloat topBarOffset = self.topLayoutGuide.length;
@@ -162,13 +162,13 @@ const int SWIPE_PREVIOUS = 1;
                 self.automaticallyAdjustsScrollViewInsets = NO;
                 
                 if (_swipeDirection == SWIPE_NEXT) {
-                    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(width, topBarOffset, width, height - topBarOffset)];
+                    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(width, topBarOffset, width, height - topBarOffset)];
                 } else {
-                    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(-width, topBarOffset, width, height - topBarOffset)];
+                    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(-width, topBarOffset, width, height - topBarOffset)];
                 }
                 self.webView.scrollView.backgroundColor = [self myBackgroundColor];
-                self.webView.scalesPageToFit = YES;
-                self.webView.delegate = self;
+                self.webView.navigationDelegate = self;
+                self.webView.allowsBackForwardNavigationGestures = YES;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [self.webView addSubview:self.menuController.view];
                 [self.view insertSubview:self.webView belowSubview:imageView];
@@ -315,7 +315,7 @@ const int SWIPE_PREVIOUS = 1;
     [objectHtml writeToURL:objectSaveURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
     loadingComplete = NO;
     loadingSummary = YES;
-    [self.webView loadRequest:[NSURLRequest requestWithURL:objectSaveURL]];
+    [self.webView loadFileURL:objectSaveURL allowingReadAccessToURL:docDir];
 }
 
 #pragma mark - View lifecycle
@@ -354,7 +354,7 @@ const int SWIPE_PREVIOUS = 1;
  	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-    self.webView.delegate = nil;
+    self.webView.navigationDelegate = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -393,8 +393,8 @@ const int SWIPE_PREVIOUS = 1;
 
 - (IBAction)doInfo:(id)sender {
     @try {
-        NSURL *url = self.webView.request.URL;
-        NSString *subject = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+        NSURL *url = self.webView.URL;
+        NSString *subject = self.webView.title;
         if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
             url = [NSURL URLWithString:self.item.url];
             subject = self.item.title;
@@ -473,49 +473,62 @@ const int SWIPE_PREVIOUS = 1;
 
 #pragma mark - UIWebView delegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([self.webView.request.URL.scheme isEqualToString:@"file"]) {
-        if ([request.URL.absoluteString rangeOfString:@"itunes.apple.com"].location != NSNotFound) {
-            [[UIApplication sharedApplication] openURL:request.URL];
-            return NO;
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    if ([self.webView.URL.scheme isEqualToString:@"file"]) {
+        if ([navigationAction.request.URL.absoluteString rangeOfString:@"itunes.apple.com"].location != NSNotFound) {
+            [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
         }
     }
-//    NSLog(@"Request: %@", request.URL.absoluteString);
-    if (![[request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
+    if (![[navigationAction.request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
         [self.menuController close];
     }
-
-    if (navigationType != UIWebViewNavigationTypeOther) {
-        loadingSummary = [request.URL.scheme isEqualToString:@"file"] || [request.URL.scheme isEqualToString:@"about"];
+    
+    if (navigationAction.navigationType != WKNavigationTypeOther) {
+        loadingSummary = [navigationAction.request.URL.scheme isEqualToString:@"file"] || [navigationAction.request.URL.scheme isEqualToString:@"about"];
     }
+    decisionHandler(WKNavigationActionPolicyAllow);
     loadingComplete = NO;
-    return YES;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {       
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [self updateToolbar];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"]) {
-        // UIWebView object has fully loaded.
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        loadingComplete = YES;
-        [self updateNavigationItemTitle];
-    }
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [self updateToolbar];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [self updateToolbar];
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [webView evaluateJavaScript:@"document.readyState" completionHandler:^(NSString * _Nullable response, NSError * _Nullable error) {
+        if (response != nil) {
+            if ([response isEqualToString:@"complete"]) {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                loadingComplete = YES;
+                [self updateNavigationItemTitle];
+            }
+        }
+        [self updateToolbar];
+    }];
 }
 
 - (BOOL)isShowingASummary {
     BOOL result = NO;
     if (self.webView) {
-        result = [self.webView.request.URL.scheme isEqualToString:@"file"] || [self.webView.request.URL.scheme isEqualToString:@"about"];
+        result = [self.webView.URL.scheme isEqualToString:@"file"] || [self.webView.URL.scheme isEqualToString:@"about"];
     }
     return result;
 }
@@ -1166,7 +1179,7 @@ const int SWIPE_PREVIOUS = 1;
             if (!loadingComplete && loadingSummary) {
                 self.navigationItem.title = self.item.title;
             } else {
-                self.navigationItem.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+                self.navigationItem.title = self.webView.title;
             }
         }
     } else {

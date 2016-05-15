@@ -31,14 +31,15 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 #import "PHPrefViewController.h"
 #import "Item.h"
 #import "JCGridMenuController.h"
 
-@interface OCWebController : UIViewController <UIWebViewDelegate, UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, JCGridMenuControllerDelegate>
+@interface OCWebController : UIViewController <UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, JCGridMenuControllerDelegate>
 
 @property (nonatomic, strong) Item *item;
-@property (nonatomic, strong) UIWebView* webView;
+@property (nonatomic, strong) WKWebView* webView;
 @property (nonatomic, strong, readonly) JCGridMenuController *menuController;
 @property (nonatomic, strong, readonly) JCGridMenuRow *keepUnread;
 @property (nonatomic, strong, readonly) JCGridMenuRow *star;
