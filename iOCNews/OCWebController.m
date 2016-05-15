@@ -53,8 +53,7 @@
 const int SWIPE_NEXT = 0;
 const int SWIPE_PREVIOUS = 1;
 
-@interface OCWebController () <UIPopoverControllerDelegate, WKNavigationDelegate> {
-    UIPopoverController *_activityPopover;
+@interface OCWebController () <WKNavigationDelegate> {
     BOOL _menuIsOpen;
     int _swipeDirection;
     BOOL loadingComplete;
@@ -402,16 +401,12 @@ const int SWIPE_PREVIOUS = 1;
         OCSharingProvider *sharingProvider = [[OCSharingProvider alloc] initWithPlaceholderItem:url subject:subject];
         
         UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[sharingProvider] applicationActivities:activities];
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            if (![_activityPopover isPopoverVisible]) {
-                _activityPopover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
-                _activityPopover.delegate = self;
-                [_activityPopover presentPopoverFromBarButtonItem:self.actionBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            }
-        } else {
-            [self presentViewController:activityViewController animated:YES completion:nil];
-        }
+        activityViewController.modalPresentationStyle = UIModalPresentationPopover;
+        [self presentViewController:activityViewController animated:YES completion:nil];
+        // Get the popover presentation controller and configure it.
+        UIPopoverPresentationController *presentationController = [activityViewController popoverPresentationController];
+        presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        presentationController.barButtonItem = self.actionBarButtonItem;
     }
     @catch (NSException *exception) {
         //
@@ -419,11 +414,6 @@ const int SWIPE_PREVIOUS = 1;
     @finally {
         //
     }
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-	_activityPopover = nil;
 }
 
 - (IBAction)doText:(id)sender event:(UIEvent*)event {
