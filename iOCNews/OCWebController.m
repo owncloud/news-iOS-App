@@ -1135,7 +1135,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)updateNavigationItemTitle
 {
-    if ([UIScreen mainScreen].applicationFrame.size.width > 414) { //should cover any phone in landscape and iPad
+    if ([UIScreen mainScreen].bounds.size.width > 414) { //should cover any phone in landscape and iPad
         if (self.item != nil) {
             if (!loadingComplete && loadingSummary) {
                 self.navigationItem.title = self.item.title;

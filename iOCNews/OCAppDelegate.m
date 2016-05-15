@@ -49,8 +49,8 @@
     [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
     [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
 
-    [[UIView appearanceWhenContainedIn:[UIAlertController class], nil] setTintColor:[UINavigationBar appearance].tintColor];
-    
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
+
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncInBackground"]) {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
