@@ -49,7 +49,6 @@
 @property (nonatomic, strong, readonly) UITableViewRowAction *feedSettingsAction;
 @property (nonatomic, strong, readonly) UITableViewRowAction *feedDeleteAction;
 
-@property (strong, nonatomic) UIActionSheet *gearActionSheet;
 @property (nonatomic, strong, readonly) UIAlertController *addFolderAlertView;
 @property (nonatomic, strong, readonly) UIAlertController *renameFolderAlertView;
 @property (nonatomic, strong, readonly) UIAlertController *addFeedAlertView;

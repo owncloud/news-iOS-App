@@ -66,7 +66,6 @@
 @synthesize specialFetchedResultsController;
 @synthesize foldersFetchedResultsController;
 @synthesize feedsFetchedResultsController;
-@synthesize gearActionSheet;
 @synthesize folderId;
 @synthesize feedSettingsAction;
 @synthesize feedDeleteAction;
@@ -440,6 +439,7 @@
         currentRenameId = folder.myId;
         [[self.renameFolderAlertView.textFields objectAtIndex:0] setText:folder.name];
         [self presentViewController:self.renameFolderAlertView animated:YES completion:nil];
+        self.renameFolderAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
     } else if (indexPath.section == 2) {
         Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
@@ -476,7 +476,7 @@
                                                            handler:^(UIAlertAction * action) {
                                                                
                                                                [self presentViewController:self.addFolderAlertView animated:YES completion:nil];
-                                                               
+                                                               self.addFolderAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
                                                            }];
     
     [alert addAction:addFolderAction];
@@ -486,7 +486,7 @@
                                                             handler:^(UIAlertAction * action) {
                                                                 
                                                                 [self presentViewController:self.addFeedAlertView animated:YES completion:nil];
-                                                                
+                                                                self.addFeedAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
                                                             }];
     
     [alert addAction:addFeedAction];
@@ -511,7 +511,11 @@
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
     }
     
-    [self.mm_drawerController presentViewController:alert animated:YES completion:nil];
+    //Tint workaround from http://stackoverflow.com/a/32695820
+    [self.mm_drawerController presentViewController:alert animated:YES completion:^{
+        alert.view.tintColor = [UINavigationBar appearance].tintColor;
+    }];
+    alert.view.tintColor = [UINavigationBar appearance].tintColor;
 }
 
 - (UIAlertController*)addFolderAlertView {
