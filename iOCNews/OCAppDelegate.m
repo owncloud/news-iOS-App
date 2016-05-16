@@ -35,6 +35,7 @@
 #import "OCNewsHelper.h"
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationEmail.h>
+#import <KSCrash/KSCrashInstallation+Alert.h>
 #import "FDTopDrawerController.h"
 #import "FDBottomDrawerController.h"
 #import "PDKeychainBindings.h"
