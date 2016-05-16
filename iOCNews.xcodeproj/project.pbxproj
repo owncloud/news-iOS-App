@@ -38,6 +38,8 @@
 		D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02CCAF31CE7E27300F6CCEC /* WebKit.framework */; };
 		D02CCAF91CE956A500F6CCEC /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = D02CCAF61CE956A400F6CCEC /* SDWebImageDownloader.m */; };
 		D02CCAFA1CE956A500F6CCEC /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D02CCAF81CE956A500F6CCEC /* SDWebImageDownloaderOperation.m */; };
+		D02CCAFB1CE95CDD00F6CCEC /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CFE5A8188F43EF00165839 /* KSCrash.framework */; };
+		D02CCAFC1CE95CDD00F6CCEC /* KSCrash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D0CFE5A8188F43EF00165839 /* KSCrash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
 		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
@@ -149,6 +151,20 @@
 		D0FD70791787626100EF1457 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D02CCAFD1CE95CDD00F6CCEC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D02CCAFC1CE95CDD00F6CCEC /* KSCrash.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSharingProvider.h; sourceTree = "<group>"; };
@@ -392,6 +408,7 @@
 				D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */,
 				D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */,
 				D0BCABC8177910C000C965F4 /* ImageIO.framework in Frameworks */,
+				D02CCAFB1CE95CDD00F6CCEC /* KSCrash.framework in Frameworks */,
 				D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */,
 				D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */,
 				D0BCAA681779091000C965F4 /* QuartzCore.framework in Frameworks */,
@@ -863,6 +880,7 @@
 				D0BCAA1F177900C300C965F4 /* Frameworks */,
 				D0BCAA20177900C300C965F4 /* Resources */,
 				D08D83BA181727C9005A75F0 /* ShellScript */,
+				D02CCAFD1CE95CDD00F6CCEC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1221,11 +1239,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/peter/Projects/iOCNews,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/pcre/lib",
@@ -1254,11 +1274,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/peter/Projects/iOCNews,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/pcre/lib",
