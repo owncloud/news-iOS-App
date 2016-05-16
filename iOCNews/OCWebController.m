@@ -134,11 +134,8 @@ const int SWIPE_PREVIOUS = 1;
                 [self.webView addSubview:self.menuController.view];
                 
             } else {
-                __block UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-                imageView.frame = self.view.frame;
-                imageView.image = [self screenshot];
+                __block UIView *imageView = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
                 [self.view insertSubview:imageView atIndex:0];
-                
                 [self.view setNeedsDisplay];
                 
                 float width = self.view.frame.size.width;
@@ -1150,16 +1147,6 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     [self updateNavigationItemTitle];
-}
-
-- (UIImage*)screenshot {
-    UIGraphicsBeginImageContextWithOptions(self.view.frame.size, NO, 0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [self.view.layer renderInContext:context];
-    UIImage *capturedScreen = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return capturedScreen;
 }
 
 - (NSString*)replaceYTIframe:(NSString *)html {
