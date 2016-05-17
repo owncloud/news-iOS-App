@@ -53,7 +53,7 @@
 const int SWIPE_NEXT = 0;
 const int SWIPE_PREVIOUS = 1;
 
-@interface OCWebController () <WKNavigationDelegate> {
+@interface OCWebController () <WKNavigationDelegate, WKUIDelegate> {
     BOOL _menuIsOpen;
     int _swipeDirection;
     BOOL loadingComplete;
@@ -120,6 +120,7 @@ const int SWIPE_PREVIOUS = 1;
                     [self.menuController.view removeFromSuperview];
                     [self.webView removeFromSuperview];
                     self.webView.navigationDelegate =nil;
+                    self.webView.UIDelegate = nil;
                     self.webView = nil;
                 }
                 
@@ -129,6 +130,7 @@ const int SWIPE_PREVIOUS = 1;
                 self.automaticallyAdjustsScrollViewInsets = NO;
                 self.webView.scrollView.backgroundColor = [self myBackgroundColor];
                 self.webView.navigationDelegate = self;
+                self.webView.UIDelegate = self;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [self.view insertSubview:self.webView atIndex:0];
                 [self.webView addSubview:self.menuController.view];
@@ -145,6 +147,7 @@ const int SWIPE_PREVIOUS = 1;
                     [self.menuController.view removeFromSuperview];
                     [self.webView removeFromSuperview];
                     self.webView.navigationDelegate = nil;
+                    self.webView.UIDelegate = nil;
                     self.webView = nil;
                 }
                 __block CGFloat topBarOffset = self.topLayoutGuide.length;
@@ -158,6 +161,7 @@ const int SWIPE_PREVIOUS = 1;
                 }
                 self.webView.scrollView.backgroundColor = [self myBackgroundColor];
                 self.webView.navigationDelegate = self;
+                self.webView.UIDelegate = self;
                 self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [self.webView addSubview:self.menuController.view];
                 [self.view insertSubview:self.webView belowSubview:imageView];
@@ -344,6 +348,7 @@ const int SWIPE_PREVIOUS = 1;
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     self.webView.navigationDelegate = nil;
+    self.webView.UIDelegate = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -451,7 +456,7 @@ const int SWIPE_PREVIOUS = 1;
     [self updateToolbar];
 }
 
-#pragma mark - UIWebView delegate
+#pragma mark - WKWbView delegate
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
@@ -503,6 +508,15 @@ const int SWIPE_PREVIOUS = 1;
         }
         [self updateToolbar];
     }];
+}
+
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
+{
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    
+    return nil;
 }
 
 - (BOOL)isShowingASummary {
