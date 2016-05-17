@@ -173,7 +173,7 @@
     if (!context) {
         NSPersistentStoreCoordinator *myCoordinator = [self coordinator];
         if (myCoordinator != nil) {
-            context = [[NSManagedObjectContext alloc] init];
+            context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
             [context setPersistentStoreCoordinator:myCoordinator];
         }
     }
