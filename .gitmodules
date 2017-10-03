@@ -1,6 +1,3 @@
-[submodule "AFNetworking"]
-	path = AFNetworking
-	url = https://github.com/AFNetworking/AFNetworking.git
 [submodule "TUSafariActivity"]
 	path = TUSafariActivity
 	url = https://github.com/davbeck/TUSafariActivity.git
@@ -25,6 +22,3 @@
 [submodule "MMDrawerController-Storyboard"]
 	path = MMDrawerController-Storyboard
 	url = https://github.com/TomSwift/MMDrawerController-Storyboard.git
-[submodule "SDWebImage"]
-	path = SDWebImage
-	url = https://github.com/rs/SDWebImage.git
