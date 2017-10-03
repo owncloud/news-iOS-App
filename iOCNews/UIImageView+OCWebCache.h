@@ -6,8 +6,8 @@
  * file that was distributed with this source code.
  */
 
-#import "SDWebImageCompat.h"
-#import "SDWebImageManager.h"
+#import <WebImage/SDWebImageCompat.h>
+#import <WebImage/SDWebImageManager.h>
 
 @interface UIImageView (OCWebCache)
 

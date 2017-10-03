@@ -31,7 +31,7 @@
  *************************************************************************/
 
 #import "OCAppDelegate.h"
-#import "AFNetworkActivityIndicatorManager.h"
+#import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import "OCNewsHelper.h"
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationEmail.h>

@@ -34,9 +34,9 @@
 #import "OCAPIClient.h"
 #import "Feeds.h"
 #import "NSDictionary+HandleNull.h"
-#import "AFNetworking.h"
-#import "SDWebImageDownloader.h"
-#import "UIImageView+WebCache.h"
+#import <AFNetworking/AFNetworking.h>
+#import <WebImage/SDWebImageDownloader.h>
+#import <WebImage/UIImageView+WebCache.h>
 
 @interface OCNewsHelper () {
     NSMutableSet *foldersToAdd;

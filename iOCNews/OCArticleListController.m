@@ -34,7 +34,7 @@
 #import "OCArticleCell.h"
 #import "OCWebController.h"
 #import "NSString+HTML.h"
-#import "AFNetworking.h"
+#import <AFNetworking/AFNetworking.h>
 #import "OCArticleImage.h"
 #import "TSMessage.h"
 #import "OCNewsHelper.h"

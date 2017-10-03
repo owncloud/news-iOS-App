@@ -1,0 +1,21 @@
+{
+  "iOS" : [
+    {
+      "hash" : "d053723495693cb700ef3341d094ce9b8135621ac0f426acd9793b42435a8b7e",
+      "name" : "WebImage"
+    }
+  ],
+  "commitish" : "3.8.2",
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+    {
+      "hash" : "488f70288ae40a124597960f7742296579b6ed5d47ec737670e6175073f62c85",
+      "name" : "WebImage"
+    }
+  ],
+  "Mac" : [
+
+  ]
+}

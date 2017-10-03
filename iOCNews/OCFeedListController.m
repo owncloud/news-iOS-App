@@ -37,7 +37,7 @@
 #import "OCNewsHelper.h"
 #import "Folder.h"
 #import "Feed.h"
-#import "AFNetworking.h"
+#import <AFNetworking/AFNetworking.h>
 #import "UIViewController+MMDrawerController.h"
 
 @interface OCFeedListController () <UIActionSheetDelegate> {
