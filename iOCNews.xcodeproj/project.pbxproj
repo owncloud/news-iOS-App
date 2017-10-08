@@ -28,13 +28,6 @@
 		D01E9A521ADB412C008D50E1 /* TUSafariActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D01E9A511ADB412C008D50E1 /* TUSafariActivity.m */; };
 		D01E9A801ADB4375008D50E1 /* TUSafariActivity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D01E9A7F1ADB4375008D50E1 /* TUSafariActivity.bundle */; };
 		D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D023001A1A58C0E800B354E0 /* Launch Screen.xib */; };
-		D02300231A5A097500B354E0 /* FDBottomDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D02300201A5A097500B354E0 /* FDBottomDrawerController.m */; };
-		D02300251A5A097500B354E0 /* FDTopDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D02300221A5A097500B354E0 /* FDTopDrawerController.m */; };
-		D02300311A5A099D00B354E0 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D02300291A5A099D00B354E0 /* MMDrawerBarButtonItem.m */; };
-		D02300331A5A099D00B354E0 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D023002C1A5A099D00B354E0 /* MMDrawerController.m */; };
-		D02300351A5A099D00B354E0 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = D023002E1A5A099D00B354E0 /* MMDrawerVisualState.m */; };
-		D02300371A5A099D00B354E0 /* UIViewController+MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D02300301A5A099D00B354E0 /* UIViewController+MMDrawerController.m */; };
-		D023003B1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = D023003A1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m */; };
 		D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02CCAF31CE7E27300F6CCEC /* WebKit.framework */; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
@@ -80,6 +73,7 @@
 		D0735DC31F83378A002D3AB3 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC01F83378A002D3AB3 /* KSCrash.framework */; };
 		D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC11F83378A002D3AB3 /* AFNetworking.framework */; };
 		D0735DC51F83378A002D3AB3 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC21F83378A002D3AB3 /* WebImage.framework */; };
+		D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */; };
 		D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D651817DFEFE700C40D76 /* JCGridMenuController.m */; };
 		D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D655E17DFEFE700C40D76 /* UIButton+JCUI.m */; };
 		D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656017DFEFE700C40D76 /* UILabel+JCUI.m */; };
@@ -144,21 +138,6 @@
 		D01E9A511ADB412C008D50E1 /* TUSafariActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TUSafariActivity.m; path = TUSafariActivity/Pod/Classes/TUSafariActivity.m; sourceTree = SOURCE_ROOT; };
 		D01E9A7F1ADB4375008D50E1 /* TUSafariActivity.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TUSafariActivity.bundle; path = TUSafariActivity/Pod/TUSafariActivity.bundle; sourceTree = SOURCE_ROOT; };
 		D023001A1A58C0E800B354E0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
-		D023001F1A5A097500B354E0 /* FDBottomDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBottomDrawerController.h; sourceTree = "<group>"; };
-		D02300201A5A097500B354E0 /* FDBottomDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBottomDrawerController.m; sourceTree = "<group>"; };
-		D02300211A5A097500B354E0 /* FDTopDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDTopDrawerController.h; sourceTree = "<group>"; };
-		D02300221A5A097500B354E0 /* FDTopDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDTopDrawerController.m; sourceTree = "<group>"; };
-		D02300281A5A099D00B354E0 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
-		D02300291A5A099D00B354E0 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
-		D023002A1A5A099D00B354E0 /* MMDrawerController+Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MMDrawerController+Subclass.h"; sourceTree = "<group>"; };
-		D023002B1A5A099D00B354E0 /* MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDrawerController.h; sourceTree = "<group>"; };
-		D023002C1A5A099D00B354E0 /* MMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMDrawerController.m; sourceTree = "<group>"; };
-		D023002D1A5A099D00B354E0 /* MMDrawerVisualState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDrawerVisualState.h; sourceTree = "<group>"; };
-		D023002E1A5A099D00B354E0 /* MMDrawerVisualState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMDrawerVisualState.m; sourceTree = "<group>"; };
-		D023002F1A5A099D00B354E0 /* UIViewController+MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MMDrawerController.h"; sourceTree = "<group>"; };
-		D02300301A5A099D00B354E0 /* UIViewController+MMDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MMDrawerController.m"; sourceTree = "<group>"; };
-		D02300391A5A09BA00B354E0 /* MMDrawerController+Storyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MMDrawerController+Storyboard.h"; path = "../../MMDrawerController-Storyboard/MMDrawerController+Storyboard.h"; sourceTree = "<group>"; };
-		D023003A1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MMDrawerController+Storyboard.m"; path = "../../MMDrawerController-Storyboard/MMDrawerController+Storyboard.m"; sourceTree = "<group>"; };
 		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
 		D02CCAF31CE7E27300F6CCEC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
@@ -226,6 +205,8 @@
 		D0735DC01F83378A002D3AB3 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KSCrash.framework; path = Carthage/Build/iOS/KSCrash.framework; sourceTree = "<group>"; };
 		D0735DC11F83378A002D3AB3 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
 		D0735DC21F83378A002D3AB3 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
+		D0735DC71F8989A2002D3AB3 /* PHArticleManagerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHArticleManagerController.h; sourceTree = "<group>"; };
+		D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHArticleManagerController.m; sourceTree = "<group>"; };
 		D07D651717DFEFE700C40D76 /* JCGridMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuController.h; sourceTree = "<group>"; };
 		D07D651817DFEFE700C40D76 /* JCGridMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuController.m; sourceTree = "<group>"; };
 		D07D655D17DFEFE700C40D76 /* UIButton+JCUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+JCUI.h"; sourceTree = "<group>"; };
@@ -354,25 +335,6 @@
 				D01ACABC17B83637005D1463 /* readable.c */,
 			);
 			path = readable;
-			sourceTree = "<group>";
-		};
-		D02300271A5A099D00B354E0 /* MMDrawerController */ = {
-			isa = PBXGroup;
-			children = (
-				D02300281A5A099D00B354E0 /* MMDrawerBarButtonItem.h */,
-				D02300291A5A099D00B354E0 /* MMDrawerBarButtonItem.m */,
-				D023002A1A5A099D00B354E0 /* MMDrawerController+Subclass.h */,
-				D023002B1A5A099D00B354E0 /* MMDrawerController.h */,
-				D023002C1A5A099D00B354E0 /* MMDrawerController.m */,
-				D023002D1A5A099D00B354E0 /* MMDrawerVisualState.h */,
-				D023002E1A5A099D00B354E0 /* MMDrawerVisualState.m */,
-				D023002F1A5A099D00B354E0 /* UIViewController+MMDrawerController.h */,
-				D02300301A5A099D00B354E0 /* UIViewController+MMDrawerController.m */,
-				D02300391A5A09BA00B354E0 /* MMDrawerController+Storyboard.h */,
-				D023003A1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m */,
-			);
-			name = MMDrawerController;
-			path = MMDrawerController/MMDrawerController;
 			sourceTree = "<group>";
 		};
 		D035160319DA403E0016573F /* PDKeychainBindingsController */ = {
@@ -528,7 +490,6 @@
 			children = (
 				D04C7DDE1BABC185000FB342 /* TSMessages */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
-				D02300271A5A099D00B354E0 /* MMDrawerController */,
 				D01ACAB317B83637005D1463 /* readable */,
 				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
@@ -582,10 +543,6 @@
 				D023001A1A58C0E800B354E0 /* Launch Screen.xib */,
 				D0BCAA34177900C400C965F4 /* OCAppDelegate.h */,
 				D0BCAA35177900C400C965F4 /* OCAppDelegate.m */,
-				D023001F1A5A097500B354E0 /* FDBottomDrawerController.h */,
-				D02300201A5A097500B354E0 /* FDBottomDrawerController.m */,
-				D02300211A5A097500B354E0 /* FDTopDrawerController.h */,
-				D02300221A5A097500B354E0 /* FDTopDrawerController.m */,
 				D06CB23717A0A0A800A1310B /* OCNewsHelper.h */,
 				D06CB23817A0A0A900A1310B /* OCNewsHelper.m */,
 				D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */,
@@ -606,6 +563,8 @@
 				D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */,
 				D0BCAA6B177909A500C965F4 /* OCArticleListController.h */,
 				D0BCAA6C177909A500C965F4 /* OCArticleListController.m */,
+				D0735DC71F8989A2002D3AB3 /* PHArticleManagerController.h */,
+				D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */,
 				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
 				D0BCAA71177909A600C965F4 /* OCWebController.h */,
@@ -906,7 +865,6 @@
 			files = (
 				D0BCAA32177900C400C965F4 /* main.m in Sources */,
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
-				D02300311A5A099D00B354E0 /* MMDrawerBarButtonItem.m in Sources */,
 				D0BCAA73177909A600C965F4 /* OCArticleCell.m in Sources */,
 				D04C7E0F1BABC185000FB342 /* TSBlurView.m in Sources */,
 				D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */,
@@ -914,10 +872,8 @@
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
 				D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */,
-				D02300231A5A097500B354E0 /* FDBottomDrawerController.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
-				D023003B1A5A09BA00B354E0 /* MMDrawerController+Storyboard.m in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */,
 				D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */,
@@ -937,12 +893,8 @@
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D08DDA451C5E8B2E00B0E90C /* HexColors.m in Sources */,
 				D01E9A521ADB412C008D50E1 /* TUSafariActivity.m in Sources */,
-				D02300351A5A099D00B354E0 /* MMDrawerVisualState.m in Sources */,
-				D02300251A5A097500B354E0 /* FDTopDrawerController.m in Sources */,
-				D02300371A5A099D00B354E0 /* UIViewController+MMDrawerController.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
-				D02300331A5A099D00B354E0 /* MMDrawerController.m in Sources */,
 				D04AD6601807125600FF6056 /* Folder.m in Sources */,
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
@@ -957,6 +909,7 @@
 				D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */,
 				D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */,
 				D07D659A17DFEFE700C40D76 /* UIView+JCUI.m in Sources */,
+				D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */,
 				D07D659B17DFEFE700C40D76 /* JCGridMenuColumn.m in Sources */,
 				D07D659C17DFEFE700C40D76 /* JCGridMenuRow.m in Sources */,
 				D07D659D17DFEFE700C40D76 /* JCGridMenuView.m in Sources */,

@@ -38,8 +38,6 @@
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
 #import "OCSharingProvider.h"
-#import "UIViewController+MMDrawerController.h"
-#import "FDTopDrawerController.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
@@ -60,6 +58,9 @@ const int SWIPE_PREVIOUS = 1;
     BOOL loadingSummary;
 }
 
+@property (strong, nonatomic) IBOutlet WKWebView *webView;
+@property (assign, nonatomic) BOOL isVisible;
+
 - (void)configureView;
 - (void) writeAndLoadHtml:(NSString*)html;
 - (NSString *)replaceYTIframe:(NSString *)html;
@@ -72,121 +73,21 @@ const int SWIPE_PREVIOUS = 1;
 
 @synthesize menuBarButtonItem;
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, textBarButtonItem, starBarButtonItem, unstarBarButtonItem;
-@synthesize nextArticleRecognizer;
-@synthesize previousArticleRecognizer;
 @synthesize item = _item;
 @synthesize menuController;
 @synthesize keepUnread;
 @synthesize star;
 @synthesize backgroundMenuRow;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
 #pragma mark - Managing the detail item
-
-- (void)setItem:(Item*)newItem
-{
-    Item *myItem = (Item*)[[OCNewsHelper sharedHelper].context objectWithID:[newItem objectID]];
-    if (myItem) {
-        if (_item != myItem) {
-            _item = myItem;
-            // Update the view.
-            [self configureView];
-        }
-    }
-}
 
 - (void)configureView
 {
     @try {
         if (self.item) {
-            if (self.mm_drawerController.openSide != MMDrawerSideNone) {
-                if (self.webView != nil) {
-                    [self.menuController.view removeFromSuperview];
-                    [self.webView removeFromSuperview];
-                    self.webView.navigationDelegate =nil;
-                    self.webView.UIDelegate = nil;
-                    self.webView = nil;
-                }
-                
-                CGFloat topBarOffset = self.topLayoutGuide.length;
-                CGRect frame = self.view.frame;
-                self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(frame.origin.x, topBarOffset, frame.size.width, frame.size.height - topBarOffset)];
-                self.automaticallyAdjustsScrollViewInsets = NO;
-                self.webView.scrollView.backgroundColor = [self myBackgroundColor];
-                self.webView.navigationDelegate = self;
-                self.webView.UIDelegate = self;
-                self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                [self.view insertSubview:self.webView atIndex:0];
-                [self.webView addSubview:self.menuController.view];
-                
-            } else {
-                __block UIView *imageView = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
-                [self.view insertSubview:imageView atIndex:0];
-                [self.view setNeedsDisplay];
-                
-                float width = self.view.frame.size.width;
-                float height = self.view.frame.size.height;
-                
-                if (self.webView != nil) {
-                    [self.menuController.view removeFromSuperview];
-                    [self.webView removeFromSuperview];
-                    self.webView.navigationDelegate = nil;
-                    self.webView.UIDelegate = nil;
-                    self.webView = nil;
-                }
-                __block CGFloat topBarOffset = self.topLayoutGuide.length;
-                
-                self.automaticallyAdjustsScrollViewInsets = NO;
-                
-                if (_swipeDirection == SWIPE_NEXT) {
-                    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(width, topBarOffset, width, height - topBarOffset)];
-                } else {
-                    self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(-width, topBarOffset, width, height - topBarOffset)];
-                }
-                self.webView.scrollView.backgroundColor = [self myBackgroundColor];
-                self.webView.navigationDelegate = self;
-                self.webView.UIDelegate = self;
-                self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                [self.webView addSubview:self.menuController.view];
-                [self.view insertSubview:self.webView belowSubview:imageView];
-                
-                [UIView animateWithDuration:0.3f
-                                      delay:0.0f
-                                    options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction
-                                 animations:^{
-                                     [self.webView setFrame:CGRectMake(0.0, topBarOffset, width, height - topBarOffset)];
-                                     if (_swipeDirection == SWIPE_NEXT) {
-                                         [imageView setFrame:CGRectMake(-width, 0.0, width, height)];
-                                     } else {
-                                         [imageView setFrame:CGRectMake(width, 0.0, width, height)];
-                                     }
-                                 }
-                                 completion:^(BOOL finished){
-                                     // do whatever post processing you want (such as resetting what is "current" and what is "next")
-                                     [imageView removeFromSuperview];
-                                     [self.view.layer displayIfNeeded];
-                                     imageView = nil;
-                                 }];
-            }
+            self.automaticallyAdjustsScrollViewInsets = NO;
             
-            [self.webView addGestureRecognizer:self.nextArticleRecognizer];
-            [self.webView addGestureRecognizer:self.previousArticleRecognizer];
+            [self.webView addSubview:self.menuController.view];
             [self updateNavigationItemTitle];
             
             Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
@@ -241,10 +142,6 @@ const int SWIPE_PREVIOUS = 1;
                 html = [self fixRelativeUrl:html baseUrlString:baseString];
                 [self writeAndLoadHtml:html];
             }
-            if (self.mm_drawerController.openSide != MMDrawerSideNone) {
-                [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
-            }
-            [self updateToolbar];
         }
         
     }
@@ -313,19 +210,22 @@ const int SWIPE_PREVIOUS = 1;
 
 #pragma mark - View lifecycle
 
+- (void)loadView {
+    [super loadView];
+    WKWebViewConfiguration *webConfig = [WKWebViewConfiguration new];
+    
+    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfig];
+    _webView.navigationDelegate = self;
+    _webView.UIDelegate = self;
+    _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [_webView addSubview:self.menuController.view];
+    self.view = _webView;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    CALayer *border = [CALayer layer];
-    border.backgroundColor = [UIColor lightGrayColor].CGColor;
-    border.frame = CGRectMake(0, 0, 1, 1024);
-    [self.mm_drawerController.centerViewController.view.layer addSublayer:border];
-    FDTopDrawerController *myDrawerController = (FDTopDrawerController*)self.mm_drawerController;
-    myDrawerController.webController = self;
-    
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
+    self.isVisible = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     
@@ -333,11 +233,18 @@ const int SWIPE_PREVIOUS = 1;
     [[NSUserDefaults standardUserDefaults] synchronize];
     _menuIsOpen = NO;
     [self writeCss];
+    [self configureView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.isVisible = YES;
     [self updateToolbar];
-    [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+    [self updateNavigationItemTitle];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    self.isVisible = NO;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
@@ -358,7 +265,7 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 - (IBAction)onMenu:(id)sender {
-    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+//    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (IBAction)doGoBack:(id)sender
@@ -460,13 +367,14 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ([self.webView.URL.scheme isEqualToString:@"file"]) {
+    if ([self.webView.URL.scheme isEqualToString:@"file"] || [self.webView.URL.scheme isEqualToString:@"itms-appss"]) {
         if ([navigationAction.request.URL.absoluteString rangeOfString:@"itunes.apple.com"].location != NSNotFound) {
             [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
             decisionHandler(WKNavigationActionPolicyCancel);
             return;
         }
     }
+
     if (![[navigationAction.request.URL absoluteString] hasSuffix:@"Documents/summary.html"]) {
         [self.menuController close];
     }
@@ -731,7 +639,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (UIBarButtonItem *)menuBarButtonItem {
     if (!menuBarButtonItem) {
-        menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"sideMenu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
+        menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nil style:UIBarButtonItemStyleDone target:nil action:nil];
         menuBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return menuBarButtonItem;
@@ -931,26 +839,29 @@ const int SWIPE_PREVIOUS = 1;
 #pragma mark - Toolbar
 
 - (void)updateToolbar {
-    self.backBarButtonItem.enabled = self.webView.canGoBack;
-    self.forwardBarButtonItem.enabled = self.webView.canGoForward;
-    UIBarButtonItem *refreshStopBarButtonItem = loadingComplete ? self.refreshBarButtonItem : self.stopBarButtonItem;
-    if ((self.item != nil)) {
-        self.actionBarButtonItem.enabled = loadingComplete;
-        self.textBarButtonItem.enabled = loadingComplete;
-        self.starBarButtonItem.enabled = loadingComplete;
-        self.unstarBarButtonItem.enabled = loadingComplete;
-        refreshStopBarButtonItem.enabled = YES;
-        self.keepUnread.button.selected = self.item.unreadValue;
-        self.star.button.selected = self.item.starredValue;
-    } else {
-        self.actionBarButtonItem.enabled = NO;
-        self.textBarButtonItem.enabled = NO;
-        self.starBarButtonItem.enabled = NO;
-        self.unstarBarButtonItem.enabled = NO;
-        refreshStopBarButtonItem.enabled = NO;
+    if (self.isVisible) {
+        self.backBarButtonItem.enabled = self.webView.canGoBack;
+        self.forwardBarButtonItem.enabled = self.webView.canGoForward;
+        UIBarButtonItem *refreshStopBarButtonItem = loadingComplete ? self.refreshBarButtonItem : self.stopBarButtonItem;
+        if ((self.item != nil)) {
+            self.actionBarButtonItem.enabled = loadingComplete;
+            self.textBarButtonItem.enabled = loadingComplete;
+            self.starBarButtonItem.enabled = loadingComplete;
+            self.unstarBarButtonItem.enabled = loadingComplete;
+            refreshStopBarButtonItem.enabled = YES;
+            self.keepUnread.button.selected = self.item.unreadValue;
+            self.star.button.selected = self.item.starredValue;
+        } else {
+            self.actionBarButtonItem.enabled = NO;
+            self.textBarButtonItem.enabled = NO;
+            self.starBarButtonItem.enabled = NO;
+            self.unstarBarButtonItem.enabled = NO;
+            refreshStopBarButtonItem.enabled = NO;
+        }
+        self.parentViewController.parentViewController.navigationItem.leftBarButtonItems = @[self.menuBarButtonItem, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
+        self.parentViewController.parentViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        self.parentViewController.parentViewController.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
     }
-    self.navigationItem.leftBarButtonItems = @[self.menuBarButtonItem, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
-    self.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
 }
 
 - (NSString *) fixRelativeUrl:(NSString *)htmlString baseUrlString:(NSString*)base {
@@ -996,85 +907,6 @@ const int SWIPE_PREVIOUS = 1;
     }];
     
     return result;
-}
-
-#pragma mark - Tap zones
-
-- (UISwipeGestureRecognizer *)nextArticleRecognizer {
-    if (!nextArticleRecognizer) {
-        nextArticleRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-        nextArticleRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-        nextArticleRecognizer.delegate = self;
-    }
-    return nextArticleRecognizer;
-}
-
-- (UISwipeGestureRecognizer *)previousArticleRecognizer {
-    if (!previousArticleRecognizer) {
-        previousArticleRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-        previousArticleRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-        previousArticleRecognizer.delegate = self;
-    }
-    return previousArticleRecognizer;
-}
-/*
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    //NSURL *url = self.webView.request.URL;
-    //if ([[url absoluteString] hasSuffix:@"Documents/summary.html"]) {
-        
-        CGPoint loc = [touch locationInView:self.webView];
-        
-        //See http://www.icab.de/blog/2010/07/11/customize-the-contextual-menu-of-uiwebview/
-        // Load the JavaScript code from the Resources and inject it into the web page
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"script" ofType:@"js"];
-        NSString *jsCode = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-        [self.webView stringByEvaluatingJavaScriptFromString: jsCode];
-        
-        // get the Tags at the touch location
-        NSString *tags = [self.webView stringByEvaluatingJavaScriptFromString:
-                          [NSString stringWithFormat:@"FDGetHTMLElementsAtPoint(%i,%i);",(NSInteger)loc.x,(NSInteger)loc.y]];
-        
-        // If a link was touched, eat the touch
-        return ([tags rangeOfString:@",A,"].location == NSNotFound);
-    //} else {
-    //    return false;
-    //}
-}
-*/
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    CGPoint loc = [gestureRecognizer locationInView:self.webView];
-    float h = self.webView.frame.size.height;
-    float q = h / 4;
-    if ([gestureRecognizer isEqual:self.nextArticleRecognizer]) {
-        return YES;
-    }
-    if ([gestureRecognizer isEqual:self.previousArticleRecognizer]) {
-        if (loc.y > q) {
-            if (loc.y < (h - q)) {
-                return (self.mm_drawerController.openSide == MMDrawerSideNone);
-            }
-        }
-        return NO;
-    }
-    return NO;
-}
-
-- (void)handleSwipe:(UISwipeGestureRecognizer *)gesture {
-    if (gesture.state == UIGestureRecognizerStateEnded) {
-        if ([gesture isEqual:self.previousArticleRecognizer]) {
-            _swipeDirection = SWIPE_PREVIOUS;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"LeftTapZone" object:self userInfo:nil];
-        }
-        if ([gesture isEqual:self.nextArticleRecognizer]) {
-            _swipeDirection = SWIPE_NEXT;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"RightTapZone" object:self userInfo:nil];
-        }
-    }
 }
 
 #pragma mark - Reader settings
@@ -1146,16 +978,18 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)updateNavigationItemTitle
 {
-    if ([UIScreen mainScreen].bounds.size.width > 414) { //should cover any phone in landscape and iPad
-        if (self.item != nil) {
-            if (!loadingComplete && loadingSummary) {
-                self.navigationItem.title = self.item.title;
-            } else {
-                self.navigationItem.title = self.webView.title;
+    if (self.isVisible) {
+        if ([UIScreen mainScreen].bounds.size.width > 414) { //should cover any phone in landscape and iPad
+            if (self.item != nil) {
+                if (!loadingComplete && loadingSummary) {
+                    self.parentViewController.parentViewController.navigationItem.title = self.item.title;
+                } else {
+                    self.parentViewController.parentViewController.navigationItem.title = self.webView.title;
+                }
             }
+        } else {
+            self.parentViewController.parentViewController.navigationItem.title = @"";
         }
-    } else {
-        self.navigationItem.title = @"";
     }
 }
 

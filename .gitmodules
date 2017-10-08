@@ -16,9 +16,6 @@
 [submodule "PDKeychainBindingsController"]
 	path = PDKeychainBindingsController
 	url = https://github.com/carlbrown/PDKeychainBindingsController.git
-[submodule "MMDrawerController"]
-	path = MMDrawerController
-	url = https://github.com/mutualmobile/MMDrawerController.git
 [submodule "MMDrawerController-Storyboard"]
 	path = MMDrawerController-Storyboard
 	url = https://github.com/TomSwift/MMDrawerController-Storyboard.git

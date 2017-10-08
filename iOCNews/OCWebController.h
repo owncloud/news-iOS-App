@@ -39,7 +39,7 @@
 @interface OCWebController : UIViewController <UIGestureRecognizerDelegate, PHPrefViewControllerDelegate, JCGridMenuControllerDelegate>
 
 @property (nonatomic, strong) Item *item;
-@property (nonatomic, strong) WKWebView* webView;
+@property (nonatomic, assign) NSUInteger itemIndex;
 @property (nonatomic, strong, readonly) JCGridMenuController *menuController;
 @property (nonatomic, strong, readonly) JCGridMenuRow *keepUnread;
 @property (nonatomic, strong, readonly) JCGridMenuRow *star;
@@ -53,8 +53,6 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *textBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *starBarButtonItem;
 @property (nonatomic, strong, readonly) UIBarButtonItem *unstarBarButtonItem;
-@property (nonatomic, strong, readonly) UISwipeGestureRecognizer *nextArticleRecognizer;
-@property (nonatomic, strong, readonly) UISwipeGestureRecognizer *previousArticleRecognizer;
 
 - (IBAction) doGoBack:(id)sender;
 - (IBAction) doGoForward:(id)sender;

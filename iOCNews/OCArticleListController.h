@@ -42,6 +42,7 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *menuBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 @property (nonatomic, strong) Feed *feed;
+@property (nonatomic, strong, readonly) NSFetchRequest *fetchRequest;
 @property (nonatomic, strong, readonly) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) NSInteger folderId;
 

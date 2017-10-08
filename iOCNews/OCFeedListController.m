@@ -38,18 +38,20 @@
 #import "Folder.h"
 #import "Feed.h"
 #import <AFNetworking/AFNetworking.h>
-#import "UIViewController+MMDrawerController.h"
 
-@interface OCFeedListController () <UIActionSheetDelegate> {
+static NSString *DetailSegueIdentifier = @"showDetail";
+
+@interface OCFeedListController () <UIActionSheetDelegate, UISplitViewControllerDelegate> {
     NSNumber *currentRenameId;
     long currentIndex;
     BOOL networkHasBeenUnreachable;
     NSIndexPath *editingPath;
 }
 
+@property (nonatomic, assign) BOOL collapseDetailViewController;
+
 - (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
-- (void) showMenu:(UIBarButtonItem*)sender event:(UIEvent*)event;
 - (void) doHideRead;
 - (void) updatePredicate;
 - (void) reachabilityChanged:(NSNotification *)n;
@@ -59,8 +61,6 @@
 
 @implementation OCFeedListController
 
-@synthesize addBarButtonItem;
-@synthesize backBarButtonItem;
 @synthesize editBarButtonItem;
 @synthesize feedRefreshControl;
 @synthesize specialFetchedResultsController;
@@ -69,6 +69,7 @@
 @synthesize folderId;
 @synthesize feedSettingsAction;
 @synthesize feedDeleteAction;
+@synthesize collapseDetailViewController;
 
 - (NSFetchedResultsController *)specialFetchedResultsController {
     if (!specialFetchedResultsController) {
@@ -161,9 +162,11 @@
     
     self.refreshControl = self.feedRefreshControl;
     
-    self.navigationItem.rightBarButtonItem = self.addBarButtonItem;
-    self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
-
+    self.splitViewController.presentsWithGesture = YES;
+    self.splitViewController.delegate = self;
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+    self.collapseDetailViewController = NO;
+    
     //Notifications
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
@@ -210,12 +213,6 @@
                                                  name:@"NetworkCompleted"
                                                object:nil];
 
-    UINavigationController *navController = (UINavigationController*)self.mm_drawerController.centerViewController;
-    if (!self.detailViewController) {
-        self.detailViewController = (OCArticleListController *)navController.topViewController;
-    }
-    
-    [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
     [self updatePredicate];
 }
 
@@ -364,70 +361,6 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    self.detailViewController.folderId = 0;
-    currentIndex = indexPath.row;
-    NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-    if (self.tableView.isEditing) {
-        //[self showRenameForIndex:indexPath.row];
-    } else {
-        Folder *folder;
-        Feed *feed;
-        switch (indexPath.section) {
-            case 0:
-                @try {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
-                    });
-                    feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    if (self.folderId > 0) {
-                        self.detailViewController.folderId = self.folderId;
-                    }
-                    self.detailViewController.feed = feed;
-                }
-                @catch (NSException *exception) {
-                    //
-                }
-                break;
-            case 1:
-                @try {
-                    if (self.folderId == 0) {
-                        OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
-                        folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                        folderController.folderId = folder.myIdValue;
-                        folderController.navigationItem.title = folder.name;
-                        [folderController updatePredicate];
-                        folderController.detailViewController = self.detailViewController;
-                        [self.navigationController pushViewController:folderController animated:YES];
-                        [folderController drawerOpened:nil];
-                        [self drawerClosed:nil];
-                    }
-                }
-                @catch (NSException *exception) {
-                    //
-                }
-                break;
-            case 2:
-                @try {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
-                    });
-                    feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    self.detailViewController.feed = feed;
-                    
-                }
-                @catch (NSException *exception) {
-                    //
-                }
-                break;
-                
-            default:
-                break;
-        }
-    }
-}
-
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewCellEditingStyleDelete;
 }
@@ -448,14 +381,96 @@
         [settingsController loadView];
         settingsController.feed = feed;
         settingsController.delegate = self;
-        [self.mm_drawerController presentViewController:navController animated:YES completion:nil];
     }
     editingPath = indexPath;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    self.collapseDetailViewController = YES;
+    if ([[segue identifier] isEqualToString:DetailSegueIdentifier]) {
+
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        currentIndex = indexPath.row;
+        NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:currentIndex inSection:0];
+
+        UINavigationController *navigationController = (UINavigationController *)segue.destinationViewController;
+        self.detailViewController = (OCArticleListController *)navigationController.topViewController;
+        self.detailViewController.feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];;
+        self.detailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+        self.detailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+        self.detailViewController.folderId = 0;
+
+        if (self.tableView.isEditing) {
+            //[self showRenameForIndex:indexPath.row];
+        } else {
+            Folder *folder;
+            Feed *feed;
+
+
+            
+            switch (indexPath.section) {
+                case 0:
+                    @try {
+                        if (self.splitViewController.displayMode == UISplitViewControllerDisplayModeAllVisible || self.splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryOverlay) {
+                            [UIView animateWithDuration:0.3 animations:^{
+                                self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+                            } completion: nil];
+                            feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
+                            if (self.folderId > 0) {
+                                self.detailViewController.folderId = self.folderId;
+                            }
+                            self.detailViewController.feed = feed;
+                        }
+                    }
+                    @catch (NSException *exception) {
+                        //
+                    }
+                    break;
+                case 1:
+                    @try {
+                        if (self.folderId == 0) {
+                            OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
+                            folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+                            folderController.folderId = folder.myIdValue;
+                            folderController.navigationItem.title = folder.name;
+                            [folderController updatePredicate];
+                            folderController.detailViewController = self.detailViewController;
+                            [self.navigationController pushViewController:folderController animated:YES];
+                            [folderController drawerOpened:nil];
+                            [self drawerClosed:nil];
+                        }
+                    }
+                    @catch (NSException *exception) {
+                        //
+                    }
+                    break;
+                case 2:
+                    @try {
+                        if (self.splitViewController.displayMode == UISplitViewControllerDisplayModeAllVisible || self.splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryOverlay) {
+                            [UIView animateWithDuration:0.3 animations:^{
+                                self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+                            } completion: nil];
+                        }
+                        feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
+                        self.detailViewController.feed = feed;
+                        
+                    }
+                    @catch (NSException *exception) {
+                        //
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+    }
+}
+
 #pragma mark - Actions
 
-- (void)showMenu:(UIBarButtonItem *)sender event:(UIEvent *)event {
+- (IBAction)onSettings:(id)sender {
     
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil
                                                                    message:nil
@@ -507,14 +522,18 @@
     UIPopoverPresentationController *popover = alert.popoverPresentationController;
     if (popover)
     {
-        popover.barButtonItem = self.addBarButtonItem;
+        popover.barButtonItem = (UIBarButtonItem *)sender;
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
     }
     
-    //Tint workaround from http://stackoverflow.com/a/32695820
-    [self.mm_drawerController presentViewController:alert animated:YES completion:^{
+    [self.navigationController presentViewController:alert animated:YES completion:^{
         alert.view.tintColor = [UINavigationBar appearance].tintColor;
     }];
+    
+    //Tint workaround from http://stackoverflow.com/a/32695820
+//    [self.mm_drawerController presentViewController:alert animated:YES completion:^{
+//        alert.view.tintColor = [UINavigationBar appearance].tintColor;
+//    }];
     alert.view.tintColor = [UINavigationBar appearance].tintColor;
 }
 
@@ -604,7 +623,7 @@
         nav = [[UINavigationController alloc] initWithRootViewController:lc];
         nav.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    [self.mm_drawerController.leftDrawerViewController presentViewController:nav animated:YES completion:nil];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)doRefresh:(id)sender {
@@ -779,23 +798,6 @@
 
 #pragma mark - Toolbar Buttons
 
-- (UIBarButtonItem *)addBarButtonItem {
-    
-    if (!addBarButtonItem) {
-        addBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:event:)];
-        addBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
-    }
-    
-    return addBarButtonItem;
-}
-
-- (UIBarButtonItem *)backBarButtonItem {
-    if (!backBarButtonItem) {
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Feeds" style:UIBarButtonItemStylePlain target:self action:@selector(doGoBack)];
-    }
-    return backBarButtonItem;
-}
-
 - (UITableViewRowAction *)feedSettingsAction {
     if (!feedSettingsAction) {
         feedSettingsAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
@@ -825,6 +827,26 @@
     }    
     return feedRefreshControl;
 }
+
+
+- (UISplitViewControllerDisplayMode)targetDisplayModeForActionInSplitViewController:(UISplitViewController *)svc {
+    if (svc.displayMode == UISplitViewControllerDisplayModePrimaryHidden) {
+        if (svc.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+                return UISplitViewControllerDisplayModeAllVisible;
+            }
+        }
+        return UISplitViewControllerDisplayModePrimaryOverlay;
+    }
+    return UISplitViewControllerDisplayModePrimaryHidden;
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController {
+    return self.collapseDetailViewController;
+}
+
+
+
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.

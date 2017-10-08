@@ -36,8 +36,6 @@
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationEmail.h>
 #import <KSCrash/KSCrashInstallation+Alert.h>
-#import "FDTopDrawerController.h"
-#import "FDBottomDrawerController.h"
 #import "PDKeychainBindings.h"
 
 @implementation OCAppDelegate
@@ -52,6 +50,11 @@
 
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
 
+    UISplitViewController *svc = (UISplitViewController *)self.window.rootViewController;
+    svc.presentsWithGesture = YES;
+    UINavigationController *navController = (UINavigationController *)svc.viewControllers.lastObject;
+    navController.topViewController.navigationItem.leftBarButtonItem = svc.displayModeButtonItem;
+    
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncInBackground"]) {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
