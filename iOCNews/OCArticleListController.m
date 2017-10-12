@@ -56,8 +56,6 @@
 
 - (void) configureView;
 - (void) scrollToTop;
-- (void) previousArticle:(NSNotification*)n;
-- (void) nextArticle:(NSNotification*)n;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 - (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
@@ -68,9 +66,8 @@
 
 @implementation OCArticleListController
 
-@synthesize markBarButtonItem;
-@synthesize menuBarButtonItem;
 @synthesize feedRefreshControl;
+@synthesize markBarButtonItem;
 @synthesize feed = _feed;
 @synthesize fetchRequest = _fetchRequest;
 @synthesize fetchedResultsController = _fetchedResultsController;
@@ -231,11 +228,6 @@
 {
     [super viewDidLoad];
 
-    CALayer *border = [CALayer layer];
-    border.backgroundColor = [UIColor lightGrayColor].CGColor;
-    border.frame = CGRectMake(0, 0, 1, 1024);
-//    [self.mm_drawerController.centerViewController.view.layer addSublayer:border];
-
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
@@ -251,15 +243,9 @@
     self.tableView.dataSource = self;
     [self.tableView addGestureRecognizer:self.sideGestureRecognizer];
     
-//    UINavigationController *navController = (UINavigationController*)self.mm_drawerController.mm_drawerController.centerViewController;
-//    self.detailViewController = (OCWebController*)navController.topViewController;
-    
     markingAllItemsRead = NO;
     aboutToFetch = NO;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousArticle:) name:@"LeftTapZone" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nextArticle:) name:@"RightTapZone" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(articleChangeInFeed:) name:@"ArticleChangeInFeed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkCompleted:) name:@"NetworkCompleted" object:nil];
     
     [[NSUserDefaults standardUserDefaults] addObserver:self
@@ -541,7 +527,7 @@
     }
 }
 
-- (IBAction)doMarkRead:(id)sender {
+- (IBAction)onMarkRead:(id)sender {
     markingAllItemsRead = YES;
 
     if (self.folderId > 0) {
@@ -554,11 +540,7 @@
         }
     }
     self.markBarButtonItem.enabled = NO;
-//    [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-}
-
-- (IBAction)onMenu:(id)sender {
-//    [self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
 }
 
 - (void) markRowsRead {
@@ -626,37 +608,13 @@
 
 - (UIBarButtonItem *)markBarButtonItem {
     if (!markBarButtonItem) {
-        markBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mark"] style:UIBarButtonItemStylePlain target:self action:@selector(doMarkRead:)];
+        markBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mark"] style:UIBarButtonItemStylePlain target:self action:@selector(onMarkRead:)];
         markBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return markBarButtonItem;
 }
 
-- (UIBarButtonItem *)menuBarButtonItem {
-    if (!menuBarButtonItem) {
-        menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"sideMenu"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
-        menuBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
-    }
-    return menuBarButtonItem;
-}
-
 #pragma mark - Tap navigation
-
-- (void) previousArticle:(NSNotification *)n {
-    if ((currentIndex > 0) && (currentIndex < [self.tableView numberOfRowsInSection:0])) {
-        --currentIndex;
-        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
-    }
-}
-
-- (void) nextArticle:(NSNotification *)n {
-    if ((currentIndex >= 0) && (currentIndex < ([self.tableView numberOfRowsInSection:0] - 1))) {
-        ++currentIndex;
-        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
-    }
-}
 
 - (UISwipeGestureRecognizer *) markGesture {
     if (!markGesture) {

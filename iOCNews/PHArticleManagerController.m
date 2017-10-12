@@ -69,13 +69,6 @@
     return nil;
 }
 
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-{
-    if (completed) {
-//        self.currentIndex = ((OCWebController *)self.pageViewController.viewControllers.firstObject).itemIndex;
-    }
-}
-
 - (OCWebController *)itemControllerForIndex:(NSUInteger)itemIndex
 {
     if (itemIndex < self.articles.count) {

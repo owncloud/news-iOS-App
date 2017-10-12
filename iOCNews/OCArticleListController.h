@@ -39,7 +39,6 @@
 
 @property (strong, nonatomic) OCWebController *detailViewController;
 @property (nonatomic, strong, readonly) UIBarButtonItem *markBarButtonItem;
-@property (nonatomic, strong, readonly) UIBarButtonItem *menuBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 @property (nonatomic, strong) Feed *feed;
 @property (nonatomic, strong, readonly) NSFetchRequest *fetchRequest;
@@ -48,6 +47,6 @@
 
 - (void) refresh;
 - (IBAction) doRefresh:(id)sender;
-- (IBAction) doMarkRead:(id)sender;
+- (IBAction) onMarkRead:(id)sender;
 
 @end
