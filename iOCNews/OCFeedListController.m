@@ -150,6 +150,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     self.clearsSelectionOnViewWillAppear = NO;
     self.tableView.allowsSelection = YES;
     self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.scrollsToTop = YES;
 
     currentIndex = -1;
     networkHasBeenUnreachable = NO;
@@ -374,13 +375,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         [self presentViewController:self.renameFolderAlertView animated:YES completion:nil];
         self.renameFolderAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
     } else if (indexPath.section == 2) {
-        Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier: @"feedextra"];
-        OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
-        [settingsController loadView];
-        settingsController.feed = feed;
-        settingsController.delegate = self;
+        currentIndex = indexPathTemp.row;
+        [self performSegueWithIdentifier:@"feedSettings" sender:self];        
     }
     editingPath = indexPath;
 }
@@ -465,6 +461,13 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                     break;
             }
         }
+    }
+    if ([segue.identifier isEqualToString:@"feedSettings"]) {
+        Feed *feed = [self.feedsFetchedResultsController.fetchedObjects objectAtIndex:currentIndex];
+        UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+        OCFeedSettingsController *settingsController = (OCFeedSettingsController*)navController.topViewController;
+        settingsController.feed = feed;
+        settingsController.delegate = self;
     }
 }
 

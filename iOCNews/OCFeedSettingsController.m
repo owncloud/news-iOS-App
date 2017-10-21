@@ -50,6 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self refresh];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,18 +69,16 @@
 
 #pragma mark - Extra
 
-- (void)setFeed:(Feed *)feed {
-    if (_feed != feed) {
-        _feed = feed;
-        
-        self.urlTextView.text = feed.url;
-        self.titleTextField.text = feed.title;
-        self.fullArticleSwitch.on = feed.preferWebValue;
-        self.readerSwitch.on = feed.useReaderValue;
+- (void)refresh {
+    if (self.feed) {
+        self.urlTextView.text = self.feed.url;
+        self.titleTextField.text = self.feed.title;
+        self.fullArticleSwitch.on = self.feed.preferWebValue;
+        self.readerSwitch.on = self.feed.useReaderValue;
         self.readerSwitch.enabled = self.fullArticleSwitch.on;
-        self.keepStepper.value = feed.articleCountValue;
+        self.keepStepper.value = self.feed.articleCountValue;
         self.keepLabel.text = [NSString stringWithFormat:@"%.f", self.keepStepper.value];
-        _newFolderId = feed.folderId;
+        _newFolderId = self.feed.folderId;
     }
 }
 

@@ -5,11 +5,14 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Helvetica.ttc">
+            <string>Helvetica-Bold</string>
+        </array>
         <array key="HelveticaNeue.ttc">
             <string>HelveticaNeue</string>
         </array>
@@ -145,7 +148,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DYY-mU-cKQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2106.25" y="-738.28125"/>
+            <point key="canvasLocation" x="2422" y="-302"/>
         </scene>
         <!--Login Information-->
         <scene sceneID="Vfe-Xo-9UJ">
@@ -325,7 +328,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6VW-gY-hFs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3567.1875" y="-738.28125"/>
+            <point key="canvasLocation" x="3882" y="-302"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Dkj-Yg-TTn">
@@ -555,7 +558,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duK-Zx-C63" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2832.8125" y="-741.2109375"/>
+            <point key="canvasLocation" x="3150" y="-304"/>
         </scene>
         <!--Feed Settings-->
         <scene sceneID="teH-Xq-aMz">
@@ -804,7 +807,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="281-qj-cwr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2151.5625" y="1373.4375"/>
+            <point key="canvasLocation" x="818" y="-304"/>
         </scene>
         <!--Folder-->
         <scene sceneID="t9n-ni-S9G">
@@ -835,7 +838,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N5N-Qi-Vai" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2867.96875" y="1373.4375"/>
+            <point key="canvasLocation" x="1526" y="-304"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="CI9-n3-nVP">
@@ -863,88 +866,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Whz-0i-v7y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1828" y="509"/>
-        </scene>
-        <!--Pref View Controller-->
-        <scene sceneID="fbi-rG-0Fy">
-            <objects>
-                <viewController storyboardIdentifier="preferences" id="epQ-i6-UW8" customClass="PHPrefViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="dDd-kA-w1i"/>
-                        <viewControllerLayoutGuide type="bottom" id="h6P-hI-0nV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="0PH-kI-i2w">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="aOg-xm-Znw">
-                                <rect key="frame" x="20" y="140" width="200" height="29"/>
-                                <segments>
-                                    <segment title="" image="lineheight1.png"/>
-                                    <segment title="" image="lineheight3.png"/>
-                                </segments>
-                                <connections>
-                                    <action selector="doSegmentedValueChanged:" destination="epQ-i6-UW8" eventType="valueChanged" id="wRQ-fT-aVR"/>
-                                </connections>
-                            </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="yxA-IX-5x2">
-                                <rect key="frame" x="20" y="20" width="200" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="rKD-AX-22m"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="" image="background1.png"/>
-                                    <segment title="" image="background2.png"/>
-                                </segments>
-                                <connections>
-                                    <action selector="doSegmentedValueChanged:" destination="epQ-i6-UW8" eventType="valueChanged" id="pAT-uT-bcJ"/>
-                                </connections>
-                            </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="iM7-5s-HxK">
-                                <rect key="frame" x="20" y="80" width="200" height="29"/>
-                                <segments>
-                                    <segment title="" image="fontsizes.png"/>
-                                    <segment title="" image="fontsizel.png"/>
-                                </segments>
-                                <connections>
-                                    <action selector="doSegmentedValueChanged:" destination="epQ-i6-UW8" eventType="valueChanged" id="vhV-Vg-Qvi"/>
-                                </connections>
-                            </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="7Y7-q4-kiE">
-                                <rect key="frame" x="20" y="200" width="200" height="29"/>
-                                <segments>
-                                    <segment title="" image="margin1.png"/>
-                                    <segment title="" image="margin3.png"/>
-                                </segments>
-                                <connections>
-                                    <action selector="doSegmentedValueChanged:" destination="epQ-i6-UW8" eventType="valueChanged" id="Q3U-Dd-5Lq"/>
-                                </connections>
-                            </segmentedControl>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="iM7-5s-HxK" firstAttribute="leading" secondItem="0PH-kI-i2w" secondAttribute="leading" constant="20" symbolic="YES" id="3Sy-dW-c8F"/>
-                            <constraint firstItem="aOg-xm-Znw" firstAttribute="top" secondItem="0PH-kI-i2w" secondAttribute="top" constant="140" id="EXA-JS-iAL"/>
-                            <constraint firstItem="iM7-5s-HxK" firstAttribute="trailing" secondItem="aOg-xm-Znw" secondAttribute="trailing" id="Kb7-dQ-yyj"/>
-                            <constraint firstItem="7Y7-q4-kiE" firstAttribute="trailing" secondItem="aOg-xm-Znw" secondAttribute="trailing" id="OUQ-ak-UT1"/>
-                            <constraint firstItem="yxA-IX-5x2" firstAttribute="trailing" secondItem="iM7-5s-HxK" secondAttribute="trailing" id="QQE-pm-vJe"/>
-                            <constraint firstItem="7Y7-q4-kiE" firstAttribute="top" secondItem="0PH-kI-i2w" secondAttribute="top" constant="200" id="XhU-55-tjT"/>
-                            <constraint firstItem="7Y7-q4-kiE" firstAttribute="leading" secondItem="0PH-kI-i2w" secondAttribute="leading" constant="20" symbolic="YES" id="YZm-gr-zf2"/>
-                            <constraint firstItem="iM7-5s-HxK" firstAttribute="top" secondItem="0PH-kI-i2w" secondAttribute="top" constant="80" id="Zn3-HW-qFj"/>
-                            <constraint firstItem="aOg-xm-Znw" firstAttribute="leading" secondItem="0PH-kI-i2w" secondAttribute="leading" constant="20" symbolic="YES" id="hbH-cx-nTj"/>
-                            <constraint firstItem="yxA-IX-5x2" firstAttribute="leading" secondItem="0PH-kI-i2w" secondAttribute="leading" constant="20" symbolic="YES" id="hnu-c6-YN3"/>
-                            <constraint firstItem="yxA-IX-5x2" firstAttribute="top" secondItem="0PH-kI-i2w" secondAttribute="top" constant="20" symbolic="YES" id="lw5-X7-anM"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="backgroundSegmented" destination="yxA-IX-5x2" id="IzQ-5B-ejz"/>
-                        <outlet property="fontSizeSegmented" destination="iM7-5s-HxK" id="CqV-Ae-wEM"/>
-                        <outlet property="lineHeightSegmented" destination="aOg-xm-Znw" id="FYt-SI-QrA"/>
-                        <outlet property="marginSegmented" destination="7Y7-q4-kiE" id="aEP-xQ-pop"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hwV-km-FbB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="671.875" y="1373.4375"/>
         </scene>
         <!--Feeds-->
         <scene sceneID="KOe-sh-Lrf">
@@ -977,6 +898,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="6QV-e8-2aM" kind="presentation" identifier="feedSettings" id="bOO-yc-D5K"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0mV-AG-Cc3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -998,21 +922,167 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dlE-xt-AHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1440.625" y="1373.4375"/>
+            <point key="canvasLocation" x="103" y="-304"/>
+        </scene>
+        <!--Pref View Controller-->
+        <scene sceneID="GbA-Io-fFE">
+            <objects>
+                <viewController storyboardIdentifier="preferences" id="m60-CL-y5D" customClass="PHPrefViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Uw7-uz-HTH"/>
+                        <viewControllerLayoutGuide type="bottom" id="NTb-x7-dDE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YkA-9H-V3A">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XqK-h5-kCE">
+                                <rect key="frame" x="10" y="10" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="star_blue_open"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="gaM-fC-baY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SmS-sZ-YXk">
+                                <rect key="frame" x="115" y="10" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="keep_blue"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="dir-Gj-5mF"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kyt-P3-G2q">
+                                <rect key="frame" x="115" y="250" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="margin3"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="jki-oj-hR3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEn-5Q-pfj">
+                                <rect key="frame" x="10" y="250" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="margin1"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="KMa-iR-4ZT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDz-NK-aW1">
+                                <rect key="frame" x="115" y="190" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="lineheight3"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="YVP-NJ-Jry"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="33m-Q1-vFh">
+                                <rect key="frame" x="10" y="190" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="lineheight1"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="ksz-Vt-GDS"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VWq-wP-EBz">
+                                <rect key="frame" x="115" y="130" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="fontsizel"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="399-lZ-gN9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SR5-V7-Lhc">
+                                <rect key="frame" x="10" y="130" width="95" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
+                                <state key="normal" image="fontsizes"/>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="noF-aW-wz0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cxJ-rf-ggl">
+                                <rect key="frame" x="150" y="70" width="60" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="1BJ-HA-FV2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTu-sr-AuQ">
+                                <rect key="frame" x="10" y="70" width="60" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="pyM-EN-rfj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1K7-e4-G2A">
+                                <rect key="frame" x="80" y="70" width="60" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="m6c-Q5-SP8"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <connections>
+                        <outlet property="decreaseFontSizeButton" destination="SR5-V7-Lhc" id="6kr-1U-jYj"/>
+                        <outlet property="decreaseLineHeightButton" destination="33m-Q1-vFh" id="DIc-1K-vvH"/>
+                        <outlet property="decreaseMarginButton" destination="OEn-5Q-pfj" id="AuT-NN-cun"/>
+                        <outlet property="increaseFontSizeButton" destination="VWq-wP-EBz" id="XFI-4n-ymm"/>
+                        <outlet property="increaseLineHeightButton" destination="xDz-NK-aW1" id="YSn-O3-cNN"/>
+                        <outlet property="increaseMarginButton" destination="kyt-P3-G2q" id="OXi-7e-0GF"/>
+                        <outlet property="markUnreadButton" destination="XqK-h5-kCE" id="MBW-mh-KQ1"/>
+                        <outlet property="nightBackgroundButton" destination="cxJ-rf-ggl" id="liY-TL-5a0"/>
+                        <outlet property="sepiaBackgroundButton" destination="1K7-e4-G2A" id="9ks-FS-yMQ"/>
+                        <outlet property="starButton" destination="SmS-sZ-YXk" id="mDf-Yv-3dg"/>
+                        <outlet property="whiteBackgroundButton" destination="dTu-sr-AuQ" id="tTP-fM-yLm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LHK-ks-kN1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="628" y="1373"/>
         </scene>
     </scenes>
     <resources>
-        <image name="background1.png" width="23" height="18"/>
-        <image name="background2.png" width="23" height="18"/>
-        <image name="fontsizel.png" width="44" height="44"/>
-        <image name="fontsizes.png" width="44" height="44"/>
+        <image name="fontsizel" width="27" height="27"/>
+        <image name="fontsizes" width="27" height="27"/>
         <image name="gear" width="24" height="44"/>
-        <image name="lineheight1.png" width="44" height="44"/>
-        <image name="lineheight3.png" width="44" height="44"/>
-        <image name="margin1.png" width="44" height="44"/>
-        <image name="margin3.png" width="44" height="44"/>
+        <image name="keep_blue" width="44" height="44"/>
+        <image name="lineheight1" width="29" height="27"/>
+        <image name="lineheight3" width="29" height="27"/>
+        <image name="margin1" width="29" height="27"/>
+        <image name="margin3" width="29" height="27"/>
+        <image name="star_blue_open" width="44" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QdW-vN-6jp"/>
+        <segue reference="Bga-1h-524"/>
     </inferredMetricsTieBreakers>
 </document>
