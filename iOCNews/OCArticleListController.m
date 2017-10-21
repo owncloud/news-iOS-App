@@ -206,6 +206,7 @@
         }
         [self refresh];
         [self scrollToTop];
+        self.tableView.scrollsToTop = YES;
     }
 }
 
@@ -540,7 +541,9 @@
         }
     }
     self.markBarButtonItem.enabled = NO;
-    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+    }];
 }
 
 - (void) markRowsRead {
