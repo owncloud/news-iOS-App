@@ -39,4 +39,5 @@
 	FontSize = 16;
 	LineHeight = "1.4";
 	Margin = 660;
+	MarginLandscape = 70;
 }

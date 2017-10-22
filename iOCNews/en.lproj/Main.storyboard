@@ -940,8 +940,8 @@
                                 <rect key="frame" x="10" y="10" width="95" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
-                                <state key="normal" image="star_blue_open"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="10" maxX="34" maxY="6"/>
+                                <state key="normal" image="read"/>
                                 <connections>
                                     <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="gaM-fC-baY"/>
                                 </connections>
@@ -950,8 +950,8 @@
                                 <rect key="frame" x="115" y="10" width="95" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
-                                <state key="normal" image="keep_blue"/>
+                                <inset key="imageEdgeInsets" minX="35" minY="10" maxX="34" maxY="8"/>
+                                <state key="normal" image="starred"/>
                                 <connections>
                                     <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="dir-Gj-5mF"/>
                                 </connections>
@@ -1075,12 +1075,12 @@
         <image name="fontsizel" width="27" height="27"/>
         <image name="fontsizes" width="27" height="27"/>
         <image name="gear" width="24" height="44"/>
-        <image name="keep_blue" width="44" height="44"/>
         <image name="lineheight1" width="29" height="27"/>
         <image name="lineheight3" width="29" height="27"/>
         <image name="margin1" width="29" height="27"/>
         <image name="margin3" width="29" height="27"/>
-        <image name="star_blue_open" width="44" height="44"/>
+        <image name="read" width="30" height="30"/>
+        <image name="starred" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Bga-1h-524"/>

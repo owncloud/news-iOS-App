@@ -14,8 +14,8 @@
    id="svg5330"
    version="1.1"
    inkscape:version="0.91pre2+osxmenu r12816"
-   sodipodi:docname="keep.svg"
-   inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/read@3x.ng"
+   sodipodi:docname="unstarred.svg"
+   inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/unstarred@3x.png"
    inkscape:export-xdpi="92.050003"
    inkscape:export-ydpi="92.050003">
   <defs
@@ -27,18 +27,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.0468564"
-     inkscape:cx="44.000659"
-     inkscape:cy="48"
+     inkscape:zoom="6.3465909"
+     inkscape:cx="44"
+     inkscape:cy="44"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:showpageshadow="false"
-     inkscape:window-width="2244"
-     inkscape:window-height="1267"
-     inkscape:window-x="53"
-     inkscape:window-y="23"
+     inkscape:window-width="2232"
+     inkscape:window-height="1282"
+     inkscape:window-x="72"
+     inkscape:window-y="25"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -57,7 +57,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -67,22 +67,24 @@
      inkscape:groupmode="layer"
      transform="translate(0,24)">
     <path
-       d="M 60.984844,16.000013 A 16.992043,16.999987 0 0 1 44.073393,32.999809 16.992043,16.999987 0 0 1 27.001524,16.16127 16.992043,16.999987 0 0 1 43.751034,-0.99825243 16.992043,16.999987 0 0 1 60.981786,15.677514"
-       sodipodi:open="true"
-       sodipodi:end="6.2642136"
-       sodipodi:start="0"
-       sodipodi:ry="16.999987"
-       sodipodi:rx="16.992043"
-       sodipodi:cy="16.000013"
-       sodipodi:cx="43.992802"
-       sodipodi:type="arc"
-       id="path14280"
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 1.5071505,15.886819 c 29.1413435,26.655376 57.4025245,24.28566 84.9991245,0 -27.809797,-25.5780021 -56.159088,-24.7837274 -84.9991245,0 z"
-       id="path14289"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:type="star"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:20.46632576;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2987"
+       sodipodi:sides="5"
+       sodipodi:cx="100"
+       sodipodi:cy="280.93362"
+       sodipodi:r1="377.31598"
+       sodipodi:r2="188.65799"
+       sodipodi:arg1="1.5707963"
+       sodipodi:arg2="2.1991149"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 100.00001,658.2496 -10.89039,433.56114 -258.84882,397.53068 -79.424408,222.63509 -121.78078,-24.321409 100.00001,92.275635 321.78076,-24.321421 279.42441,222.63511 458.84882,397.53066 210.89038,433.56115 Z"
+       inkscape:transform-center-y="-47.618362"
+       transform="matrix(0.11921543,0,0,-0.12516063,31.830963,59.927513)"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/star_open-7.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45" />
   </g>
 </svg>

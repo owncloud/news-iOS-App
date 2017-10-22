@@ -1,50 +1,35 @@
 //
 //  PHPrefViewController.h
-//  iOCNews
+//  PMC Reader
 //
-
-/************************************************************************
- 
- Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
- 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 
- 1. Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
- notice, this list of conditions and the following disclaimer in the
- documentation and/or other materials provided with the distribution.
- 
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
- *************************************************************************/
+//  Created by Peter Hedlund on 8/2/12.
+//  Copyright (c) 2012-2013 Peter Hedlund. All rights reserved.
+//
 
 #import <UIKit/UIKit.h>
 
 @protocol PHPrefViewControllerDelegate
+- (BOOL)starred;
+- (BOOL)unread;
 - (void)settingsChanged:(NSString*)setting newValue:(NSUInteger)value;
 @end
 
 @interface PHPrefViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *backgroundSegmented;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *fontSizeSegmented;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *lineHeightSegmented;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *marginSegmented;
+@property (strong, nonatomic) IBOutlet UIButton *starButton;
+@property (strong, nonatomic) IBOutlet UIButton *markUnreadButton;
+@property (strong, nonatomic) IBOutlet UIButton *whiteBackgroundButton;
+@property (strong, nonatomic) IBOutlet UIButton *sepiaBackgroundButton;
+@property (strong, nonatomic) IBOutlet UIButton *nightBackgroundButton;
+@property (strong, nonatomic) IBOutlet UIButton *decreaseFontSizeButton;
+@property (strong, nonatomic) IBOutlet UIButton *increaseFontSizeButton;
+@property (strong, nonatomic) IBOutlet UIButton *decreaseLineHeightButton;
+@property (strong, nonatomic) IBOutlet UIButton *increaseLineHeightButton;
+@property (strong, nonatomic) IBOutlet UIButton *decreaseMarginButton;
+@property (strong, nonatomic) IBOutlet UIButton *increaseMarginButton;
 
 @property (nonatomic, strong) id<PHPrefViewControllerDelegate> delegate;
 
-- (IBAction)doSegmentedValueChanged:(id)sender;
+- (IBAction)onButtonTap:(UIButton *)sender;
 
 @end

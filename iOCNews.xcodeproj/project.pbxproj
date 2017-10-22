@@ -74,6 +74,7 @@
 		D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC11F83378A002D3AB3 /* AFNetworking.framework */; };
 		D0735DC51F83378A002D3AB3 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC21F83378A002D3AB3 /* WebImage.framework */; };
 		D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */; };
+		D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */; };
 		D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D651817DFEFE700C40D76 /* JCGridMenuController.m */; };
 		D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D655E17DFEFE700C40D76 /* UIButton+JCUI.m */; };
 		D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656017DFEFE700C40D76 /* UILabel+JCUI.m */; };
@@ -207,6 +208,8 @@
 		D0735DC21F83378A002D3AB3 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		D0735DC71F8989A2002D3AB3 /* PHArticleManagerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHArticleManagerController.h; sourceTree = "<group>"; };
 		D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHArticleManagerController.m; sourceTree = "<group>"; };
+		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
+		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
 		D07D651717DFEFE700C40D76 /* JCGridMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuController.h; sourceTree = "<group>"; };
 		D07D651817DFEFE700C40D76 /* JCGridMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuController.m; sourceTree = "<group>"; };
 		D07D655D17DFEFE700C40D76 /* UIButton+JCUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+JCUI.h"; sourceTree = "<group>"; };
@@ -583,6 +586,8 @@
 				D0A33F5F18876CF700C6DA92 /* OCTextView.m */,
 				D09B14A21C39E2A50019DB51 /* UIImageView+OCWebCache.m */,
 				D09B14A31C39E2A50019DB51 /* UIImageView+OCWebCache.h */,
+				D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */,
+				D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
 				D08D83B618161453005A75F0 /* Settings.bundle */,
@@ -889,6 +894,7 @@
 				D06CB23C17A1F88C00A1310B /* Feeds.m in Sources */,
 				D06CB24817A2EA9300A1310B /* _Feed.m in Sources */,
 				D06CB24917A2EA9300A1310B /* _Feeds.m in Sources */,
+				D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */,
 				D06CB24A17A2EA9300A1310B /* _Item.m in Sources */,
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D08DDA451C5E8B2E00B0E90C /* HexColors.m in Sources */,

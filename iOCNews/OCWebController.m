@@ -38,6 +38,8 @@
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>
 #import "OCSharingProvider.h"
+#import "PHPrefViewController.h"
+#import "UIColor+PHColor.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
@@ -51,7 +53,7 @@
 const int SWIPE_NEXT = 0;
 const int SWIPE_PREVIOUS = 1;
 
-@interface OCWebController () <WKNavigationDelegate, WKUIDelegate> {
+@interface OCWebController () <WKNavigationDelegate, WKUIDelegate, PHPrefViewControllerDelegate, UIPopoverPresentationControllerDelegate> {
     BOOL _menuIsOpen;
     int _swipeDirection;
     BOOL loadingComplete;
@@ -60,6 +62,8 @@ const int SWIPE_PREVIOUS = 1;
 
 @property (strong, nonatomic) IBOutlet WKWebView *webView;
 @property (assign, nonatomic) BOOL isVisible;
+@property (nonatomic, strong, readonly) PHPrefViewController *settingsViewController;
+@property (nonatomic, strong, readonly) UIPopoverPresentationController *settingsPresentationController;
 
 - (void)configureView;
 - (void) writeAndLoadHtml:(NSString*)html;
@@ -78,6 +82,8 @@ const int SWIPE_PREVIOUS = 1;
 @synthesize keepUnread;
 @synthesize star;
 @synthesize backgroundMenuRow;
+@synthesize settingsViewController;
+@synthesize settingsPresentationController;
 
 #pragma mark - Managing the detail item
 
@@ -325,30 +331,13 @@ const int SWIPE_PREVIOUS = 1;
     }
 }
 
-- (IBAction)doText:(id)sender event:(UIEvent*)event {
-    if (_menuIsOpen) {
-        [self.menuController close];
-        [self.backgroundMenuRow setColumns:nil];
-        [self.backgroundMenuRow setIsModal:NO];
-        [self.backgroundMenuRow setHideOnExpand:NO];
-        self.backgroundMenuRow.isMoreButton = YES;
-        [self.backgroundMenuRow.button setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
-        [[self.menuController.rows objectAtIndex:2 + 1] button].hidden = YES;
-        [[self.menuController.rows objectAtIndex:2 + 2] button].hidden = YES;
-        [[self.menuController.rows objectAtIndex:2 + 3] button].hidden = YES;
-    } else {
-        @try {
-            self.keepUnread.button.selected = self.item.unreadValue;
-            self.star.button.selected = self.item.starredValue;
-        }
-        @catch (NSException *exception) {
-            //
-        }
-        @finally {
-            [self.menuController open];
-        }
-    }
-    _menuIsOpen = !_menuIsOpen;
+- (IBAction)doPreferences:(id)sender {
+    settingsPresentationController = self.settingsViewController.popoverPresentationController;
+    settingsPresentationController.delegate = self;
+    settingsPresentationController.barButtonItem = self.textBarButtonItem;
+    settingsPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    settingsPresentationController.backgroundColor = [UIColor popoverBackgroundColor];
+    [self presentViewController:self.settingsViewController animated:YES completion:nil];
 }
 
 - (IBAction)doStar:(id)sender {
@@ -367,7 +356,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ([self.webView.URL.scheme isEqualToString:@"file"] || [self.webView.URL.scheme isEqualToString:@"itms-appss"]) {
+    if ([self.webView.URL.scheme isEqualToString:@"file"] || [self.webView.URL.scheme hasPrefix:@"itms"]) {
         if ([navigationAction.request.URL.absoluteString rangeOfString:@"itunes.apple.com"].location != NSNotFound) {
             [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
             decisionHandler(WKNavigationActionPolicyCancel);
@@ -690,7 +679,7 @@ const int SWIPE_PREVIOUS = 1;
 - (UIBarButtonItem *)textBarButtonItem {
     
     if (!textBarButtonItem) {
-        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(doText:event:)];
+        textBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(doPreferences:)];
         textBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return textBarButtonItem;
@@ -710,6 +699,20 @@ const int SWIPE_PREVIOUS = 1;
         unstarBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
     }
     return unstarBarButtonItem;
+}
+
+- (PHPrefViewController *)settingsViewController {
+    if (!settingsViewController) {
+        settingsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"preferences"];
+//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//            settingsPageController.preferredContentSize = CGSizeMake(240, 362);
+//        } else {
+            settingsViewController.preferredContentSize = CGSizeMake(220, 305);
+//        }
+        settingsViewController.modalPresentationStyle = UIModalPresentationPopover;
+        settingsViewController.delegate = self;
+    }
+    return settingsViewController;
 }
 
 - (JCGridMenuRow *)keepUnread {
@@ -920,17 +923,15 @@ const int SWIPE_PREVIOUS = 1;
     long fontSize =[[NSUserDefaults standardUserDefaults] integerForKey:@"FontSize"];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$FONTSIZE$" withString:[NSString stringWithFormat:@"%ldpx", fontSize]];
 
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:@"auto"];
-        NSInteger contentWidth = [[[NSUserDefaults standardUserDefaults] objectForKey:@"Margin"] integerValue];
-        NSInteger contentInset = (320 - contentWidth) / 2;
-        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN2$" withString:[NSString stringWithFormat:@"%ldpx", (long)contentInset]];
-    } else {
-        long margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"Margin"];
-        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", margin]];
-        cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN2$" withString:@"auto"];
-    }
+    CGSize screenSize = [UIScreen mainScreen].nativeBounds.size;
+    NSInteger margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"MarginPortrait"];
+    double currentWidth = (screenSize.width / [UIScreen mainScreen].scale) * ((double)margin / 100);
+    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", (long)currentWidth]];
     
+    NSInteger marginLandscape = [[NSUserDefaults standardUserDefaults] integerForKey:@"MarginLandscape"];
+    double currentWidthLandscape = (screenSize.height / [UIScreen mainScreen].scale) * ((double)marginLandscape / 100);
+    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN_LANDSCAPE$" withString:[NSString stringWithFormat:@"%ldpx", (long)currentWidthLandscape]];
+
     double lineHeight =[[NSUserDefaults standardUserDefaults] doubleForKey:@"LineHeight"];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$LINEHEIGHT$" withString:[NSString stringWithFormat:@"%fem", lineHeight]];
     
@@ -968,13 +969,42 @@ const int SWIPE_PREVIOUS = 1;
 }
 
 -(void) settingsChanged:(NSString *)setting newValue:(NSUInteger)value {
-    //NSLog(@"New Setting: %@ with value %d", setting, value);
+    BOOL starred = [[NSUserDefaults standardUserDefaults] boolForKey:@"Starred"];
+    if (starred != self.item.starredValue) {
+        self.item.starredValue = starred;
+        if (starred) {
+            [[OCNewsHelper sharedHelper] starItemOffline:self.item.myId];
+        } else {
+            [[OCNewsHelper sharedHelper] unstarItemOffline:self.item.myId];
+        }
+    }
+    
+    BOOL unread = [[NSUserDefaults standardUserDefaults] boolForKey:@"Unread"];
+    if (unread != self.item.unreadValue) {
+        self.item.unreadValue = unread;
+        if (unread) {
+            [[OCNewsHelper sharedHelper] markItemUnreadOffline:self.item.myId];
+        } else {
+            [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithObject:self.item.myId]];
+        }
+    }
+
     [self writeCss];
     if ([self webView] != nil) {
         self.webView.scrollView.backgroundColor = [self myBackgroundColor];
         [self.webView reload];
     }
 }
+
+- (BOOL)starred {
+    return self.item.starredValue;
+}
+
+
+- (BOOL)unread {
+    return self.item.unreadValue;
+}
+
 
 - (void)updateNavigationItemTitle
 {
@@ -1003,7 +1033,7 @@ const int SWIPE_PREVIOUS = 1;
     HTMLParser *parser = [[HTMLParser alloc] initWithString:html error:&error];
     
     if (error) {
-//        NSLog(@"Error: %@", error);
+        //        NSLog(@"Error: %@", error);
         return html;
     }
     
@@ -1017,7 +1047,7 @@ const int SWIPE_PREVIOUS = 1;
             if (src && [src rangeOfString:@"youtu"].location != NSNotFound) {
                 NSString *videoID = [self extractYoutubeVideoID:src];
                 if (videoID) {
-//                    NSLog(@"Raw: %@", [inputNode rawContents]);
+                    //                    NSLog(@"Raw: %@", [inputNode rawContents]);
                     
                     NSString *height = [inputNode getAttributeNamed:@"height"];
                     NSString *width = [inputNode getAttributeNamed:@"width"];
@@ -1035,7 +1065,7 @@ const int SWIPE_PREVIOUS = 1;
             }
             if (src && [src rangeOfString:@"vimeo"].location != NSNotFound) {
                 NSString *videoID = [self extractVimeoVideoID:src];
-                if (videoID) {                    
+                if (videoID) {
                     NSString *height = [inputNode getAttributeNamed:@"height"];
                     NSString *width = [inputNode getAttributeNamed:@"width"];
                     NSString *heightString = @"";
