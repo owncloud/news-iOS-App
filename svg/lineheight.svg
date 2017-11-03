@@ -9,15 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="88"
-   height="88"
+   width="44pt"
+   height="44pt"
    id="svg5330"
    version="1.1"
-   inkscape:version="0.48.4 r9943 custom"
+   inkscape:version="0.91pre2+osxmenu r12816"
    sodipodi:docname="lineheight.svg"
    inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/margin2.png"
    inkscape:export-xdpi="45"
-   inkscape:export-ydpi="45">
+   inkscape:export-ydpi="45"
+   viewBox="0 0 44 44">
   <defs
      id="defs5332" />
   <sodipodi:namedview
@@ -28,18 +29,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
-     inkscape:cx="24.454545"
+     inkscape:cx="51.272727"
      inkscape:cy="32"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:document-units="px"
+     inkscape:document-units="pt"
      inkscape:grid-bbox="true"
      inkscape:showpageshadow="false"
-     inkscape:window-width="1450"
-     inkscape:window-height="890"
-     inkscape:window-x="52"
-     inkscape:window-y="22"
-     inkscape:window-maximized="0">
+     inkscape:window-width="1798"
+     inkscape:window-height="1116"
+     inkscape:window-x="389"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     units="pt">
     <inkscape:grid
        type="xygrid"
        id="grid5338"
@@ -65,20 +67,20 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     transform="translate(0,24)">
+     transform="translate(0,-2.4000035)">
     <path
-       style="fill:none;stroke:#007aff;stroke-width:1.99999988;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 17.00123,5.960464e-8 c 53.99754,0 53.99754,0 53.99754,0"
+       style="fill:none;stroke:#000000;stroke-width:0.80000001;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 4.400147,10.000003 c 35.199706,0 35.199706,0 35.199706,0"
        id="path5907"
        inkscape:connector-curvature="0" />
     <path
        inkscape:connector-curvature="0"
        id="path5909"
-       d="m 17.00123,39 c 53.99754,0 53.99754,0 53.99754,0"
-       style="fill:none;stroke:#007aff;stroke-width:1.99999988;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+       d="m 4.4001503,38.000003 c 35.1999937,0 35.1999937,0 35.1999937,0"
+       style="fill:none;stroke:#000000;stroke-width:0.80000001;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
-       style="fill:none;stroke:#007aff;stroke-width:1.99999988;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 17.001238,20 c 53.997983,0 53.997983,0 53.997983,0"
+       style="fill:none;stroke:#000000;stroke-width:0.80000001;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 4.4000025,24.000003 c 35.1999945,0 35.1999945,0 35.1999945,0"
        id="path5911"
        inkscape:connector-curvature="0" />
   </g>

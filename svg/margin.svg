@@ -9,15 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="88"
-   height="88"
+   width="44pt"
+   height="44pt"
    id="svg5330"
    version="1.1"
-   inkscape:version="0.48.4 r9943 custom"
+   inkscape:version="0.91pre2+osxmenu r12816"
    sodipodi:docname="margin.svg"
    inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/margin2.png"
    inkscape:export-xdpi="45"
-   inkscape:export-ydpi="45">
+   inkscape:export-ydpi="45"
+   viewBox="0 0 44 44">
   <defs
      id="defs5332" />
   <sodipodi:namedview
@@ -28,18 +29,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
-     inkscape:cx="24.454545"
+     inkscape:cx="34.454545"
      inkscape:cy="32.090909"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:document-units="px"
+     inkscape:document-units="pt"
      inkscape:grid-bbox="true"
      inkscape:showpageshadow="false"
-     inkscape:window-width="1450"
-     inkscape:window-height="890"
-     inkscape:window-x="52"
-     inkscape:window-y="22"
-     inkscape:window-maximized="0">
+     inkscape:window-width="2054"
+     inkscape:window-height="1201"
+     inkscape:window-x="268"
+     inkscape:window-y="113"
+     inkscape:window-maximized="0"
+     units="pt">
     <inkscape:grid
        type="xygrid"
        id="grid5338"
@@ -65,24 +67,24 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     transform="translate(0,24)">
+     transform="translate(0,-2.4000035)">
     <rect
-       style="fill:none;stroke:#007aff;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4216"
-       width="53.999996"
-       height="38"
-       x="17"
-       y="1.0000001"
+       width="35"
+       height="27"
+       x="4.5"
+       y="10.900003"
        inkscape:export-filename="/Users/peter/Projects/PMC Reader/PMC Reader/Resources/margin1.png"
        inkscape:export-xdpi="44.990002"
        inkscape:export-ydpi="44.990002" />
     <rect
-       y="1.2540578"
-       x="27.254061"
-       height="37.491882"
-       width="33.491879"
+       y="11.403252"
+       x="11.003248"
+       height="25.993504"
+       width="21.993504"
        id="rect4218"
-       style="fill:#007aff;stroke:#007aff;stroke-width:2.50811982;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#000000;stroke:#000000;stroke-width:2.00649595;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:export-filename="/Users/peter/Projects/PMC Reader/PMC Reader/Resources/margin1.png"
        inkscape:export-xdpi="44.990002"
        inkscape:export-ydpi="44.990002" />

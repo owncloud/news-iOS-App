@@ -899,6 +899,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="gearBarButtonItem" destination="yUA-80-2hh" id="Jhl-RE-oHd"/>
                         <segue destination="6QV-e8-2aM" kind="presentation" identifier="feedSettings" id="bOO-yc-D5K"/>
                     </connections>
                 </tableViewController>
@@ -960,8 +961,8 @@
                                 <rect key="frame" x="115" y="250" width="95" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
-                                <state key="normal" image="margin3"/>
+                                <inset key="imageEdgeInsets" minX="26" minY="0.0" maxX="25" maxY="0.0"/>
+                                <state key="normal" image="margin_wide"/>
                                 <connections>
                                     <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="jki-oj-hR3"/>
                                 </connections>
@@ -970,8 +971,8 @@
                                 <rect key="frame" x="10" y="250" width="95" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
-                                <state key="normal" image="margin1"/>
+                                <inset key="imageEdgeInsets" minX="26" minY="0.0" maxX="25" maxY="0.0"/>
+                                <state key="normal" image="margin_narrow"/>
                                 <connections>
                                     <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="KMa-iR-4ZT"/>
                                 </connections>
@@ -980,8 +981,8 @@
                                 <rect key="frame" x="115" y="190" width="95" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
-                                <state key="normal" image="lineheight3"/>
+                                <inset key="imageEdgeInsets" minX="26" minY="0.0" maxX="25" maxY="0.0"/>
+                                <state key="normal" image="lineheight_large"/>
                                 <connections>
                                     <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="YVP-NJ-Jry"/>
                                 </connections>
@@ -990,8 +991,8 @@
                                 <rect key="frame" x="10" y="190" width="95" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                                <inset key="imageEdgeInsets" minX="35" minY="9" maxX="34" maxY="9"/>
-                                <state key="normal" image="lineheight1"/>
+                                <inset key="imageEdgeInsets" minX="26" minY="0.0" maxX="25" maxY="0.0"/>
+                                <state key="normal" image="lineheight_small"/>
                                 <connections>
                                     <action selector="onButtonTap:" destination="m60-CL-y5D" eventType="touchUpInside" id="ksz-Vt-GDS"/>
                                 </connections>
@@ -1075,10 +1076,10 @@
         <image name="fontsizel" width="27" height="27"/>
         <image name="fontsizes" width="27" height="27"/>
         <image name="gear" width="24" height="44"/>
-        <image name="lineheight1" width="29" height="27"/>
-        <image name="lineheight3" width="29" height="27"/>
-        <image name="margin1" width="29" height="27"/>
-        <image name="margin3" width="29" height="27"/>
+        <image name="lineheight_large" width="44" height="44"/>
+        <image name="lineheight_small" width="44" height="44"/>
+        <image name="margin_narrow" width="44" height="44"/>
+        <image name="margin_wide" width="44" height="44"/>
         <image name="read" width="30" height="30"/>
         <image name="starred" width="30" height="30"/>
     </resources>

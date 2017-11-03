@@ -41,7 +41,6 @@
 @property (nonatomic, retain) NSFetchedResultsController *foldersFetchedResultsController;
 @property (nonatomic, retain) NSFetchedResultsController *feedsFetchedResultsController;
 
-@property (nonatomic, strong, readonly) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
 @property (nonatomic, strong, readonly) UITableViewRowAction *feedSettingsAction;

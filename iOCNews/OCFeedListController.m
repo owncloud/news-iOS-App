@@ -38,6 +38,7 @@
 #import "Folder.h"
 #import "Feed.h"
 #import <AFNetworking/AFNetworking.h>
+#import "UIColor+PHColor.h"
 
 static NSString *DetailSegueIdentifier = @"showDetail";
 
@@ -48,6 +49,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     NSIndexPath *editingPath;
 }
 
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *gearBarButtonItem;
 @property (nonatomic, assign) BOOL collapseDetailViewController;
 
 - (void) networkCompleted:(NSNotification*)n;
@@ -61,7 +63,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 @implementation OCFeedListController
 
-@synthesize editBarButtonItem;
 @synthesize feedRefreshControl;
 @synthesize specialFetchedResultsController;
 @synthesize foldersFetchedResultsController;
@@ -168,6 +169,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
     self.collapseDetailViewController = NO;
     
+    [self applyTheme];
+    
     //Notifications
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
@@ -224,6 +227,11 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowFavicons"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.feedsFetchedResultsController.delegate = nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self applyTheme];
 }
 
 #pragma mark - Table view data source
@@ -296,6 +304,14 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 }
             }
             cell.backgroundColor = [UIColor clearColor];
+            cell.textLabel.textColor = [UIColor textColor];
+//            cell.backgroundColor = [UIColor backgroundColor];
+//            cell.contentView.backgroundColor = [UIColor cellBackgroundColor];
+            cell.contentView.opaque = YES;
+//            cell.imageView.backgroundColor = [UIColor popoverBackgroundColor];
+//            cell.labelContainerView.backgroundColor = [UIColor cellBackgroundColor];
+//            cell.buttonContainerView.backgroundColor = [UIColor cellBackgroundColor];
+
         }
     }
     @catch (NSException *exception) {
@@ -777,6 +793,28 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
     self.tableView.scrollsToTop = NO;
 }
+
+- (void)applyTheme {
+    UIColor *bgColor = [UIColor backgroundColor];
+    //self.navigationController.view.backgroundColor = bgColor;
+    self.view.backgroundColor = bgColor;
+    self.tableView.backgroundColor = bgColor;
+    self.navigationController.navigationBar.barTintColor = bgColor;
+    //bottomBorder.backgroundColor = [PHColors iconColor].CGColor;
+    
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [UIColor clearColor];
+    shadow.shadowBlurRadius = 0.0;
+    shadow.shadowOffset = CGSizeMake(0.0, 0.0);
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor iconColor], NSForegroundColorAttributeName,
+      shadow, NSShadowAttributeName, nil]];
+    
+    self.gearBarButtonItem.tintColor = [UIColor iconColor];
+}
+
 
 #pragma mark - Feeds maintenance
 

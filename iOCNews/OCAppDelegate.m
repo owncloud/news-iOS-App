@@ -37,6 +37,7 @@
 #import <KSCrash/KSCrashInstallationEmail.h>
 #import <KSCrash/KSCrashInstallation+Alert.h>
 #import "PDKeychainBindings.h"
+#import "PHThemeManager.h"
 
 @implementation OCAppDelegate
 
@@ -45,10 +46,10 @@
     KSCrashInstallation* installation = [self makeEmailInstallation];
     [installation install];
     
-    [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
-    [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
+//    [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
+//    [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
 
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
+//    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
 
     UISplitViewController *svc = (UISplitViewController *)self.window.rootViewController;
     svc.presentsWithGesture = YES;
@@ -64,6 +65,8 @@
 
     [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
 
+    [PHThemeManager sharedManager].currentTheme = PHThemeDefault;
+    
     [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
         if(completed) {
 //            NSLog(@"Sent %d reports", (int)[reports count]);
