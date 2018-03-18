@@ -10,9 +10,6 @@
 [submodule "readable"]
 	path = readable
 	url = https://github.com/JanX2/readable.git
-[submodule "JCGridMenu"]
-	path = JCGridMenu
-	url = https://github.com/joecarney/JCGridMenu.git
 [submodule "PDKeychainBindingsController"]
 	path = PDKeychainBindingsController
 	url = https://github.com/carlbrown/PDKeychainBindingsController.git

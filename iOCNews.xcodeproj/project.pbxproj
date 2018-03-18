@@ -76,13 +76,6 @@
 		D0735DC51F83378A002D3AB3 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC21F83378A002D3AB3 /* WebImage.framework */; };
 		D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */; };
 		D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */; };
-		D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D651817DFEFE700C40D76 /* JCGridMenuController.m */; };
-		D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D655E17DFEFE700C40D76 /* UIButton+JCUI.m */; };
-		D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656017DFEFE700C40D76 /* UILabel+JCUI.m */; };
-		D07D659A17DFEFE700C40D76 /* UIView+JCUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656217DFEFE700C40D76 /* UIView+JCUI.m */; };
-		D07D659B17DFEFE700C40D76 /* JCGridMenuColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656517DFEFE700C40D76 /* JCGridMenuColumn.m */; };
-		D07D659C17DFEFE700C40D76 /* JCGridMenuRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656717DFEFE700C40D76 /* JCGridMenuRow.m */; };
-		D07D659D17DFEFE700C40D76 /* JCGridMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D656A17DFEFE700C40D76 /* JCGridMenuView.m */; };
 		D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D08DDA451C5E8B2E00B0E90C /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D08DDA441C5E8B2E00B0E90C /* HexColors.m */; };
@@ -214,20 +207,6 @@
 		D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHArticleManagerController.m; sourceTree = "<group>"; };
 		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
 		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
-		D07D651717DFEFE700C40D76 /* JCGridMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuController.h; sourceTree = "<group>"; };
-		D07D651817DFEFE700C40D76 /* JCGridMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuController.m; sourceTree = "<group>"; };
-		D07D655D17DFEFE700C40D76 /* UIButton+JCUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+JCUI.h"; sourceTree = "<group>"; };
-		D07D655E17DFEFE700C40D76 /* UIButton+JCUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+JCUI.m"; sourceTree = "<group>"; };
-		D07D655F17DFEFE700C40D76 /* UILabel+JCUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+JCUI.h"; sourceTree = "<group>"; };
-		D07D656017DFEFE700C40D76 /* UILabel+JCUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+JCUI.m"; sourceTree = "<group>"; };
-		D07D656117DFEFE700C40D76 /* UIView+JCUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+JCUI.h"; sourceTree = "<group>"; };
-		D07D656217DFEFE700C40D76 /* UIView+JCUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+JCUI.m"; sourceTree = "<group>"; };
-		D07D656417DFEFE700C40D76 /* JCGridMenuColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuColumn.h; sourceTree = "<group>"; };
-		D07D656517DFEFE700C40D76 /* JCGridMenuColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuColumn.m; sourceTree = "<group>"; };
-		D07D656617DFEFE700C40D76 /* JCGridMenuRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuRow.h; sourceTree = "<group>"; };
-		D07D656717DFEFE700C40D76 /* JCGridMenuRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuRow.m; sourceTree = "<group>"; };
-		D07D656917DFEFE700C40D76 /* JCGridMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCGridMenuView.h; sourceTree = "<group>"; };
-		D07D656A17DFEFE700C40D76 /* JCGridMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCGridMenuView.m; sourceTree = "<group>"; };
 		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
 		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
 		D08D83B618161453005A75F0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -440,60 +419,6 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		D07D651517DFEFE700C40D76 /* JCGridMenu */ = {
-			isa = PBXGroup;
-			children = (
-				D07D651617DFEFE700C40D76 /* Controllers */,
-				D07D655C17DFEFE700C40D76 /* Library */,
-				D07D656317DFEFE700C40D76 /* Models */,
-				D07D656817DFEFE700C40D76 /* Views */,
-			);
-			name = JCGridMenu;
-			path = JCGridMenu/Universal;
-			sourceTree = "<group>";
-		};
-		D07D651617DFEFE700C40D76 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				D07D651717DFEFE700C40D76 /* JCGridMenuController.h */,
-				D07D651817DFEFE700C40D76 /* JCGridMenuController.m */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		D07D655C17DFEFE700C40D76 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				D07D655D17DFEFE700C40D76 /* UIButton+JCUI.h */,
-				D07D655E17DFEFE700C40D76 /* UIButton+JCUI.m */,
-				D07D655F17DFEFE700C40D76 /* UILabel+JCUI.h */,
-				D07D656017DFEFE700C40D76 /* UILabel+JCUI.m */,
-				D07D656117DFEFE700C40D76 /* UIView+JCUI.h */,
-				D07D656217DFEFE700C40D76 /* UIView+JCUI.m */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		D07D656317DFEFE700C40D76 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				D07D656417DFEFE700C40D76 /* JCGridMenuColumn.h */,
-				D07D656517DFEFE700C40D76 /* JCGridMenuColumn.m */,
-				D07D656617DFEFE700C40D76 /* JCGridMenuRow.h */,
-				D07D656717DFEFE700C40D76 /* JCGridMenuRow.m */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		D07D656817DFEFE700C40D76 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D07D656917DFEFE700C40D76 /* JCGridMenuView.h */,
-				D07D656A17DFEFE700C40D76 /* JCGridMenuView.m */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
@@ -504,7 +429,6 @@
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
 				D0F18130178502E000F719D9 /* HTMLString */,
 				D0BCABE417791F3400C965F4 /* TUSafariActivity */,
-				D07D651517DFEFE700C40D76 /* JCGridMenu */,
 				D0BCAA2B177900C300C965F4 /* iOCNews */,
 				D0BCAA24177900C300C965F4 /* Frameworks */,
 				D0BCAA23177900C300C965F4 /* Products */,
@@ -922,15 +846,8 @@
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
-				D07D656B17DFEFE700C40D76 /* JCGridMenuController.m in Sources */,
-				D07D659817DFEFE700C40D76 /* UIButton+JCUI.m in Sources */,
-				D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */,
-				D07D659A17DFEFE700C40D76 /* UIView+JCUI.m in Sources */,
 				D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */,
 				D063E566205DEF480070170F /* ThemeView.m in Sources */,
-				D07D659B17DFEFE700C40D76 /* JCGridMenuColumn.m in Sources */,
-				D07D659C17DFEFE700C40D76 /* JCGridMenuRow.m in Sources */,
-				D07D659D17DFEFE700C40D76 /* JCGridMenuView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
