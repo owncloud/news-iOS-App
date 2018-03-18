@@ -11,7 +11,7 @@
 //White
 #define kPHWhiteBackgroundColor        [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1]
 #define kPHWhiteCellBackgroundColor    [UIColor colorWithRed:1.0  green:1.0  blue:1.0  alpha:1]
-#define kPHWhiteIconColor              [UIColor colorWithRed:0.36 green:0.24 blue:0.14 alpha:1]
+#define kPHWhiteIconColor              [UIColor colorWithRed:0.10 green:0.10 blue:0.10 alpha:1]
 #define kPHWhiteTextColor              [UIColor colorWithRed:0.0  green:0.0  blue:0.0  alpha:1]
 #define kPHWhiteLinkColor              [UIColor colorWithRed:0.21 green:0.27 blue:0.35 alpha:1]
 #define kPHWhitePopoverBackgroundColor [UIColor colorWithRed:0.95 green:0.93 blue:0.90 alpha:1]

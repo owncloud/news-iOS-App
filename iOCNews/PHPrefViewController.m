@@ -9,6 +9,7 @@
 #import "PHPrefViewController.h"
 #import "QuartzCore/QuartzCore.h"
 #import "UIColor+PHColor.h"
+#import "PHThemeManager.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30
@@ -202,17 +203,20 @@
     }
 
     if (sender == self.whiteBackgroundButton) {
-        [prefs setInteger:0 forKey:@"Background"];
+        [prefs setInteger:0 forKey:@"CurrentTheme"];
+        [PHThemeManager.sharedManager setCurrentTheme:PHThemeDefault];
         [self updateBackgrounds];
     }
 
     if (sender == self.sepiaBackgroundButton) {
-        [prefs setInteger:1 forKey:@"Background"];
+        [prefs setInteger:1 forKey:@"CurrentTheme"];
+        [PHThemeManager.sharedManager setCurrentTheme:PHThemeSepia];
         [self updateBackgrounds];
     }
 
     if (sender == self.nightBackgroundButton) {
-        [prefs setInteger:2 forKey:@"Background"];
+        [prefs setInteger:2 forKey:@"CurrentTheme"];
+        [PHThemeManager.sharedManager setCurrentTheme:PHThemeNight];
         [self updateBackgrounds];
     }
 

@@ -8,6 +8,7 @@
 
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
+#import "ThemeView.h"
 
 @implementation PHThemeManager
 
@@ -30,6 +31,15 @@
     return sharedManager;
 }
 
+- (instancetype)init {
+    if (self = [super init]) {
+        PHTheme current = self.currentTheme;
+        [self setCurrentTheme:current];
+    }
+    return self;
+}
+
+
 - (PHTheme)currentTheme {
     return [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
 }
@@ -39,10 +49,27 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [[[[UIApplication sharedApplication] delegate] window] setTintColor:[kPHIconColorArray objectAtIndex:self.currentTheme]];
-    [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
-    
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
+    [UINavigationBar appearance].barTintColor = [kPHPopoverButtonColorArray objectAtIndex:self.currentTheme];
+    NSMutableDictionary<NSAttributedStringKey, id> *newTitleAttributes = [NSMutableDictionary<NSAttributedStringKey, id> new];
+    newTitleAttributes[NSForegroundColorAttributeName] = [kPHIconColorArray objectAtIndex:self.currentTheme];
+    [UINavigationBar appearance].titleTextAttributes = newTitleAttributes;
+    [UINavigationBar appearance].tintColor = [kPHIconColorArray objectAtIndex:self.currentTheme];
 
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
+    [UIScrollView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:self.currentTheme];
+    [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:self.currentTheme];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewCell class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:self.currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableView class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:self.currentTheme]];
+    [ThemeView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:self.currentTheme];
+    
+    NSArray * windows = [UIApplication sharedApplication].windows;
+    
+    for (UIWindow *window in windows) {
+        for (UIView *view in window.subviews) {
+            [view removeFromSuperview];
+            [window addSubview:view];
+        }
+    }
 }
 
 @end

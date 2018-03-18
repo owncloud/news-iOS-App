@@ -65,7 +65,6 @@
 
     [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
 
-    [PHThemeManager sharedManager].currentTheme = PHThemeDefault;
     
     [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
         if(completed) {
@@ -75,6 +74,7 @@
         }
     }];
     
+    [PHThemeManager sharedManager];
     return YES;
 }
 

@@ -243,7 +243,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView addGestureRecognizer:self.sideGestureRecognizer];
-    
+    self.tableView.tableFooterView = [UIView new];
+
     markingAllItemsRead = NO;
     aboutToFetch = NO;
     

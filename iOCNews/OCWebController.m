@@ -224,7 +224,7 @@ const int SWIPE_PREVIOUS = 1;
     _webView.navigationDelegate = self;
     _webView.UIDelegate = self;
     _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [_webView addSubview:self.menuController.view];
+//    [_webView addSubview:self.menuController.view];
     self.view = _webView;
 }
 
@@ -936,7 +936,7 @@ const int SWIPE_PREVIOUS = 1;
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$LINEHEIGHT$" withString:[NSString stringWithFormat:@"%fem", lineHeight]];
     
     NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
-    long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
+    long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
     NSString *background = [backgrounds objectAtIndex:backgroundIndex];
     cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$BACKGROUND$" withString:background];
     
@@ -957,7 +957,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (UIColor*)myBackgroundColor {
     NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
-    long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"Background"];
+    long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
     NSString *background = [backgrounds objectAtIndex:backgroundIndex];
     UIColor *backColor = [UIColor blackColor];
     if ([background isEqualToString:@"#FFFFFF"]) {

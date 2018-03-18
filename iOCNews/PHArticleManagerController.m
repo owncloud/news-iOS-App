@@ -92,9 +92,4 @@
     return self.articles.count;
 }
 
-- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
-{
-    return 0;
-}
-
 @end

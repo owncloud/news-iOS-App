@@ -58,6 +58,7 @@
 		D04C7E101BABC185000FB342 /* TSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF71BABC185000FB342 /* TSMessage.m */; };
 		D04C7E111BABC185000FB342 /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04C7DF91BABC185000FB342 /* TSMessageView.m */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
+		D063E566205DEF480070170F /* ThemeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D063E565205DEF480070170F /* ThemeView.m */; };
 		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
@@ -186,6 +187,8 @@
 		D04C7DF91BABC185000FB342 /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
 		D0622FE418C29BD40032E622 /* News 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 5.xcdatamodel"; sourceTree = "<group>"; };
 		D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = News.xcmappingmodel; sourceTree = "<group>"; };
+		D063E564205DEF480070170F /* ThemeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeView.h; sourceTree = "<group>"; };
+		D063E565205DEF480070170F /* ThemeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeView.m; sourceTree = "<group>"; };
 		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
 		D06CB22D17A06E4F00A1310B /* News.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = News.xcdatamodel; sourceTree = "<group>"; };
@@ -593,6 +596,8 @@
 				D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */,
 				D0FB295F1FA6A20D00578C29 /* PHThemeManager.h */,
 				D0FB29601FA6A20D00578C29 /* PHThemeManager.m */,
+				D063E564205DEF480070170F /* ThemeView.h */,
+				D063E565205DEF480070170F /* ThemeView.m */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
 				D08D83B618161453005A75F0 /* Settings.bundle */,
@@ -922,6 +927,7 @@
 				D07D659917DFEFE700C40D76 /* UILabel+JCUI.m in Sources */,
 				D07D659A17DFEFE700C40D76 /* UIView+JCUI.m in Sources */,
 				D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */,
+				D063E566205DEF480070170F /* ThemeView.m in Sources */,
 				D07D659B17DFEFE700C40D76 /* JCGridMenuColumn.m in Sources */,
 				D07D659C17DFEFE700C40D76 /* JCGridMenuRow.m in Sources */,
 				D07D659D17DFEFE700C40D76 /* JCGridMenuView.m in Sources */,

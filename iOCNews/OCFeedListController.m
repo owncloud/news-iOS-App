@@ -39,6 +39,7 @@
 #import "Feed.h"
 #import <AFNetworking/AFNetworking.h>
 #import "UIColor+PHColor.h"
+#import "ThemeView.h"
 
 static NSString *DetailSegueIdentifier = @"showDetail";
 
@@ -152,6 +153,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     self.tableView.allowsSelection = YES;
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.scrollsToTop = YES;
+    self.tableView.tableFooterView = [UIView new];
 
     currentIndex = -1;
     networkHasBeenUnreachable = NO;
@@ -303,11 +305,11 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                     cell.textLabel.text = feed.title;
                 }
             }
-            cell.backgroundColor = [UIColor clearColor];
-            cell.textLabel.textColor = [UIColor textColor];
+//            cell.backgroundColor = [UIColor clearColor];
+//            cell.textLabel.textColor = [UIColor textColor];
 //            cell.backgroundColor = [UIColor backgroundColor];
-//            cell.contentView.backgroundColor = [UIColor cellBackgroundColor];
-            cell.contentView.opaque = YES;
+            cell.contentView.backgroundColor = [UIColor clearColor];
+//            cell.contentView.opaque = YES;
 //            cell.imageView.backgroundColor = [UIColor popoverBackgroundColor];
 //            cell.labelContainerView.backgroundColor = [UIColor cellBackgroundColor];
 //            cell.buttonContainerView.backgroundColor = [UIColor cellBackgroundColor];
@@ -323,6 +325,26 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 }
 
+//- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+//    return 0.01f;
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+//    if (section == 2) {
+//        CGFloat height = tableView.frame.size.height - tableView.contentSize.height;
+//        return [[ThemeView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, height)];
+//    }
+//    return nil;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+//    if (section == 2) {
+//        CGRect tvFrame = tableView.frame;
+//        return tvFrame.size.height - tableView.contentSize.height;
+//    }
+//    return 0.01f;
+//}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     OCFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -332,7 +354,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         UIView * selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         [selectedBackgroundView setBackgroundColor:[UIColor colorWithRed:0.87f green:0.87f blue:0.87f alpha:1.0f]]; // set color here
         [cell setSelectedBackgroundView:selectedBackgroundView];
-        cell.backgroundColor = [UIColor clearColor];
+//        cell.backgroundColor = [UIColor clearColor];
     }
     cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
@@ -795,24 +817,24 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 }
 
 - (void)applyTheme {
-    UIColor *bgColor = [UIColor backgroundColor];
-    //self.navigationController.view.backgroundColor = bgColor;
-    self.view.backgroundColor = bgColor;
-    self.tableView.backgroundColor = bgColor;
-    self.navigationController.navigationBar.barTintColor = bgColor;
-    //bottomBorder.backgroundColor = [PHColors iconColor].CGColor;
-    
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = [UIColor clearColor];
-    shadow.shadowBlurRadius = 0.0;
-    shadow.shadowOffset = CGSizeMake(0.0, 0.0);
-    
-    [self.navigationController.navigationBar setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor iconColor], NSForegroundColorAttributeName,
-      shadow, NSShadowAttributeName, nil]];
-    
-    self.gearBarButtonItem.tintColor = [UIColor iconColor];
+//    UIColor *bgColor = [UIColor backgroundColor];
+//    //self.navigationController.view.backgroundColor = bgColor;
+//    self.view.backgroundColor = bgColor;
+//    self.tableView.backgroundColor = bgColor;
+//    self.navigationController.navigationBar.barTintColor = bgColor;
+//    //bottomBorder.backgroundColor = [PHColors iconColor].CGColor;
+//    
+//    NSShadow *shadow = [[NSShadow alloc] init];
+//    shadow.shadowColor = [UIColor clearColor];
+//    shadow.shadowBlurRadius = 0.0;
+//    shadow.shadowOffset = CGSizeMake(0.0, 0.0);
+//    
+//    [self.navigationController.navigationBar setTitleTextAttributes:
+//     [NSDictionary dictionaryWithObjectsAndKeys:
+//      [UIColor iconColor], NSForegroundColorAttributeName,
+//      shadow, NSShadowAttributeName, nil]];
+//    
+//    self.gearBarButtonItem.tintColor = [UIColor iconColor];
 }
 
 
