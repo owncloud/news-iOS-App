@@ -9,6 +9,19 @@
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
 #import "ThemeView.h"
+#import "OCFeedListController.h"
+#import "OCFeedCell.h"
+#import "OCArticleCell.h"
+
+@implementation UILabel (ThemeColor)
+
+- (void)setThemeTextColor:(UIColor *)themeTextColor {
+    if (themeTextColor) {
+        self.textColor = themeTextColor;
+    }
+}
+
+@end
 
 @implementation PHThemeManager
 
@@ -21,24 +34,26 @@
 #define kPHPopoverButtonColorArray     @[kPHWhitePopoverButtonColor, kPHSepiaPopoverButtonColor, kPHNightPopoverButtonColor]
 #define kPHPopoverBorderColorArray     @[kPHWhitePopoverBorderColor, kPHSepiaPopoverBorderColor, kPHNightPopoverBorderColor]
 
+#define kPHUnreadTextColorArray        @[[UIColor darkTextColor], [UIColor darkTextColor], [UIColor lightTextColor]]
+#define kPHReadTextColorArray          @[[UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0]]
+
+
 + (PHThemeManager*)sharedManager {
     static dispatch_once_t once_token;
     static id sharedManager;
     dispatch_once(&once_token, ^{
         sharedManager = [[PHThemeManager alloc] init];
-        [sharedManager setCurrentTheme:PHThemeDefault];
+//        [sharedManager setCurrentTheme:PHThemeDefault];
     });
     return sharedManager;
 }
 
 - (instancetype)init {
     if (self = [super init]) {
-        PHTheme current = self.currentTheme;
-        [self setCurrentTheme:current];
+        [self applyCurrentTheme];
     }
     return self;
 }
-
 
 - (PHTheme)currentTheme {
     return [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
@@ -47,21 +62,40 @@
 - (void)setCurrentTheme:(PHTheme)currentTheme {
     [[NSUserDefaults standardUserDefaults] setInteger:currentTheme forKey:@"CurrentTheme"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[kPHIconColorArray objectAtIndex:self.currentTheme]];
-    [UINavigationBar appearance].barTintColor = [kPHPopoverButtonColorArray objectAtIndex:self.currentTheme];
-    NSMutableDictionary<NSAttributedStringKey, id> *newTitleAttributes = [NSMutableDictionary<NSAttributedStringKey, id> new];
-    newTitleAttributes[NSForegroundColorAttributeName] = [kPHIconColorArray objectAtIndex:self.currentTheme];
-    [UINavigationBar appearance].titleTextAttributes = newTitleAttributes;
-    [UINavigationBar appearance].tintColor = [kPHIconColorArray objectAtIndex:self.currentTheme];
 
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
-    [UIScrollView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:self.currentTheme];
-    [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:self.currentTheme];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewCell class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:self.currentTheme]];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableView class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:self.currentTheme]];
-    [ThemeView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:self.currentTheme];
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[kPHIconColorArray objectAtIndex:currentTheme]];
     
+    [UINavigationBar appearance].barTintColor = [kPHPopoverButtonColorArray objectAtIndex:currentTheme];
+    NSMutableDictionary<NSAttributedStringKey, id> *newTitleAttributes = [NSMutableDictionary<NSAttributedStringKey, id> new];
+    newTitleAttributes[NSForegroundColorAttributeName] = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
+    [UINavigationBar appearance].titleTextAttributes = newTitleAttributes;
+    [UINavigationBar appearance].tintColor = [kPHIconColorArray objectAtIndex:currentTheme];
+    
+    [UIBarButtonItem appearance].tintColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
+    
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleCell class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
+
+    [UIScrollView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
+    [UIScrollView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
+    
+    [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
+    [UITableViewCell appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
+
+    [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
+    [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
+    
+    [[UISwitch appearance] setOnTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
+    [[UISwitch appearance] setTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
+
+    [ThemeView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
+
+    _unreadTextColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
+    _readTextColor = [kPHReadTextColorArray objectAtIndex:currentTheme];
+
     NSArray * windows = [UIApplication sharedApplication].windows;
     
     for (UIWindow *window in windows) {
@@ -70,6 +104,11 @@
             [window addSubview:view];
         }
     }
+}
+
+- (void)applyCurrentTheme {
+    PHTheme current = self.currentTheme;
+    [self setCurrentTheme:current];
 }
 
 @end

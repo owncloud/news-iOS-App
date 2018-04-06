@@ -40,6 +40,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "UIColor+PHColor.h"
 #import "ThemeView.h"
+#import "PHThemeManager.h"
 
 static NSString *DetailSegueIdentifier = @"showDetail";
 
@@ -171,8 +172,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
     self.collapseDetailViewController = NO;
     
-    [self applyTheme];
-    
     //Notifications
     [[NSUserDefaults standardUserDefaults] addObserver:self
                                             forKeyPath:@"HideRead"
@@ -233,7 +232,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self applyTheme];
+    [[PHThemeManager sharedManager] applyCurrentTheme];
 }
 
 #pragma mark - Table view data source
@@ -306,7 +305,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 }
             }
 //            cell.backgroundColor = [UIColor clearColor];
-//            cell.textLabel.textColor = [UIColor textColor];
+            cell.textLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
+            
 //            cell.backgroundColor = [UIColor backgroundColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
 //            cell.contentView.opaque = YES;
@@ -565,16 +565,13 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     {
         popover.barButtonItem = (UIBarButtonItem *)sender;
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        popover.backgroundColor = [UIColor popoverBackgroundColor];
     }
     
     [self.navigationController presentViewController:alert animated:YES completion:^{
         alert.view.tintColor = [UINavigationBar appearance].tintColor;
     }];
     
-    //Tint workaround from http://stackoverflow.com/a/32695820
-//    [self.mm_drawerController presentViewController:alert animated:YES completion:^{
-//        alert.view.tintColor = [UINavigationBar appearance].tintColor;
-//    }];
     alert.view.tintColor = [UINavigationBar appearance].tintColor;
 }
 
@@ -815,28 +812,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
     self.tableView.scrollsToTop = NO;
 }
-
-- (void)applyTheme {
-//    UIColor *bgColor = [UIColor backgroundColor];
-//    //self.navigationController.view.backgroundColor = bgColor;
-//    self.view.backgroundColor = bgColor;
-//    self.tableView.backgroundColor = bgColor;
-//    self.navigationController.navigationBar.barTintColor = bgColor;
-//    //bottomBorder.backgroundColor = [PHColors iconColor].CGColor;
-//    
-//    NSShadow *shadow = [[NSShadow alloc] init];
-//    shadow.shadowColor = [UIColor clearColor];
-//    shadow.shadowBlurRadius = 0.0;
-//    shadow.shadowOffset = CGSizeMake(0.0, 0.0);
-//    
-//    [self.navigationController.navigationBar setTitleTextAttributes:
-//     [NSDictionary dictionaryWithObjectsAndKeys:
-//      [UIColor iconColor], NSForegroundColorAttributeName,
-//      shadow, NSShadowAttributeName, nil]];
-//    
-//    self.gearBarButtonItem.tintColor = [UIColor iconColor];
-}
-
 
 #pragma mark - Feeds maintenance
 

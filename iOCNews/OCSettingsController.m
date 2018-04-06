@@ -31,6 +31,7 @@
 
 #import "OCSettingsController.h"
 #import "OCAPIClient.h"
+#import "PHThemeManager.h"
 
 @implementation OCSettingsController
 
@@ -47,6 +48,7 @@
     } else {
         self.statusLabel.text =  NSLocalizedString(@"Not Logged In", @"A status label indicating that the user is not logged in");
     }
+    [PHThemeManager.sharedManager applyCurrentTheme];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

@@ -42,6 +42,7 @@
 #import "objc/runtime.h"
 #import "UIImageView+OCWebCache.h"
 #import "PHArticleManagerController.h"
+#import "PHThemeManager.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
@@ -288,6 +289,10 @@
                                                object:[OCNewsHelper sharedHelper].context];    
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [PHThemeManager.sharedManager applyCurrentTheme];
+}
+
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
@@ -424,15 +429,15 @@
         }
         NSNumber *read = item.unread;
         if ([read intValue] == 1) {
-            cell.summaryLabel.textColor = [UIColor darkTextColor];
-            cell.titleLabel.textColor = [UIColor darkTextColor];
-            cell.dateLabel.textColor = [UIColor darkTextColor];
+            cell.summaryLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
+            cell.titleLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
+            cell.dateLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
             cell.articleImage.alpha = 1.0f;
             cell.favIconImage.alpha = 1.0f;
         } else {
-            cell.summaryLabel.textColor = [UIColor colorWithWhite:0.41 alpha:1.0];
-            cell.titleLabel.textColor = [UIColor colorWithWhite:0.41 alpha:1.0];
-            cell.dateLabel.textColor = [UIColor colorWithWhite:0.41 alpha:1.0];
+            cell.summaryLabel.textColor = PHThemeManager.sharedManager.readTextColor;
+            cell.titleLabel.textColor = PHThemeManager.sharedManager.readTextColor;
+            cell.dateLabel.textColor = PHThemeManager.sharedManager.readTextColor;
             cell.articleImage.alpha = 0.4f;
             cell.favIconImage.alpha = 0.4f;
         }

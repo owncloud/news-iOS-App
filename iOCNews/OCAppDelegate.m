@@ -46,11 +46,6 @@
     KSCrashInstallation* installation = [self makeEmailInstallation];
     [installation install];
     
-//    [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0.957 green:0.957 blue:0.957 alpha:1.0];
-//    [UINavigationBar appearance].tintColor = [UIColor colorWithRed:0.13 green:0.145 blue:0.16 alpha:1.0];
-
-//    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
-
     UISplitViewController *svc = (UISplitViewController *)self.window.rootViewController;
     svc.presentsWithGesture = YES;
     UINavigationController *navController = (UINavigationController *)svc.viewControllers.lastObject;

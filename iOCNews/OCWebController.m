@@ -327,6 +327,7 @@ const int SWIPE_PREVIOUS = 1;
 
 - (IBAction)doPreferences:(id)sender {
     settingsPresentationController = self.settingsViewController.popoverPresentationController;
+    settingsPresentationController.backgroundColor = [UIColor popoverBackgroundColor];
     settingsPresentationController.delegate = self;
     settingsPresentationController.barButtonItem = self.textBarButtonItem;
     settingsPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
