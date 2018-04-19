@@ -56,22 +56,7 @@
     [self.increaseFontSizeButton.layer setMasksToBounds:YES];
     [self.increaseFontSizeButton.layer setBorderWidth:0.75f];
     [self.increaseFontSizeButton.layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    
-    [self.whiteBackgroundButton.layer setCornerRadius:8.0f];
-    [self.whiteBackgroundButton.layer setMasksToBounds:YES];
-    [self.whiteBackgroundButton.layer setBorderWidth:0.75f];
-    [self.whiteBackgroundButton.layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    
-    [self.sepiaBackgroundButton.layer setCornerRadius:8.0f];
-    [self.sepiaBackgroundButton.layer setMasksToBounds:YES];
-    [self.sepiaBackgroundButton.layer setBorderWidth:0.75f];
-    [self.sepiaBackgroundButton.layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    
-    [self.nightBackgroundButton.layer setCornerRadius:8.0f];
-    [self.nightBackgroundButton.layer setMasksToBounds:YES];
-    [self.nightBackgroundButton.layer setBorderWidth:0.75f];
-    [self.nightBackgroundButton.layer setBorderColor:[[UIColor darkGrayColor] CGColor]];
-    
+      
     [self.decreaseLineHeightButton.layer setCornerRadius:8.0f];
     [self.decreaseLineHeightButton.layer setMasksToBounds:YES];
     [self.decreaseLineHeightButton.layer setBorderWidth:0.75f];
@@ -121,9 +106,6 @@
 {
     [self setStarButton:nil];
     [self setMarkUnreadButton:nil];
-    [self setWhiteBackgroundButton:nil];
-    [self setSepiaBackgroundButton:nil];
-    [self setNightBackgroundButton:nil];
     [self setDecreaseFontSizeButton:nil];
     [self setIncreaseFontSizeButton:nil];
     [self setDecreaseLineHeightButton:nil];
@@ -147,9 +129,6 @@
     self.markUnreadButton.backgroundColor = buttonColor;
     self.decreaseFontSizeButton.backgroundColor = buttonColor;
     self.increaseFontSizeButton.backgroundColor = buttonColor;
-    self.whiteBackgroundButton.backgroundColor = kPHWhiteBackgroundColor;
-    self.sepiaBackgroundButton.backgroundColor = kPHSepiaBackgroundColor;
-    self.nightBackgroundButton.backgroundColor = kPHNightBackgroundColor;
     self.decreaseLineHeightButton.backgroundColor = buttonColor;
     self.increaseLineHeightButton.backgroundColor = buttonColor;
     self.decreaseMarginButton.backgroundColor = buttonColor;
@@ -160,9 +139,6 @@
     self.markUnreadButton.layer.borderColor = borderColor;
     self.decreaseFontSizeButton.layer.borderColor = borderColor;
     self.increaseFontSizeButton.layer.borderColor = borderColor;
-    self.whiteBackgroundButton.layer.borderColor = borderColor;
-    self.sepiaBackgroundButton.layer.borderColor = borderColor;
-    self.nightBackgroundButton.layer.borderColor = borderColor;
     self.decreaseLineHeightButton.layer.borderColor = borderColor;
     self.increaseLineHeightButton.layer.borderColor = borderColor;
     self.decreaseMarginButton.layer.borderColor = borderColor;
@@ -200,24 +176,6 @@
         } else {
             [self.markUnreadButton setImage:[UIImage imageNamed:@"read"] forState:UIControlStateNormal];
         }
-    }
-
-    if (sender == self.whiteBackgroundButton) {
-        [prefs setInteger:0 forKey:@"CurrentTheme"];
-        [PHThemeManager.sharedManager setCurrentTheme:PHThemeDefault];
-        [self updateBackgrounds];
-    }
-
-    if (sender == self.sepiaBackgroundButton) {
-        [prefs setInteger:1 forKey:@"CurrentTheme"];
-        [PHThemeManager.sharedManager setCurrentTheme:PHThemeSepia];
-        [self updateBackgrounds];
-    }
-
-    if (sender == self.nightBackgroundButton) {
-        [prefs setInteger:2 forKey:@"CurrentTheme"];
-        [PHThemeManager.sharedManager setCurrentTheme:PHThemeNight];
-        [self updateBackgrounds];
     }
 
     if (sender == self.decreaseFontSizeButton) {

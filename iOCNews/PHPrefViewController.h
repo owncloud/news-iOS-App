@@ -18,9 +18,6 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *starButton;
 @property (strong, nonatomic) IBOutlet UIButton *markUnreadButton;
-@property (strong, nonatomic) IBOutlet UIButton *whiteBackgroundButton;
-@property (strong, nonatomic) IBOutlet UIButton *sepiaBackgroundButton;
-@property (strong, nonatomic) IBOutlet UIButton *nightBackgroundButton;
 @property (strong, nonatomic) IBOutlet UIButton *decreaseFontSizeButton;
 @property (strong, nonatomic) IBOutlet UIButton *increaseFontSizeButton;
 @property (strong, nonatomic) IBOutlet UIButton *decreaseLineHeightButton;

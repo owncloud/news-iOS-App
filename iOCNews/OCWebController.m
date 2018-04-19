@@ -495,11 +495,7 @@ const int SWIPE_PREVIOUS = 1;
 - (PHPrefViewController *)settingsViewController {
     if (!settingsViewController) {
         settingsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"preferences"];
-//        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//            settingsPageController.preferredContentSize = CGSizeMake(240, 362);
-//        } else {
-            settingsViewController.preferredContentSize = CGSizeMake(220, 305);
-//        }
+        settingsViewController.preferredContentSize = CGSizeMake(220, 245);
         settingsViewController.modalPresentationStyle = UIModalPresentationPopover;
         settingsViewController.delegate = self;
     }
