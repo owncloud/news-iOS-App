@@ -230,11 +230,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     self.feedsFetchedResultsController.delegate = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [[PHThemeManager sharedManager] applyCurrentTheme];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

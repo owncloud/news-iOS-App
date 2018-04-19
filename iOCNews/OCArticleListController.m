@@ -289,10 +289,6 @@
                                                object:[OCNewsHelper sharedHelper].context];    
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [PHThemeManager.sharedManager applyCurrentTheme];
-}
-
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
