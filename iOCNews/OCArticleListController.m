@@ -238,7 +238,6 @@
     self.markBarButtonItem.enabled = NO;
     self.folderId = 0;
     [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
-    self.tableView.rowHeight = 154;
     self.tableView.scrollsToTop = NO;
     [self.tableView addGestureRecognizer:self.markGesture];
     self.tableView.delegate = self;
@@ -442,15 +441,12 @@
             if (urlString) {
                 if (cell.tag == indexPath.row) {
                     [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
-                    cell.articleImageStackView.hidden = NO;
                     cell.articleImage.hidden = NO;
                 }
             } else {
-                cell.articleImageStackView.hidden = YES;
                 cell.articleImage.hidden = YES;
             }
         } else {
-            cell.articleImageStackView.hidden = YES;
             cell.articleImage.hidden = YES;
         }
     }
@@ -460,6 +456,10 @@
     @finally {
         //
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 154.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

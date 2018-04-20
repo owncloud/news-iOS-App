@@ -35,7 +35,6 @@
 @interface OCArticleCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *articleImage;
-@property (strong, nonatomic) IBOutlet UIStackView *articleImageStackView;
 @property (strong, nonatomic) IBOutlet UIImageView *starImage;
 @property (strong, nonatomic) IBOutlet UIImageView *favIconImage;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
