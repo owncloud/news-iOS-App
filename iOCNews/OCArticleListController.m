@@ -466,6 +466,7 @@
 {
     OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
     cell.tag = indexPath.row;
+    cell.selectedBackgroundView = [UIView new];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }

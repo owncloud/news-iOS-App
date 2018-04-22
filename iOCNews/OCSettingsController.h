@@ -40,6 +40,7 @@
 @property (strong, nonatomic) IBOutlet UISwitch *showThumbnailsSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *markWhileScrollingSwitch;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
+@property (strong, nonatomic) IBOutlet UILabel *themeLabel;
 
 - (IBAction)syncOnStartChanged:(id)sender;
 - (IBAction)syncInBackgroundChanged:(id)sender;

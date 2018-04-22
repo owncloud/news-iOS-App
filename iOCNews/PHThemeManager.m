@@ -100,8 +100,10 @@
     
     for (UIWindow *window in windows) {
         for (UIView *view in window.subviews) {
-            [view removeFromSuperview];
-            [window addSubview:view];
+            if (![view isKindOfClass:[UIStackView class]]) {
+                [view removeFromSuperview];
+                [window addSubview:view];
+            }
         }
     }
 }
@@ -109,6 +111,23 @@
 - (void)applyCurrentTheme {
     PHTheme current = self.currentTheme;
     [self setCurrentTheme:current];
+}
+
+- (NSString *)themeName {
+    switch (self.currentTheme) {
+        case PHThemeDefault:
+            return NSLocalizedString(@"Default", @"Name of the defualt theme");
+            break;
+        case PHThemeSepia:
+            return NSLocalizedString(@"Sepia", @"Name of the sepia theme");
+            break;
+        case PHThemeNight:
+            return NSLocalizedString(@"Night", @"Name of the night theme");
+            break;
+        default:
+            return @"Default";
+            break;
+    }
 }
 
 @end

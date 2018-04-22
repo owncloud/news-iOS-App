@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, PHTheme) {
 @property(assign) PHTheme currentTheme;
 @property(strong, readonly) UIColor *unreadTextColor;
 @property(strong, readonly) UIColor *readTextColor;
+@property(strong, readonly) NSString *themeName;
 
 - (void)applyCurrentTheme;
 

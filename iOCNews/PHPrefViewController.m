@@ -9,7 +9,6 @@
 #import "PHPrefViewController.h"
 #import "QuartzCore/QuartzCore.h"
 #import "UIColor+PHColor.h"
-#import "PHThemeManager.h"
 
 #define MIN_FONT_SIZE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 11 : 9)
 #define MAX_FONT_SIZE 30

@@ -654,6 +654,7 @@
                         <outlet property="statusLabel" destination="fpW-qm-T1i" id="UWV-zC-ihb"/>
                         <outlet property="syncOnStartSwitch" destination="iZP-kh-20q" id="suF-bn-cNx"/>
                         <outlet property="syncinBackgroundSwitch" destination="xhV-La-N9L" id="hTm-Jh-pAu"/>
+                        <outlet property="themeLabel" destination="9qn-Hk-UUG" id="3M5-H8-GTb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duK-Zx-C63" userLabel="First Responder" sceneMemberID="firstResponder"/>

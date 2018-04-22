@@ -48,6 +48,7 @@
     } else {
         self.statusLabel.text =  NSLocalizedString(@"Not Logged In", @"A status label indicating that the user is not logged in");
     }
+    self.themeLabel.text = PHThemeManager.sharedManager.themeName;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
