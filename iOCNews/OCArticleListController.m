@@ -43,6 +43,7 @@
 #import "UIImageView+OCWebCache.h"
 #import "PHArticleManagerController.h"
 #import "PHThemeManager.h"
+#import "UIColor+PHColor.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate> {
     long currentIndex;
@@ -285,7 +286,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contextSaved:)
                                                  name:NSManagedObjectContextDidSaveNotification
-                                               object:[OCNewsHelper sharedHelper].context];    
+                                               object:[OCNewsHelper sharedHelper].context];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        [self.tableView reloadData];
+    }];
 }
 
 - (void)contextSaved:(NSNotification*)notification {
@@ -350,7 +355,7 @@
 - (void)configureCell:(OCArticleCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     @try {
         Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        
+
         cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
         cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
@@ -436,6 +441,9 @@
             cell.articleImage.alpha = 0.4f;
             cell.favIconImage.alpha = 0.4f;
         }
+        cell.summaryLabel.highlightedTextColor = cell.summaryLabel.textColor;
+        cell.titleLabel.highlightedTextColor = cell.titleLabel.textColor;
+        cell.dateLabel.highlightedTextColor = cell.dateLabel.textColor;
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
             NSString *urlString = [OCArticleImage findImage:summary];
             if (urlString) {
@@ -449,6 +457,7 @@
         } else {
             cell.articleImage.hidden = YES;
         }
+        cell.highlighted = NO;
     }
     @catch (NSException *exception) {
         //
@@ -466,7 +475,6 @@
 {
     OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
     cell.tag = indexPath.row;
-    cell.selectedBackgroundView = [UIView new];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -488,6 +496,7 @@
             [self updateUnreadCount:@[selectedItem.myId]];
         }
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

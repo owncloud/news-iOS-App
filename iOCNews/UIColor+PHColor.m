@@ -10,6 +10,7 @@
 
 #define kPHBackgroundColorArray        @[kPHWhiteBackgroundColor, kPHSepiaBackgroundColor, kPHNightBackgroundColor]
 #define kPHCellBackgroundColorArray    @[kPHWhiteCellBackgroundColor, kPHSepiaCellBackgroundColor, kPHNightCellBackgroundColor]
+#define kPHCellSelectionColorArray     @[kPHWhiteCellSelectionColor, kPHSepiaCellSelectionColor, kPHNightCellSelectionColor]
 #define kPHIconColorArray              @[kPHWhiteIconColor, kPHSepiaIconColor, kPHNightIconColor]
 #define kPHTextColorArray              @[kPHWhiteTextColor, kPHSepiaTextColor, kPHNightTextColor]
 #define kPHLinkColorArray              @[kPHWhiteLinkColor, kPHSepiaLinkColor, kPHNightLinkColor]
@@ -27,6 +28,11 @@
 + (UIColor *)cellBackgroundColor {
     NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
     return [kPHCellBackgroundColorArray objectAtIndex:backgroundIndex];
+}
+
++ (UIColor *)cellSelectionColor {
+    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    return [kPHCellSelectionColorArray objectAtIndex:backgroundIndex];
 }
 
 + (UIColor *)iconColor {

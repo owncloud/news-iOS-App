@@ -32,7 +32,42 @@
 
 #import "OCArticleCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIColor+PHColor.h"
 
 @implementation OCArticleCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.selectedBackgroundView = [UIView new];
+        [self.selectedBackgroundView setBackgroundColor:[UIColor cellBackgroundColor]];
+    }
+    return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    self.mainView.backgroundColor = [UIColor cellBackgroundColor];
+    self.mainSubView.backgroundColor = [UIColor cellBackgroundColor];
+    self.contentContainerView.backgroundColor = [UIColor cellBackgroundColor];
+    self.thumbnailContainerView.backgroundColor = [UIColor cellBackgroundColor];
+    self.starContainerView.backgroundColor = [UIColor cellBackgroundColor];
+    self.articleImage.backgroundColor = [UIColor cellBackgroundColor];
+    self.starImage.backgroundColor = [UIColor cellBackgroundColor];
+    self.favIconImage.backgroundColor = [UIColor cellBackgroundColor];
+    self.titleLabel.backgroundColor = [UIColor cellBackgroundColor];
+    self.dateLabel.backgroundColor = [UIColor cellBackgroundColor];
+    self.summaryLabel.backgroundColor = [UIColor cellBackgroundColor];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    if (highlighted) {
+        [self.contentView setBackgroundColor: [UIColor cellSelectionColor]];
+    } else {
+        [self.contentView setBackgroundColor: [UIColor clearColor]];
+    }
+}
+
 
 @end

@@ -39,7 +39,6 @@
 #import "Feed.h"
 #import <AFNetworking/AFNetworking.h>
 #import "UIColor+PHColor.h"
-#import "ThemeView.h"
 #import "PHThemeManager.h"
 
 static NSString *DetailSegueIdentifier = @"showDetail";
@@ -425,18 +424,10 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
         UINavigationController *navigationController = (UINavigationController *)segue.destinationViewController;
         self.detailViewController = (OCArticleListController *)navigationController.topViewController;
-        self.detailViewController.feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];;
-        self.detailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-        self.detailViewController.navigationItem.leftItemsSupplementBackButton = YES;
-        self.detailViewController.folderId = 0;
 
-        if (self.tableView.isEditing) {
-            //[self showRenameForIndex:indexPath.row];
-        } else {
+        if (!self.tableView.isEditing) {
             Folder *folder;
             Feed *feed;
-
-
             
             switch (indexPath.section) {
                 case 0:
@@ -493,6 +484,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 default:
                     break;
             }
+            self.detailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            self.detailViewController.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
     if ([segue.identifier isEqualToString:@"feedSettings"]) {

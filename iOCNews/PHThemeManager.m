@@ -8,10 +8,10 @@
 
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
-#import "ThemeView.h"
 #import "OCFeedListController.h"
 #import "OCFeedCell.h"
 #import "OCArticleCell.h"
+#import "PHArticleManagerController.h"
 
 @implementation UILabel (ThemeColor)
 
@@ -73,25 +73,29 @@
     
     [UIBarButtonItem appearance].tintColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
     
+    [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
+//    [UITableViewCell appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
+
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleCell class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[PHArticleManagerController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
 
+    [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
+    
     [UIScrollView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
     [UIScrollView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
-    
-    [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
-    [UITableViewCell appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
 
     [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
     [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
-    
+
     [[UISwitch appearance] setOnTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
     [[UISwitch appearance] setTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
 
-    [ThemeView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
+    [WKWebView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
 
     _unreadTextColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
     _readTextColor = [kPHReadTextColorArray objectAtIndex:currentTheme];
@@ -100,12 +104,13 @@
     
     for (UIWindow *window in windows) {
         for (UIView *view in window.subviews) {
-            if (![view isKindOfClass:[UIStackView class]]) {
-                [view removeFromSuperview];
-                [window addSubview:view];
-            }
+            [view removeFromSuperview];
+            [window addSubview:view];
         }
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ThemeUpdate" object:self];
+    
 }
 
 - (void)applyCurrentTheme {

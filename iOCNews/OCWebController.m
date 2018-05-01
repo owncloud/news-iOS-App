@@ -232,6 +232,7 @@ const int SWIPE_PREVIOUS = 1;
     [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"defaults" withExtension:@"plist"]]];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _menuIsOpen = NO;
+    self.view.backgroundColor = [UIColor cellBackgroundColor];
     [self writeCss];
     [self configureView];
 }
