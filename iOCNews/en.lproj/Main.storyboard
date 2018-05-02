@@ -112,7 +112,6 @@
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ioK-gM-yyr" firstAttribute="width" secondItem="rfB-cR-q7F" secondAttribute="width" id="AqB-22-kYJ"/>
                             <constraint firstItem="ioK-gM-yyr" firstAttribute="height" secondItem="rfB-cR-q7F" secondAttribute="height" id="b8B-7k-8Bs"/>
@@ -120,6 +119,7 @@
                             <constraint firstItem="ioK-gM-yyr" firstAttribute="top" secondItem="LYA-PW-d4D" secondAttribute="bottom" id="wda-4g-0Rd"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="3Cr-10-YWo"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UmP-gV-kew" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -960,7 +960,6 @@
                     <view key="view" contentMode="scaleToFill" id="3VL-Rj-gw4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="FjY-vr-tuW"/>
                 </viewController>

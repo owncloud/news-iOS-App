@@ -553,7 +553,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     {
         popover.barButtonItem = (UIBarButtonItem *)sender;
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        popover.backgroundColor = [UIColor popoverBackgroundColor];
+        popover.backgroundColor = [UIColor cellBackgroundColor];
     }
     
     [self.navigationController presentViewController:alert animated:YES completion:^{

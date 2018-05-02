@@ -218,8 +218,17 @@ const int SWIPE_PREVIOUS = 1;
     _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfig];
     _webView.navigationDelegate = self;
     _webView.UIDelegate = self;
-    _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.view = _webView;
+    _webView.opaque = NO;
+    _webView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_webView];
+    
+    _webView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_webView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_webView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_webView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_webView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
 }
 
 - (void)viewDidLoad
@@ -328,7 +337,6 @@ const int SWIPE_PREVIOUS = 1;
 
 - (IBAction)doPreferences:(id)sender {
     settingsPresentationController = self.settingsViewController.popoverPresentationController;
-    settingsPresentationController.backgroundColor = [UIColor popoverBackgroundColor];
     settingsPresentationController.delegate = self;
     settingsPresentationController.barButtonItem = self.textBarButtonItem;
     settingsPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
