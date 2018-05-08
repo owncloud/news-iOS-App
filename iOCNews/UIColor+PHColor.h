@@ -49,6 +49,7 @@
 + (UIColor *)cellSelectionColor;
 + (UIColor *)iconColor;
 + (UIColor *)textColor;
++ (UIColor *)readTextColor;
 + (UIColor *)linkColor;
 + (UIColor *)popoverBackgroundColor;
 + (UIColor *)popoverButtonColor;

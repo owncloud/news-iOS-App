@@ -35,7 +35,7 @@
 #define kPHPopoverBorderColorArray     @[kPHWhitePopoverBorderColor, kPHSepiaPopoverBorderColor, kPHNightPopoverBorderColor]
 
 #define kPHUnreadTextColorArray        @[[UIColor darkTextColor], [UIColor darkTextColor], [UIColor lightTextColor]]
-#define kPHReadTextColorArray          @[[UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0]]
+#define kPHReadTextColorArray          @[[UIColor colorWithWhite:0.0 alpha:0.40], [UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0]]
 
 
 + (PHThemeManager*)sharedManager {
@@ -43,7 +43,6 @@
     static id sharedManager;
     dispatch_once(&once_token, ^{
         sharedManager = [[PHThemeManager alloc] init];
-//        [sharedManager setCurrentTheme:PHThemeDefault];
     });
     return sharedManager;
 }
@@ -70,22 +69,22 @@
     newTitleAttributes[NSForegroundColorAttributeName] = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
     [UINavigationBar appearance].titleTextAttributes = newTitleAttributes;
     [UINavigationBar appearance].tintColor = [kPHIconColorArray objectAtIndex:currentTheme];
-    
+
     [UIBarButtonItem appearance].tintColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
-    
+
     [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
-//    [UITableViewCell appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
 
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleCell class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[PHArticleManagerController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCWebController class]]] setBackgroundColor:[UIColor clearColor]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[WKWebView class]]] setBackgroundColor:[UIColor clearColor]];
 
     [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
-    
+
     [UIScrollView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
     [UIScrollView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
 

@@ -13,6 +13,7 @@
 #define kPHCellSelectionColorArray     @[kPHWhiteCellSelectionColor, kPHSepiaCellSelectionColor, kPHNightCellSelectionColor]
 #define kPHIconColorArray              @[kPHWhiteIconColor, kPHSepiaIconColor, kPHNightIconColor]
 #define kPHTextColorArray              @[kPHWhiteTextColor, kPHSepiaTextColor, kPHNightTextColor]
+#define kPHReadTextColorArray          @[[UIColor colorWithWhite:0.0 alpha:0.40], [UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0]]
 #define kPHLinkColorArray              @[kPHWhiteLinkColor, kPHSepiaLinkColor, kPHNightLinkColor]
 #define kPHPopoverBackgroundColorArray @[kPHWhitePopoverBackgroundColor, kPHSepiaPopoverBackgroundColor, kPHNightPopoverBackgroundColor]
 #define kPHPopoverButtonColorArray     @[kPHWhitePopoverButtonColor, kPHSepiaPopoverButtonColor, kPHNightPopoverButtonColor]
@@ -43,6 +44,11 @@
 + (UIColor *)textColor {
     NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
     return [kPHTextColorArray objectAtIndex:backgroundIndex];
+}
+
++ (UIColor *)readTextColor {
+    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    return [kPHReadTextColorArray objectAtIndex:backgroundIndex];
 }
 
 + (UIColor *)linkColor {

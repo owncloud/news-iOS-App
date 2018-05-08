@@ -232,7 +232,6 @@
     [super viewDidLoad];
 
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-    
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
     self.navigationItem.leftItemsSupplementBackButton = YES;
     self.navigationItem.rightBarButtonItem = self.markBarButtonItem;
@@ -428,16 +427,16 @@
             cell.starImage.image = [UIImage imageNamed:@"star_icon"];
         }
         NSNumber *read = item.unread;
-        if ([read intValue] == 1) {
-            cell.summaryLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
-            cell.titleLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
-            cell.dateLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
+        if ([read boolValue] == YES) {
+            [cell.summaryLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
+            [cell.titleLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
+            [cell.dateLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
             cell.articleImage.alpha = 1.0f;
             cell.favIconImage.alpha = 1.0f;
         } else {
-            cell.summaryLabel.textColor = PHThemeManager.sharedManager.readTextColor;
-            cell.titleLabel.textColor = PHThemeManager.sharedManager.readTextColor;
-            cell.dateLabel.textColor = PHThemeManager.sharedManager.readTextColor;
+            [cell.summaryLabel setThemeTextColor:[UIColor readTextColor]];
+            [cell.titleLabel setThemeTextColor:[UIColor readTextColor]];
+            [cell.dateLabel setThemeTextColor:[UIColor readTextColor]];
             cell.articleImage.alpha = 0.4f;
             cell.favIconImage.alpha = 0.4f;
         }
