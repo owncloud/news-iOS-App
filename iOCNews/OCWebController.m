@@ -140,6 +140,11 @@ const int SWIPE_PREVIOUS = 1;
                 NSString *html = self.item.body;
                 NSURL *itemURL = [NSURL URLWithString:self.item.url];
                 NSString *baseString = [NSString stringWithFormat:@"%@://%@", [itemURL scheme], [itemURL host]];
+                if ([baseString rangeOfString:@"youtu"].location != NSNotFound) {
+                    if ([html rangeOfString:@"iframe"].location != NSNotFound) {
+                        html = [self createYoutubeItem:self.item];
+                    }
+                }
                 html = [self fixRelativeUrl:html baseUrlString:baseString];
                 [self writeAndLoadHtml:html];
             }
@@ -214,6 +219,7 @@ const int SWIPE_PREVIOUS = 1;
 - (void)loadView {
     [super loadView];
     WKWebViewConfiguration *webConfig = [WKWebViewConfiguration new];
+    webConfig.allowsInlineMediaPlayback = NO;
     
     _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfig];
     _webView.navigationDelegate = self;
@@ -531,7 +537,8 @@ const int SWIPE_PREVIOUS = 1;
             self.unstarBarButtonItem.enabled = NO;
             refreshStopBarButtonItem.enabled = NO;
         }
-        self.parentViewController.parentViewController.navigationItem.leftBarButtonItems = @[self.menuBarButtonItem, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
+        UIBarButtonItem *modeButton = self.parentViewController.parentViewController.splitViewController.displayModeButtonItem;
+        self.parentViewController.parentViewController.navigationItem.leftBarButtonItems = @[modeButton, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
         self.parentViewController.parentViewController.navigationItem.leftItemsSupplementBackButton = YES;
         self.parentViewController.parentViewController.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
     }
@@ -695,6 +702,45 @@ const int SWIPE_PREVIOUS = 1;
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
     [self updateNavigationItemTitle];
+}
+
+- (NSString *)createYoutubeItem:(Item *)item {
+    __block NSString *result = item.body;
+    NSError *error = nil;
+    HTMLParser *parser = [[HTMLParser alloc] initWithString:item.body error:&error];
+    
+    if (error) {
+        //        NSLog(@"Error: %@", error);
+        return item.body;
+    }
+    
+    //parse body
+    HTMLNode *bodyNode = [parser body];
+    
+    NSArray *inputNodes = [bodyNode findChildTags:@"iframe"];
+    [inputNodes enumerateObjectsUsingBlock:^(HTMLNode *inputNode, NSUInteger idx, BOOL *stop) {
+        if (inputNode) {
+            NSString *videoID = [self extractYoutubeVideoID:item.url];
+            if (videoID) {
+                //                    NSLog(@"Raw: %@", [inputNode rawContents]);
+                
+                NSString *height = [inputNode getAttributeNamed:@"height"];
+                NSString *width = [inputNode getAttributeNamed:@"width"];
+                NSString *heightString = @"";
+                NSString *widthString = @"";
+                if (height.length > 0) {
+                    heightString = [NSString stringWithFormat:@"height=\"%@\"", height];
+                }
+                if (width.length > 0) {
+                    widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
+                }
+                NSString *embed = [NSString stringWithFormat:@"<embed class=\"yt\" wmode=\"transparent\" style=\"background-color: transparent;\" src=\"http://www.youtube.com/embed/%@\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
+                result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
+            }
+
+        }
+    }];
+    return result;
 }
 
 - (NSString*)replaceYTIframe:(NSString *)html {
