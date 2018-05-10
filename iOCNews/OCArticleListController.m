@@ -396,10 +396,12 @@
                 if (cell.tag == indexPath.row) {
                     [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId imageView: cell.favIconImage];
                     cell.favIconImage.hidden = NO;
+                    cell.dateLabelLeadingConstraint.constant = 21;
                 }
             }
             else {
                 cell.favIconImage.hidden = YES;
+                cell.dateLabelLeadingConstraint.constant = 0.0;
             }
             
             if (feed.title && ![feed.title isEqualToString:author]) {
@@ -449,12 +451,21 @@
                 if (cell.tag == indexPath.row) {
                     [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
                     cell.articleImage.hidden = NO;
+                    cell.thumbnailContainerWidthConstraint.constant = cell.articleImage.frame.size.width;
+                    cell.articleImageWidthConstraint.constant = cell.articleImage.frame.size.width;
+                    cell.contentContainerLeadingConstraint.constant = cell.articleImage.frame.size.width;
                 }
             } else {
                 cell.articleImage.hidden = YES;
+                cell.thumbnailContainerWidthConstraint.constant = 0.0;
+                cell.articleImageWidthConstraint.constant = 0.0;
+                cell.contentContainerLeadingConstraint.constant = 0.0;
             }
         } else {
             cell.articleImage.hidden = YES;
+            cell.thumbnailContainerWidthConstraint.constant = 0.0;
+            cell.articleImageWidthConstraint.constant = 0.0;
+            cell.contentContainerLeadingConstraint.constant = 0.0;
         }
         cell.highlighted = NO;
     }

@@ -164,8 +164,11 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="articleImage" destination="6" id="10"/>
+                <outlet property="articleImageWidthConstraint" destination="KQc-Fu-PPm" id="a82-2C-Mst"/>
+                <outlet property="contentContainerLeadingConstraint" destination="MCI-xE-kWH" id="7kL-S7-eR5"/>
                 <outlet property="contentContainerView" destination="fl2-Me-Ib6" id="56s-oi-H74"/>
                 <outlet property="dateLabel" destination="4" id="12"/>
+                <outlet property="dateLabelLeadingConstraint" destination="gJ2-kE-dNF" id="obb-p4-3zt"/>
                 <outlet property="favIconImage" destination="ENK-Fa-lo4" id="oT3-kg-uTd"/>
                 <outlet property="mainSubView" destination="gys-Kx-PWD" id="NcD-fn-gJO"/>
                 <outlet property="mainView" destination="ScV-t8-IVR" id="AkB-cw-1lB"/>
@@ -173,6 +176,7 @@
                 <outlet property="starImage" destination="uAr-hd-b6i" id="Pxw-cU-QgH"/>
                 <outlet property="summaryLabel" destination="5" id="13"/>
                 <outlet property="thumbnailContainerView" destination="lty-Lj-23R" id="NRG-KI-F6E"/>
+                <outlet property="thumbnailContainerWidthConstraint" destination="GYv-9d-N2u" id="kR0-nH-TiE"/>
                 <outlet property="titleLabel" destination="3" id="11"/>
             </connections>
             <point key="canvasLocation" x="695" y="403"/>
