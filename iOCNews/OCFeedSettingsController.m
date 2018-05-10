@@ -51,6 +51,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.estimatedRowHeight = 44;
     [self refresh];
 }
 
@@ -61,17 +62,14 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        return MAX(self.tableView.rowHeight, self.urlTextView.intrinsicContentSize.height);
-    } else {
-        return tableView.rowHeight;
-    }
+    return UITableViewAutomaticDimension;
 }
 
 #pragma mark - Extra
 
 - (void)refresh {
     if (self.feed) {
+        [self.tableView beginUpdates];
         self.urlTextView.text = self.feed.url;
         self.titleTextField.text = self.feed.title;
         self.fullArticleSwitch.on = self.feed.preferWebValue;
@@ -80,6 +78,7 @@
         self.keepStepper.value = self.feed.articleCountValue;
         self.keepLabel.text = [NSString stringWithFormat:@"%.f", self.keepStepper.value];
         _newFolderId = self.feed.folderId;
+        [self.tableView endUpdates];
     }
 }
 

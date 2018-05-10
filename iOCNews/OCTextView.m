@@ -30,14 +30,6 @@
     }
 }
 
-- (CGSize)intrinsicContentSize {
-    CGSize intrinsicContentSize =  [self sizeThatFits:self.bounds.size];
-    intrinsicContentSize.width  += self.textContainerInset.left + self.textContainerInset.right + 14;
-    intrinsicContentSize.height += self.textContainerInset.top + self.textContainerInset.bottom + 14;
-    
-    return intrinsicContentSize;
-}
-
 - (UIEdgeInsets)textContainerInset {
     return UIEdgeInsetsZero;
 }

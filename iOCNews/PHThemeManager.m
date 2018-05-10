@@ -99,7 +99,9 @@
     _readTextColor = [kPHReadTextColorArray objectAtIndex:currentTheme];
     [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[UITextField class]]] setThemeTextColor:_readTextColor];
     [[UITextField appearance] setTextColor:_unreadTextColor];
-    
+    [[UITextView appearance] setTextColor:_unreadTextColor];
+    [[UIStepper appearance] setTintColor:_unreadTextColor];
+
     NSArray * windows = [UIApplication sharedApplication].windows;
     
     for (UIWindow *window in windows) {
