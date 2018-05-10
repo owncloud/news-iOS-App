@@ -89,7 +89,6 @@
     [UIScrollView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
 
     [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
-    [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
 
     [[UISwitch appearance] setOnTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
     [[UISwitch appearance] setTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
@@ -98,7 +97,9 @@
 
     _unreadTextColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
     _readTextColor = [kPHReadTextColorArray objectAtIndex:currentTheme];
-
+    [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[UITextField class]]] setThemeTextColor:_readTextColor];
+    [[UITextField appearance] setTextColor:_unreadTextColor];
+    
     NSArray * windows = [UIApplication sharedApplication].windows;
     
     for (UIWindow *window in windows) {
