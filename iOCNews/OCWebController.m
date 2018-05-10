@@ -244,8 +244,6 @@ const int SWIPE_PREVIOUS = 1;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     
-    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"defaults" withExtension:@"plist"]]];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     _menuIsOpen = NO;
     self.view.backgroundColor = [UIColor cellBackgroundColor];
     [self writeCss];

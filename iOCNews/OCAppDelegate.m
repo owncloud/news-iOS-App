@@ -50,17 +50,18 @@
     svc.presentsWithGesture = YES;
     UINavigationController *navController = (UINavigationController *)svc.viewControllers.lastObject;
     navController.topViewController.navigationItem.leftBarButtonItem = svc.displayModeButtonItem;
-    
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+
+    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"defaults" withExtension:@"plist"]]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SyncInBackground"]) {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     } else {
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
     }
 
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
 
-    
     [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
         if(completed) {
 //            NSLog(@"Sent %d reports", (int)[reports count]);
