@@ -81,6 +81,7 @@
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCWebController class]]] setBackgroundColor:[UIColor clearColor]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[WKWebView class]]] setBackgroundColor:[UIColor clearColor]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewHeaderFooterView class]]] setBackgroundColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
 
     [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
