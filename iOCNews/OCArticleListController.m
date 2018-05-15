@@ -227,6 +227,28 @@
 
 #pragma mark - View lifecycle
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [[NSUserDefaults standardUserDefaults] addObserver:self
+                                                forKeyPath:@"HideRead"
+                                                   options:NSKeyValueObservingOptionNew
+                                                   context:NULL];
+        
+        [[NSUserDefaults standardUserDefaults] addObserver:self
+                                                forKeyPath:@"ShowThumbnails"
+                                                   options:NSKeyValueObservingOptionNew
+                                                   context:NULL];
+        
+        [[NSUserDefaults standardUserDefaults] addObserver:self
+                                                forKeyPath:@"ShowFavicons"
+                                                   options:NSKeyValueObservingOptionNew
+                                                   context:NULL];
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -250,21 +272,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkCompleted:) name:@"NetworkCompleted" object:nil];
     
-    [[NSUserDefaults standardUserDefaults] addObserver:self
-                                            forKeyPath:@"HideRead"
-                                               options:NSKeyValueObservingOptionNew
-                                               context:NULL];
-    
-    [[NSUserDefaults standardUserDefaults] addObserver:self
-                                            forKeyPath:@"ShowThumbnails"
-                                               options:NSKeyValueObservingOptionNew
-                                               context:NULL];
-
-    [[NSUserDefaults standardUserDefaults] addObserver:self
-                                            forKeyPath:@"ShowFavicons"
-                                               options:NSKeyValueObservingOptionNew
-                                               context:NULL];
-
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification
                                                       object:nil
@@ -309,7 +316,7 @@
 - (void)dealloc
 {
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
-    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"SyncInBackground"];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowThumbnails"];
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowFavicons"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.fetchedResultsController.delegate = nil;

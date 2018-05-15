@@ -136,11 +136,24 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     return feedsFetchedResultsController;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    self = [super initWithStyle:style];
+    self = [super initWithCoder:coder];
     if (self) {
-        // Custom initialization
+        [[NSUserDefaults standardUserDefaults] addObserver:self
+                                                forKeyPath:@"HideRead"
+                                                   options:NSKeyValueObservingOptionNew
+                                                   context:NULL];
+        
+        [[NSUserDefaults standardUserDefaults] addObserver:self
+                                                forKeyPath:@"SyncInBackground"
+                                                   options:NSKeyValueObservingOptionNew
+                                                   context:NULL];
+        
+        [[NSUserDefaults standardUserDefaults] addObserver:self
+                                                forKeyPath:@"ShowFavicons"
+                                                   options:NSKeyValueObservingOptionNew
+                                                   context:NULL];
     }
     return self;
 }
@@ -170,23 +183,11 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     self.splitViewController.delegate = self;
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
     self.collapseDetailViewController = NO;
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+        self.collapseDetailViewController = YES;
+    }
     
     //Notifications
-    [[NSUserDefaults standardUserDefaults] addObserver:self
-                                            forKeyPath:@"HideRead"
-                                               options:NSKeyValueObservingOptionNew
-                                               context:NULL];
-
-    [[NSUserDefaults standardUserDefaults] addObserver:self
-                                            forKeyPath:@"SyncInBackground"
-                                               options:NSKeyValueObservingOptionNew
-                                               context:NULL];
-
-    [[NSUserDefaults standardUserDefaults] addObserver:self
-                                            forKeyPath:@"ShowFavicons"
-                                               options:NSKeyValueObservingOptionNew
-                                               context:NULL];
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:AFNetworkingReachabilityDidChangeNotification
@@ -417,8 +418,35 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     editingPath = indexPath;
 }
 
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    if ([identifier isEqualToString:DetailSegueIdentifier]) {
+        if ([sender isKindOfClass:[UITableViewCell class]]) {
+            UITableViewCell *cell = (UITableViewCell *)sender;
+            if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator) {
+                if (self.folderId == 0) {
+                    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+                    currentIndex = indexPath.row;
+                    NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:currentIndex inSection:0];
+                    OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
+                    Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
+                    folderController.folderId = folder.myIdValue;
+                    folderController.navigationItem.title = folder.name;
+                    [folderController updatePredicate];
+                    folderController.detailViewController = self.detailViewController;
+                    [self.navigationController pushViewController:folderController animated:YES];
+                    [folderController drawerOpened:nil];
+                    [self drawerClosed:nil];
+                }
+                return NO;
+            }
+        }
+        return YES;
+    }
+    return YES;
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    self.collapseDetailViewController = YES;
+    self.collapseDetailViewController = (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact);
     if ([[segue identifier] isEqualToString:DetailSegueIdentifier]) {
 
         

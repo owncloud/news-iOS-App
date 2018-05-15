@@ -702,6 +702,11 @@ const int SWIPE_PREVIOUS = 1;
     [self updateNavigationItemTitle];
 }
 
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
+    return UIModalPresentationNone;
+}
+
 - (NSString *)createYoutubeItem:(Item *)item {
     __block NSString *result = item.body;
     NSError *error = nil;
