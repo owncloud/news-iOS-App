@@ -1,7 +1,7 @@
 {
   "iOS" : [
     {
-      "hash" : "d053723495693cb700ef3341d094ce9b8135621ac0f426acd9793b42435a8b7e",
+      "hash" : "1da882e823c1fe4050a7899c8abe038c7074ec69426d64c20a6e9c12e2869c40",
       "name" : "WebImage"
     }
   ],
@@ -11,7 +11,7 @@
   ],
   "tvOS" : [
     {
-      "hash" : "488f70288ae40a124597960f7742296579b6ed5d47ec737670e6175073f62c85",
+      "hash" : "381466c772b1fe77f182abf68e9c42f684e3612afc3774194a39b12764437321",
       "name" : "WebImage"
     }
   ],

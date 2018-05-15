@@ -36,7 +36,7 @@
 #import "NSString+HTML.h"
 #import <AFNetworking/AFNetworking.h>
 #import "OCArticleImage.h"
-#import "TSMessage.h"
+#import "RMessage.h"
 #import "OCNewsHelper.h"
 #import "Item.h"
 #import "objc/runtime.h"
@@ -721,17 +721,18 @@
 }
 
 - (void)networkError:(NSNotification *)n {
-    [TSMessage showNotificationInViewController:self.navigationController
-                                          title:[n.userInfo objectForKey:@"Title"]
-                                       subtitle:[n.userInfo objectForKey:@"Message"]
-                                          image:nil
-                                           type:TSMessageNotificationTypeError
-                                       duration:TSMessageNotificationDurationEndless
-                                       callback:nil
-                                    buttonTitle:nil
-                                 buttonCallback:nil
-                                     atPosition:TSMessageNotificationPositionTop
-                            canBeDismissedByUser:YES];
+    [RMessage showNotificationInViewController:self.navigationController
+                                         title:[n.userInfo objectForKey:@"Title"]
+                                      subtitle:[n.userInfo objectForKey:@"Message"]
+                                     iconImage:nil
+                                          type:RMessageTypeError
+                                customTypeName:nil
+                                      duration:RMessageDurationEndless
+                                      callback:nil
+                                   buttonTitle:nil
+                                buttonCallback:nil
+                                    atPosition:RMessagePositionTop
+                          canBeDismissedByUser:YES];
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {

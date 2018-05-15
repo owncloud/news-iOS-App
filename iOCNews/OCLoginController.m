@@ -33,7 +33,7 @@
 #import "OCLoginController.h"
 #import "OCAPIClient.h"
 #import "PDKeychainBindings.h"
-#import "TSMessage.h"
+#import "RMessage.h"
 
 static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 
@@ -146,42 +146,44 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                 [OCAPIClient setSharedClient:nil];
                 __unused int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
                 [self.connectionActivityIndicator stopAnimating];
-                [TSMessage showNotificationInViewController:self
+                [RMessage showNotificationInViewController:self
                                                       title:NSLocalizedString(@"Success", @"A message title")
                                                    subtitle:NSLocalizedString(@"You are now connected to News on your server", @"A message")
-                                                      image:nil
-                                                       type:TSMessageNotificationTypeSuccess
-                                                   duration:TSMessageNotificationDurationAutomatic
+                                                      iconImage:nil
+                                                       type:RMessageTypeSuccess
+                                            customTypeName:nil
+                                                   duration:RMessageDurationAutomatic
                                                    callback:^{
                                                        self.connectLabel.enabled = YES;
-                                                       [TSMessage dismissActiveNotification];
+                                                       [RMessage dismissActiveNotification];
                                                    }
                                                 buttonTitle:NSLocalizedString(@"Close & Sync", @"A button title")
                                              buttonCallback:^{
                                                  self.connectLabel.enabled = YES;
-                                                 [TSMessage dismissActiveNotification];
+                                                 [RMessage dismissActiveNotification];
                                                  [self dismissViewControllerAnimated:YES completion:nil];
                                                  [[NSNotificationCenter defaultCenter] postNotificationName:@"SyncNews" object:self];
                                              }
-                                                 atPosition:TSMessageNotificationPositionTop
+                                                 atPosition:RMessagePositionTop
                                        canBeDismissedByUser:YES];
             } else {
                 [self.connectionActivityIndicator stopAnimating];
-                [TSMessage showNotificationInViewController:self
+                [RMessage showNotificationInViewController:self
                                                       title:NSLocalizedString(@"Connection failure", @"An error message title")
                                                    subtitle:NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message")
-                                                      image:nil
-                                                       type:TSMessageNotificationTypeError
-                                                   duration:TSMessageNotificationDurationEndless
+                                                      iconImage:nil
+                                                       type:RMessageTypeError
+                                             customTypeName:nil
+                                                   duration:RMessageDurationEndless
                                                    callback:^{
                                                        self.connectLabel.enabled = YES;
-                                                       [TSMessage dismissActiveNotification];
+                                                       [RMessage dismissActiveNotification];
                                                    }
                                                 buttonTitle:nil
                                              buttonCallback:^{
                                                  //
                                              }
-                                                 atPosition:TSMessageNotificationPositionTop
+                                                 atPosition:RMessagePositionTop
                                        canBeDismissedByUser:YES];
 
             }
@@ -214,22 +216,20 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                     break;
             }
             [self.connectionActivityIndicator stopAnimating];
-            [TSMessage showNotificationInViewController:self
-                                                  title:title
-                                               subtitle:message
-                                                  image:nil
-                                                   type:TSMessageNotificationTypeError
-                                               duration:TSMessageNotificationDurationEndless
-                                               callback:^{
-                                                   self.connectLabel.enabled = YES;
-                                                   [TSMessage dismissActiveNotification];
-                                               }
-                                            buttonTitle:nil
-                                         buttonCallback:^{
-                                             //
-                                         }
-                                             atPosition:TSMessageNotificationPositionTop
-                                   canBeDismissedByUser:YES];
+            [RMessage showNotificationInViewController:self
+                                                 title:title
+                                              subtitle:message
+                                             iconImage:nil
+                                                  type:RMessageTypeError
+                                        customTypeName:nil
+                                              duration:RMessageDurationEndless
+                                              callback:^{
+                                                  self.connectLabel.enabled = YES;
+                                                  [RMessage dismissActiveNotification];
+                                              } buttonTitle:nil
+                                        buttonCallback:nil
+                                            atPosition:RMessagePositionTop
+                                  canBeDismissedByUser:YES];
         }];
     }
 }

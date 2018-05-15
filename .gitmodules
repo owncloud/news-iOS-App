@@ -4,12 +4,12 @@
 [submodule "Objective-C-HTML-Parser"]
 	path = Objective-C-HTML-Parser
 	url = git://github.com/tresni/Objective-C-HMTL-Parser.git
-[submodule "TSMessages"]
-	path = TSMessages
-	url = https://github.com/toursprung/TSMessages.git
 [submodule "readable"]
 	path = readable
 	url = https://github.com/JanX2/readable.git
 [submodule "PDKeychainBindingsController"]
 	path = PDKeychainBindingsController
 	url = https://github.com/carlbrown/PDKeychainBindingsController.git
+[submodule "RMessage"]
+	path = RMessage
+	url = https://github.com/donileo/RMessage.git

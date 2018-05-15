@@ -22,6 +22,11 @@
 #import "AFTestCase.h"
 #import "AFImageDownloader.h"
 
+@interface MockAFAutoPurgingImageCache : AFAutoPurgingImageCache
+@property (nonatomic, strong) BOOL(^shouldCache)(UIImage*, NSURLRequest*, NSString*);
+@property (nonatomic, strong) void(^addCache)(UIImage*, NSString*);
+@end
+
 @interface AFImageDownloaderTests : AFTestCase
 @property (nonatomic, strong) NSURLRequest *pngRequest;
 @property (nonatomic, strong) NSURLRequest *jpegRequest;
@@ -35,10 +40,8 @@
     self.downloader = [[AFImageDownloader alloc] init];
     [[AFImageDownloader defaultURLCache] removeAllCachedResponses];
     [[[AFImageDownloader defaultInstance] imageCache] removeAllImages];
-    NSURL *pngURL = [NSURL URLWithString:@"https://httpbin.org/image/png"];
-    self.pngRequest = [NSURLRequest requestWithURL:pngURL];
-    NSURL *jpegURL = [NSURL URLWithString:@"https://httpbin.org/image/jpeg"];
-    self.jpegRequest = [NSURLRequest requestWithURL:jpegURL];
+    self.pngRequest = [NSURLRequest requestWithURL:self.pngURL];
+    self.jpegRequest = [NSURLRequest requestWithURL:self.jpegURL];
 }
 
 - (void)tearDown {
@@ -66,8 +69,7 @@
 
 - (void)testThatImageDownloaderReturnsNilWithInvalidURL
 {
-    NSURL *pngURL = [NSURL URLWithString:@"https://httpbin.org/image/png"];
-    NSMutableURLRequest *mutableURLRequest = [NSMutableURLRequest requestWithURL:pngURL];
+    NSMutableURLRequest *mutableURLRequest = [NSMutableURLRequest requestWithURL:self.pngURL];
     [mutableURLRequest setURL:nil];
     /** NSURLRequest nor NSMutableURLRequest can be initialized with a nil URL, 
      *  but NSMutableURLRequest can have its URL set to nil 
@@ -83,7 +85,7 @@
                                                    XCTAssertTrue(error.code == NSURLErrorBadURL);
                                                    [expectation fulfill];
                                                }];
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
     XCTAssertNil(downloadReceipt, @"downloadReceipt should be nil");
 }
 
@@ -102,7 +104,7 @@
      }
      failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertNotNil(urlResponse, @"HTTPURLResponse should not be nil");
     XCTAssertNotNil(responseImage, @"Response image should not be nil");
@@ -135,7 +137,7 @@
      }
      failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertNotNil(urlResponse1, @"HTTPURLResponse should not be nil");
     XCTAssertNotNil(responseImage1, @"Respone image should not be nil");
@@ -171,7 +173,7 @@
      }
      failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertEqual(urlResponse1, urlResponse2, @"responses should be equal");
     XCTAssertEqual(responseImage2, responseImage2, @"responses should be equal");
@@ -180,20 +182,20 @@
 - (void)testThatImageBehindRedirectCanBeDownloaded {
     XCTestExpectation *expectation = [self expectationWithDescription:@"image download should succeed"];
     NSURL *redirectURL = [self.jpegRequest URL];
-    NSURLRequest *request = [NSURLRequest requestWithURL:redirectURL];
+    NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:redirectURL];
 
     __block NSHTTPURLResponse *urlResponse = nil;
     __block UIImage *responseImage = nil;
 
     [self.downloader
-     downloadImageForURLRequest:request
+     downloadImageForURLRequest:downloadRequest
      success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
          urlResponse = response;
          responseImage = responseObject;
          [expectation fulfill];
      }
      failure:nil];
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
     XCTAssertNotNil(urlResponse);
     XCTAssertNotNil(responseImage);
 
@@ -214,7 +216,7 @@
      }
      failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"image 2 download should succeed"];
     __block NSHTTPURLResponse *urlResponse2 = nil;
@@ -229,12 +231,118 @@
      }
      failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertNotNil(urlResponse1);
     XCTAssertNotNil(responseImage1);
     XCTAssertNil(urlResponse2);
     XCTAssertEqual(responseImage1, responseImage2);
+}
+
+- (void)testThatImageCacheIsPromptedShouldCache {
+    XCTestExpectation *expectation3 = [self expectationWithDescription:@"image 1 shouldCache called"];
+    XCTestExpectation *expectation4 = [self expectationWithDescription:@"image 1 addCache called"];
+    
+    MockAFAutoPurgingImageCache *mock = [[MockAFAutoPurgingImageCache alloc] init];
+    mock.shouldCache = ^BOOL(UIImage *img, NSURLRequest *req, NSString *iden) {
+        [expectation3 fulfill];
+        return YES;
+    };
+    mock.addCache = ^(UIImage *img, NSString *ident) {
+        [expectation4 fulfill];
+    };
+    self.downloader.imageCache = mock;
+    
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"image 1 download should succeed"];
+    __block NSHTTPURLResponse *urlResponse1 = nil;
+    __block UIImage *responseImage1 = nil;
+    
+    [self.downloader
+     downloadImageForURLRequest:self.pngRequest
+     success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
+         urlResponse1 = response;
+         responseImage1 = responseObject;
+         [expectation1 fulfill];
+     }
+     failure:nil];
+    
+    [self waitForExpectationsWithCommonTimeout];
+    
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"image 2 download should succeed"];
+    __block NSHTTPURLResponse *urlResponse2 = nil;
+    __block UIImage *responseImage2 = nil;
+    
+    [self.downloader
+     downloadImageForURLRequest:self.pngRequest
+     success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
+         urlResponse2 = response;
+         responseImage2 = responseObject;
+         [expectation2 fulfill];
+     }
+     failure:nil];
+    
+    [self waitForExpectationsWithCommonTimeout];
+    
+    XCTAssertNotNil(urlResponse1);
+    XCTAssertNotNil(responseImage1);
+    XCTAssertNil(urlResponse2);
+    XCTAssertEqual(responseImage1, responseImage2);
+}
+
+- (void)testThatImageCacheIsPromptedShouldCacheNot {
+    XCTestExpectation *expectation3 = [self expectationWithDescription:@"image 1 shouldCache called"];
+    
+    MockAFAutoPurgingImageCache *mock = [[MockAFAutoPurgingImageCache alloc] init];
+    mock.shouldCache = ^BOOL(UIImage *img, NSURLRequest *req, NSString *iden) {
+        [expectation3 fulfill];
+        return NO;
+    };
+    mock.addCache = ^(UIImage *img, NSString *ident) {
+        XCTFail(@"Not expected");
+    };
+    self.downloader.imageCache = mock;
+    
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"image 1 download should succeed"];
+    __block NSHTTPURLResponse *urlResponse1 = nil;
+    __block UIImage *responseImage1 = nil;
+    
+    [self.downloader
+     downloadImageForURLRequest:self.pngRequest
+     success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
+         urlResponse1 = response;
+         responseImage1 = responseObject;
+         [expectation1 fulfill];
+     }
+     failure:nil];
+    
+    [self waitForExpectationsWithCommonTimeout];
+    
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"image 2 download should succeed"];
+    __block NSHTTPURLResponse *urlResponse2 = nil;
+    __block UIImage *responseImage2 = nil;
+    
+    XCTestExpectation *expectation5 = [self expectationWithDescription:@"image 2 shouldCache called"];
+    
+    mock.shouldCache = ^BOOL(UIImage *img, NSURLRequest *req, NSString *iden) {
+        [expectation5 fulfill];
+        return NO;
+    };
+    
+    [self.downloader
+     downloadImageForURLRequest:self.pngRequest
+     success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull responseObject) {
+         urlResponse2 = response;
+         responseImage2 = responseObject;
+         [expectation2 fulfill];
+     }
+     failure:nil];
+    
+    [self waitForExpectationsWithCommonTimeout];
+    
+    XCTAssertNotNil(urlResponse1);
+    XCTAssertNotNil(responseImage1);
+    XCTAssertNotNil(urlResponse2);
+    XCTAssertNotEqual(responseImage1, responseImage2);
 }
 
 - (void)testThatImageDownloadReceiptIsNilForCachedImage {
@@ -247,7 +355,7 @@
                 }
                 failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"image 2 download should succeed"];
 
@@ -259,7 +367,7 @@
                 }
                 failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertNotNil(receipt1);
     XCTAssertNil(receipt2);
@@ -280,7 +388,7 @@
                 }
                 failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"image 2 download should succeed"];
     NSMutableURLRequest *alteredRequest = [self.pngRequest mutableCopy];
@@ -298,7 +406,7 @@
                 }
                 failure:nil];
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertNotNil(receipt1);
     XCTAssertNotNil(receipt2);
@@ -327,7 +435,7 @@
                    [expectation fulfill];
                }];
     [self.downloader cancelTaskForImageDownloadReceipt:receipt];
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertTrue(responseError.code == NSURLErrorCancelled);
     XCTAssertTrue([responseError.domain isEqualToString:NSURLErrorDomain]);
@@ -358,7 +466,7 @@
                    [expectation2 fulfill];
                }];
     [self.downloader cancelTaskForImageDownloadReceipt:receipt];
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 
     XCTAssertTrue(responseError.code == NSURLErrorCancelled);
     XCTAssertTrue([responseError.domain isEqualToString:NSURLErrorDomain]);
@@ -401,7 +509,7 @@
          }];
     }
 
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
 }
 
 #pragma mark - Threading
@@ -415,23 +523,22 @@
          [expectation fulfill];
      }
      failure:nil];
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
     XCTAssertTrue(successIsOnMainThread);
 }
 
 - (void)testThatItAlwaysCallsTheFailureHandlerOnTheMainQueue {
-    NSURL *url = [NSURL URLWithString:@"https://httpbin.org/status/404"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *notFoundRequest = [NSURLRequest requestWithURL:[self URLWithStatusCode:404]];
     XCTestExpectation *expectation = [self expectationWithDescription:@"image download should fail"];
     __block BOOL failureIsOnMainThread = false;
     [self.downloader
-     downloadImageForURLRequest:request
+     downloadImageForURLRequest:notFoundRequest
      success:nil
      failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
          failureIsOnMainThread = [[NSThread currentThread] isMainThread];
          [expectation fulfill];
      }];
-    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
+    [self waitForExpectationsWithCommonTimeout];
     XCTAssertTrue(failureIsOnMainThread);
 }
 
@@ -448,4 +555,25 @@
     [self.downloader cancelTaskForImageDownloadReceipt:receipt];
 }
 
+@end
+
+#pragma mark -
+
+@implementation MockAFAutoPurgingImageCache
+
+-(BOOL)shouldCacheImage:(UIImage *)image forRequest:(NSURLRequest *)request withAdditionalIdentifier:(NSString *)identifier {
+    if (self.shouldCache) {
+        return self.shouldCache(image, request, identifier);
+    }
+    else {
+        return [super shouldCacheImage:image forRequest:request withAdditionalIdentifier:identifier];
+    }
+}
+
+-(void)addImage:(UIImage *)image withIdentifier:(NSString *)identifier{
+    [super addImage:image withIdentifier:identifier];
+    if (self.addCache) {
+        self.addCache(image, identifier);
+    }
+}
 @end

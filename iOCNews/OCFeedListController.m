@@ -33,7 +33,7 @@
 #import "OCFeedListController.h"
 #import "OCFeedCell.h"
 #import "OCLoginController.h"
-#import "TSMessage.h"
+#import "RMessage.h"
 #import "OCNewsHelper.h"
 #import "Folder.h"
 #import "Feed.h"
@@ -778,11 +778,21 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     
     if (status == AFNetworkReachabilityStatusNotReachable) {
         networkHasBeenUnreachable = YES;
-        [TSMessage showNotificationInViewController:self.navigationController title:@"Unable to Reach Server" subtitle:@"Please check network connection and login." type:TSMessageNotificationTypeWarning];
+        [RMessage showNotificationInViewController:self.navigationController
+                                             title:@"Unable to Reach Server"
+                                          subtitle:@"Please check network connection and login."
+                                              type:RMessageTypeWarning
+                                    customTypeName:nil
+                                          callback:nil];
     }
     if (status > AFNetworkReachabilityStatusNotReachable) {
         if (networkHasBeenUnreachable) {
-            [TSMessage showNotificationInViewController:self.navigationController title:@"Server Reachable" subtitle:@"The network connection is working properly." type:TSMessageNotificationTypeSuccess];
+            [RMessage showNotificationInViewController:self.navigationController
+                                                 title:@"Server Reachable"
+                                              subtitle:@"The network connection is working properly."
+                                                  type:RMessageTypeWarning
+                                        customTypeName:nil
+                                              callback:nil];
             networkHasBeenUnreachable = NO;
         }
     }
@@ -802,18 +812,19 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 NSArray *feedURLStrings = [self.feedsFetchedResultsController.fetchedObjects valueForKey:@"url"];
                 if ([feedURLStrings indexOfObject:[board.URL absoluteString]] == NSNotFound) {
                     NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
-                    [TSMessage showNotificationInViewController:self.navigationController
+                    [RMessage showNotificationInViewController:self.navigationController
                                                           title:@"Add Feed"
                                                        subtitle:message
-                                                          image:nil
-                                                           type:TSMessageNotificationTypeMessage
-                                                       duration:TSMessageNotificationDurationAutomatic
+                                                          iconImage:nil
+                                                           type:RMessageTypeNormal
+                                                 customTypeName:nil
+                                                       duration:RMessageDurationAutomatic
                                                        callback:nil
                                                     buttonTitle:@"Add"
                                                  buttonCallback:^{
                                                  [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
                                              }
-                                                     atPosition:TSMessageNotificationPositionTop
+                                                     atPosition:RMessagePositionTop
                                             canBeDismissedByUser:YES];
                 }
             }
@@ -841,16 +852,17 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 }
 
 - (void)networkError:(NSNotification *)n {
-    [TSMessage showNotificationInViewController:self.navigationController
+    [RMessage showNotificationInViewController:self.navigationController
                                           title:[n.userInfo objectForKey:@"Title"]
                                        subtitle:[n.userInfo objectForKey:@"Message"]
-                                          image:nil
-                                           type:TSMessageNotificationTypeError
-                                       duration:TSMessageNotificationDurationEndless
+                                          iconImage:nil
+                                           type:RMessageTypeError
+                                 customTypeName:nil
+                                       duration:RMessageDurationEndless
                                        callback:nil
                                     buttonTitle:nil
                                  buttonCallback:nil
-                                     atPosition:TSMessageNotificationPositionTop
+                                     atPosition:RMessagePositionTop
                             canBeDismissedByUser:YES];
 }
 

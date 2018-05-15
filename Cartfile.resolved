@@ -1,3 +1,4 @@
-github "AFNetworking/AFNetworking" "3.1.0"
-github "kstenerud/KSCrash" "1.15.12"
+github "AFNetworking/AFNetworking" "3.2.1"
+github "donileo/RMessage" "2.3.0"
+github "kstenerud/KSCrash" "1.15.18"
 github "rs/SDWebImage" "3.8.2"
