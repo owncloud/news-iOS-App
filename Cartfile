@@ -1,3 +1,4 @@
 github "AFNetworking/AFNetworking"
 github "kstenerud/KSCrash"
 github "rs/SDWebImage" ~> 3.8
+github "davbeck/TUSafariActivity" "master"

@@ -25,8 +25,6 @@
 		D01ACADB17B83637005D1463 /* rd_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABA17B83637005D1463 /* rd_list.c */; };
 		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
 		D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
-		D01E9A521ADB412C008D50E1 /* TUSafariActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = D01E9A511ADB412C008D50E1 /* TUSafariActivity.m */; };
-		D01E9A801ADB4375008D50E1 /* TUSafariActivity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D01E9A7F1ADB4375008D50E1 /* TUSafariActivity.bundle */; };
 		D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D023001A1A58C0E800B354E0 /* Launch Screen.xib */; };
 		D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02CCAF31CE7E27300F6CCEC /* WebKit.framework */; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
@@ -101,6 +99,7 @@
 		D0F94F8F20AA777300833A7F /* RMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F8A20AA777200833A7F /* RMessageView.m */; };
 		D0F94F9220AA791300833A7F /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F9020AA791200833A7F /* HexColors.m */; };
 		D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F9420AA793600833A7F /* UIViewController+PPTopMostController.m */; };
+		D0F94F9720AA90DA00833A7F /* TUSafariActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */; };
 		D0FB29611FA6A20D00578C29 /* PHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FB29601FA6A20D00578C29 /* PHThemeManager.m */; };
 		D0FD70791787626100EF1457 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -116,9 +115,6 @@
 		D01ACABD17B83637005D1463 /* readable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readable.h; sourceTree = "<group>"; };
 		D01ACAFA17B969FE005D1463 /* NSDictionary+HandleNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HandleNull.h"; sourceTree = "<group>"; };
 		D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HandleNull.m"; sourceTree = "<group>"; };
-		D01E9A501ADB412C008D50E1 /* TUSafariActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TUSafariActivity.h; path = TUSafariActivity/Pod/Classes/TUSafariActivity.h; sourceTree = SOURCE_ROOT; };
-		D01E9A511ADB412C008D50E1 /* TUSafariActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TUSafariActivity.m; path = TUSafariActivity/Pod/Classes/TUSafariActivity.m; sourceTree = SOURCE_ROOT; };
-		D01E9A7F1ADB4375008D50E1 /* TUSafariActivity.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TUSafariActivity.bundle; path = TUSafariActivity/Pod/TUSafariActivity.bundle; sourceTree = SOURCE_ROOT; };
 		D023001A1A58C0E800B354E0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
 		D02CCAF31CE7E27300F6CCEC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -246,6 +242,7 @@
 		D0F94F9120AA791300833A7F /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HexColors.h; path = RMessage/Example/Pods/HexColors/Classes/HexColors.h; sourceTree = SOURCE_ROOT; };
 		D0F94F9320AA793600833A7F /* UIViewController+PPTopMostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+PPTopMostController.h"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.h"; sourceTree = SOURCE_ROOT; };
 		D0F94F9420AA793600833A7F /* UIViewController+PPTopMostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+PPTopMostController.m"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.m"; sourceTree = SOURCE_ROOT; };
+		D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TUSafariActivity.framework; path = Carthage/Build/iOS/TUSafariActivity.framework; sourceTree = "<group>"; };
 		D0FB295F1FA6A20D00578C29 /* PHThemeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHThemeManager.h; sourceTree = "<group>"; };
 		D0FB29601FA6A20D00578C29 /* PHThemeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHThemeManager.m; sourceTree = "<group>"; };
 		D0FD70741787626100EF1457 /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLNode.h; sourceTree = "<group>"; };
@@ -259,6 +256,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0F94F9720AA90DA00833A7F /* TUSafariActivity.framework in Frameworks */,
 				D0735DC31F83378A002D3AB3 /* KSCrash.framework in Frameworks */,
 				D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */,
 				D0735DC51F83378A002D3AB3 /* WebImage.framework in Frameworks */,
@@ -352,7 +350,6 @@
 				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
 				D0F18130178502E000F719D9 /* HTMLString */,
-				D0BCABE417791F3400C965F4 /* TUSafariActivity */,
 				D0BCAA2B177900C300C965F4 /* iOCNews */,
 				D0BCAA24177900C300C965F4 /* Frameworks */,
 				D0BCAA23177900C300C965F4 /* Products */,
@@ -370,6 +367,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */,
 				D0735DC11F83378A002D3AB3 /* AFNetworking.framework */,
 				D0735DC01F83378A002D3AB3 /* KSCrash.framework */,
 				D0735DC21F83378A002D3AB3 /* WebImage.framework */,
@@ -463,17 +461,6 @@
 				D0BCAA33177900C400C965F4 /* iOCNews-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D0BCABE417791F3400C965F4 /* TUSafariActivity */ = {
-			isa = PBXGroup;
-			children = (
-				D01E9A7F1ADB4375008D50E1 /* TUSafariActivity.bundle */,
-				D01E9A501ADB412C008D50E1 /* TUSafariActivity.h */,
-				D01E9A511ADB412C008D50E1 /* TUSafariActivity.m */,
-			);
-			name = TUSafariActivity;
-			path = TUSafariActivity/TUSafariActivity;
 			sourceTree = "<group>";
 		};
 		D0BCAC38178104FB00C965F4 /* Resources */ = {
@@ -677,7 +664,6 @@
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
 				D0F94F8B20AA777300833A7F /* Icons.xcassets in Resources */,
 				D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */,
-				D01E9A801ADB4375008D50E1 /* TUSafariActivity.bundle in Resources */,
 				D0F94F8C20AA777300833A7F /* RMessageDefaultDesign.json in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
@@ -779,7 +765,6 @@
 				D06CB24A17A2EA9300A1310B /* _Item.m in Sources */,
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */,
-				D01E9A521ADB412C008D50E1 /* TUSafariActivity.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
 				D04AD6601807125600FF6056 /* Folder.m in Sources */,

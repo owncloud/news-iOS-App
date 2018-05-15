@@ -33,7 +33,7 @@
 #import "OCWebController.h"
 #import "readable.h"
 #import "HTMLParser.h"
-#import "TUSafariActivity.h"
+#import <TUSafariActivity/TUSafariActivity.h>
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
 #import <QuartzCore/QuartzCore.h>

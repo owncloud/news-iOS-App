@@ -1,6 +1,3 @@
-[submodule "TUSafariActivity"]
-	path = TUSafariActivity
-	url = https://github.com/davbeck/TUSafariActivity.git
 [submodule "Objective-C-HTML-Parser"]
 	path = Objective-C-HTML-Parser
 	url = git://github.com/tresni/Objective-C-HMTL-Parser.git
