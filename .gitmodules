@@ -1,6 +1,3 @@
-[submodule "Objective-C-HTML-Parser"]
-	path = Objective-C-HTML-Parser
-	url = git://github.com/tresni/Objective-C-HMTL-Parser.git
 [submodule "readable"]
 	path = readable
 	url = https://github.com/JanX2/readable.git
