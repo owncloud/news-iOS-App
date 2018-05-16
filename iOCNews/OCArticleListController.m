@@ -593,19 +593,30 @@
                 }
                 
                 if (fetchedItems.count > 0) {
-                    __block NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                    NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                    NSInteger index = 0;
+                    for (Item *item in fetchedItems) {
+                        if (index > row) {
+                            break;
+                        }
+                        if (item.unreadValue) {
+                            item.unreadValue = NO;
+                            [idsToMarkRead addObject:item.myId];
+                        }
+                        index += 1;
+                    }
                     
-                    [fetchedItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-                        if (idx >= row) {
-                            *stop = YES;
-                        }
-                        if (item) {
-                            if (item.unreadValue) {
-                                item.unreadValue = NO;
-                                [idsToMarkRead addObject:item.myId];
-                            }
-                        }
-                    }];
+//                    [fetchedItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
+//                        if (idx >= row) {
+//                            *stop = YES;
+//                        }
+//                        if (item) {
+//                            if (item.unreadValue) {
+//                                item.unreadValue = NO;
+//                                [idsToMarkRead addObject:item.myId];
+//                            }
+//                        }
+//                    }];
                     
                     unreadCount = unreadCount - [idsToMarkRead count];
                     [self updateUnreadCount:idsToMarkRead];
