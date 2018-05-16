@@ -31,7 +31,7 @@
  *************************************************************************/
 
 #import "OCArticleImage.h"
-#import "HTMLParser.h"
+#import <BRYHTMLParser/BRYHTMLParser.h>
 
 @implementation OCArticleImage
 
@@ -46,10 +46,10 @@
     }
     
     //parse body
-    HTMLNode *bodyNode = [parser body];
+    id<HTMLNode> bodyNode = [parser body];
     
     NSArray *inputNodes = [bodyNode findChildTags:@"img"];
-    [inputNodes enumerateObjectsUsingBlock:^(HTMLNode *inputNode, NSUInteger idx, BOOL *stop) {
+    [inputNodes enumerateObjectsUsingBlock:^(id<HTMLNode> inputNode, NSUInteger idx, BOOL *stop) {
         if (inputNode) {
             result = [inputNode getAttributeNamed:@"src"];
             

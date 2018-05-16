@@ -33,6 +33,7 @@
 		D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */; };
 		D04AD65F1807125600FF6056 /* _Folder.m in Sources */ = {isa = PBXBuildFile; fileRef = D04AD65C1807125600FF6056 /* _Folder.m */; };
 		D04AD6601807125600FF6056 /* Folder.m in Sources */ = {isa = PBXBuildFile; fileRef = D04AD65E1807125600FF6056 /* Folder.m */; };
+		D04BBB8A20ABC87900D770DA /* BRYHTMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */; };
 		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
 		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
@@ -101,8 +102,6 @@
 		D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F9420AA793600833A7F /* UIViewController+PPTopMostController.m */; };
 		D0F94F9720AA90DA00833A7F /* TUSafariActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */; };
 		D0FB29611FA6A20D00578C29 /* PHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FB29601FA6A20D00578C29 /* PHThemeManager.m */; };
-		D0FD70791787626100EF1457 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70751787626100EF1457 /* HTMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FD70771787626100EF1457 /* HTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -130,6 +129,7 @@
 		D04AD65C1807125600FF6056 /* _Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Folder.m; sourceTree = "<group>"; };
 		D04AD65D1807125600FF6056 /* Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Folder.h; sourceTree = "<group>"; };
 		D04AD65E1807125600FF6056 /* Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Folder.m; sourceTree = "<group>"; };
+		D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BRYHTMLParser.framework; path = Carthage/Build/iOS/BRYHTMLParser.framework; sourceTree = "<group>"; };
 		D04C7DC41BABBEFC000FB342 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
 		D04C7DC51BABBEFC000FB342 /* pcre_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_scanner.h; sourceTree = "<group>"; };
 		D04C7DC61BABBEFC000FB342 /* pcre_stringpiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_stringpiece.h; sourceTree = "<group>"; };
@@ -245,10 +245,6 @@
 		D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TUSafariActivity.framework; path = Carthage/Build/iOS/TUSafariActivity.framework; sourceTree = "<group>"; };
 		D0FB295F1FA6A20D00578C29 /* PHThemeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHThemeManager.h; sourceTree = "<group>"; };
 		D0FB29601FA6A20D00578C29 /* PHThemeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHThemeManager.m; sourceTree = "<group>"; };
-		D0FD70741787626100EF1457 /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLNode.h; sourceTree = "<group>"; };
-		D0FD70751787626100EF1457 /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
-		D0FD70761787626100EF1457 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
-		D0FD70771787626100EF1457 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D04BBB8A20ABC87900D770DA /* BRYHTMLParser.framework in Frameworks */,
 				D0F94F9720AA90DA00833A7F /* TUSafariActivity.framework in Frameworks */,
 				D0735DC31F83378A002D3AB3 /* KSCrash.framework in Frameworks */,
 				D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */,
@@ -347,7 +344,6 @@
 				D0F94F8120AA777200833A7F /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,
-				D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */,
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
 				D0F18130178502E000F719D9 /* HTMLString */,
 				D0BCAA2B177900C300C965F4 /* iOCNews */,
@@ -367,6 +363,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */,
 				D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */,
 				D0735DC11F83378A002D3AB3 /* AFNetworking.framework */,
 				D0735DC01F83378A002D3AB3 /* KSCrash.framework */,
@@ -546,17 +543,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		D0FD70731787626100EF1457 /* Objective-C-HTML-Parser */ = {
-			isa = PBXGroup;
-			children = (
-				D0FD70741787626100EF1457 /* HTMLNode.h */,
-				D0FD70751787626100EF1457 /* HTMLNode.m */,
-				D0FD70761787626100EF1457 /* HTMLParser.h */,
-				D0FD70771787626100EF1457 /* HTMLParser.m */,
-			);
-			path = "Objective-C-HTML-Parser";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -704,12 +690,14 @@
 				"$(SRCROOT)/Carthage/Build/iOS/KSCrash.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/WebImage.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/TUSafariActivity.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BRYHTMLParser.framework",
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/AFNetworking.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KSCrash.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/WebImage.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Carthage/Build/iOS/TUSafariActivity.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/TUSafariActivity.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BRYHTMLParser.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -752,8 +740,6 @@
 				D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */,
 				D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */,
 				D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */,
-				D0FD70791787626100EF1457 /* HTMLNode.m in Sources */,
-				D0FD707A1787626100EF1457 /* HTMLParser.m in Sources */,
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
 				D06CB23117A073AA00A1310B /* Feed.m in Sources */,
 				D06CB23417A073C500A1310B /* Item.m in Sources */,

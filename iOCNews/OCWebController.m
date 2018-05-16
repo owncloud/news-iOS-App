@@ -32,7 +32,7 @@
 
 #import "OCWebController.h"
 #import "readable.h"
-#import "HTMLParser.h"
+#import <BRYHTMLParser/BRYHTMLParser.h>
 #import <TUSafariActivity/TUSafariActivity.h>
 #import "OCAPIClient.h"
 #import "OCNewsHelper.h"
@@ -553,10 +553,10 @@ const int SWIPE_PREVIOUS = 1;
     }
 
     //parse body
-    HTMLNode *bodyNode = [parser body];
+    id<HTMLNode> bodyNode = [parser body];
 
     NSArray *inputNodes = [bodyNode findChildTags:@"img"];
-    [inputNodes enumerateObjectsUsingBlock:^(HTMLNode *inputNode, NSUInteger idx, BOOL *stop) {
+    [inputNodes enumerateObjectsUsingBlock:^(id<HTMLNode> inputNode, NSUInteger idx, BOOL *stop) {
         if (inputNode) {
             NSString *src = [inputNode getAttributeNamed:@"src"];
             if (src != nil) {
@@ -570,7 +570,7 @@ const int SWIPE_PREVIOUS = 1;
     }];
     
     inputNodes = [bodyNode findChildTags:@"a"];
-    [inputNodes enumerateObjectsUsingBlock:^(HTMLNode *inputNode, NSUInteger idx, BOOL *stop) {
+    [inputNodes enumerateObjectsUsingBlock:^(id<HTMLNode> inputNode, NSUInteger idx, BOOL *stop) {
         if (inputNode) {
             NSString *src = [inputNode getAttributeNamed:@"href"];
             if (src != nil) {
@@ -718,10 +718,10 @@ const int SWIPE_PREVIOUS = 1;
     }
     
     //parse body
-    HTMLNode *bodyNode = [parser body];
+    id<HTMLNode> bodyNode = [parser body];
     
     NSArray *inputNodes = [bodyNode findChildTags:@"iframe"];
-    [inputNodes enumerateObjectsUsingBlock:^(HTMLNode *inputNode, NSUInteger idx, BOOL *stop) {
+    [inputNodes enumerateObjectsUsingBlock:^(id<HTMLNode> inputNode, NSUInteger idx, BOOL *stop) {
         if (inputNode) {
             NSString *videoID = [self extractYoutubeVideoID:item.url];
             if (videoID) {
@@ -757,10 +757,10 @@ const int SWIPE_PREVIOUS = 1;
     }
     
     //parse body
-    HTMLNode *bodyNode = [parser body];
+    id<HTMLNode> bodyNode = [parser body];
     
     NSArray *inputNodes = [bodyNode findChildTags:@"iframe"];
-    [inputNodes enumerateObjectsUsingBlock:^(HTMLNode *inputNode, NSUInteger idx, BOOL *stop) {
+    [inputNodes enumerateObjectsUsingBlock:^(id<HTMLNode> inputNode, NSUInteger idx, BOOL *stop) {
         if (inputNode) {
             NSString *src = [inputNode getAttributeNamed:@"src"];
             if (src && [src rangeOfString:@"youtu"].location != NSNotFound) {
