@@ -606,18 +606,6 @@
                         index += 1;
                     }
                     
-//                    [fetchedItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
-//                        if (idx >= row) {
-//                            *stop = YES;
-//                        }
-//                        if (item) {
-//                            if (item.unreadValue) {
-//                                item.unreadValue = NO;
-//                                [idsToMarkRead addObject:item.myId];
-//                            }
-//                        }
-//                    }];
-                    
                     unreadCount = unreadCount - [idsToMarkRead count];
                     [self updateUnreadCount:idsToMarkRead];
                     self.markBarButtonItem.enabled = (unreadCount > 0);
