@@ -1,18 +1,18 @@
 {
-  "iOS" : [
-    {
-      "hash" : "074172dfe69f1eff2b2c2a0db1191f03a0d963863e4290ace46d644c9791bf23",
-      "name" : "BRYHTMLParser"
-    }
+  "Mac" : [
+
   ],
-  "commitish" : "21ffddfc6b24fe45b7bedac9d344f8fb7ec43766",
   "watchOS" : [
 
   ],
   "tvOS" : [
 
   ],
-  "Mac" : [
-
+  "commitish" : "21ffddfc6b24fe45b7bedac9d344f8fb7ec43766",
+  "iOS" : [
+    {
+      "name" : "BRYHTMLParser",
+      "hash" : "d5e29b187db2ef070449524c2d8faa438bd83f18e9440e4b1c80ed554aa657e6"
+    }
   ]
 }
