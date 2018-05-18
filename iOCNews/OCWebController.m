@@ -219,9 +219,11 @@ const int SWIPE_PREVIOUS = 1;
 - (void)loadView {
     [super loadView];
     WKWebViewConfiguration *webConfig = [WKWebViewConfiguration new];
-    webConfig.allowsInlineMediaPlayback = NO;
+    webConfig.allowsInlineMediaPlayback = YES;
+    webConfig.requiresUserActionForMediaPlayback = YES;
     
     _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfig];
+    _webView.customUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
     _webView.navigationDelegate = self;
     _webView.UIDelegate = self;
     _webView.opaque = NO;
@@ -737,7 +739,7 @@ const int SWIPE_PREVIOUS = 1;
                 if (width.length > 0) {
                     widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
                 }
-                NSString *embed = [NSString stringWithFormat:@"<embed class=\"yt\" wmode=\"transparent\" style=\"background-color: transparent;\" src=\"http://www.youtube.com/embed/%@\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
+                NSString *embed = [NSString stringWithFormat:@"<embed class=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
                 result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
             }
 
@@ -778,7 +780,7 @@ const int SWIPE_PREVIOUS = 1;
                     if (width.length > 0) {
                         widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
                     }
-                    NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/embed/%@\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
+                    NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
                     result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
                 }
             }
