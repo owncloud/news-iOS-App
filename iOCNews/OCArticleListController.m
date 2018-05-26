@@ -456,11 +456,13 @@
             NSString *urlString = [OCArticleImage findImage:summary];
             if (urlString) {
                 if (cell.tag == indexPath.row) {
-                    [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
-                    cell.articleImage.hidden = NO;
-                    cell.thumbnailContainerWidthConstraint.constant = cell.articleImage.frame.size.width;
-                    cell.articleImageWidthConstraint.constant = cell.articleImage.frame.size.width;
-                    cell.contentContainerLeadingConstraint.constant = cell.articleImage.frame.size.width;
+                    dispatch_main_async_safe(^{
+                        [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
+                        cell.articleImage.hidden = NO;
+                        cell.thumbnailContainerWidthConstraint.constant = cell.articleImage.frame.size.width;
+                        cell.articleImageWidthConstraint.constant = cell.articleImage.frame.size.width;
+                        cell.contentContainerLeadingConstraint.constant = cell.articleImage.frame.size.width;
+                    });
                 }
             } else {
                 cell.articleImage.hidden = YES;
@@ -608,7 +610,9 @@
                     
                     unreadCount = unreadCount - [idsToMarkRead count];
                     [self updateUnreadCount:idsToMarkRead];
-                    self.markBarButtonItem.enabled = (unreadCount > 0);
+                    dispatch_main_async_safe(^{
+                        self.markBarButtonItem.enabled = (unreadCount > 0);
+                    });
                 }
             }
         }
