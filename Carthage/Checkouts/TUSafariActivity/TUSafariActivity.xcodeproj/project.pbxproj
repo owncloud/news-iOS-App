@@ -7,20 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		73227ACF1F18942D00EB0565 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 73227AAA1F18942D00EB0565 /* .gitkeep */; };
-		73227AD01F18942D00EB0565 /* TUSafariActivity.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73227AAB1F18942D00EB0565 /* TUSafariActivity.strings */; };
-		73227AD11F18942D00EB0565 /* safari-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227ABC1F18942D00EB0565 /* safari-7.png */; };
-		73227AD21F18942D00EB0565 /* safari-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227ABD1F18942D00EB0565 /* safari-7@2x.png */; };
-		73227AD31F18942D00EB0565 /* safari-7@2x~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227ABE1F18942D00EB0565 /* safari-7@2x~iPad.png */; };
-		73227AD41F18942D00EB0565 /* safari-7@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227ABF1F18942D00EB0565 /* safari-7@3x.png */; };
-		73227AD51F18942D00EB0565 /* safari-7~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227AC01F18942D00EB0565 /* safari-7~iPad.png */; };
-		73227AD61F18942D00EB0565 /* safari.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227AC11F18942D00EB0565 /* safari.png */; };
-		73227AD71F18942D00EB0565 /* safari@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227AC21F18942D00EB0565 /* safari@2x.png */; };
-		73227AD81F18942D00EB0565 /* safari@2x~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227AC31F18942D00EB0565 /* safari@2x~iPad.png */; };
-		73227AD91F18942D00EB0565 /* safari@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227AC41F18942D00EB0565 /* safari@3x.png */; };
-		73227ADA1F18942D00EB0565 /* safari~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 73227AC51F18942D00EB0565 /* safari~iPad.png */; };
 		73227ADC1F18942D00EB0565 /* TUSafariActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 73227ACD1F18942D00EB0565 /* TUSafariActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		73227ADD1F18942D00EB0565 /* TUSafariActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 73227ACE1F18942D00EB0565 /* TUSafariActivity.m */; };
+		D04BBB8E20BA43A500D770DA /* TUSafariActivity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D04BBB8D20BA43A500D770DA /* TUSafariActivity.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +50,7 @@
 		73227ACC1F18942D00EB0565 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		73227ACD1F18942D00EB0565 /* TUSafariActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUSafariActivity.h; sourceTree = "<group>"; };
 		73227ACE1F18942D00EB0565 /* TUSafariActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUSafariActivity.m; sourceTree = "<group>"; };
+		D04BBB8D20BA43A500D770DA /* TUSafariActivity.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TUSafariActivity.bundle; path = Pod/Assets/TUSafariActivity.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +67,7 @@
 		73227A911F1893F000EB0565 = {
 			isa = PBXGroup;
 			children = (
+				D04BBB8D20BA43A500D770DA /* TUSafariActivity.bundle */,
 				73227AA81F18942D00EB0565 /* Pod */,
 				73227AA61F18942800EB0565 /* Info.plist */,
 				73227A9C1F1893F000EB0565 /* Products */,
@@ -218,18 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73227AD01F18942D00EB0565 /* TUSafariActivity.strings in Resources */,
-				73227AD91F18942D00EB0565 /* safari@3x.png in Resources */,
-				73227AD81F18942D00EB0565 /* safari@2x~iPad.png in Resources */,
-				73227AD31F18942D00EB0565 /* safari-7@2x~iPad.png in Resources */,
-				73227AD71F18942D00EB0565 /* safari@2x.png in Resources */,
-				73227AD51F18942D00EB0565 /* safari-7~iPad.png in Resources */,
-				73227AD11F18942D00EB0565 /* safari-7.png in Resources */,
-				73227ADA1F18942D00EB0565 /* safari~iPad.png in Resources */,
-				73227AD41F18942D00EB0565 /* safari-7@3x.png in Resources */,
-				73227AD21F18942D00EB0565 /* safari-7@2x.png in Resources */,
-				73227ACF1F18942D00EB0565 /* .gitkeep in Resources */,
-				73227AD61F18942D00EB0565 /* safari.png in Resources */,
+				D04BBB8E20BA43A500D770DA /* TUSafariActivity.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

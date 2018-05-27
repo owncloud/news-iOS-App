@@ -8,11 +8,11 @@
   "tvOS" : [
 
   ],
-  "commitish" : "4c577ccb1823a7ce19b46ffdb5634fdd1d0a78b6",
+  "commitish" : "48923729bc26d834f9cf9225c8e114586f97ade1",
   "iOS" : [
     {
       "name" : "TUSafariActivity",
-      "hash" : "54b956c7f1934455e89a83aadac6d8d7c5800f212499fa3568f3288dc83445b2"
+      "hash" : "a5129ac0a4ae0b31b0e478bfed09d9da5ce8197040180503fd1ced805ef7155c"
     }
   ]
 }

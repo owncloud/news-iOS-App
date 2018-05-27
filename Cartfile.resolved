@@ -1,5 +1,5 @@
 github "AFNetworking/AFNetworking" "3.2.1"
-github "davbeck/TUSafariActivity" "4c577ccb1823a7ce19b46ffdb5634fdd1d0a78b6"
 github "kstenerud/KSCrash" "1.15.18"
 github "phedlund/BRYHTMLParser" "21ffddfc6b24fe45b7bedac9d344f8fb7ec43766"
+github "phedlund/TUSafariActivity" "48923729bc26d834f9cf9225c8e114586f97ade1"
 github "rs/SDWebImage" "3.8.2"
