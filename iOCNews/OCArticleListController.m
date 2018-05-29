@@ -544,8 +544,11 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     BOOL result = YES;
     if ([gestureRecognizer isEqual:self.markGesture]) {
-        if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden) {
-            result = NO;
+        if (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact) {
+            NSLog(@"Display Mode: %ld", (long)self.splitViewController.displayMode);
+            if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden) {
+                result = NO;
+            }
         }
     }
     return result;
@@ -572,9 +575,19 @@
         }
     }
     self.markBarButtonItem.enabled = NO;
-    [UIView animateWithDuration:0.3 animations:^{
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
-    }];
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+        [self.navigationController.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [UIView animateWithDuration:0.3 animations:^{
+            if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+                if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+                } else {
+                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+                }
+            }
+        }];
+    }
 }
 
 - (void) markRowsRead {
