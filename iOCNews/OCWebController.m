@@ -538,7 +538,11 @@ const int SWIPE_PREVIOUS = 1;
             refreshStopBarButtonItem.enabled = NO;
         }
         UIBarButtonItem *modeButton = self.parentViewController.parentViewController.splitViewController.displayModeButtonItem;
-        self.parentViewController.parentViewController.navigationItem.leftBarButtonItems = @[modeButton, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
+        if (modeButton) {
+            self.parentViewController.parentViewController.navigationItem.leftBarButtonItems = @[modeButton, self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
+        } else {
+            self.parentViewController.parentViewController.navigationItem.leftBarButtonItems = @[self.backBarButtonItem, self.forwardBarButtonItem, refreshStopBarButtonItem];
+        }
         self.parentViewController.parentViewController.navigationItem.leftItemsSupplementBackButton = YES;
         self.parentViewController.parentViewController.navigationItem.rightBarButtonItems = @[self.textBarButtonItem, self.actionBarButtonItem];
     }
