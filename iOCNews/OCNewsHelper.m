@@ -507,7 +507,9 @@
     [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
     while (deletedOnServer.count > 0) {
         Feed *feedToRemove = [self feedWithId:[deletedOnServer lastObject]];
-        [self.context deleteObject:feedToRemove];
+        if (feedToRemove) {
+            [self.context deleteObject:feedToRemove];
+        }
         [deletedOnServer removeLastObject];
     }
     [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feedDict, NSUInteger idx, BOOL *stop) {
