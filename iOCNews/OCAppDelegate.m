@@ -47,6 +47,7 @@
     [installation install];
     
     UISplitViewController *svc = (UISplitViewController *)self.window.rootViewController;
+    svc.maximumPrimaryColumnWidth = svc.primaryColumnWidth;
     svc.presentsWithGesture = YES;
     UINavigationController *navController = (UINavigationController *)svc.viewControllers.lastObject;
     navController.topViewController.navigationItem.leftBarButtonItem = svc.displayModeButtonItem;

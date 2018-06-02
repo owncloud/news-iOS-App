@@ -575,7 +575,7 @@
         [UIView animateWithDuration:0.3 animations:^{
             if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
                 if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
-                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
                 } else {
                     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
                 }
@@ -818,7 +818,7 @@
 - (IBAction)onSideGestureRecognizer:(id)sender {
     if ([self.sideGestureRecognizer translationInView:self.tableView].x > 10) {
         [UIView animateWithDuration:0.3 animations:^{
-            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         } completion: nil];
     }
 }
