@@ -473,6 +473,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                                 self.detailViewController.folderId = self.folderId;
                             }
                             self.detailViewController.feed = feed;
+                            if (self.folderId > 0) {
+                                self.detailViewController.folderId = self.folderId;
+                            }
                         }
                     }
                     @catch (NSException *exception) {

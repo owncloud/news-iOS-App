@@ -57,7 +57,6 @@
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
 
 - (void) configureView;
-- (void) scrollToTop;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 - (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
@@ -188,11 +187,11 @@
         aboutToFetch = NO;
         if (success) {
             fetchedItems = self.fetchedResultsController.fetchedObjects;
-            long unreadCount = [self unreadCount];
+            __block long unreadCount = [self unreadCount];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
+                self.markBarButtonItem.enabled = (unreadCount > 0);
             });
-            self.markBarButtonItem.enabled = (unreadCount > 0);
         } else {
             fetchedItems = [NSArray new];
         }
@@ -207,15 +206,10 @@
             self.refreshControl = nil;
         }
         [self refresh];
-        [self scrollToTop];
+        if (fetchedItems.count > 0) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
         self.tableView.scrollsToTop = YES;
-    }
-}
-
-- (void) scrollToTop {
-    self.markBarButtonItem.enabled = ([self unreadCount] > 0);
-    if (fetchedItems.count > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
 
@@ -593,7 +587,7 @@
 - (void) markRowsRead {
     @try {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
-            long unreadCount = [self unreadCount];
+            __block long unreadCount = [self unreadCount];
             
             if (unreadCount > 0) {
                 NSArray * vCells = self.tableView.indexPathsForVisibleRows;
