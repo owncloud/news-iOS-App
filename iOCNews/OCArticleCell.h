@@ -50,5 +50,6 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *articleImageWidthConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *contentContainerLeadingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *dateLabelLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *mainCellViewWidthContraint;
 
 @end

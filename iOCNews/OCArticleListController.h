@@ -45,8 +45,9 @@
 @property (nonatomic, strong, readonly) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, assign) NSInteger folderId;
 
-- (void) refresh;
-- (IBAction) doRefresh:(id)sender;
-- (IBAction) onMarkRead:(id)sender;
+- (void)refresh;
+- (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode;
+- (IBAction)doRefresh:(id)sender;
+- (IBAction)onMarkRead:(id)sender;
 
 @end

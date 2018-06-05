@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
-    <device id="ipad9_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="ipad10_5" orientation="portrait">
+        <adaptation id="splitview1_3"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="-1" width="700" height="154"/>
                         <subviews>
                             <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="gys-Kx-PWD">
-                                <rect key="frame" x="0.0" y="1" width="700" height="152"/>
+                                <rect key="frame" x="100" y="1" width="500" height="152"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lty-Lj-23R" userLabel="ThumbnailContainer">
                                         <rect key="frame" x="0.0" y="0.0" width="112" height="152"/>
@@ -43,10 +43,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fl2-Me-Ib6" userLabel="ContentContainer">
-                                        <rect key="frame" x="112" y="0.0" width="582" height="152"/>
+                                        <rect key="frame" x="112" y="0.0" width="382" height="152"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="249" text="This is a long title to see what happens when it goes over more than one line" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3">
-                                                <rect key="frame" x="10" y="5" width="562" height="48"/>
+                                                <rect key="frame" x="10" y="5" width="362" height="42.5"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="250" constant="48" id="NpP-4r-yTC"/>
@@ -56,7 +56,7 @@
                                                 <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXF-mX-KAd">
-                                                <rect key="frame" x="10" y="58" width="562" height="16"/>
+                                                <rect key="frame" x="10" y="52.5" width="362" height="16"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ENK-Fa-lo4">
                                                         <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -66,7 +66,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="Author &amp; Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                                                        <rect key="frame" x="21" y="-1" width="541" height="18"/>
+                                                        <rect key="frame" x="21" y="-1" width="341" height="18"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -84,7 +84,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                                                <rect key="frame" x="10" y="79" width="562" height="68"/>
+                                                <rect key="frame" x="10" y="73.5" width="362" height="73.5"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="68" id="HRx-p9-9tv"/>
@@ -102,7 +102,6 @@
                                             <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="10" id="N5E-F1-BGd"/>
                                             <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" constant="10" id="Zpc-TN-He9"/>
                                             <constraint firstAttribute="bottom" secondItem="5" secondAttribute="bottom" constant="5" id="fDI-GG-4qT"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="560" id="fgx-xG-Scl"/>
                                             <constraint firstItem="5" firstAttribute="top" secondItem="cXF-mX-KAd" secondAttribute="bottom" constant="5" id="lGR-xa-Er6"/>
                                             <constraint firstItem="cXF-mX-KAd" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="5" id="nTt-aZ-dHq"/>
                                             <constraint firstItem="3" firstAttribute="leading" secondItem="fl2-Me-Ib6" secondAttribute="leading" constant="10" id="rVu-5S-G4X"/>
@@ -111,15 +110,13 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="peC-zy-JQ2" userLabel="StarContainer">
-                                        <rect key="frame" x="684" y="0.0" width="16" height="152"/>
+                                        <rect key="frame" x="484" y="0.0" width="16" height="152"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uAr-hd-b6i">
                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="8DJ-uz-xMV"/>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="16" id="QKJ-lw-nFp"/>
                                                     <constraint firstAttribute="width" constant="16" id="ny9-4B-egp"/>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="rNu-2n-InZ"/>
                                                 </constraints>
                                             </imageView>
                                         </subviews>
@@ -143,7 +140,12 @@
                                     <constraint firstItem="lty-Lj-23R" firstAttribute="height" secondItem="gys-Kx-PWD" secondAttribute="height" id="gsO-UY-VCz"/>
                                     <constraint firstItem="lty-Lj-23R" firstAttribute="centerY" secondItem="gys-Kx-PWD" secondAttribute="centerY" id="lge-88-ZId"/>
                                     <constraint firstItem="peC-zy-JQ2" firstAttribute="height" secondItem="gys-Kx-PWD" secondAttribute="height" id="pdx-4b-Vb8"/>
-                                    <constraint firstAttribute="width" constant="700" id="xo0-do-Lnx"/>
+                                    <constraint firstAttribute="width" constant="700" id="xo0-do-Lnx">
+                                        <variation key="heightClass=compact-widthClass=compact" constant="500"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="700"/>
+                                        <variation key="heightClass=regular-widthClass=compact" constant="500"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="700"/>
+                                    </constraint>
                                     <constraint firstItem="lty-Lj-23R" firstAttribute="leading" secondItem="gys-Kx-PWD" secondAttribute="leading" id="ypF-qc-OhR"/>
                                 </constraints>
                             </view>
@@ -170,6 +172,7 @@
                 <outlet property="dateLabel" destination="4" id="12"/>
                 <outlet property="dateLabelLeadingConstraint" destination="gJ2-kE-dNF" id="obb-p4-3zt"/>
                 <outlet property="favIconImage" destination="ENK-Fa-lo4" id="oT3-kg-uTd"/>
+                <outlet property="mainCellViewWidthContraint" destination="xo0-do-Lnx" id="Yy6-mY-IXp"/>
                 <outlet property="mainSubView" destination="gys-Kx-PWD" id="NcD-fn-gJO"/>
                 <outlet property="mainView" destination="ScV-t8-IVR" id="AkB-cw-1lB"/>
                 <outlet property="starContainerView" destination="peC-zy-JQ2" id="HCX-V5-fLG"/>

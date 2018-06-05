@@ -181,10 +181,16 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     
     self.splitViewController.presentsWithGesture = YES;
     self.splitViewController.delegate = self;
+    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+    } else {
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+    }
     self.collapseDetailViewController = NO;
-    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
-        self.collapseDetailViewController = YES;
+    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+            self.collapseDetailViewController = YES;
+        }
     }
     
     //Notifications
@@ -447,9 +453,10 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     self.collapseDetailViewController = (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact);
-    if ([[segue identifier] isEqualToString:DetailSegueIdentifier]) {
-
-        
+    if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) {
+        self.collapseDetailViewController = NO; //Plus-size iPhones
+    }
+    if ([[segue identifier] isEqualToString:DetailSegueIdentifier]) {      
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         currentIndex = indexPath.row;
         NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:currentIndex inSection:0];
@@ -905,7 +912,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 - (UISplitViewControllerDisplayMode)targetDisplayModeForActionInSplitViewController:(UISplitViewController *)svc {
     if (svc.displayMode == UISplitViewControllerDisplayModePrimaryHidden) {
         if (svc.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+            if (svc.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+                return UISplitViewControllerDisplayModeAllVisible;
+            } else if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
                 return UISplitViewControllerDisplayModeAllVisible;
             }
         }
@@ -918,14 +927,17 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     return self.collapseDetailViewController;
 }
 
-
-
+- (void)splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
+    NSLog(@"My display mode = %ld", (long)displayMode);
+    if (self.detailViewController) {
+        [(OCArticleListController *)self.detailViewController willUpdateToDisplayMode:displayMode];
+    }
+}
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
     [self.tableView beginUpdates];
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 

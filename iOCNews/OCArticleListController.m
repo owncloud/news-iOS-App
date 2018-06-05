@@ -51,6 +51,7 @@
     BOOL hideRead;
     NSArray *fetchedItems;
     BOOL aboutToFetch;
+    CGFloat cellContentWidth;
 }
 
 @property (strong, nonatomic) IBOutlet UIScreenEdgePanGestureRecognizer *sideGestureRecognizer;
@@ -263,6 +264,7 @@
 
     markingAllItemsRead = NO;
     aboutToFetch = NO;
+    cellContentWidth = 700;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkCompleted:) name:@"NetworkCompleted" object:nil];
     
@@ -293,6 +295,26 @@
     }];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        NSLog(@"My width = %f", size.width);
+        [self willUpdateToDisplayMode: self.splitViewController.displayMode];
+    }
+}
+
+- (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
+    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        CGFloat screenWidth = UIScreen.mainScreen.bounds.size.width;
+        if (displayMode == UISplitViewControllerDisplayModeAllVisible) {
+            cellContentWidth = ((screenWidth / 3) * 2) - 50;
+            [self.tableView reloadData];
+        } else if (displayMode == UISplitViewControllerDisplayModePrimaryHidden) {
+            cellContentWidth = MIN(700, screenWidth  - 100);
+            [self.tableView reloadData];
+        }
+    }
+}
+
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
@@ -314,12 +336,6 @@
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowFavicons"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.fetchedResultsController.delegate = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return YES;
 }
 
 #pragma mark - Table view data source
@@ -356,6 +372,7 @@
     @try {
         Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
+        cell.mainCellViewWidthContraint.constant = cellContentWidth;
         cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
         cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
@@ -499,6 +516,7 @@
     currentIndex = indexPath.row;
     Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (selectedItem && selectedItem.myId) {
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         PHArticleManagerController *articleManagerController = [self.storyboard instantiateViewControllerWithIdentifier:@"ArticleManagerController"];
         articleManagerController.articles = fetchedItems;
         articleManagerController.articleIndex = currentIndex;
@@ -573,11 +591,17 @@
         [self.navigationController.navigationController popToRootViewControllerAnimated:YES];
     } else {
         [UIView animateWithDuration:0.3 animations:^{
-            if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+            if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
                 if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
                     self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
                 } else {
-                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryOverlay;
+                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+                }
+            } else {
+                if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+                } else {
+                    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
                 }
             }
         }];
