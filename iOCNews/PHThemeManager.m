@@ -37,6 +37,7 @@
 #define kPHUnreadTextColorArray        @[[UIColor darkTextColor], [UIColor darkTextColor], [UIColor lightTextColor]]
 #define kPHReadTextColorArray          @[[UIColor colorWithWhite:0.0 alpha:0.40], [UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0]]
 
+#define kPHSwitchTintColorArray        @[kPHWhitePopoverBorderColor, kPHSepiaPopoverBorderColor, kPHNightIconColor]
 
 + (PHThemeManager*)sharedManager {
     static dispatch_once_t once_token;
@@ -91,8 +92,8 @@
 
     [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
 
-    [[UISwitch appearance] setOnTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
-    [[UISwitch appearance] setTintColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
+    [[UISwitch appearance] setOnTintColor:[kPHSwitchTintColorArray objectAtIndex:currentTheme]];
+    [[UISwitch appearance] setTintColor:[kPHSwitchTintColorArray objectAtIndex:currentTheme]];
 
     [WKWebView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
 
