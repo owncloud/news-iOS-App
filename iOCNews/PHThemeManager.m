@@ -10,8 +10,8 @@
 #import "UIColor+PHColor.h"
 #import "OCFeedListController.h"
 #import "OCFeedCell.h"
-#import "OCArticleCell.h"
-#import "PHArticleManagerController.h"
+#import "ArticleListCell.h"
+#import "iOCNews-Swift.h"
 
 @implementation UILabel (ThemeColor)
 
@@ -76,7 +76,7 @@
     [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
 
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleCell class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListCell class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];

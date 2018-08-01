@@ -7,3 +7,9 @@
 [submodule "RMessage"]
 	path = RMessage
 	url = https://github.com/donileo/RMessage.git
+[submodule "SCPageViewController"]
+	path = SCPageViewController
+	url = https://github.com/stefanceriu/SCPageViewController.git
+[submodule "SCScrollView"]
+	path = SCScrollView
+	url = https://github.com/stefanceriu/SCScrollView.git

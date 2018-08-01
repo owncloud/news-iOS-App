@@ -1,5 +1,5 @@
 //
-//  SelectionController.h
+//  ArticleListController.h
 //  iOCNews
 //
 
@@ -31,19 +31,15 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import "BaseCollectionViewController.h"
 #import "OCWebController.h"
-#import "OCArticleCell.h"
-#import "Feed.h"
+#import "ArticleListCell.h"
 
-@interface OCArticleListController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface OCArticleListController: BaseCollectionViewController <NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) OCWebController *detailViewController;
 @property (nonatomic, strong, readonly) UIBarButtonItem *markBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
-@property (nonatomic, strong) Feed *feed;
-@property (nonatomic, strong, readonly) NSFetchRequest *fetchRequest;
-@property (nonatomic, strong, readonly) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, assign) NSInteger folderId;
 
 - (void)refresh;
 - (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode;

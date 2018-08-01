@@ -30,22 +30,27 @@
  
  *************************************************************************/
 
-#import "OCArticleCell.h"
+#import "ArticleListCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+PHColor.h"
 
-@implementation OCArticleCell
+@implementation ArticleListCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
         self.selectedBackgroundView = [UIView new];
         [self.selectedBackgroundView setBackgroundColor:[UIColor cellBackgroundColor]];
+        
+        CALayer *bottomBorder = [CALayer layer];
+        bottomBorder.frame = CGRectMake(0.0f, 153.0f, 10000.0, 0.5f);
+        bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
+        [self.contentView.layer addSublayer:bottomBorder];
     }
     return self;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+//    [super setSelected:selected animated:animated];
 
     self.mainView.backgroundColor = [UIColor cellBackgroundColor];
     self.mainSubView.backgroundColor = [UIColor cellBackgroundColor];
@@ -60,14 +65,14 @@
     self.summaryLabel.backgroundColor = [UIColor cellBackgroundColor];
 }
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    [super setHighlighted:highlighted animated:animated];
-    if (highlighted) {
-        [self.contentView setBackgroundColor: [UIColor cellSelectionColor]];
-    } else {
-        [self.contentView setBackgroundColor: [UIColor clearColor]];
-    }
-}
-
+//- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+//    [super setHighlighted:highlighted animated:animated];
+//    if (highlighted) {
+//        [self.contentView setBackgroundColor: [UIColor cellSelectionColor]];
+//    } else {
+//        [self.contentView setBackgroundColor: [UIColor clearColor]];
+//    }
+//}
+//
 
 @end

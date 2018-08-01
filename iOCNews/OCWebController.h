@@ -35,7 +35,7 @@
 #import "PHPrefViewController.h"
 #import "Item.h"
 
-@interface OCWebController : UIViewController <UIGestureRecognizerDelegate, PHPrefViewControllerDelegate>
+@interface OCWebController : UIViewController <PHPrefViewControllerDelegate>
 
 @property (nonatomic, strong) Item *item;
 @property (nonatomic, assign) NSUInteger itemIndex;

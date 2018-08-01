@@ -858,7 +858,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 - (void) networkCompleted:(NSNotification *)n {
     [self.refreshControl endRefreshing];
-    [self.detailViewController.refreshControl endRefreshing];
+    [self.detailViewController.collectionView.refreshControl endRefreshing];
 }
 
 - (void)networkError:(NSNotification *)n {

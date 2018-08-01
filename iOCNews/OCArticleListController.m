@@ -31,7 +31,7 @@
  *************************************************************************/
 
 #import "OCArticleListController.h"
-#import "OCArticleCell.h"
+#import "ArticleListCell.h"
 #import "OCWebController.h"
 #import "NSString+HTML.h"
 #import <AFNetworking/AFNetworking.h>
@@ -41,11 +41,11 @@
 #import "Item.h"
 #import "objc/runtime.h"
 #import "UIImageView+OCWebCache.h"
-#import "PHArticleManagerController.h"
+#import "iOCNews-Swift.h"
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
 
-@interface OCArticleListController () <UIGestureRecognizerDelegate> {
+@interface OCArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, SCPageViewControllerDataSource, SCPageViewControllerDelegate> {
     long currentIndex;
     BOOL markingAllItemsRead;
     BOOL hideRead;
@@ -56,6 +56,7 @@
 
 @property (strong, nonatomic) IBOutlet UIScreenEdgePanGestureRecognizer *sideGestureRecognizer;
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
+@property (nonatomic, strong, readonly) ArticleManagerController *articleManagerController;
 
 - (void) configureView;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
@@ -71,97 +72,13 @@
 @synthesize feedRefreshControl;
 @synthesize markBarButtonItem;
 @synthesize feed = _feed;
-@synthesize fetchRequest = _fetchRequest;
-@synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize markGesture;
 @synthesize folderId;
+@synthesize articleManagerController;
+
+static NSString * const reuseIdentifier = @"ArticleCell";
 
 #pragma mark - Managing the detail item
-
-- (void)setFeed:(Feed *)feed {
-    _feed = feed;
-    _fetchRequest = nil;
-    _fetchedResultsController = nil;
-    [self configureView];
-}
-
-- (NSFetchRequest *)fetchRequest {
-    if (_fetchRequest == nil) {
-        _fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Item" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
-        _fetchRequest.entity = entity;
-        _fetchRequest.fetchBatchSize = 25;
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
-        _fetchRequest.sortDescriptors = @[sort];
-    }
-    return _fetchRequest;
-}
-
-- (NSFetchedResultsController *)fetchedResultsController {
-    if (_fetchedResultsController == nil) {
-        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest
-                                                                        managedObjectContext:[OCNewsHelper sharedHelper].context
-                                                                          sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
-        if (!aboutToFetch) {
-            return _fetchedResultsController;
-        }
-        
-        NSPredicate *fetchPredicate;
-        if (self.feed.myIdValue == -1) {
-            fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
-            self.fetchRequest.fetchLimit = self.feed.unreadCountValue;
-        } else {
-            if (hideRead) {
-                if (self.feed.myIdValue == -2) {
-                    if (self.folderId > 0) {
-                        NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
-                        __block NSInteger fetchLimit = 0;
-                        [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId], [NSPredicate predicateWithFormat:@"unread == 1"] ]]];
-                            fetchLimit += feed.articleCountValue;
-                        }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-                        _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
-                    } else {
-                        fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
-                    }
-                } else {
-                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
-                    NSArray *predArray = @[pred1, pred2];
-                    fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-                    _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
-                }
-                _fetchedResultsController.delegate = nil;
-            } else {
-                if (self.feed.myIdValue == -2) {
-                    if (self.folderId > 0) {
-                        NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
-                        __block NSInteger fetchLimit = 0;
-                        [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
-                            fetchLimit += feed.articleCountValue;
-                        }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-                        _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
-                    } else {
-                        fetchPredicate = nil;
-                        _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
-                    }
-                } else {
-                    fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                    _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
-                }
-                _fetchedResultsController.delegate = self;
-            }
-        }
-        _fetchedResultsController.fetchRequest.predicate = fetchPredicate;
-    }
-    return _fetchedResultsController;
-}
 
 - (void)configureView
 {
@@ -190,7 +107,7 @@
             fetchedItems = self.fetchedResultsController.fetchedObjects;
             __block long unreadCount = [self unreadCount];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
+                [self.collectionView reloadData];
                 self.markBarButtonItem.enabled = (unreadCount > 0);
             });
         } else {
@@ -202,21 +119,21 @@
     }
     @finally {
         if (self.feed.myIdValue > -2) {
-            self.refreshControl = self.feedRefreshControl;
+            self.collectionView.refreshControl = self.feedRefreshControl;
         } else {
-            self.refreshControl = nil;
+            self.collectionView.refreshControl = nil;
         }
         [self refresh];
         if (fetchedItems.count > 0) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         }
-        self.tableView.scrollsToTop = YES;
+        self.collectionView.scrollsToTop = YES;
     }
 }
 
 - (void) refresh {
     long unreadCount = [self unreadCount];
-    [self.tableView reloadData];
+    [self.collectionView reloadData];
     self.markBarButtonItem.enabled = (unreadCount > 0);
 }
 
@@ -247,21 +164,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
     self.navigationItem.leftItemsSupplementBackButton = YES;
     self.navigationItem.rightBarButtonItem = self.markBarButtonItem;
     self.markBarButtonItem.enabled = NO;
     self.folderId = 0;
-    [self.tableView registerNib:[UINib nibWithNibName:@"OCArticleCell" bundle:nil] forCellReuseIdentifier:@"ArticleCell"];
-    self.tableView.scrollsToTop = NO;
-    [self.tableView addGestureRecognizer:self.markGesture];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    [self.tableView addGestureRecognizer:self.sideGestureRecognizer];
-    self.tableView.tableFooterView = [UIView new];
-
+    [self.collectionView registerNib:[UINib nibWithNibName:@"ArticleListCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    self.collectionView.scrollsToTop = NO;
+    [self.collectionView addGestureRecognizer:self.markGesture];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    [self.collectionView addGestureRecognizer:self.sideGestureRecognizer];
+//    self.tableView.tableFooterView = [UIView new];
+    
     markingAllItemsRead = NO;
     aboutToFetch = NO;
     cellContentWidth = 700;
@@ -273,7 +190,7 @@
                                                       object:nil
                                                        queue:mainQueue
                                                   usingBlock:^(NSNotification *notification) {
-                                                      [self.tableView reloadData];
+                                                      [self.collectionView reloadData];
                                                   }];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(drawerOpened:)
@@ -291,8 +208,13 @@
                                                object:[OCNewsHelper sharedHelper].context];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        [self.tableView reloadData];
+        [self.collectionView reloadData];
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self configureView];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -307,10 +229,10 @@
         CGFloat screenWidth = UIScreen.mainScreen.bounds.size.width;
         if (displayMode == UISplitViewControllerDisplayModeAllVisible) {
             cellContentWidth = ((screenWidth / 3) * 2) - 50;
-            [self.tableView reloadData];
+            [self.collectionView reloadData];
         } else if (displayMode == UISplitViewControllerDisplayModePrimaryHidden) {
             cellContentWidth = MIN(700, screenWidth  - 100);
-            [self.tableView reloadData];
+            [self.collectionView reloadData];
         }
     }
 }
@@ -338,15 +260,13 @@
     self.fetchedResultsController.delegate = nil;
 }
 
-#pragma mark - Table view data source
+#pragma mark - Collection view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSInteger result = 0;
     if (self.feed)
     {
@@ -368,10 +288,10 @@
     return [UIFont fontWithDescriptor:italic size:0.0f];
 }
 
-- (void)configureCell:(OCArticleCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(ArticleListCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     @try {
         Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
+        
         cell.mainCellViewWidthContraint.constant = cellContentWidth;
         cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
@@ -501,9 +421,17 @@
     return 154.0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    OCArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ArticleCell"];
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGRect bounds = [UIScreen mainScreen].bounds;
+    if (indexPath.section == 0) {
+        return CGSizeMake(bounds.size.width, 154.0);
+    } else {
+        return CGSizeZero;
+    }
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    ArticleListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCell" forIndexPath:indexPath];
     cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
@@ -511,23 +439,21 @@
 
 
 #pragma mark - Table view delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     currentIndex = indexPath.row;
-    Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Item *selectedItem = [fetchedItems objectAtIndex: currentIndex];
     if (selectedItem && selectedItem.myId) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
-        PHArticleManagerController *articleManagerController = [self.storyboard instantiateViewControllerWithIdentifier:@"ArticleManagerController"];
-        articleManagerController.articles = fetchedItems;
-        articleManagerController.articleIndex = currentIndex;
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
-        [self.navigationController pushViewController:articleManagerController animated:YES];
+        [self.navigationController pushViewController:self.articleManagerController animated:YES];
+        [self.articleManagerController navigateToPageAtIndex:currentIndex animated:NO completion:nil];
         if (selectedItem.unreadValue) {
             selectedItem.unreadValue = NO;
             [self updateUnreadCount:@[selectedItem.myId]];
         }
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -576,7 +502,7 @@
 
 - (IBAction)onMarkRead:(id)sender {
     markingAllItemsRead = YES;
-
+    
     if (self.folderId > 0) {
         [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFolder feedOrFolderId:@(self.folderId)];
     } else {
@@ -614,7 +540,7 @@
             __block long unreadCount = [self unreadCount];
             
             if (unreadCount > 0) {
-                NSArray * vCells = self.tableView.indexPathsForVisibleRows;
+                NSArray * vCells = self.collectionView.indexPathsForVisibleItems;
                 __block long row = 0;
                 
                 if (vCells.count > 0) {
@@ -682,6 +608,16 @@
 
 #pragma mark - Tap navigation
 
+- (ArticleManagerController *)articleManagerController {
+    if (!articleManagerController) {
+        articleManagerController = [self.storyboard instantiateViewControllerWithIdentifier:@"ArticleManagerController"];
+        articleManagerController.dataSource = self;
+        articleManagerController.delegate = self;
+        [articleManagerController setLayouter:[SCPageLayouter new] animated:NO completion:nil];
+    }
+    return articleManagerController;
+}
+
 - (UISwipeGestureRecognizer *) markGesture {
     if (!markGesture) {
         markGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleCellSwipe:)];
@@ -695,11 +631,11 @@
     //http://stackoverflow.com/a/14364085/2036378 (why it's sometimes a good idea to retrieve the cell)
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
         
-        CGPoint p = [gestureRecognizer locationInView:self.tableView];
+        CGPoint p = [gestureRecognizer locationInView:self.collectionView];
         
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
         if (indexPath == nil) {
-//            NSLog(@"swipe on table view but not on a row");
+            //            NSLog(@"swipe on table view but not on a row");
         } else {
             if (indexPath.section == 0) {
                 @try {
@@ -742,16 +678,16 @@
 
 - (void)drawerOpened:(NSNotification *)n {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NetworkError" object:nil];
-    self.tableView.scrollsToTop = NO;
+    self.collectionView.scrollsToTop = NO;
 }
 
 - (void)drawerClosed:(NSNotification *)n {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkError:) name:@"NetworkError" object:nil];
-    self.tableView.scrollsToTop = YES;
+    self.collectionView.scrollsToTop = YES;
 }
 
 - (void) networkCompleted:(NSNotification *)n {
-    [self.refreshControl endRefreshing];
+    [self.collectionView.refreshControl endRefreshing];
 }
 
 - (void)networkError:(NSNotification *)n {
@@ -771,37 +707,35 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [self.tableView beginUpdates];
+//    [self.collectionView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     
-    UITableView *tableView = self.tableView;
+    UICollectionView *collectionView = self.collectionView;
     
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:(OCArticleCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:(ArticleListCell*)[collectionView cellForItemAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray
-                                               arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray
-                                               arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            [collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
             break;
     }
 }
 
-
+/*
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
     switch(type) {
@@ -817,11 +751,11 @@
             break;
     }
 }
-
+*/
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [self.tableView endUpdates];
+//    [self.collectionView endUpdates];
     self.markBarButtonItem.enabled = ([self unreadCount] > 0);
 }
 
@@ -838,13 +772,41 @@
     return result;
 }
 
-
 - (IBAction)onSideGestureRecognizer:(id)sender {
-    if ([self.sideGestureRecognizer translationInView:self.tableView].x > 10) {
+    if ([self.sideGestureRecognizer translationInView:self.collectionView].x > 10) {
         [UIView animateWithDuration:0.3 animations:^{
             self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         } completion: nil];
     }
+}
+
+- (NSUInteger)numberOfPagesInPageViewController:(SCPageViewController *)pageViewController {
+    return fetchedItems.count;
+}
+
+- (UIViewController *)pageViewController:(SCPageViewController *)pageViewController viewControllerForPageAtIndex:(NSUInteger)pageIndex {
+    OCWebController *webController = [self.storyboard instantiateViewControllerWithIdentifier:@"WebController"];
+    webController.itemIndex = pageIndex;
+    Item *currentItem = [fetchedItems objectAtIndex:pageIndex];
+    webController.item = currentItem;
+    return webController;
+    
+//    if let webController = self.storyboard?.instantiateViewController(withIdentifier: "WebController") as? OCWebController {
+//        webController.itemIndex = UInt(pageIndex)
+//        let currentItem = self.articles[Int(pageIndex)]
+//        webController.item = currentItem
+//        if currentItem.unreadValue == true {
+//            currentItem.unreadValue = false
+//            let set = Set<NSNumber>([currentItem.myId])
+//            OCNewsHelper.shared().markItemsReadOffline(NSMutableSet(set: set))
+//        }
+//        return webController
+//        
+
+}
+
+- (NSUInteger)initialPageInPageViewController:(SCPageViewController *)pageViewController {
+    return currentIndex;
 }
 
 @end

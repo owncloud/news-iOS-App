@@ -38,7 +38,7 @@
 		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
-		D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */; };
+		D06CB21F179C887300A1310B /* ArticleListCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
 		D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
@@ -53,8 +53,8 @@
 		D0735DC31F83378A002D3AB3 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC01F83378A002D3AB3 /* KSCrash.framework */; };
 		D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC11F83378A002D3AB3 /* AFNetworking.framework */; };
 		D0735DC51F83378A002D3AB3 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC21F83378A002D3AB3 /* WebImage.framework */; };
-		D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */; };
 		D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */; };
+		D080971A210AAF3D00EDF207 /* ArticleManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0809719210AAF3D00EDF207 /* ArticleManagerController.swift */; };
 		D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D09B14A21C39E2A50019DB51 /* UIImageView+OCWebCache.m */; };
@@ -62,6 +62,18 @@
 		D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
 		D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
 		D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F5F18876CF700C6DA92 /* OCTextView.m */; };
+		D0B95CFC210E825300D1A2B8 /* SCCardsPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF0210E825200D1A2B8 /* SCCardsPageLayouter.m */; };
+		D0B95CFD210E825300D1A2B8 /* SCPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF2210E825200D1A2B8 /* SCPageLayouter.m */; };
+		D0B95CFE210E825300D1A2B8 /* SCParallaxPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF5210E825200D1A2B8 /* SCParallaxPageLayouter.m */; };
+		D0B95CFF210E825300D1A2B8 /* SCSlidingPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF7210E825200D1A2B8 /* SCSlidingPageLayouter.m */; };
+		D0B95D00210E825300D1A2B8 /* SCPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF9210E825200D1A2B8 /* SCPageViewController.m */; };
+		D0B95D01210E825300D1A2B8 /* SCPageViewControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CFB210E825200D1A2B8 /* SCPageViewControllerView.m */; };
+		D0B95D0C210E839E00D1A2B8 /* easing.c in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D03210E839E00D1A2B8 /* easing.c */; };
+		D0B95D0D210E839E00D1A2B8 /* SCEasingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D06210E839E00D1A2B8 /* SCEasingFunction.m */; };
+		D0B95D0E210E839E00D1A2B8 /* SCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D09210E839E00D1A2B8 /* SCScrollView.m */; };
+		D0B95D0F210E839F00D1A2B8 /* SCWeakObjectWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D0B210E839E00D1A2B8 /* SCWeakObjectWrapper.m */; };
+		D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */; };
+		D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D14211144A200D1A2B8 /* ArticleController.m */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -70,7 +82,7 @@
 		D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA35177900C400C965F4 /* OCAppDelegate.m */; };
 		D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* Main.storyboard */; };
 		D0BCAA681779091000C965F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA671779091000C965F4 /* QuartzCore.framework */; };
-		D0BCAA73177909A600C965F4 /* OCArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6A177909A500C965F4 /* OCArticleCell.m */; };
+		D0BCAA73177909A600C965F4 /* ArticleListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6A177909A500C965F4 /* ArticleListCell.m */; };
 		D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6C177909A500C965F4 /* OCArticleListController.m */; };
 		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
@@ -80,7 +92,7 @@
 		D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
 		D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABE21779119300C965F4 /* MessageUI.framework */; };
 		D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */; };
-		D0BCAC2A1780E02600C965F4 /* OCArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC291780E02500C965F4 /* OCArticleCell.xib */; };
+		D0BCAC2A1780E02600C965F4 /* ArticleListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC291780E02500C965F4 /* ArticleListCell.xib */; };
 		D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC301780E97200C965F4 /* OCArticleImage.m */; };
 		D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC42178104FC00C965F4 /* defaults.plist */; };
 		D0BCAC8A178104FC00C965F4 /* rss.css in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC5F178104FC00C965F4 /* rss.css */; };
@@ -141,7 +153,7 @@
 		D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcreposix.a; sourceTree = "<group>"; };
 		D0622FE418C29BD40032E622 /* News 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 5.xcdatamodel"; sourceTree = "<group>"; };
 		D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = News.xcmappingmodel; sourceTree = "<group>"; };
-		D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "OCArticleCell~iphone.xib"; sourceTree = "<group>"; };
+		D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ArticleListCell~iphone.xib"; sourceTree = "<group>"; };
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
 		D06CB22D17A06E4F00A1310B /* News.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = News.xcdatamodel; sourceTree = "<group>"; };
 		D06CB22F17A073A800A1310B /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
@@ -162,10 +174,10 @@
 		D0735DC01F83378A002D3AB3 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KSCrash.framework; path = Carthage/Build/iOS/KSCrash.framework; sourceTree = "<group>"; };
 		D0735DC11F83378A002D3AB3 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
 		D0735DC21F83378A002D3AB3 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
-		D0735DC71F8989A2002D3AB3 /* PHArticleManagerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHArticleManagerController.h; sourceTree = "<group>"; };
-		D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHArticleManagerController.m; sourceTree = "<group>"; };
 		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
 		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
+		D0809718210AAF3C00EDF207 /* iOCNews-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOCNews-Bridging-Header.h"; sourceTree = "<group>"; };
+		D0809719210AAF3D00EDF207 /* ArticleManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleManagerController.swift; sourceTree = "<group>"; };
 		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
 		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
 		D08D83B618161453005A75F0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -180,6 +192,32 @@
 		D0A33F571885B91B00C6DA92 /* OCBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCBadgeView.m; sourceTree = "<group>"; };
 		D0A33F5E18876CF700C6DA92 /* OCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTextView.h; sourceTree = "<group>"; };
 		D0A33F5F18876CF700C6DA92 /* OCTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTextView.m; sourceTree = "<group>"; };
+		D0B95CEF210E825200D1A2B8 /* SCCardsPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCardsPageLayouter.h; sourceTree = "<group>"; };
+		D0B95CF0210E825200D1A2B8 /* SCCardsPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCardsPageLayouter.m; sourceTree = "<group>"; };
+		D0B95CF1210E825200D1A2B8 /* SCPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageLayouter.h; sourceTree = "<group>"; };
+		D0B95CF2210E825200D1A2B8 /* SCPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPageLayouter.m; sourceTree = "<group>"; };
+		D0B95CF3210E825200D1A2B8 /* SCPageLayouterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageLayouterProtocol.h; sourceTree = "<group>"; };
+		D0B95CF4210E825200D1A2B8 /* SCParallaxPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCParallaxPageLayouter.h; sourceTree = "<group>"; };
+		D0B95CF5210E825200D1A2B8 /* SCParallaxPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCParallaxPageLayouter.m; sourceTree = "<group>"; };
+		D0B95CF6210E825200D1A2B8 /* SCSlidingPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSlidingPageLayouter.h; sourceTree = "<group>"; };
+		D0B95CF7210E825200D1A2B8 /* SCSlidingPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSlidingPageLayouter.m; sourceTree = "<group>"; };
+		D0B95CF8210E825200D1A2B8 /* SCPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageViewController.h; sourceTree = "<group>"; };
+		D0B95CF9210E825200D1A2B8 /* SCPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPageViewController.m; sourceTree = "<group>"; };
+		D0B95CFA210E825200D1A2B8 /* SCPageViewControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageViewControllerView.h; sourceTree = "<group>"; };
+		D0B95CFB210E825200D1A2B8 /* SCPageViewControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPageViewControllerView.m; sourceTree = "<group>"; };
+		D0B95D03210E839E00D1A2B8 /* easing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = easing.c; sourceTree = "<group>"; };
+		D0B95D04210E839E00D1A2B8 /* easing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easing.h; sourceTree = "<group>"; };
+		D0B95D05210E839E00D1A2B8 /* SCEasingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEasingFunction.h; sourceTree = "<group>"; };
+		D0B95D06210E839E00D1A2B8 /* SCEasingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCEasingFunction.m; sourceTree = "<group>"; };
+		D0B95D07210E839E00D1A2B8 /* SCEasingFunctionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEasingFunctionProtocol.h; sourceTree = "<group>"; };
+		D0B95D08210E839E00D1A2B8 /* SCScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScrollView.h; sourceTree = "<group>"; };
+		D0B95D09210E839E00D1A2B8 /* SCScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScrollView.m; sourceTree = "<group>"; };
+		D0B95D0A210E839E00D1A2B8 /* SCWeakObjectWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWeakObjectWrapper.h; sourceTree = "<group>"; };
+		D0B95D0B210E839E00D1A2B8 /* SCWeakObjectWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWeakObjectWrapper.m; sourceTree = "<group>"; };
+		D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseCollectionViewController.h; sourceTree = "<group>"; };
+		D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewController.m; sourceTree = "<group>"; };
+		D0B95D13211144A200D1A2B8 /* ArticleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleController.h; sourceTree = "<group>"; };
+		D0B95D14211144A200D1A2B8 /* ArticleController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArticleController.m; sourceTree = "<group>"; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -192,8 +230,8 @@
 		D0BCAA35177900C400C965F4 /* OCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCAppDelegate.m; sourceTree = "<group>"; };
 		D0BCAA49177903F500C965F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D0BCAA671779091000C965F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		D0BCAA69177909A500C965F4 /* OCArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCArticleCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D0BCAA6A177909A500C965F4 /* OCArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCArticleCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA69177909A500C965F4 /* ArticleListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ArticleListCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA6A177909A500C965F4 /* ArticleListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArticleListCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA6B177909A500C965F4 /* OCArticleListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCArticleListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA6C177909A500C965F4 /* OCArticleListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCArticleListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA6D177909A600C965F4 /* OCFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -209,7 +247,7 @@
 		D0BCABE21779119300C965F4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCAPIClient.h; sourceTree = "<group>"; };
 		D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCAPIClient.m; sourceTree = "<group>"; };
-		D0BCAC291780E02500C965F4 /* OCArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OCArticleCell.xib; sourceTree = "<group>"; };
+		D0BCAC291780E02500C965F4 /* ArticleListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArticleListCell.xib; sourceTree = "<group>"; };
 		D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCArticleImage.h; sourceTree = "<group>"; };
 		D0BCAC301780E97200C965F4 /* OCArticleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCArticleImage.m; sourceTree = "<group>"; };
 		D0BCAC42178104FC00C965F4 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = defaults.plist; sourceTree = "<group>"; };
@@ -338,9 +376,57 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
+		D0B95CED210E825200D1A2B8 /* SCPageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D0B95CEE210E825200D1A2B8 /* Layouters */,
+				D0B95CF8210E825200D1A2B8 /* SCPageViewController.h */,
+				D0B95CF9210E825200D1A2B8 /* SCPageViewController.m */,
+				D0B95CFA210E825200D1A2B8 /* SCPageViewControllerView.h */,
+				D0B95CFB210E825200D1A2B8 /* SCPageViewControllerView.m */,
+			);
+			name = SCPageViewController;
+			path = SCPageViewController/SCPageViewController;
+			sourceTree = "<group>";
+		};
+		D0B95CEE210E825200D1A2B8 /* Layouters */ = {
+			isa = PBXGroup;
+			children = (
+				D0B95CEF210E825200D1A2B8 /* SCCardsPageLayouter.h */,
+				D0B95CF0210E825200D1A2B8 /* SCCardsPageLayouter.m */,
+				D0B95CF1210E825200D1A2B8 /* SCPageLayouter.h */,
+				D0B95CF2210E825200D1A2B8 /* SCPageLayouter.m */,
+				D0B95CF3210E825200D1A2B8 /* SCPageLayouterProtocol.h */,
+				D0B95CF4210E825200D1A2B8 /* SCParallaxPageLayouter.h */,
+				D0B95CF5210E825200D1A2B8 /* SCParallaxPageLayouter.m */,
+				D0B95CF6210E825200D1A2B8 /* SCSlidingPageLayouter.h */,
+				D0B95CF7210E825200D1A2B8 /* SCSlidingPageLayouter.m */,
+			);
+			path = Layouters;
+			sourceTree = "<group>";
+		};
+		D0B95D02210E839E00D1A2B8 /* SCScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				D0B95D03210E839E00D1A2B8 /* easing.c */,
+				D0B95D04210E839E00D1A2B8 /* easing.h */,
+				D0B95D05210E839E00D1A2B8 /* SCEasingFunction.h */,
+				D0B95D06210E839E00D1A2B8 /* SCEasingFunction.m */,
+				D0B95D07210E839E00D1A2B8 /* SCEasingFunctionProtocol.h */,
+				D0B95D08210E839E00D1A2B8 /* SCScrollView.h */,
+				D0B95D09210E839E00D1A2B8 /* SCScrollView.m */,
+				D0B95D0A210E839E00D1A2B8 /* SCWeakObjectWrapper.h */,
+				D0B95D0B210E839E00D1A2B8 /* SCWeakObjectWrapper.m */,
+			);
+			name = SCScrollView;
+			path = SCScrollView/SCScrollView;
+			sourceTree = "<group>";
+		};
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
+				D0B95D02210E839E00D1A2B8 /* SCScrollView */,
+				D0B95CED210E825200D1A2B8 /* SCPageViewController */,
 				D0F94F8120AA777200833A7F /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,
@@ -411,14 +497,17 @@
 				D0BCAA6E177909A600C965F4 /* OCFeedCell.m */,
 				D0BCAA6F177909A600C965F4 /* OCFeedListController.h */,
 				D0BCAA70177909A600C965F4 /* OCFeedListController.m */,
-				D0BCAA69177909A500C965F4 /* OCArticleCell.h */,
-				D0BCAA6A177909A500C965F4 /* OCArticleCell.m */,
-				D0BCAC291780E02500C965F4 /* OCArticleCell.xib */,
-				D06CB21E179C887300A1310B /* OCArticleCell~iphone.xib */,
+				D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */,
+				D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */,
+				D0BCAA69177909A500C965F4 /* ArticleListCell.h */,
+				D0BCAA6A177909A500C965F4 /* ArticleListCell.m */,
+				D0BCAC291780E02500C965F4 /* ArticleListCell.xib */,
+				D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */,
 				D0BCAA6B177909A500C965F4 /* OCArticleListController.h */,
 				D0BCAA6C177909A500C965F4 /* OCArticleListController.m */,
-				D0735DC71F8989A2002D3AB3 /* PHArticleManagerController.h */,
-				D0735DC81F8989A2002D3AB3 /* PHArticleManagerController.m */,
+				D0B95D13211144A200D1A2B8 /* ArticleController.h */,
+				D0B95D14211144A200D1A2B8 /* ArticleController.m */,
+				D0809719210AAF3D00EDF207 /* ArticleManagerController.swift */,
 				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
 				D0BCAA71177909A600C965F4 /* OCWebController.h */,
@@ -445,6 +534,7 @@
 				D0BCAC38178104FB00C965F4 /* Resources */,
 				D08D83B618161453005A75F0 /* Settings.bundle */,
 				D0BF490C17E4DCF800CB9311 /* Images.xcassets */,
+				D0809718210AAF3C00EDF207 /* iOCNews-Bridging-Header.h */,
 			);
 			path = iOCNews;
 			sourceTree = "<group>";
@@ -577,6 +667,7 @@
 				TargetAttributes = {
 					D0BCAA21177900C300C965F4 = {
 						DevelopmentTeam = 73AQJ77PZ5;
+						LastSwiftMigration = 0940;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -653,13 +744,13 @@
 				D0F94F8C20AA777300833A7F /* RMessageDefaultDesign.json in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
-				D0BCAC2A1780E02600C965F4 /* OCArticleCell.xib in Resources */,
+				D0BCAC2A1780E02600C965F4 /* ArticleListCell.xib in Resources */,
 				D0F94F8D20AA777300833A7F /* RMessageView.xib in Resources */,
 				D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */,
 				D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */,
 				D0BCAC8A178104FC00C965F4 /* rss.css in Resources */,
 				D0BCAC8B178104FC00C965F4 /* rss.html in Resources */,
-				D06CB21F179C887300A1310B /* OCArticleCell~iphone.xib in Resources */,
+				D06CB21F179C887300A1310B /* ArticleListCell~iphone.xib in Resources */,
 				D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -724,25 +815,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */,
+				D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */,
+				D0B95CFC210E825300D1A2B8 /* SCCardsPageLayouter.m in Sources */,
 				D0BCAA32177900C400C965F4 /* main.m in Sources */,
+				D0B95D00210E825300D1A2B8 /* SCPageViewController.m in Sources */,
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
-				D0BCAA73177909A600C965F4 /* OCArticleCell.m in Sources */,
+				D0BCAA73177909A600C965F4 /* ArticleListCell.m in Sources */,
 				D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */,
+				D0B95D0F210E839F00D1A2B8 /* SCWeakObjectWrapper.m in Sources */,
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
+				D0B95D0D210E839E00D1A2B8 /* SCEasingFunction.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
 				D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D0F94F8F20AA777300833A7F /* RMessageView.m in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
+				D0B95D0C210E839E00D1A2B8 /* easing.c in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
+				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
+				D0B95CFE210E825300D1A2B8 /* SCParallaxPageLayouter.m in Sources */,
+				D0B95CFF210E825300D1A2B8 /* SCSlidingPageLayouter.m in Sources */,
 				D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */,
 				D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */,
 				D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */,
 				D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */,
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
 				D06CB23117A073AA00A1310B /* Feed.m in Sources */,
+				D0B95CFD210E825300D1A2B8 /* SCPageLayouter.m in Sources */,
 				D06CB23417A073C500A1310B /* Item.m in Sources */,
+				D080971A210AAF3D00EDF207 /* ArticleManagerController.swift in Sources */,
 				D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */,
 				D06CB23C17A1F88C00A1310B /* Feeds.m in Sources */,
 				D06CB24817A2EA9300A1310B /* _Feed.m in Sources */,
@@ -753,19 +855,20 @@
 				D06CB24A17A2EA9300A1310B /* _Item.m in Sources */,
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */,
+				D0B95D01210E825300D1A2B8 /* SCPageViewControllerView.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
 				D04AD6601807125600FF6056 /* Folder.m in Sources */,
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
+				D0B95D0E210E839E00D1A2B8 /* SCScrollView.m in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
 				D0F94F9220AA791300833A7F /* HexColors.m in Sources */,
 				D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */,
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
-				D0735DC91F8989A2002D3AB3 /* PHArticleManagerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -913,6 +1016,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -938,6 +1042,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				STRIP_STYLE = debugging;
+				SWIFT_OBJC_BRIDGING_HEADER = "iOCNews/iOCNews-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
@@ -949,6 +1056,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -974,6 +1082,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				STRIP_STYLE = debugging;
+				SWIFT_OBJC_BRIDGING_HEADER = "iOCNews/iOCNews-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
