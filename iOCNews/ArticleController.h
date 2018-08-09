@@ -7,7 +7,11 @@
 //
 
 #import "BaseCollectionViewController.h"
+#import "Item.h"
 
 @interface ArticleController : BaseCollectionViewController
+
+@property (nonatomic, strong) Item *selectedArticle;
+@property (nonatomic, assign) NSUInteger itemIndex;
 
 @end

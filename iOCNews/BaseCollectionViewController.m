@@ -11,6 +11,7 @@
 
 @interface BaseCollectionViewController () <NSFetchedResultsControllerDelegate> {
     BOOL hideRead;
+    NSMutableArray<NSBlockOperation *> *blockOperations;
 }
 
 @end
@@ -109,9 +110,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    blockOperations = [NSMutableArray<NSBlockOperation *> new];
     hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -171,55 +171,47 @@
 }
 */
 
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    //    [self.collectionView beginUpdates];
-}
-
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    UICollectionView *collectionView = self.collectionView;
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-//            [self configureCell:(OCArticleCell*)[collectionView cellForItemAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            [collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-            break;
+        __weak typeof(self) weakSelf = self;
+
+    if (type == NSFetchedResultsChangeInsert) {
+        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+            [weakSelf.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+        }];
+        [blockOperations addObject:operation];
+    }
+    if (type == NSFetchedResultsChangeDelete) {
+        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+            [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        }];
+        [blockOperations addObject:operation];
+    }
+    if (type == NSFetchedResultsChangeUpdate) {
+        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+            [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        }];
+        [blockOperations addObject:operation];
+    }
+    if (type == NSFetchedResultsChangeMove) {
+        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+            [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            [weakSelf.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+        }];
+        [blockOperations addObject:operation];
     }
 }
 
-/*
- - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
- 
- switch(type) {
- 
- case NSFetchedResultsChangeInsert:
- [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
- break;
- 
- case NSFetchedResultsChangeDelete:
- [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
- break;
- default:
- break;
- }
- }
- */
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.collectionView performBatchUpdates:^{
+            for (NSBlockOperation *operation in blockOperations) {
+                [operation start];
+            }
+        } completion:^(BOOL finished) {
+            [blockOperations removeAllObjects];
+        }];
+    });
 
-
+}
 
 @end

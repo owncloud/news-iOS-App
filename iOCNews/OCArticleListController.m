@@ -44,6 +44,7 @@
 #import "iOCNews-Swift.h"
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
+#import "ArticleController.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, SCPageViewControllerDataSource, SCPageViewControllerDelegate> {
     long currentIndex;
@@ -446,14 +447,25 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     if (selectedItem && selectedItem.myId) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
-        [self.navigationController pushViewController:self.articleManagerController animated:YES];
-        [self.articleManagerController navigateToPageAtIndex:currentIndex animated:NO completion:nil];
+        [self performSegueWithIdentifier:@"showArticleSegue" sender:selectedItem];
+//
+//        
+//        [self.navigationController pushViewController:self.articleManagerController animated:YES];
+//        [self.articleManagerController navigateToPageAtIndex:currentIndex animated:NO completion:nil];
         if (selectedItem.unreadValue) {
             selectedItem.unreadValue = NO;
             [self updateUnreadCount:@[selectedItem.myId]];
         }
     }
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showArticleSegue"]) {
+        ArticleController *articleController = (ArticleController *)segue.destinationViewController;
+        articleController.feed = self.feed;
+        articleController.selectedArticle = (Item *)sender;
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -705,6 +717,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                           canBeDismissedByUser:YES];
 }
 
+/*
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
 //    [self.collectionView beginUpdates];
@@ -735,7 +748,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
 }
 
-/*
+
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
     switch(type) {
@@ -751,14 +764,14 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             break;
     }
 }
-*/
+
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
 //    [self.collectionView endUpdates];
     self.markBarButtonItem.enabled = ([self unreadCount] > 0);
 }
-
+*/
 - (NSInteger)unreadCount {
     NSInteger result = 0;
     if (self.feed) {

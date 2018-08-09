@@ -74,6 +74,8 @@
 		D0B95D0F210E839F00D1A2B8 /* SCWeakObjectWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D0B210E839E00D1A2B8 /* SCWeakObjectWrapper.m */; };
 		D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */; };
 		D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D14211144A200D1A2B8 /* ArticleController.m */; };
+		D0B95D1921114A7B00D1A2B8 /* ArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */; };
+		D0B95D1A21114A7B00D1A2B8 /* ArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0B95D1821114A7B00D1A2B8 /* ArticleCell.xib */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -218,6 +220,9 @@
 		D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewController.m; sourceTree = "<group>"; };
 		D0B95D13211144A200D1A2B8 /* ArticleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleController.h; sourceTree = "<group>"; };
 		D0B95D14211144A200D1A2B8 /* ArticleController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArticleController.m; sourceTree = "<group>"; };
+		D0B95D1621114A7B00D1A2B8 /* ArticleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleCell.h; sourceTree = "<group>"; };
+		D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArticleCell.m; sourceTree = "<group>"; };
+		D0B95D1821114A7B00D1A2B8 /* ArticleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleCell.xib; sourceTree = "<group>"; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -507,6 +512,9 @@
 				D0BCAA6C177909A500C965F4 /* OCArticleListController.m */,
 				D0B95D13211144A200D1A2B8 /* ArticleController.h */,
 				D0B95D14211144A200D1A2B8 /* ArticleController.m */,
+				D0B95D1621114A7B00D1A2B8 /* ArticleCell.h */,
+				D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */,
+				D0B95D1821114A7B00D1A2B8 /* ArticleCell.xib */,
 				D0809719210AAF3D00EDF207 /* ArticleManagerController.swift */,
 				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
@@ -742,6 +750,7 @@
 				D0F94F8B20AA777300833A7F /* Icons.xcassets in Resources */,
 				D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */,
 				D0F94F8C20AA777300833A7F /* RMessageDefaultDesign.json in Resources */,
+				D0B95D1A21114A7B00D1A2B8 /* ArticleCell.xib in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
 				D0BCAC2A1780E02600C965F4 /* ArticleListCell.xib in Resources */,
@@ -834,6 +843,7 @@
 				D0B95D0C210E839E00D1A2B8 /* easing.c in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
+				D0B95D1921114A7B00D1A2B8 /* ArticleCell.m in Sources */,
 				D0B95CFE210E825300D1A2B8 /* SCParallaxPageLayouter.m in Sources */,
 				D0B95CFF210E825300D1A2B8 /* SCSlidingPageLayouter.m in Sources */,
 				D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */,

@@ -30,12 +30,12 @@
  
  *************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "BaseCollectionViewController.h"
 #import "OCWebController.h"
 #import "ArticleListCell.h"
 
-@interface OCArticleListController: BaseCollectionViewController <NSFetchedResultsControllerDelegate>
+@interface OCArticleListController: BaseCollectionViewController
 
 @property (strong, nonatomic) OCWebController *detailViewController;
 @property (nonatomic, strong, readonly) UIBarButtonItem *markBarButtonItem;
