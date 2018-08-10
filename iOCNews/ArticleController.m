@@ -41,6 +41,15 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     // Do any additional setup after loading the view.
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        NSLog(@"My width = %f", size.width);
+        NSIndexPath *currentIndexPath = [self.collectionView indexPathForCell:currentCell];
+        [self.collectionView reloadData];
+        self.collectionView.contentOffset = CGPointMake(size.width * currentIndexPath.item, 0);
+    }
+}
+
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
