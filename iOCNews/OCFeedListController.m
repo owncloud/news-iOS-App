@@ -476,9 +476,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                                 self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
                             } completion: nil];
                             feed = [self.specialFetchedResultsController objectAtIndexPath:indexPathTemp];
-                            if (self.folderId > 0) {
-                                self.detailViewController.folderId = self.folderId;
-                            }
+//                            if (self.folderId > 0) {
+//                                self.detailViewController.folderId = self.folderId;
+//                            }
                             self.detailViewController.feed = feed;
                             if (self.folderId > 0) {
                                 self.detailViewController.folderId = self.folderId;
@@ -526,8 +526,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 default:
                     break;
             }
-            self.detailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-            self.detailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+//            self.detailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+//            self.detailViewController.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
     if ([segue.identifier isEqualToString:@"feedSettings"]) {

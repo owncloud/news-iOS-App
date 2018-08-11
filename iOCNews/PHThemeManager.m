@@ -11,7 +11,6 @@
 #import "OCFeedListController.h"
 #import "OCFeedCell.h"
 #import "ArticleListCell.h"
-#import "iOCNews-Swift.h"
 
 @implementation UILabel (ThemeColor)
 

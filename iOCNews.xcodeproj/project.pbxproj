@@ -54,7 +54,6 @@
 		D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC11F83378A002D3AB3 /* AFNetworking.framework */; };
 		D0735DC51F83378A002D3AB3 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC21F83378A002D3AB3 /* WebImage.framework */; };
 		D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */; };
-		D080971A210AAF3D00EDF207 /* ArticleManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0809719210AAF3D00EDF207 /* ArticleManagerController.swift */; };
 		D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D09B14A21C39E2A50019DB51 /* UIImageView+OCWebCache.m */; };
@@ -62,12 +61,6 @@
 		D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
 		D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
 		D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F5F18876CF700C6DA92 /* OCTextView.m */; };
-		D0B95CFC210E825300D1A2B8 /* SCCardsPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF0210E825200D1A2B8 /* SCCardsPageLayouter.m */; };
-		D0B95CFD210E825300D1A2B8 /* SCPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF2210E825200D1A2B8 /* SCPageLayouter.m */; };
-		D0B95CFE210E825300D1A2B8 /* SCParallaxPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF5210E825200D1A2B8 /* SCParallaxPageLayouter.m */; };
-		D0B95CFF210E825300D1A2B8 /* SCSlidingPageLayouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF7210E825200D1A2B8 /* SCSlidingPageLayouter.m */; };
-		D0B95D00210E825300D1A2B8 /* SCPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CF9210E825200D1A2B8 /* SCPageViewController.m */; };
-		D0B95D01210E825300D1A2B8 /* SCPageViewControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95CFB210E825200D1A2B8 /* SCPageViewControllerView.m */; };
 		D0B95D0C210E839E00D1A2B8 /* easing.c in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D03210E839E00D1A2B8 /* easing.c */; };
 		D0B95D0D210E839E00D1A2B8 /* SCEasingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D06210E839E00D1A2B8 /* SCEasingFunction.m */; };
 		D0B95D0E210E839E00D1A2B8 /* SCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D09210E839E00D1A2B8 /* SCScrollView.m */; };
@@ -179,7 +172,6 @@
 		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
 		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
 		D0809718210AAF3C00EDF207 /* iOCNews-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOCNews-Bridging-Header.h"; sourceTree = "<group>"; };
-		D0809719210AAF3D00EDF207 /* ArticleManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleManagerController.swift; sourceTree = "<group>"; };
 		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
 		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
 		D08D83B618161453005A75F0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -194,19 +186,6 @@
 		D0A33F571885B91B00C6DA92 /* OCBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCBadgeView.m; sourceTree = "<group>"; };
 		D0A33F5E18876CF700C6DA92 /* OCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTextView.h; sourceTree = "<group>"; };
 		D0A33F5F18876CF700C6DA92 /* OCTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTextView.m; sourceTree = "<group>"; };
-		D0B95CEF210E825200D1A2B8 /* SCCardsPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCardsPageLayouter.h; sourceTree = "<group>"; };
-		D0B95CF0210E825200D1A2B8 /* SCCardsPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCardsPageLayouter.m; sourceTree = "<group>"; };
-		D0B95CF1210E825200D1A2B8 /* SCPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageLayouter.h; sourceTree = "<group>"; };
-		D0B95CF2210E825200D1A2B8 /* SCPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPageLayouter.m; sourceTree = "<group>"; };
-		D0B95CF3210E825200D1A2B8 /* SCPageLayouterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageLayouterProtocol.h; sourceTree = "<group>"; };
-		D0B95CF4210E825200D1A2B8 /* SCParallaxPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCParallaxPageLayouter.h; sourceTree = "<group>"; };
-		D0B95CF5210E825200D1A2B8 /* SCParallaxPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCParallaxPageLayouter.m; sourceTree = "<group>"; };
-		D0B95CF6210E825200D1A2B8 /* SCSlidingPageLayouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSlidingPageLayouter.h; sourceTree = "<group>"; };
-		D0B95CF7210E825200D1A2B8 /* SCSlidingPageLayouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSlidingPageLayouter.m; sourceTree = "<group>"; };
-		D0B95CF8210E825200D1A2B8 /* SCPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageViewController.h; sourceTree = "<group>"; };
-		D0B95CF9210E825200D1A2B8 /* SCPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPageViewController.m; sourceTree = "<group>"; };
-		D0B95CFA210E825200D1A2B8 /* SCPageViewControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPageViewControllerView.h; sourceTree = "<group>"; };
-		D0B95CFB210E825200D1A2B8 /* SCPageViewControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPageViewControllerView.m; sourceTree = "<group>"; };
 		D0B95D03210E839E00D1A2B8 /* easing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = easing.c; sourceTree = "<group>"; };
 		D0B95D04210E839E00D1A2B8 /* easing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easing.h; sourceTree = "<group>"; };
 		D0B95D05210E839E00D1A2B8 /* SCEasingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEasingFunction.h; sourceTree = "<group>"; };
@@ -381,35 +360,6 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		D0B95CED210E825200D1A2B8 /* SCPageViewController */ = {
-			isa = PBXGroup;
-			children = (
-				D0B95CEE210E825200D1A2B8 /* Layouters */,
-				D0B95CF8210E825200D1A2B8 /* SCPageViewController.h */,
-				D0B95CF9210E825200D1A2B8 /* SCPageViewController.m */,
-				D0B95CFA210E825200D1A2B8 /* SCPageViewControllerView.h */,
-				D0B95CFB210E825200D1A2B8 /* SCPageViewControllerView.m */,
-			);
-			name = SCPageViewController;
-			path = SCPageViewController/SCPageViewController;
-			sourceTree = "<group>";
-		};
-		D0B95CEE210E825200D1A2B8 /* Layouters */ = {
-			isa = PBXGroup;
-			children = (
-				D0B95CEF210E825200D1A2B8 /* SCCardsPageLayouter.h */,
-				D0B95CF0210E825200D1A2B8 /* SCCardsPageLayouter.m */,
-				D0B95CF1210E825200D1A2B8 /* SCPageLayouter.h */,
-				D0B95CF2210E825200D1A2B8 /* SCPageLayouter.m */,
-				D0B95CF3210E825200D1A2B8 /* SCPageLayouterProtocol.h */,
-				D0B95CF4210E825200D1A2B8 /* SCParallaxPageLayouter.h */,
-				D0B95CF5210E825200D1A2B8 /* SCParallaxPageLayouter.m */,
-				D0B95CF6210E825200D1A2B8 /* SCSlidingPageLayouter.h */,
-				D0B95CF7210E825200D1A2B8 /* SCSlidingPageLayouter.m */,
-			);
-			path = Layouters;
-			sourceTree = "<group>";
-		};
 		D0B95D02210E839E00D1A2B8 /* SCScrollView */ = {
 			isa = PBXGroup;
 			children = (
@@ -431,7 +381,6 @@
 			isa = PBXGroup;
 			children = (
 				D0B95D02210E839E00D1A2B8 /* SCScrollView */,
-				D0B95CED210E825200D1A2B8 /* SCPageViewController */,
 				D0F94F8120AA777200833A7F /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,
@@ -515,7 +464,6 @@
 				D0B95D1621114A7B00D1A2B8 /* ArticleCell.h */,
 				D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */,
 				D0B95D1821114A7B00D1A2B8 /* ArticleCell.xib */,
-				D0809719210AAF3D00EDF207 /* ArticleManagerController.swift */,
 				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
 				D0BCAA71177909A600C965F4 /* OCWebController.h */,
@@ -825,9 +773,7 @@
 			files = (
 				D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */,
 				D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */,
-				D0B95CFC210E825300D1A2B8 /* SCCardsPageLayouter.m in Sources */,
 				D0BCAA32177900C400C965F4 /* main.m in Sources */,
-				D0B95D00210E825300D1A2B8 /* SCPageViewController.m in Sources */,
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
 				D0BCAA73177909A600C965F4 /* ArticleListCell.m in Sources */,
 				D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */,
@@ -844,17 +790,13 @@
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
 				D0B95D1921114A7B00D1A2B8 /* ArticleCell.m in Sources */,
-				D0B95CFE210E825300D1A2B8 /* SCParallaxPageLayouter.m in Sources */,
-				D0B95CFF210E825300D1A2B8 /* SCSlidingPageLayouter.m in Sources */,
 				D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */,
 				D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */,
 				D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */,
 				D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */,
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
 				D06CB23117A073AA00A1310B /* Feed.m in Sources */,
-				D0B95CFD210E825300D1A2B8 /* SCPageLayouter.m in Sources */,
 				D06CB23417A073C500A1310B /* Item.m in Sources */,
-				D080971A210AAF3D00EDF207 /* ArticleManagerController.swift in Sources */,
 				D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */,
 				D06CB23C17A1F88C00A1310B /* Feeds.m in Sources */,
 				D06CB24817A2EA9300A1310B /* _Feed.m in Sources */,
@@ -865,7 +807,6 @@
 				D06CB24A17A2EA9300A1310B /* _Item.m in Sources */,
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */,
-				D0B95D01210E825300D1A2B8 /* SCPageViewControllerView.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
 				D04AD6601807125600FF6056 /* Folder.m in Sources */,

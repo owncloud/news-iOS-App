@@ -5,9 +5,3 @@
 #import "Item.h"
 #import "OCNewsHelper.h"
 #import "OCWebController.h"
-
-#import "SCPageViewController.h"
-
-#import "SCPageLayouter.h"
-#import "SCScrollView.h"
-#import "SCEasingFunction.h"

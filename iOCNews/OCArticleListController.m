@@ -41,12 +41,11 @@
 #import "Item.h"
 #import "objc/runtime.h"
 #import "UIImageView+OCWebCache.h"
-#import "iOCNews-Swift.h"
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
 #import "ArticleController.h"
 
-@interface OCArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, SCPageViewControllerDataSource, SCPageViewControllerDelegate> {
+@interface OCArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout> {
     long currentIndex;
     BOOL markingAllItemsRead;
     BOOL hideRead;
@@ -55,9 +54,9 @@
     CGFloat cellContentWidth;
 }
 
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *markBarButtonItem;
 @property (strong, nonatomic) IBOutlet UIScreenEdgePanGestureRecognizer *sideGestureRecognizer;
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
-@property (nonatomic, strong, readonly) ArticleManagerController *articleManagerController;
 
 - (void) configureView;
 - (void) updateUnreadCount:(NSArray*)itemsToUpdate;
@@ -71,11 +70,9 @@
 @implementation OCArticleListController
 
 @synthesize feedRefreshControl;
-@synthesize markBarButtonItem;
 @synthesize feed = _feed;
 @synthesize markGesture;
 @synthesize folderId;
-@synthesize articleManagerController;
 
 static NSString * const reuseIdentifier = @"ArticleCell";
 
@@ -171,7 +168,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     self.navigationItem.leftItemsSupplementBackButton = YES;
     self.navigationItem.rightBarButtonItem = self.markBarButtonItem;
     self.markBarButtonItem.enabled = NO;
-    self.folderId = 0;
+//    self.folderId = 0;
     [self.collectionView registerNib:[UINib nibWithNibName:@"ArticleListCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
     self.collectionView.scrollsToTop = NO;
     [self.collectionView addGestureRecognizer:self.markGesture];
@@ -443,7 +440,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     currentIndex = indexPath.row;
-    Item *selectedItem = [fetchedItems objectAtIndex: currentIndex];
+    Item *selectedItem = [self.fetchedResultsController.fetchedObjects objectAtIndex: currentIndex];
     if (selectedItem && selectedItem.myId) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -544,6 +541,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             }
         }];
     }
+    [self refresh];
 }
 
 - (void) markRowsRead {
@@ -608,27 +606,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
 }
 
-#pragma mark - Toolbar buttons
-
-- (UIBarButtonItem *)markBarButtonItem {
-    if (!markBarButtonItem) {
-        markBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mark"] style:UIBarButtonItemStylePlain target:self action:@selector(onMarkRead:)];
-        markBarButtonItem.imageInsets = UIEdgeInsetsMake(2.0f, 0.0f, -2.0f, 0.0f);
-    }
-    return markBarButtonItem;
-}
-
 #pragma mark - Tap navigation
-
-- (ArticleManagerController *)articleManagerController {
-    if (!articleManagerController) {
-        articleManagerController = [self.storyboard instantiateViewControllerWithIdentifier:@"ArticleManagerController"];
-        articleManagerController.dataSource = self;
-        articleManagerController.delegate = self;
-        [articleManagerController setLayouter:[SCPageLayouter new] animated:NO completion:nil];
-    }
-    return articleManagerController;
-}
 
 - (UISwipeGestureRecognizer *) markGesture {
     if (!markGesture) {
@@ -791,35 +769,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
         } completion: nil];
     }
-}
-
-- (NSUInteger)numberOfPagesInPageViewController:(SCPageViewController *)pageViewController {
-    return fetchedItems.count;
-}
-
-- (UIViewController *)pageViewController:(SCPageViewController *)pageViewController viewControllerForPageAtIndex:(NSUInteger)pageIndex {
-    OCWebController *webController = [self.storyboard instantiateViewControllerWithIdentifier:@"WebController"];
-    webController.itemIndex = pageIndex;
-    Item *currentItem = [fetchedItems objectAtIndex:pageIndex];
-    webController.item = currentItem;
-    return webController;
-    
-//    if let webController = self.storyboard?.instantiateViewController(withIdentifier: "WebController") as? OCWebController {
-//        webController.itemIndex = UInt(pageIndex)
-//        let currentItem = self.articles[Int(pageIndex)]
-//        webController.item = currentItem
-//        if currentItem.unreadValue == true {
-//            currentItem.unreadValue = false
-//            let set = Set<NSNumber>([currentItem.myId])
-//            OCNewsHelper.shared().markItemsReadOffline(NSMutableSet(set: set))
-//        }
-//        return webController
-//        
-
-}
-
-- (NSUInteger)initialPageInPageViewController:(SCPageViewController *)pageViewController {
-    return currentIndex;
 }
 
 @end

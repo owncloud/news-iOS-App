@@ -90,8 +90,15 @@
                             <outletCollection property="gestureRecognizers" destination="48A-Ka-8BA" appends="YES" id="0CW-3p-SeX"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Articles" id="JCw-8O-7t8"/>
+                    <navigationItem key="navigationItem" title="Articles" id="JCw-8O-7t8">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="mark" style="plain" id="amN-ub-wN6">
+                            <connections>
+                                <action selector="onMarkRead:" destination="9xT-UO-N4u" id="GD0-Aq-h67"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="markBarButtonItem" destination="amN-ub-wN6" id="unh-9w-e02"/>
                         <outlet property="sideGestureRecognizer" destination="48A-Ka-8BA" id="Fb5-U3-QSZ"/>
                     </connections>
                 </collectionViewController>
@@ -1212,6 +1219,7 @@
         <image name="lineheight_small" width="44" height="44"/>
         <image name="margin_narrow" width="44" height="44"/>
         <image name="margin_wide" width="44" height="44"/>
+        <image name="mark" width="24" height="44"/>
         <image name="menu" width="28" height="44"/>
         <image name="read" width="30" height="30"/>
         <image name="starred" width="30" height="30"/>

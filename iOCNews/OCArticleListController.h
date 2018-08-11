@@ -38,8 +38,8 @@
 @interface OCArticleListController: BaseCollectionViewController
 
 @property (strong, nonatomic) OCWebController *detailViewController;
-@property (nonatomic, strong, readonly) UIBarButtonItem *markBarButtonItem;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
+@property (nonatomic, assign) NSInteger folderId;
 
 - (void)refresh;
 - (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode;
