@@ -72,7 +72,6 @@
 @synthesize feedRefreshControl;
 @synthesize feed = _feed;
 @synthesize markGesture;
-@synthesize folderId;
 
 static NSString * const reuseIdentifier = @"ArticleCell";
 
@@ -461,6 +460,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     if ([segue.identifier isEqualToString:@"showArticleSegue"]) {
         ArticleController *articleController = (ArticleController *)segue.destinationViewController;
         articleController.feed = self.feed;
+        articleController.folderId = self.folderId;
         articleController.selectedArticle = (Item *)sender;
     }
 }

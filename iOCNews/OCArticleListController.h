@@ -39,7 +39,6 @@
 
 @property (strong, nonatomic) OCWebController *detailViewController;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
-@property (nonatomic, assign) NSInteger folderId;
 
 - (void)refresh;
 - (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode;
