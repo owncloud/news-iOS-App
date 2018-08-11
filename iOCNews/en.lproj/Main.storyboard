@@ -104,6 +104,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8bx-pN-eG9" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="48A-Ka-8BA">
+                    <rectEdge key="edges" left="YES"/>
                     <connections>
                         <action selector="onSideGestureRecognizer:" destination="9xT-UO-N4u" id="yxl-wK-gkp"/>
                     </connections>
