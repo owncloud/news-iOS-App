@@ -547,39 +547,32 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void) markRowsRead {
     @try {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
-            __block long unreadCount = [self unreadCount];
+            long unreadCount = [self unreadCount];
             
             if (unreadCount > 0) {
-                NSArray * vCells = self.collectionView.indexPathsForVisibleItems;
-                __block long row = 0;
-                
-                if (vCells.count > 0) {
-                    NSIndexPath *topCell = [vCells objectAtIndex:0];
-                    row = topCell.row;
-                    if (row > 0) {
-                        --row;
-                    }
-                }
-                
-                if (fetchedItems.count > 0) {
-                    NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                    NSInteger index = 0;
-                    for (Item *item in fetchedItems) {
-                        if (index > row) {
-                            break;
+                NSArray *visibleCells = self.collectionView.indexPathsForVisibleItems;
+                if (visibleCells.count > 0) {
+                    NSInteger topVisibleRow = [[visibleCells valueForKeyPath:@"@min.item"] integerValue];
+                    NSLog(@"Top row: %ld", topVisibleRow);
+                    if (self.fetchedResultsController.fetchedObjects.count > 0) {
+                        NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                        NSInteger index = 0;
+                        for (Item *item in self.fetchedResultsController.fetchedObjects) {
+                            if (index > topVisibleRow) {
+                                break;
+                            }
+                            if (item.unreadValue) {
+                                item.unreadValue = NO;
+                                [idsToMarkRead addObject:item.myId];
+                            }
+                            index += 1;
                         }
-                        if (item.unreadValue) {
-                            item.unreadValue = NO;
-                            [idsToMarkRead addObject:item.myId];
-                        }
-                        index += 1;
+                        unreadCount = unreadCount - [idsToMarkRead count];
+                        [self updateUnreadCount:idsToMarkRead];
+                        dispatch_main_async_safe(^{
+                            self.markBarButtonItem.enabled = (unreadCount > 0);
+                        });
                     }
-                    
-                    unreadCount = unreadCount - [idsToMarkRead count];
-                    [self updateUnreadCount:idsToMarkRead];
-                    dispatch_main_async_safe(^{
-                        self.markBarButtonItem.enabled = (unreadCount > 0);
-                    });
                 }
             }
         }
