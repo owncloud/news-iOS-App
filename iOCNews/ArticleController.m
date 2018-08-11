@@ -10,6 +10,7 @@
 
 #import "ArticleController.h"
 #import "ArticleCell.h"
+#import "OCNewsHelper.h"
 
 @interface ArticleController () <UICollectionViewDelegateFlowLayout, WKUIDelegate, WKNavigationDelegate> {
     ArticleCell *currentCell;
@@ -109,6 +110,12 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         cell.webView.navigationDelegate = self;
         cell.webView.UIDelegate = self;
         currentCell = cell;
+        Item *item = cell.item;
+        if (item.unreadValue) {
+            item.unreadValue = NO;
+            NSMutableSet *set = [NSMutableSet setWithObject:item.myId];
+            [[OCNewsHelper sharedHelper] markItemsReadOffline:set];
+        }
         [self updateNavigationItemTitle];
         [self updateToolbar];
     }
