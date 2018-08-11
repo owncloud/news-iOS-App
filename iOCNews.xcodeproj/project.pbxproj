@@ -61,10 +61,6 @@
 		D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
 		D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
 		D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F5F18876CF700C6DA92 /* OCTextView.m */; };
-		D0B95D0C210E839E00D1A2B8 /* easing.c in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D03210E839E00D1A2B8 /* easing.c */; };
-		D0B95D0D210E839E00D1A2B8 /* SCEasingFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D06210E839E00D1A2B8 /* SCEasingFunction.m */; };
-		D0B95D0E210E839E00D1A2B8 /* SCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D09210E839E00D1A2B8 /* SCScrollView.m */; };
-		D0B95D0F210E839F00D1A2B8 /* SCWeakObjectWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D0B210E839E00D1A2B8 /* SCWeakObjectWrapper.m */; };
 		D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */; };
 		D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D14211144A200D1A2B8 /* ArticleController.m */; };
 		D0B95D1921114A7B00D1A2B8 /* ArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */; };
@@ -186,15 +182,6 @@
 		D0A33F571885B91B00C6DA92 /* OCBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCBadgeView.m; sourceTree = "<group>"; };
 		D0A33F5E18876CF700C6DA92 /* OCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTextView.h; sourceTree = "<group>"; };
 		D0A33F5F18876CF700C6DA92 /* OCTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTextView.m; sourceTree = "<group>"; };
-		D0B95D03210E839E00D1A2B8 /* easing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = easing.c; sourceTree = "<group>"; };
-		D0B95D04210E839E00D1A2B8 /* easing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easing.h; sourceTree = "<group>"; };
-		D0B95D05210E839E00D1A2B8 /* SCEasingFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEasingFunction.h; sourceTree = "<group>"; };
-		D0B95D06210E839E00D1A2B8 /* SCEasingFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCEasingFunction.m; sourceTree = "<group>"; };
-		D0B95D07210E839E00D1A2B8 /* SCEasingFunctionProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEasingFunctionProtocol.h; sourceTree = "<group>"; };
-		D0B95D08210E839E00D1A2B8 /* SCScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScrollView.h; sourceTree = "<group>"; };
-		D0B95D09210E839E00D1A2B8 /* SCScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScrollView.m; sourceTree = "<group>"; };
-		D0B95D0A210E839E00D1A2B8 /* SCWeakObjectWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCWeakObjectWrapper.h; sourceTree = "<group>"; };
-		D0B95D0B210E839E00D1A2B8 /* SCWeakObjectWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCWeakObjectWrapper.m; sourceTree = "<group>"; };
 		D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseCollectionViewController.h; sourceTree = "<group>"; };
 		D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewController.m; sourceTree = "<group>"; };
 		D0B95D13211144A200D1A2B8 /* ArticleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleController.h; sourceTree = "<group>"; };
@@ -360,27 +347,9 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		D0B95D02210E839E00D1A2B8 /* SCScrollView */ = {
-			isa = PBXGroup;
-			children = (
-				D0B95D03210E839E00D1A2B8 /* easing.c */,
-				D0B95D04210E839E00D1A2B8 /* easing.h */,
-				D0B95D05210E839E00D1A2B8 /* SCEasingFunction.h */,
-				D0B95D06210E839E00D1A2B8 /* SCEasingFunction.m */,
-				D0B95D07210E839E00D1A2B8 /* SCEasingFunctionProtocol.h */,
-				D0B95D08210E839E00D1A2B8 /* SCScrollView.h */,
-				D0B95D09210E839E00D1A2B8 /* SCScrollView.m */,
-				D0B95D0A210E839E00D1A2B8 /* SCWeakObjectWrapper.h */,
-				D0B95D0B210E839E00D1A2B8 /* SCWeakObjectWrapper.m */,
-			);
-			name = SCScrollView;
-			path = SCScrollView/SCScrollView;
-			sourceTree = "<group>";
-		};
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
-				D0B95D02210E839E00D1A2B8 /* SCScrollView */,
 				D0F94F8120AA777200833A7F /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,
@@ -777,16 +746,13 @@
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
 				D0BCAA73177909A600C965F4 /* ArticleListCell.m in Sources */,
 				D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */,
-				D0B95D0F210E839F00D1A2B8 /* SCWeakObjectWrapper.m in Sources */,
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
-				D0B95D0D210E839E00D1A2B8 /* SCEasingFunction.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
 				D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D0F94F8F20AA777300833A7F /* RMessageView.m in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
-				D0B95D0C210E839E00D1A2B8 /* easing.c in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
 				D0B95D1921114A7B00D1A2B8 /* ArticleCell.m in Sources */,
@@ -813,7 +779,6 @@
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
-				D0B95D0E210E839E00D1A2B8 /* SCScrollView.m in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
 				D0F94F9220AA791300833A7F /* HexColors.m in Sources */,
 				D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */,

@@ -6,6 +6,8 @@
 //  Copyright © 2017 Peter Hedlund. All rights reserved.
 //
 
+@import WebKit;
+
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
 #import "OCFeedListController.h"
@@ -79,7 +81,7 @@
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCWebController class]]] setBackgroundColor:[UIColor clearColor]];
+//    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCWebController class]]] setBackgroundColor:[UIColor clearColor]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[WKWebView class]]] setBackgroundColor:[UIColor clearColor]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewHeaderFooterView class]]] setBackgroundColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
 

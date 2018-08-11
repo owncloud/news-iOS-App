@@ -32,12 +32,10 @@
 
 @import UIKit;
 #import "BaseCollectionViewController.h"
-#import "OCWebController.h"
 #import "ArticleListCell.h"
 
 @interface OCArticleListController: BaseCollectionViewController
 
-@property (strong, nonatomic) OCWebController *detailViewController;
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
 - (void)refresh;
