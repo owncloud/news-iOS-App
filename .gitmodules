@@ -7,6 +7,3 @@
 [submodule "RMessage"]
 	path = RMessage
 	url = https://github.com/donileo/RMessage.git
-[submodule "SCScrollView"]
-	path = SCScrollView
-	url = https://github.com/stefanceriu/SCScrollView.git
