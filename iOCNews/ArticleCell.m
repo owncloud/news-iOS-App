@@ -13,22 +13,14 @@
 #import "readable.h"
 #import <BRYHTMLParser/BRYHTMLParser.h>
 
-@interface ArticleCell () {
-//    BOOL _menuIsOpen;
-//    int _swipeDirection;
-//    BOOL loadingComplete;
-//    BOOL loadingSummary;
-}
-
-@property (assign, nonatomic) BOOL isVisible;
-//@property (nonatomic, strong, readonly) PHPrefViewController *settingsViewController;
-@property (nonatomic, strong, readonly) UIPopoverPresentationController *settingsPresentationController;
+@interface ArticleCell ()
 
 - (void)configureView;
-- (void) writeAndLoadHtml:(NSString*)html;
+- (void) writeAndLoadHtml:(NSString*)html feed:(Feed *)feed;
 - (NSString *)replaceYTIframe:(NSString *)html;
 - (NSString *)extractYoutubeVideoID:(NSString *)urlYoutube;
-- (UIColor*)myBackgroundColor;
+
+@property (strong, nonatomic) WKWebViewConfiguration *webConfig;
 
 @end
 
@@ -36,26 +28,42 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    WKWebViewConfiguration *webConfig = [WKWebViewConfiguration new];
-    webConfig.allowsInlineMediaPlayback = YES;
-    webConfig.requiresUserActionForMediaPlayback = YES;
-    
-    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfig];
-    _webView.customUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
-//    _webView.navigationDelegate = self;
-//    _webView.UIDelegate = self;
-    _webView.opaque = NO;
-    _webView.backgroundColor = [UIColor clearColor];
-    [self.contentView addSubview:_webView];
-    
-    _webView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_webView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_webView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_webView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_webView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-    [self configureView];
+}
+
+- (WKWebViewConfiguration *)webConfig {
+    if (!_webConfig) {
+        _webConfig = [WKWebViewConfiguration new];
+        _webConfig.allowsInlineMediaPlayback = YES;
+        _webConfig.requiresUserActionForMediaPlayback = YES;
+    }
+    return _webConfig;
+}
+
+- (WKWebView *)webView {
+    if (!_webView) {
+        _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:self.webConfig];
+        _webView.customUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
+        _webView.opaque = NO;
+        _webView.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:_webView];
+        
+        _webView.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_webView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_webView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+        
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_webView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_webView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
+    }
+    return _webView;
+}
+
+- (void)prepareForReuse {
+//    self.item = nil;
+    [self.webView removeFromSuperview];
+    self.webView.navigationDelegate = nil;
+    self.webView.UIDelegate = nil;
+    self.webView = nil;
 }
 
 - (void)setItem:(Item *)item {
@@ -67,16 +75,12 @@
 {
     @try {
         if (_item) {
-//            self.automaticallyAdjustsScrollViewInsets = NO;
-//
-//            [self updateNavigationItemTitle];
-            
             Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
             
             if (feed.preferWebValue) {
                 if (feed.useReaderValue) {
                     if (self.item.readable) {
-                        [self writeAndLoadHtml:self.item.readable];
+                        [self writeAndLoadHtml:self.item.readable feed:feed];
                     } else {
                         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
                         [[OCAPIClient sharedClient] GET:self.item.url parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -102,18 +106,17 @@
                                 html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
                                 html = [html stringByAppendingString:self.item.body];
                             }
-                            [self writeAndLoadHtml:html];
+                            [self writeAndLoadHtml:html feed:feed];
                             
                         } failure:^(NSURLSessionDataTask *task, NSError *error) {
                             NSString *html = @"<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>";
                             if (self.item.body != nil) {
                                 html = [html stringByAppendingString:self.item.body];
                             }
-                            [self writeAndLoadHtml:html];
+                            [self writeAndLoadHtml:html feed:feed];
                         }];
                     }
                 } else {
-//                    loadingSummary = NO;
                     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.item.url]]];
                 }
             } else {
@@ -126,7 +129,7 @@
                     }
                 }
                 html = [self fixRelativeUrl:html baseUrlString:baseString];
-                [self writeAndLoadHtml:html];
+                [self writeAndLoadHtml:html feed:feed];
             }
         }
         
@@ -139,7 +142,7 @@
     }
 }
 
-- (void)writeAndLoadHtml:(NSString *)html {
+- (void)writeAndLoadHtml:(NSString *)html feed:(Feed *)feed {
     html = [self replaceYTIframe:html];
     NSURL *source = [[NSBundle mainBundle] URLForResource:@"rss" withExtension:@"html" subdirectory:nil];
     NSString *objectHtml = [NSString stringWithContentsOfURL:source encoding:NSUTF8StringEncoding error:nil];
@@ -156,7 +159,6 @@
         }
     }
     
-    Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:self.item.feedId];
     if (feed && feed.title) {
         objectHtml = [objectHtml stringByReplacingOccurrencesOfString:@"$FeedTitle$" withString:feed.title];
     }
@@ -198,7 +200,6 @@
     HTMLParser *parser = [[HTMLParser alloc] initWithString:htmlString error:&error];
     
     if (error) {
-        //NSLog(@"Error: %@", error);
         return result;
     }
     
@@ -237,14 +238,12 @@
     return result;
 }
 
-
 - (NSString *)createYoutubeItem:(Item *)item {
     __block NSString *result = item.body;
     NSError *error = nil;
     HTMLParser *parser = [[HTMLParser alloc] initWithString:item.body error:&error];
     
     if (error) {
-        //        NSLog(@"Error: %@", error);
         return item.body;
     }
     
@@ -256,8 +255,6 @@
         if (inputNode) {
             NSString *videoID = [self extractYoutubeVideoID:item.url];
             if (videoID) {
-                //                    NSLog(@"Raw: %@", [inputNode rawContents]);
-                
                 NSString *height = [inputNode getAttributeNamed:@"height"];
                 NSString *width = [inputNode getAttributeNamed:@"width"];
                 NSString *heightString = @"";
@@ -271,7 +268,6 @@
                 NSString *embed = [NSString stringWithFormat:@"<embed class=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
                 result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
             }
-            
         }
     }];
     return result;
@@ -283,7 +279,6 @@
     HTMLParser *parser = [[HTMLParser alloc] initWithString:html error:&error];
     
     if (error) {
-        //        NSLog(@"Error: %@", error);
         return html;
     }
     
@@ -297,8 +292,6 @@
             if (src && [src rangeOfString:@"youtu"].location != NSNotFound) {
                 NSString *videoID = [self extractYoutubeVideoID:src];
                 if (videoID) {
-                    //                    NSLog(@"Raw: %@", [inputNode rawContents]);
-                    
                     NSString *height = [inputNode getAttributeNamed:@"height"];
                     NSString *width = [inputNode getAttributeNamed:@"width"];
                     NSString *heightString = @"";
@@ -335,7 +328,6 @@
     
     return result;
 }
-
 
 //based on https://gist.github.com/rais38/4683817
 /**

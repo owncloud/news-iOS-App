@@ -13,6 +13,8 @@
 #import "OCFeedListController.h"
 #import "OCFeedCell.h"
 #import "ArticleListCell.h"
+#import "ArticleController.h"
+#import "ArticleCell.h"
 
 @implementation UILabel (ThemeColor)
 
@@ -81,11 +83,10 @@
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
-//    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCWebController class]]] setBackgroundColor:[UIColor clearColor]];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[WKWebView class]]] setBackgroundColor:[UIColor clearColor]];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewHeaderFooterView class]]] setBackgroundColor:[kPHPopoverButtonColorArray objectAtIndex:currentTheme]];
 
-    [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[[OCArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[[ArticleController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
     [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
 
     [UIScrollView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];

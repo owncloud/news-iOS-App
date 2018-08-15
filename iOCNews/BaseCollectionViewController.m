@@ -187,10 +187,16 @@
         [blockOperations addObject:operation];
     }
     if (type == NSFetchedResultsChangeUpdate) {
-        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-            [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-        }];
-        [blockOperations addObject:operation];
+//        for (NSIndexPath *visibleIndexPath in weakSelf.collectionView.indexPathsForVisibleItems) {
+//            if ([visibleIndexPath isEqual:indexPath]) {
+//                //
+//            } else {
+//                NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+//                    [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+//                }];
+//                [blockOperations addObject:operation];
+//            }
+//        }
     }
     if (type == NSFetchedResultsChangeMove) {
         NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
