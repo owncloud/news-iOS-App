@@ -447,16 +447,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             }
         }
     }
-    
-//    if (self.folderId > 0) {
-//        [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFolder feedOrFolderId:self.folderId];
-//    } else {
-//        if (self.feed.myId == -2) {
-//            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeAll feedOrFolderId:0];
-//        } else {
-//            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFeed feedOrFolderId:self.feed.myId];
-//        }
-//    }
+
     self.markBarButtonItem.enabled = NO;
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
         [self.navigationController.navigationController popToRootViewControllerAnimated:YES];
@@ -478,7 +469,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         }];
     }
     [self updateUnreadCount:idsToMarkRead];
-//    [self refresh];
 }
 
 - (void) markRowsRead {

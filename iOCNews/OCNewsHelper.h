@@ -94,7 +94,6 @@ typedef NS_ENUM(NSInteger, OCUpdateType) {
 - (void)moveFeedOfflineWithId:(NSInteger)aFeedId toFolderWithId:(NSInteger)aFolderId;
 - (void)renameFeedOfflineWithId:(NSInteger)anId To:(NSString*)newName;
 - (void)markItemsReadOffline:(NSMutableSet*)itemIds;
-- (void)markAllItemsRead:(OCUpdateType)updateType feedOrFolderId:(NSInteger)feedOrFolderId;
 - (void)markItemUnreadOffline:(NSInteger)itemId;
 - (void)starItemOffline:(NSInteger)itemId;
 - (void)unstarItemOffline:(NSInteger)itemId;
