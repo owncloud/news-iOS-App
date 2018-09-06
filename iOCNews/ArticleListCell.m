@@ -33,6 +33,12 @@
 #import "ArticleListCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+PHColor.h"
+#import "NSString+HTML.h"
+#import "OCNewsHelper.h"
+#import "Feed+CoreDataClass.h"
+#import "PHThemeManager.h"
+#import "OCArticleImage.h"
+#import "UIImageView+OCWebCache.h"
 
 @implementation ArticleListCell
 
@@ -74,5 +80,165 @@
 //    }
 //}
 //
+
+//- (void)prepareForReuse {
+//    self.articleImage.image = nil;
+//    self.articleImage.hidden = NO;
+//    self.thumbnailContainerWidthConstraint.constant = self.articleImage.frame.size.width;
+//    self.articleImageWidthConstraint.constant = self.articleImage.frame.size.width;
+//    self.contentContainerLeadingConstraint.constant = self.articleImage.frame.size.width;
+//}
+
+- (void)layoutSubviews {
+    if (self.item) {
+        if (self.item.imageLink) {
+            self.articleImage.hidden = NO;
+            self.thumbnailContainerWidthConstraint.constant = self.articleImage.frame.size.width;
+            self.articleImageWidthConstraint.constant = self.articleImage.frame.size.width;
+            self.contentContainerLeadingConstraint.constant = self.articleImage.frame.size.width;
+        } else {
+            self.articleImage.hidden = YES;
+            self.thumbnailContainerWidthConstraint.constant = 0.0;
+            self.articleImageWidthConstraint.constant = 0.0;
+            self.contentContainerLeadingConstraint.constant = 0.0;
+        }
+    }
+    [super layoutSubviews];
+}
+
+- (void)setItem:(Item *)item {
+    _item = item;
+    [self configureView];
+}
+
+- (void)configureView {
+    self.mainCellViewWidthContraint.constant = self.contentWidth;
+    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    self.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    
+    self.titleLabel.text = [_item.title stringByConvertingHTMLToPlainText];
+    NSString *dateLabelText = @"";
+    
+    NSNumber *dateNumber = @(_item.pubDate);
+    if (![dateNumber isKindOfClass:[NSNull class]]) {
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dateNumber doubleValue]];
+        if (date) {
+            NSLocale *currentLocale = [NSLocale currentLocale];
+            NSString *dateComponents = @"MMM d";
+            NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:currentLocale];
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            dateFormat.dateFormat = dateFormatString;
+            dateLabelText = [dateLabelText stringByAppendingString:[dateFormat stringFromDate:date]];
+        }
+    }
+    if (dateLabelText.length > 0) {
+        dateLabelText = [dateLabelText stringByAppendingString:@" | "];
+    }
+    
+    NSString *author = _item.author;
+    if (![author isKindOfClass:[NSNull class]]) {
+        if (author.length > 0) {
+            const int clipLength = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 50 : 25;
+            if([author length] > clipLength) {
+                dateLabelText = [dateLabelText stringByAppendingString:[NSString stringWithFormat:@"%@...",[author substringToIndex:clipLength]]];
+            } else {
+                dateLabelText = [dateLabelText stringByAppendingString:author];
+            }
+        }
+    }
+    Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:_item.feedId];
+    if (feed) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
+            //                if (cell.tag == indexPath.row) {
+            [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId imageView: self.favIconImage];
+            self.favIconImage.hidden = NO;
+            self.dateLabelLeadingConstraint.constant = 21;
+            //                }
+        }
+        else {
+            self.favIconImage.hidden = YES;
+            self.dateLabelLeadingConstraint.constant = 0.0;
+        }
+        
+        if (feed.title && ![feed.title isEqualToString:author]) {
+            if (author.length > 0) {
+                dateLabelText = [dateLabelText stringByAppendingString:@" | "];
+            }
+            dateLabelText = [dateLabelText stringByAppendingString:feed.title];
+        }
+    }
+    self.dateLabel.text = dateLabelText;
+    
+    NSString *summary = _item.body;
+    if ([summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        if ([summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            NSRange r;
+            r.location = [summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location;
+            r.length = [summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location - r.location + 8;
+            NSString *sub = [summary substringWithRange:r];
+            summary = [summary stringByReplacingOccurrencesOfString:sub withString:@""];
+        }
+    }
+    self.summaryLabel.text = [summary stringByConvertingHTMLToPlainText];
+    self.starImage.image = nil;
+    if (_item.starred) {
+        self.starImage.image = [UIImage imageNamed:@"star_icon"];
+    }
+    if (_item.unread == YES) {
+        [self.summaryLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
+        [self.titleLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
+        [self.dateLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
+        self.articleImage.alpha = 1.0f;
+        self.favIconImage.alpha = 1.0f;
+    } else {
+        [self.summaryLabel setThemeTextColor:[UIColor readTextColor]];
+        [self.titleLabel setThemeTextColor:[UIColor readTextColor]];
+        [self.dateLabel setThemeTextColor:[UIColor readTextColor]];
+        self.articleImage.alpha = 0.4f;
+        self.favIconImage.alpha = 0.4f;
+    }
+    self.summaryLabel.highlightedTextColor = self.summaryLabel.textColor;
+    self.titleLabel.highlightedTextColor = self.titleLabel.textColor;
+    self.dateLabel.highlightedTextColor = self.dateLabel.textColor;
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
+//        NSString *urlString = [OCArticleImage findImage:summary];
+//        if (urlString) {
+//            //                if (self.tag == indexPath.row) {
+//            //                    dispatch_main_async_safe(^{
+//            self.articleImage.hidden = NO;
+//            self.thumbnailContainerWidthConstraint.constant = self.articleImage.frame.size.width;
+//            self.articleImageWidthConstraint.constant = self.articleImage.frame.size.width;
+//            self.contentContainerLeadingConstraint.constant = self.articleImage.frame.size.width;
+//            [self.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
+//            //                    });
+//            //                }
+//        } else {
+//            self.articleImage.hidden = YES;
+//            self.thumbnailContainerWidthConstraint.constant = 0.0;
+//            self.articleImageWidthConstraint.constant = 0.0;
+//            self.contentContainerLeadingConstraint.constant = 0.0;
+//        }
+//    } else {
+//        self.articleImage.hidden = YES;
+//        self.thumbnailContainerWidthConstraint.constant = 0.0;
+//        self.articleImageWidthConstraint.constant = 0.0;
+//        self.contentContainerLeadingConstraint.constant = 0.0;
+//    }
+    self.highlighted = NO;
+//    [self setNeedsLayout];
+}
+
+- (UIFont*) makeItalic:(UIFont*)font {
+    UIFontDescriptor *desc = font.fontDescriptor;
+    UIFontDescriptor *italic = [desc fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
+    return [UIFont fontWithDescriptor:italic size:0.0f];
+}
+
+- (UIFont*) makeSmaller:(UIFont*)font {
+    UIFontDescriptor *desc = font.fontDescriptor;
+    UIFontDescriptor *italic = [desc fontDescriptorWithSize:desc.pointSize - 1];
+    return [UIFont fontWithDescriptor:italic size:0.0f];
+}
 
 @end

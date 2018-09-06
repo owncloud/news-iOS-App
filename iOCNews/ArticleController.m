@@ -9,15 +9,15 @@
 @import WebKit;
 
 #import "ArticleController.h"
-#import "ArticleCell.h"
 #import "OCNewsHelper.h"
 #import "OCSharingProvider.h"
 #import "PHPrefViewController.h"
 #import "UIColor+PHColor.h"
 #import <TUSafariActivity/TUSafariActivity.h>
+#import "iOCNews-Swift.h"
 
 @interface ArticleController () <UICollectionViewDelegateFlowLayout, WKUIDelegate, WKNavigationDelegate, PHPrefViewControllerDelegate, UIPopoverPresentationControllerDelegate> {
-    ArticleCell *currentCell;
+    ArticleCellWithWebView *currentCell;
     BOOL shouldScrollToInitialArticle;
     BOOL loadingComplete;
     BOOL loadingSummary;
@@ -46,7 +46,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
-    [self.collectionView registerNib:[UINib nibWithNibName:@"ArticleCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];// Nib:[UINib nibWithNibName:@"ArticleCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
     [self.fetchedResultsController performFetch:nil];
     [self writeCss];
 }
@@ -73,7 +73,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ArticleCell *articleCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    ArticleCellWithWebView *articleCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithWebView" forIndexPath:indexPath];
     // Configure the cell
     Item *cellItem = (Item *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     articleCell.item = cellItem;
@@ -102,7 +102,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             NSUInteger initialIndex = [articles indexOfObject:self.selectedArticle];
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:initialIndex inSection:0];
             [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
-            currentCell = (ArticleCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+            currentCell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
             [self updateNavigationItemTitle];
         }
         shouldScrollToInitialArticle = NO;
@@ -114,16 +114,17 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         CGFloat currentPage = self.collectionView.contentOffset.x / self.collectionView.frame.size.width;
         //        NSLog(@"Current page: %f", ceil(currentPage));
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:currentPage inSection:0];
-        ArticleCell *cell = (ArticleCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        cell.webView.navigationDelegate = self;
-        cell.webView.UIDelegate = self;
-        currentCell = cell;
+        ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
+//        cell.webView.navigationDelegate = self;
+//        cell.webView.UIDelegate = self;
+//        currentCell = cell;
         Item *item = cell.item;
-        if (item.unreadValue) {
-            item.unreadValue = NO;
-            NSMutableSet *set = [NSMutableSet setWithObject:item.myId];
+        if (item.unread) {
+            item.unread = NO;
+            NSMutableSet *set = [NSMutableSet setWithObject:@(item.myId)];
             [[OCNewsHelper sharedHelper] markItemsReadOffline:set];
         }
+        [self.articleListcontroller.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         [self updateNavigationItemTitle];
         [self updateToolbar];
     }
@@ -309,8 +310,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)settingsChanged:(NSString *)setting newValue:(NSUInteger)value {
     BOOL starred = [[NSUserDefaults standardUserDefaults] boolForKey:@"Starred"];
-    if (starred != currentCell.item.starredValue) {
-        currentCell.item.starredValue = starred;
+    if (starred != currentCell.item.starred) {
+        currentCell.item.starred = starred;
         if (starred) {
             [[OCNewsHelper sharedHelper] starItemOffline:currentCell.item.myId];
         } else {
@@ -319,12 +320,12 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
     
     BOOL unread = [[NSUserDefaults standardUserDefaults] boolForKey:@"Unread"];
-    if (unread != currentCell.item.unreadValue) {
-        currentCell.item.unreadValue = unread;
+    if (unread != currentCell.item.unread) {
+        currentCell.item.unread = unread;
         if (unread) {
             [[OCNewsHelper sharedHelper] markItemUnreadOffline:currentCell.item.myId];
         } else {
-            [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithObject:currentCell.item.myId]];
+            [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithObject:@(currentCell.item.myId)]];
         }
     }
     
@@ -336,11 +337,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (BOOL)starred {
-    return currentCell.item.starredValue;
+    return currentCell.item.starred;
 }
 
 - (BOOL)unread {
-    return currentCell.item.unreadValue;
+    return currentCell.item.unread;
 }
 
 - (UIColor*)myBackgroundColor {

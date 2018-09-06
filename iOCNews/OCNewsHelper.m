@@ -32,7 +32,8 @@
 
 #import "OCNewsHelper.h"
 #import "OCAPIClient.h"
-#import "Feeds.h"
+#import "OCArticleImage.h"
+#import "Feeds+CoreDataClass.h"
 #import "NSDictionary+HandleNull.h"
 #import <AFNetworking/AFNetworking.h>
 #import <WebImage/SDWebImageDownloader.h>
@@ -58,11 +59,11 @@
 - (int)addFolderFromDictionary:(NSDictionary*)dict;
 - (int)addFeedFromDictionary:(NSDictionary*)dict;
 - (void)addItemFromDictionary:(NSDictionary*)dict;
-- (NSNumber*)folderLastModified:(NSNumber*)folderId;
-- (NSNumber*)feedLastModified:(NSNumber*)feedId;
+- (NSInteger)folderLastModified:(NSInteger)folderId;
+- (NSInteger)feedLastModified:(NSInteger)feedId;
 - (void)updateItemsFirstTime;
-- (void)updateItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId;
-- (void)updateFeedItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId;
+- (void)updateItemsWithLastModified:(NSInteger)lastMod type:(NSInteger)aType andId:(NSInteger)anId;
+- (void)updateFeedItemsWithLastModified:(NSInteger)lastMod type:(NSInteger)aType andId:(NSInteger)anId;
 
 @end
 
@@ -95,8 +96,8 @@
     NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
     if (!feeds.count) {
         Feeds *newFeeds = [NSEntityDescription insertNewObjectForEntityForName:@"Feeds" inManagedObjectContext:self.context];
-        newFeeds.starredCount = [NSNumber numberWithInt:0];
-        newFeeds.newestItemId = [NSNumber numberWithInt:0];
+        newFeeds.starredCount = 0;
+        newFeeds.newestItemId = 0;
     }
     
     error = nil;
@@ -104,25 +105,25 @@
     
     if (!feed.count) {
         Feed *allFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-        allFeed.myId = [NSNumber numberWithInt:-2];
+        allFeed.myId = -2;
         allFeed.url = @"";
         allFeed.title = @"All Articles";
         allFeed.faviconLink = @"favicon";
-        allFeed.added = [NSNumber numberWithInt:1];
-        allFeed.folderId = [NSNumber numberWithInt:0];
-        allFeed.unreadCount = [NSNumber numberWithInt:0];
+        allFeed.added = 1;
+        allFeed.folderId = 0;
+        allFeed.unreadCount = 0;
         allFeed.link = @"";
         
         Feed *starredFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-        starredFeed.myId = [NSNumber numberWithInt:-1];
+        starredFeed.myId = -1;
         starredFeed.url = @"";
         starredFeed.title = @"Starred";
         starredFeed.faviconLink = @"star_icon";
-        starredFeed.added = [NSNumber numberWithInt:2];
-        starredFeed.folderId = [NSNumber numberWithInt:0];
-        starredFeed.unreadCount = [NSNumber numberWithInt:0];
+        starredFeed.added = 2;
+        starredFeed.folderId = 0;
+        starredFeed.unreadCount = 0;
         starredFeed.link = @"";
-        starredFeed.lastModified = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+        starredFeed.lastModified = (UInt32)[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"];
     }
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -209,30 +210,30 @@
 
 - (int)addFolderFromDictionary:(NSDictionary*)dict {
     Folder *newFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folder" inManagedObjectContext:self.context];
-    newFolder.myId = [dict objectForKey:@"id"];
+    newFolder.myId = (UInt32)[[dict objectForKey:@"id"] integerValue];
     newFolder.name = [dict objectForKeyNotNull:@"name" fallback:@"Folder"];
-    newFolder.unreadCountValue = 0;
+    newFolder.unreadCount = 0;
     [self saveContext];
-    return newFolder.myIdValue;
+    return newFolder.myId;
 }
 
 - (int)addFeedFromDictionary:(NSDictionary *)dict {
     Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-    newFeed.myId = [dict objectForKey:@"id"];
+    newFeed.myId = (UInt32)[[dict objectForKey:@"id"] integerValue];
     newFeed.url = [dict objectForKeyNotNull:@"url" fallback:@""];
     newFeed.title = [dict objectForKeyNotNull:@"title" fallback:@""];
     newFeed.faviconLink = [dict objectForKeyNotNull:@"faviconLink" fallback:@""];
     if (!newFeed.faviconLink.length) {
         newFeed.faviconLink = @"favicon";
     }
-    newFeed.added = [dict objectForKey:@"added"];
-    newFeed.folderId = [dict objectForKey:@"folderId"];
-    newFeed.unreadCount = [dict objectForKey:@"unreadCount"];
+    newFeed.added = (UInt32)[[dict objectForKey:@"added"] integerValue];
+    newFeed.folderId = (UInt32)[[dict objectForKey:@"folderId"] integerValue];
+    newFeed.unreadCount = (UInt32)[[dict objectForKey:@"unreadCount"] integerValue];
     newFeed.link = [dict objectForKeyNotNull:@"link" fallback:@""];
-    return newFeed.myIdValue;
+    return newFeed.myId;
 }
 
-- (void)faviconForFeedWithId:(NSNumber *)feedId imageView:(UIImageView *)imageView
+- (void)faviconForFeedWithId:(NSInteger)feedId imageView:(UIImageView *)imageView
 {
     Feed *feed = [self feedWithId:feedId];
     if (feed && feed.myId) {
@@ -251,20 +252,21 @@
 
 - (void)addItemFromDictionary:(NSDictionary *)dict {
     Item *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"Item" inManagedObjectContext:self.context];
-    newItem.myId = [dict objectForKey:@"id"];
+    newItem.myId = (UInt32)[[dict objectForKey:@"id"] integerValue];
     newItem.guid = [dict objectForKey:@"guid"];
     newItem.guidHash = [dict objectForKey:@"guidHash"];
     newItem.url = [dict objectForKeyNotNull:@"url" fallback:@""];
     newItem.title = [dict objectForKeyNotNull:@"title" fallback:@""];
     newItem.author = [dict objectForKeyNotNull:@"author" fallback:@""];
-    newItem.pubDate = [dict objectForKeyNotNull:@"pubDate" fallback:nil];
+    newItem.pubDate = (UInt32)[[dict objectForKeyNotNull:@"pubDate" fallback:@(0)] integerValue];
     newItem.body = [dict objectForKeyNotNull:@"body" fallback:@""];
     newItem.enclosureMime = [dict objectForKeyNotNull:@"enclosureMime" fallback:@""];
     newItem.enclosureLink = [dict objectForKeyNotNull:@"enclosureLink" fallback:@""];
-    newItem.feedId = [dict objectForKey:@"feedId"];
-    newItem.unread = [dict objectForKey:@"unread"];
-    newItem.starred = [dict objectForKey:@"starred"];
-    newItem.lastModified = [dict objectForKey:@"lastModified"];
+    newItem.feedId = (UInt32)[[dict objectForKey:@"feedId"] integerValue];
+    newItem.unread = [[dict objectForKey:@"unread"] boolValue];
+    newItem.starred = [[dict objectForKey:@"starred"] boolValue];
+    newItem.lastModified = (UInt32)[[dict objectForKey:@"lastModified"] integerValue];
+    newItem.imageLink = [OCArticleImage findImage:newItem.body];
 }
 
 - (int)addFolder:(id)JSON {
@@ -277,7 +279,7 @@
 
 - (void)deleteFolder:(Folder*)folder {
     if (folder) {
-        self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folder.myId];
+        self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", @(folder.myId)];
         NSMutableArray *feedsToBeDeleted = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.feedRequest error:nil]];
         while (feedsToBeDeleted.count > 0) {
             Feed *feed = [feedsToBeDeleted lastObject];
@@ -304,7 +306,7 @@
 - (void)deleteFeed:(Feed*)feed {
     if (feed && feed.myId) {
         NSError *error = nil;
-        [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
+        [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", @(feed.myId)]];
         
         NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
         for (Item *item in feedItems) {
@@ -396,7 +398,7 @@
             NSDictionary *nameDict = [NSDictionary dictionaryWithObjects:[newFolders valueForKey:@"name"] forKeys:newIds];
             //NSLog(@"Titles: %@", titleDict);
             [oldFolders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
-                NSString *newName = [nameDict objectForKey:folder.myId];
+                NSString *newName = [nameDict objectForKey:@(folder.myId)];
                 if (newName) {
                     folder.name = newName;
                 }
@@ -416,13 +418,13 @@
             [deletedOnServer removeObjectsInArray:newIds];
             [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
             while (deletedOnServer.count > 0) {
-                Folder *folderToRemove = [self folderWithId:[deletedOnServer lastObject]];
+                Folder *folderToRemove = [self folderWithId:[[deletedOnServer lastObject] integerValue]];
                 [self.context deleteObject:folderToRemove];
                 [deletedOnServer removeLastObject];
             }
             
             for (NSNumber *folderId in foldersToDelete) {
-                Folder *folder = [self folderWithId:folderId];
+                Folder *folder = [self folderWithId:[folderId integerValue]];
                 [self deleteFolderOffline:folder]; //the feed will have been readded as new on server
             }
             [foldersToDelete removeAllObjects];
@@ -434,15 +436,15 @@
             
             //@{@"folderId": anId, @"name": newName}
             for (NSDictionary *dict in foldersToRename) {
-                [self renameFolderOfflineWithId:[dict objectForKey:@"folderId"] To:[dict objectForKey:@"name"]];
+                [self renameFolderOfflineWithId:[[dict objectForKey:@"folderId"] integerValue] To:[dict objectForKey:@"name"]];
             }
             [foldersToRename removeAllObjects];
-            NSNumber *lastMod = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
+            NSInteger lastMod = [[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"];
             if ([self itemCount] > 0) {
-                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeAll] andId:[NSNumber numberWithInt:0]];
+                [self updateItemsWithLastModified:lastMod type:OCUpdateTypeAll andId:0];
             } else {
                 [self updateItemsFirstTime];
-                [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeStarred] andId:[NSNumber numberWithInt:0]];
+                [self updateItemsWithLastModified:lastMod type:OCUpdateTypeStarred andId:0];
             }
         }
         [self updateTotalUnreadCount];
@@ -474,8 +476,8 @@
     //Add the new feeds
     NSDictionary *jsonDict = (NSDictionary *) JSON;
     Feeds *theFeeds = [feeds objectAtIndex:0];
-    theFeeds.starredCount = [jsonDict objectForKey:@"starredCount"];
-    theFeeds.newestItemId = [jsonDict objectForKey:@"newestItemId"];
+    theFeeds.starredCount = (UInt32)[[jsonDict objectForKey:@"starredCount"] integerValue];
+    theFeeds.newestItemId = (UInt32)[[jsonDict objectForKey:@"newestItemId"] integerValue];
     
     NSArray *newFeeds = [NSArray arrayWithArray:[jsonDict objectForKey:@"feeds"]];
     
@@ -486,7 +488,7 @@
     NSDictionary *titleDict = [NSDictionary dictionaryWithObjects:[newFeeds valueForKey:@"title"] forKeys:newIds];
     //NSLog(@"Titles: %@", titleDict);
     [oldFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-        NSString *newTitle = [titleDict objectForKey:feed.myId];
+        NSString *newTitle = [titleDict objectForKey:@(feed.myId)];
         if (newTitle) {
             feed.title = newTitle;
         }
@@ -506,25 +508,25 @@
     [deletedOnServer removeObjectsInArray:newIds];
     [deletedOnServer filterUsingPredicate:[NSPredicate predicateWithFormat:@"self >= 0"]];
     while (deletedOnServer.count > 0) {
-        Feed *feedToRemove = [self feedWithId:[deletedOnServer lastObject]];
+        Feed *feedToRemove = [self feedWithId:[[deletedOnServer lastObject] integerValue]];
         if (feedToRemove) {
             [self.context deleteObject:feedToRemove];
         }
         [deletedOnServer removeLastObject];
     }
     [newFeeds enumerateObjectsUsingBlock:^(NSDictionary *feedDict, NSUInteger idx, BOOL *stop) {
-        Feed *feed = [self feedWithId:[feedDict objectForKey:@"id"]];
+        Feed *feed = [self feedWithId:[[feedDict objectForKey:@"id"] integerValue]];
         int unreadCount = [[feedDict objectForKey:@"unreadCount"] intValue];
         if (unreadCount < 0) {
             unreadCount = 0;
         }
-        feed.unreadCountValue = unreadCount;
-        feed.folderId = [feedDict objectForKey:@"folderId"];
+        feed.unreadCount = unreadCount;
+        feed.folderId = (UInt32)[[feedDict objectForKey:@"folderId"] integerValue];
         [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     }];
     
     for (NSNumber *feedId in feedsToDelete) {
-        Feed *feed = [self feedWithId:feedId];
+        Feed *feed = [self feedWithId:[feedId integerValue]];
         [self deleteFeedOffline:feed]; //the feed will have been readded as new on server
     }
     [feedsToDelete removeAllObjects];
@@ -536,12 +538,12 @@
     
     //@{@"feedId": aFeedId, @"folderId": aFolderId}];
     for (NSDictionary *dict in feedsToMove) {
-        [self moveFeedOfflineWithId:[dict objectForKey:@"feedId"] toFolderWithId:[dict objectForKey:@"folderId"]];
+        [self moveFeedOfflineWithId:[[dict objectForKey:@"feedId"] integerValue] toFolderWithId:[[dict objectForKey:@"folderId"] integerValue]];
     }
     [feedsToMove removeAllObjects];
     
     for (NSDictionary *dict in feedsToRename) {
-        [self renameFeedOfflineWithId:[dict objectForKey:@"feedId"] To:[dict objectForKey:@"name"]];
+        [self renameFeedOfflineWithId:[[dict objectForKey:@"feedId"] integerValue] To:[dict objectForKey:@"name"]];
     }
     [feedsToRename removeAllObjects];
 
@@ -549,21 +551,21 @@
     [self updateTotalUnreadCount];
 }
 
-- (Folder*)folderWithId:(NSNumber*)anId {
-    [self.folderRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
+- (Folder*)folderWithId:(NSInteger)anId {
+    [self.folderRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %d", anId]];
     NSArray *myFolders = [self.context executeFetchRequest:self.folderRequest error:nil];
     return (Folder*)[myFolders lastObject];
 }
 
-- (Feed*)feedWithId:(NSNumber*)anId {
-    [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
+- (Feed*)feedWithId:(NSInteger)anId {
+    [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %d", anId]];
     NSArray *myFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
     return (Feed*)[myFeeds lastObject];
 }
 
-- (NSArray*)feedsInFolderWithId:(NSNumber*)folderId {
+- (NSArray*)feedsInFolderWithId:(NSInteger)folderId {
 //    NSMutableArray *idArray = [NSMutableArray new];
-    self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folderId];
+    self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %d", folderId];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
 //    [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
 //        [idArray addObject:feed.myId];
@@ -571,8 +573,8 @@
     return feeds;
 }
 
-- (Item*)itemWithId:(NSNumber *)anId {
-    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %@", anId]];
+- (Item*)itemWithId:(NSInteger)anId {
+    [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"myId == %d", anId]];
     NSArray *myItems = [self.context executeFetchRequest:self.itemRequest error:nil];
     return (Item*)[myItems lastObject];
 }
@@ -589,38 +591,38 @@
     return count;
 }
 
-- (void)updateFolderWithId:(NSNumber *)anId {
-    NSNumber *lastMod = [self folderLastModified:anId];
-    [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeFolder] andId:anId];
+- (void)updateFolderWithId:(NSInteger)anId {
+    NSInteger lastMod = [self folderLastModified:anId];
+    [self updateItemsWithLastModified:lastMod type:OCUpdateTypeFolder andId:anId];
 }
 
-- (void)updateFeedWithId:(NSNumber*)anId {
-    NSNumber *lastMod = [self feedLastModified:anId];
-    if ([anId intValue] == -1) {
-        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeStarred] andId:[NSNumber numberWithInt:0]];
+- (void)updateFeedWithId:(NSInteger)anId {
+    NSInteger lastMod = [self feedLastModified:anId];
+    if (anId == -1) {
+        [self updateItemsWithLastModified:lastMod type:OCUpdateTypeStarred andId:0];
     } else {
-        [self updateItemsWithLastModified:lastMod type:[NSNumber numberWithInt:OCUpdateTypeFeed] andId:anId];
+        [self updateItemsWithLastModified:lastMod type:OCUpdateTypeFeed andId:anId];
     }
 }
 
-- (NSNumber*)folderLastModified:(NSNumber *)aFolderId {
+- (NSInteger)folderLastModified:(NSInteger)aFolderId {
     Folder *folder = [self folderWithId:aFolderId];
-    NSNumber *lastFolderUpdate = folder.lastModified;
-    NSNumber *lastSync = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
-    return [NSNumber numberWithInt:MAX([lastFolderUpdate intValue], [lastSync intValue])];
+    NSInteger lastFolderUpdate = folder.lastModified;
+    NSInteger lastSync = [[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"];
+    return MAX(lastFolderUpdate, lastSync);
 }
 
-- (NSNumber*)feedLastModified:(NSNumber *)aFeedId {
+- (NSInteger)feedLastModified:(NSInteger)aFeedId {
     Feed *feed = [self feedWithId:aFeedId];
-    NSNumber *lastFeedUpdate = feed.lastModified;
-    NSNumber *lastSync = [NSNumber numberWithLong:[[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"]];
-    return [NSNumber numberWithInt:MAX([lastFeedUpdate intValue], [lastSync intValue])];
+    NSInteger lastFeedUpdate = feed.lastModified;
+    NSInteger lastSync = [[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"];
+    return MAX(lastFeedUpdate, lastSync);
 }
 
-- (void)updateItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId {
-    NSDictionary *itemParams = @{@"lastModified": lastMod,
-                                         @"type": aType,
-                                           @"id": anId};
+- (void)updateItemsWithLastModified:(NSInteger)lastMod type:(NSInteger)aType andId:(NSInteger)anId {
+    NSDictionary *itemParams = @{@"lastModified": @(lastMod),
+                                         @"type": @(aType),
+                                           @"id": @(anId)};
     
     [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
     [[OCAPIClient sharedClient] GET:@"items/updated" parameters:itemParams progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -671,13 +673,13 @@
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
 //            NSLog(@"Feeds with new items: %lu", (unsigned long)feedsWithNewItems.count);
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
-                Feed *feed = [self feedWithId:feedId];
+                Feed *feed = [self feedWithId:[feedId integerValue]];
                 [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
                 
                 NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:nil];
                 NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
                 filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
-                while (filteredArray.count > feed.articleCountValue) {
+                while (filteredArray.count > feed.articleCount) {
 //                    Item *itemToRemove = [filteredArray lastObject];
 //                    [self.context deleteObject:itemToRemove];
                     [filteredArray removeLastObject];
@@ -685,24 +687,24 @@
                 
                 NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
 //                NSLog(@"Unread item count: %lu", (unsigned long)unreadItems.count);
-                if (feed.unreadCountValue != unreadItems.count) {
+                if (feed.unreadCount != unreadItems.count) {
                     ++errorCount;
                 }
-                feed.unreadCountValue = (int)unreadItems.count;
+                feed.unreadCount = (int)unreadItems.count;
             }];
         }
         
-        switch ([aType intValue]) {
+        switch (aType) {
             case OCUpdateTypeAll: {
                 [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
                 for (NSNumber *itemId in itemsToMarkUnread) {
-                    [self markItemUnreadOffline:itemId];
+                    [self markItemUnreadOffline:[itemId integerValue]];
                 }
                 for (NSNumber *itemId in itemsToStar) {
-                    [self starItemOffline:itemId];
+                    [self starItemOffline:[itemId integerValue]];
                 }
                 for (NSNumber *itemId in itemsToUnstar) {
-                    [self unstarItemOffline:itemId];
+                    [self unstarItemOffline:[itemId integerValue]];
                 }
                 [self updateStarredCount];
                 [self updateTotalUnreadCount];
@@ -713,14 +715,14 @@
                 break;
             case OCUpdateTypeFolder: {
                 Folder *folder = [self folderWithId:anId];
-                folder.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+                folder.lastModified = [[NSDate date] timeIntervalSince1970];
             }
                 break;
             case OCUpdateTypeFeed:
             case OCUpdateTypeStarred: {
                 if (errorCount == 0) {
                     Feed *feed = [self feedWithId:anId];
-                    feed.lastModified = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+                    feed.lastModified = [[NSDate date] timeIntervalSince1970];
                 }
             }
                 break;
@@ -740,7 +742,7 @@
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         //feedsToUpdate;
-        switch ([aType intValue]) {
+        switch (aType) {
             case OCUpdateTypeAll:
                 [self updateFeedItemsWithLastModified:lastMod type:aType andId:anId];
                 break;
@@ -770,7 +772,7 @@
 }
 
 
-- (void)updateFeedItemsWithLastModified:(NSNumber*)lastMod type:(NSNumber*)aType andId:(NSNumber*)anId {
+- (void)updateFeedItemsWithLastModified:(NSInteger)lastMod type:(NSInteger)aType andId:(NSInteger)anId {
     __block NSMutableArray *operations = [NSMutableArray new];
     __block NSMutableArray *addedItems = [NSMutableArray new];
     __block NSMutableArray *responseObjects = [NSMutableArray new];
@@ -780,18 +782,17 @@
     //update feeds individually
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     __block NSArray *allFeeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-    if ([aType intValue] == OCUpdateTypeFolder) {
-        allFeeds = [allFeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"folderId == %@", anId]];
+    if (aType == OCUpdateTypeFolder) {
+        allFeeds = [allFeeds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"folderId == %d", anId]];
     }
 
     dispatch_group_t group = dispatch_group_create();
     [allFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
         dispatch_group_enter(group);
-        NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[self feedLastModified:feed.myId], @"lastModified",
-                                    [NSNumber numberWithInt:0], @"type",
-                                    feed.myId, @"id", nil];
-        
-        
+        NSDictionary *itemParams = @{@"lastModified": @([self feedLastModified:feed.myId]),
+                                     @"type": @(0),
+                                     @"id": @(feed.myId)};
+
         NSURLSessionDataTask *task = [client GET:@"items/updated" parameters:itemParams progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             dispatch_group_leave(group);
             @synchronized(responseObjects) {
@@ -864,17 +865,17 @@
             
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
                 
-                Feed *feed = [self feedWithId:feedId];
+                Feed *feed = [self feedWithId:[feedId integerValue]];
                 
                 [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
                 
                 NSError *error = nil;
                 NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
                 
-                while (feedItems.count > feed.articleCountValue) {
+                while (feedItems.count > feed.articleCount) {
                     Item *itemToRemove = [feedItems lastObject];
-                    if (!itemToRemove.starredValue) {
-                        if (!itemToRemove.unreadValue) {
+                    if (!itemToRemove.starred) {
+                        if (!itemToRemove.unread) {
 //                            NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
                             [self.context deleteObject:itemToRemove];
                             [feedItems removeLastObject];
@@ -883,16 +884,16 @@
                 }
                 [self saveContext];
             }];
-            if ([aType intValue] == OCUpdateTypeAll) {
+            if (aType == OCUpdateTypeAll) {
                 [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
                 for (NSNumber *itemId in itemsToMarkUnread) {
-                    [self markItemUnreadOffline:itemId];
+                    [self markItemUnreadOffline:[itemId integerValue]];
                 }
                 for (NSNumber *itemId in itemsToStar) {
-                    [self starItemOffline:itemId];
+                    [self starItemOffline:[itemId integerValue]];
                 }
                 for (NSNumber *itemId in itemsToUnstar) {
-                    [self unstarItemOffline:itemId];
+                    [self unstarItemOffline:[itemId integerValue]];
                 }
             }
         }
@@ -934,7 +935,7 @@
     [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
         // Enter the group for each request we create
         dispatch_group_enter(group);
-        int batchSize = MAX(50, feed.unreadCountValue);
+        int batchSize = MAX(50, feed.unreadCount);
         NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:batchSize], @"batchSize",
                                     [NSNumber numberWithInt:0], @"offset",
                                     [NSNumber numberWithInt:0], @"type",
@@ -1006,13 +1007,13 @@
         if (allItems) {
             [allItems enumerateObjectsUsingBlock:^(Item *item, NSUInteger idx, BOOL *stop) {
                 Feed *feed = [self feedWithId:item.feedId];
-                if (item.unreadValue) {
-                    ++feed.unreadCountValue;
+                if (item.unread) {
+                    ++feed.unreadCount;
                 } else {
-                    --feed.unreadCountValue;
+                    --feed.unreadCount;
                 }
-                if (feed.unreadCountValue < 0) {
-                    feed.unreadCountValue = 0;
+                if (feed.unreadCount < 0) {
+                    feed.unreadCount = 0;
                 }
             }];
         }
@@ -1024,9 +1025,9 @@
     self.folderRequest.predicate = nil;
     NSArray *folders = [self.context executeFetchRequest:self.folderRequest error:nil];
     [folders enumerateObjectsUsingBlock:^(Folder *folder, NSUInteger idx, BOOL *stop) {
-        self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", folder.myId];
+        self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", @(folder.myId)];
         NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-        folder.unreadCountValue = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
+        folder.unreadCount = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
     }];
 }
 
@@ -1034,8 +1035,8 @@
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
     int totalUnreadCount = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
-    [self feedWithId:[NSNumber numberWithInt:-2]].unreadCountValue = totalUnreadCount;
-    [self feedWithId:[NSNumber numberWithInt:-2]].articleCountValue = (int)[self itemCount];
+    [self feedWithId:-2].unreadCount = totalUnreadCount;
+    [self feedWithId:-2].articleCount = (int)[self itemCount];
     
     UIUserNotificationSettings *currentSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     if (currentSettings.types & UIUserNotificationTypeBadge) {
@@ -1062,9 +1063,9 @@
     }
 
     Feeds *theFeeds = [feeds lastObject];
-    theFeeds.starredCountValue = (int)starredItems.count;
+    theFeeds.starredCount = (int)starredItems.count;
     
-    [[self feedWithId:[NSNumber numberWithInt:-1]] setUnreadCountValue:(int)starredItems.count];
+    [[self feedWithId:-1] setUnreadCount:(int)starredItems.count];
     [self saveContext];
 }
 
@@ -1100,7 +1101,7 @@
         //offline
         [foldersToAdd addObject:name];
         Folder *newFolder = [NSEntityDescription insertNewObjectForEntityForName:@"Folder" inManagedObjectContext:self.context];
-        newFolder.myId = [NSNumber numberWithLong:10000 + foldersToAdd.count];
+        newFolder.myId = (UInt32)(10000 + foldersToAdd.count);
         newFolder.name = name;
     }
     [self updateTotalUnreadCount];
@@ -1109,7 +1110,7 @@
 - (void)deleteFolderOffline:(Folder*)folder {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        NSString *path = [NSString stringWithFormat:@"folders/%@", [folder.myId stringValue]];
+        NSString *path = [NSString stringWithFormat:@"folders/%d", folder.myId];
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
@@ -1131,16 +1132,16 @@
         }];
     } else {
         //offline
-        [foldersToDelete addObject:folder.myId];
+        [foldersToDelete addObject:@(folder.myId)];
     }
     [self deleteFolder:folder];
 }
 
-- (void)renameFolderOfflineWithId:(NSNumber*)anId To:(NSString*)newName {
+- (void)renameFolderOfflineWithId:(NSInteger)anId To:(NSString*)newName {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"name": newName};
-        NSString *path = [NSString stringWithFormat:@"folders/%@", [anId stringValue]];
+        NSString *path = [NSString stringWithFormat:@"folders/%ld", (long)anId];
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //             NSLog(@"Success");
@@ -1168,7 +1169,7 @@
         }];
     } else {
         //offline
-        [foldersToRename addObject:@{@"folderId": anId, @"name": newName}];
+        [foldersToRename addObject:@{@"folderId": @(anId), @"name": newName}];
     }
     [[self folderWithId:anId] setName:newName];
     [self saveContext];
@@ -1253,13 +1254,13 @@
         //offline
         [feedsToAdd addObject:urlString];
         Feed *newFeed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:self.context];
-        newFeed.myId = [NSNumber numberWithLong:10000 + feedsToAdd.count];
+        newFeed.myId = (UInt32)(10000 + feedsToAdd.count);
         newFeed.url = urlString;
         newFeed.title = urlString;
         newFeed.faviconLink = @"favicon";
-        newFeed.added = [NSNumber numberWithInt:1];
-        newFeed.folderId = [NSNumber numberWithInt:0];
-        newFeed.unreadCount = [NSNumber numberWithInt:0];
+        newFeed.added = 1;
+        newFeed.folderId = 0;
+        newFeed.unreadCount = 0;
         newFeed.link = @"";
         //[feedsToDelete addObject:[NSNumber numberWithInt:10000 + feedsToAdd.count]]; //should be deleted when we get the real feed
     }
@@ -1269,7 +1270,7 @@
 - (void) deleteFeedOffline:(Feed*)feed {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        NSString *path = [NSString stringWithFormat:@"feeds/%@", [feed.myId stringValue]];
+        NSString *path = [NSString stringWithFormat:@"feeds/%d", feed.myId];
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
         [[OCAPIClient sharedClient] DELETE:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
@@ -1282,17 +1283,17 @@
         }];
     } else {
         //offline
-        [feedsToDelete addObject:feed.myId];
+        [feedsToDelete addObject:@(feed.myId)];
     }
     [self deleteFeed:feed];
     [self saveContext];
 }
 
-- (void)moveFeedOfflineWithId:(NSNumber *)aFeedId toFolderWithId:(NSNumber *)aFolderId {
+- (void)moveFeedOfflineWithId:(NSInteger)aFeedId toFolderWithId:(NSInteger)aFolderId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        NSDictionary *params = @{@"folderId": aFolderId};
-        NSString *path = [NSString stringWithFormat:@"feeds/%@/move", [aFeedId stringValue]];
+        NSDictionary *params = @{@"folderId": @(aFolderId)};
+        NSString *path = [NSString stringWithFormat:@"feeds/%ld/move", (long)aFeedId];
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //            NSLog(@"Success");
@@ -1305,16 +1306,16 @@
         }];
     } else {
         //offline
-        [feedsToMove addObject:@{@"feedId": aFeedId, @"folderId": aFolderId}];
+        [feedsToMove addObject:@{@"feedId": @(aFeedId), @"folderId": @(aFolderId)}];
     }
 }
 
-- (void)renameFeedOfflineWithId:(NSNumber*)anId To:(NSString*)newName {
-    if ([anId intValue] > 0) {
+- (void)renameFeedOfflineWithId:(NSInteger)anId To:(NSString*)newName {
+    if (anId > 0) {
         if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
             //online
             NSDictionary *params = @{@"feedTitle": newName};
-            NSString *path = [NSString stringWithFormat:@"feeds/%@/rename", [anId stringValue]];
+            NSString *path = [NSString stringWithFormat:@"feeds/%ld/rename", (long)anId];
             [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
 //                NSLog(@"Success");
@@ -1339,7 +1340,7 @@
             }];
         } else {
             //offline
-            [feedsToRename addObject:@{@"feedId": anId, @"name": newName}];
+            [feedsToRename addObject:@{@"feedId": @(anId), @"name": newName}];
         }
     }
     
@@ -1375,13 +1376,13 @@
     [self updateReadItems:[itemIds allObjects]];
 }
 
-- (void)markAllItemsRead:(OCUpdateType)updateType feedOrFolderId:(NSNumber *)feedOrFolderId {
+- (void)markAllItemsRead:(OCUpdateType)updateType feedOrFolderId:(NSInteger)feedOrFolderId {
 
     NSError *error = nil;
     NSArray *feeds = [self.context executeFetchRequest:self.feedsRequest error:&error];
     
     Feeds *theFeeds = [feeds objectAtIndex:0];
-    NSNumber *newestItem = theFeeds.newestItemId;
+    NSInteger newestItem = theFeeds.newestItemId;
     NSString *path;
     
     NSBatchUpdateRequest *req = [[NSBatchUpdateRequest alloc] initWithEntityName:@"Item"];
@@ -1395,7 +1396,7 @@
             [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
             NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
             [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                feed.unreadCountValue = 0;
+                feed.unreadCount = 0;
             }];
         }
             break;
@@ -1404,24 +1405,24 @@
             NSMutableArray *feedsArray = [NSMutableArray new];
             NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:feedOrFolderId];
             [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId], pred1]]];
+                [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %d", feed.myId], pred1]]];
             }];
             req.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
-            path = [NSString stringWithFormat:@"folders/%@/read", feedOrFolderId];
-            self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %@", feedOrFolderId];
+            path = [NSString stringWithFormat:@"folders/%ld/read", (long)feedOrFolderId];
+            self.feedRequest.predicate = [NSPredicate predicateWithFormat:@"folderId == %d", feedOrFolderId];
             NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
             [feeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                feed.unreadCountValue = 0;
+                feed.unreadCount = 0;
             }];
         }
             break;
         case OCUpdateTypeFeed:
         {
-            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"feedId == %@", feedOrFolderId];
+            NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"feedId == %d", feedOrFolderId];
             req.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
-            path = [NSString stringWithFormat:@"feeds/%@/read", feedOrFolderId];
+            path = [NSString stringWithFormat:@"feeds/%ld/read", (long)feedOrFolderId];
             Feed *feed = [self feedWithId:feedOrFolderId];
-            feed.unreadCountValue = 0;
+            feed.unreadCount = 0;
         }
             break;
         case OCUpdateTypeStarred:
@@ -1443,7 +1444,7 @@
         if (![obj isFault]) {
             [self.context refreshObject:obj mergeChanges:YES];
         }
-        [itemIds addObject:obj.myId];
+        [itemIds addObject:@(obj.myId)];
     }];
     
     [self updateTotalUnreadCount];
@@ -1460,7 +1461,7 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
-        [[OCAPIClient sharedClient] PUT:path parameters:@{@"newestItemId": newestItem} success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[OCAPIClient sharedClient] PUT:path parameters:@{@"newestItemId": @(newestItem)} success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *objID, NSUInteger idx, BOOL *stop) {
                 [itemsToMarkRead removeObject:objID];
             }];
@@ -1478,64 +1479,64 @@
     }
 }
 
-- (void)markItemUnreadOffline:(NSNumber*)itemId {
+- (void)markItemUnreadOffline:(NSInteger)itemId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         Item *item = [self itemWithId:itemId];
         if (item) {
-            NSString *path = [NSString stringWithFormat:@"items/%@/unread", item.myId];
+            NSString *path = [NSString stringWithFormat:@"items/%ld/unread", (long)item.myId];
             [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                [itemsToMarkUnread removeObject:itemId];
+                [itemsToMarkUnread removeObject:@(itemId)];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [itemsToMarkUnread addObject:itemId];
+                [itemsToMarkUnread addObject:@(itemId)];
             }];
         }
     } else {
-        [itemsToMarkRead removeObject:itemId];
-        [itemsToMarkUnread addObject:itemId];
+        [itemsToMarkRead removeObject:@(itemId)];
+        [itemsToMarkUnread addObject:@(itemId)];
     }
-    [self updateReadItems:@[itemId]];
+    [self updateReadItems:@[@(itemId)]];
 }
 
-- (void)starItemOffline:(NSNumber*)itemId {
+- (void)starItemOffline:(NSInteger)itemId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         Item *item = [self itemWithId:itemId];
         if (item) {
-            NSString *path = [NSString stringWithFormat:@"items/%@/%@/star", [item.feedId stringValue], item.guidHash];
+            NSString *path = [NSString stringWithFormat:@"items/%ld/%@/star", (long)item.feedId, item.guidHash];
             [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                [itemsToStar removeObject:itemId];
+                [itemsToStar removeObject:@(itemId)];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [itemsToStar addObject:itemId];
+                [itemsToStar addObject:@(itemId)];
             }];
         }
     } else {
         //offline
-        [itemsToUnstar removeObject:itemId];
-        [itemsToStar addObject:itemId];
+        [itemsToUnstar removeObject:@(itemId)];
+        [itemsToStar addObject:@(itemId)];
     }
     [self updateStarredCount];
 }
 
-- (void)unstarItemOffline:(NSNumber*)itemId {
+- (void)unstarItemOffline:(NSInteger)itemId {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         Item *item = [self itemWithId:itemId];
         if (item) {
-            NSString *path = [NSString stringWithFormat:@"items/%@/%@/unstar", [item.feedId stringValue], item.guidHash];
+            NSString *path = [NSString stringWithFormat:@"items/%ld/%@/unstar", (long)item.feedId, item.guidHash];
             [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                [itemsToUnstar removeObject:itemId];
+                [itemsToUnstar removeObject:@(itemId)];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [itemsToUnstar addObject:itemId];
+                [itemsToUnstar addObject:@(itemId)];
             }];
         }
     } else {
         //offline
-        [itemsToStar removeObject:itemId];
-        [itemsToUnstar addObject:itemId];
+        [itemsToStar removeObject:@(itemId)];
+        [itemsToUnstar addObject:@(itemId)];
     }
     [self updateStarredCount];
 }

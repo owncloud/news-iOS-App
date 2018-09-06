@@ -31,25 +31,24 @@
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
 		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
 		D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */; };
-		D04AD65F1807125600FF6056 /* _Folder.m in Sources */ = {isa = PBXBuildFile; fileRef = D04AD65C1807125600FF6056 /* _Folder.m */; };
-		D04AD6601807125600FF6056 /* Folder.m in Sources */ = {isa = PBXBuildFile; fileRef = D04AD65E1807125600FF6056 /* Folder.m */; };
 		D04BBB8A20ABC87900D770DA /* BRYHTMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */; };
 		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
 		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
+		D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */; };
+		D05A6FB4213B9508006D3AB8 /* NoThumbnailArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB2213B9508006D3AB8 /* NoThumbnailArticleCell.swift */; };
+		D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */; };
+		D05A6FB7213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB6213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift */; };
+		D05A6FB9213DED1D006D3AB8 /* ArticleCellWithThumbnail.xib in Resources */ = {isa = PBXBuildFile; fileRef = D05A6FB8213DEC31006D3AB8 /* ArticleCellWithThumbnail.xib */; };
+		D05A6FBC213E3247006D3AB8 /* SummaryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FBB213E3247006D3AB8 /* SummaryHelper.m */; };
+		D05A6FBE213E35A8006D3AB8 /* ArticleCellWithWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
 		D06CB21F179C887300A1310B /* ArticleListCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
 		D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
-		D06CB23117A073AA00A1310B /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23017A073A900A1310B /* Feed.m */; };
-		D06CB23417A073C500A1310B /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23317A073C400A1310B /* Item.m */; };
 		D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06CB23517A074AA00A1310B /* CoreData.framework */; };
 		D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23817A0A0A900A1310B /* OCNewsHelper.m */; };
-		D06CB23C17A1F88C00A1310B /* Feeds.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23B17A1F88A00A1310B /* Feeds.m */; };
-		D06CB24817A2EA9300A1310B /* _Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24317A2EA8C00A1310B /* _Feed.m */; };
-		D06CB24917A2EA9300A1310B /* _Feeds.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24517A2EA8F00A1310B /* _Feeds.m */; };
-		D06CB24A17A2EA9300A1310B /* _Item.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB24717A2EA9200A1310B /* _Item.m */; };
 		D0735DC31F83378A002D3AB3 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC01F83378A002D3AB3 /* KSCrash.framework */; };
 		D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC11F83378A002D3AB3 /* AFNetworking.framework */; };
 		D0735DC51F83378A002D3AB3 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC21F83378A002D3AB3 /* WebImage.framework */; };
@@ -63,8 +62,6 @@
 		D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F5F18876CF700C6DA92 /* OCTextView.m */; };
 		D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */; };
 		D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D14211144A200D1A2B8 /* ArticleController.m */; };
-		D0B95D1921114A7B00D1A2B8 /* ArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */; };
-		D0B95D1A21114A7B00D1A2B8 /* ArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0B95D1821114A7B00D1A2B8 /* ArticleCell.xib */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
 		D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA27177900C300C965F4 /* Foundation.framework */; };
 		D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA29177900C300C965F4 /* CoreGraphics.framework */; };
@@ -77,7 +74,6 @@
 		D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6C177909A500C965F4 /* OCArticleListController.m */; };
 		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
-		D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA72177909A600C965F4 /* OCWebController.m */; };
 		D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAADA17790C9100C965F4 /* libxml2.dylib */; };
 		D0BCABC8177910C000C965F4 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABC7177910C000C965F4 /* ImageIO.framework */; };
 		D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
@@ -117,6 +113,7 @@
 		D01ACABD17B83637005D1463 /* readable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readable.h; sourceTree = "<group>"; };
 		D01ACAFA17B969FE005D1463 /* NSDictionary+HandleNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HandleNull.h"; sourceTree = "<group>"; };
 		D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HandleNull.m"; sourceTree = "<group>"; };
+		D0223BC121338C2700BFD969 /* News 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 7.xcdatamodel"; sourceTree = "<group>"; };
 		D023001A1A58C0E800B354E0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
 		D02CCAF31CE7E27300F6CCEC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -128,10 +125,6 @@
 		D042A9A120842E340086FBE9 /* OCThemeSettingsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCThemeSettingsController.h; sourceTree = "<group>"; };
 		D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCThemeSettingsController.m; sourceTree = "<group>"; };
 		D04AD65618070C4800FF6056 /* News 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 3.xcdatamodel"; sourceTree = "<group>"; };
-		D04AD65B1807125600FF6056 /* _Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Folder.h; sourceTree = "<group>"; };
-		D04AD65C1807125600FF6056 /* _Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Folder.m; sourceTree = "<group>"; };
-		D04AD65D1807125600FF6056 /* Folder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Folder.h; sourceTree = "<group>"; };
-		D04AD65E1807125600FF6056 /* Folder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Folder.m; sourceTree = "<group>"; };
 		D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BRYHTMLParser.framework; path = Carthage/Build/iOS/BRYHTMLParser.framework; sourceTree = "<group>"; };
 		D04C7DC41BABBEFC000FB342 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
 		D04C7DC51BABBEFC000FB342 /* pcre_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_scanner.h; sourceTree = "<group>"; };
@@ -142,26 +135,22 @@
 		D04C7DCB1BABBEFC000FB342 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
 		D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
 		D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcreposix.a; sourceTree = "<group>"; };
+		D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseArticleCell.swift; sourceTree = "<group>"; };
+		D05A6FB2213B9508006D3AB8 /* NoThumbnailArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoThumbnailArticleCell.swift; sourceTree = "<group>"; };
+		D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoThumbnailArticleCell.xib; sourceTree = "<group>"; };
+		D05A6FB6213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellWithThumbnail.swift; sourceTree = "<group>"; };
+		D05A6FB8213DEC31006D3AB8 /* ArticleCellWithThumbnail.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleCellWithThumbnail.xib; sourceTree = "<group>"; };
+		D05A6FBA213E3247006D3AB8 /* SummaryHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SummaryHelper.h; sourceTree = "<group>"; };
+		D05A6FBB213E3247006D3AB8 /* SummaryHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SummaryHelper.m; sourceTree = "<group>"; };
+		D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellWithWebView.swift; sourceTree = "<group>"; };
 		D0622FE418C29BD40032E622 /* News 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 5.xcdatamodel"; sourceTree = "<group>"; };
 		D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = News.xcmappingmodel; sourceTree = "<group>"; };
 		D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ArticleListCell~iphone.xib"; sourceTree = "<group>"; };
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
 		D06CB22D17A06E4F00A1310B /* News.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = News.xcdatamodel; sourceTree = "<group>"; };
-		D06CB22F17A073A800A1310B /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
-		D06CB23017A073A900A1310B /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
-		D06CB23217A073C300A1310B /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
-		D06CB23317A073C400A1310B /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		D06CB23517A074AA00A1310B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D06CB23717A0A0A800A1310B /* OCNewsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCNewsHelper.h; sourceTree = "<group>"; };
 		D06CB23817A0A0A900A1310B /* OCNewsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCNewsHelper.m; sourceTree = "<group>"; };
-		D06CB23A17A1F88900A1310B /* Feeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feeds.h; sourceTree = "<group>"; };
-		D06CB23B17A1F88A00A1310B /* Feeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feeds.m; sourceTree = "<group>"; };
-		D06CB24217A2EA8B00A1310B /* _Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Feed.h; sourceTree = "<group>"; };
-		D06CB24317A2EA8C00A1310B /* _Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Feed.m; sourceTree = "<group>"; };
-		D06CB24417A2EA8E00A1310B /* _Feeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Feeds.h; sourceTree = "<group>"; };
-		D06CB24517A2EA8F00A1310B /* _Feeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Feeds.m; sourceTree = "<group>"; };
-		D06CB24617A2EA9100A1310B /* _Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Item.h; sourceTree = "<group>"; };
-		D06CB24717A2EA9200A1310B /* _Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Item.m; sourceTree = "<group>"; };
 		D0735DC01F83378A002D3AB3 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KSCrash.framework; path = Carthage/Build/iOS/KSCrash.framework; sourceTree = "<group>"; };
 		D0735DC11F83378A002D3AB3 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
 		D0735DC21F83378A002D3AB3 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
@@ -186,9 +175,6 @@
 		D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewController.m; sourceTree = "<group>"; };
 		D0B95D13211144A200D1A2B8 /* ArticleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleController.h; sourceTree = "<group>"; };
 		D0B95D14211144A200D1A2B8 /* ArticleController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArticleController.m; sourceTree = "<group>"; };
-		D0B95D1621114A7B00D1A2B8 /* ArticleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleCell.h; sourceTree = "<group>"; };
-		D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArticleCell.m; sourceTree = "<group>"; };
-		D0B95D1821114A7B00D1A2B8 /* ArticleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleCell.xib; sourceTree = "<group>"; };
 		D0BCAA22177900C300C965F4 /* iOCNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOCNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0BCAA25177900C300C965F4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D0BCAA27177900C300C965F4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -209,8 +195,6 @@
 		D0BCAA6E177909A600C965F4 /* OCFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA6F177909A600C965F4 /* OCFeedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D0BCAA71177909A600C965F4 /* OCWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCWebController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D0BCAA72177909A600C965F4 /* OCWebController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCWebController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAADA17790C9100C965F4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		D0BCABC7177910C000C965F4 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D0BCABD41779112000C965F4 /* PHPrefViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHPrefViewController.h; sourceTree = "<group>"; };
@@ -422,6 +406,12 @@
 				D0BCAA70177909A600C965F4 /* OCFeedListController.m */,
 				D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */,
 				D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */,
+				D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */,
+				D05A6FB2213B9508006D3AB8 /* NoThumbnailArticleCell.swift */,
+				D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */,
+				D05A6FB6213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift */,
+				D05A6FB8213DEC31006D3AB8 /* ArticleCellWithThumbnail.xib */,
+				D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */,
 				D0BCAA69177909A500C965F4 /* ArticleListCell.h */,
 				D0BCAA6A177909A500C965F4 /* ArticleListCell.m */,
 				D0BCAC291780E02500C965F4 /* ArticleListCell.xib */,
@@ -430,13 +420,10 @@
 				D0BCAA6C177909A500C965F4 /* OCArticleListController.m */,
 				D0B95D13211144A200D1A2B8 /* ArticleController.h */,
 				D0B95D14211144A200D1A2B8 /* ArticleController.m */,
-				D0B95D1621114A7B00D1A2B8 /* ArticleCell.h */,
-				D0B95D1721114A7B00D1A2B8 /* ArticleCell.m */,
-				D0B95D1821114A7B00D1A2B8 /* ArticleCell.xib */,
 				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
 				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
-				D0BCAA71177909A600C965F4 /* OCWebController.h */,
-				D0BCAA72177909A600C965F4 /* OCWebController.m */,
+				D05A6FBA213E3247006D3AB8 /* SummaryHelper.h */,
+				D05A6FBB213E3247006D3AB8 /* SummaryHelper.m */,
 				D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */,
 				D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */,
 				D0F8274E17B2D83400BE84D7 /* OCFeedSettingsController.h */,
@@ -492,22 +479,6 @@
 			children = (
 				D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */,
 				D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */,
-				D04AD65B1807125600FF6056 /* _Folder.h */,
-				D04AD65C1807125600FF6056 /* _Folder.m */,
-				D04AD65D1807125600FF6056 /* Folder.h */,
-				D04AD65E1807125600FF6056 /* Folder.m */,
-				D06CB24417A2EA8E00A1310B /* _Feeds.h */,
-				D06CB24517A2EA8F00A1310B /* _Feeds.m */,
-				D06CB24217A2EA8B00A1310B /* _Feed.h */,
-				D06CB24317A2EA8C00A1310B /* _Feed.m */,
-				D06CB24617A2EA9100A1310B /* _Item.h */,
-				D06CB24717A2EA9200A1310B /* _Item.m */,
-				D06CB23A17A1F88900A1310B /* Feeds.h */,
-				D06CB23B17A1F88A00A1310B /* Feeds.m */,
-				D06CB22F17A073A800A1310B /* Feed.h */,
-				D06CB23017A073A900A1310B /* Feed.m */,
-				D06CB23217A073C300A1310B /* Item.h */,
-				D06CB23317A073C400A1310B /* Item.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -662,17 +633,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				D06CB22B179F5FCE00A1310B /* script.js in Resources */,
+				D05A6FB9213DED1D006D3AB8 /* ArticleCellWithThumbnail.xib in Resources */,
 				D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */,
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
 				D0F94F8B20AA777300833A7F /* Icons.xcassets in Resources */,
 				D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */,
 				D0F94F8C20AA777300833A7F /* RMessageDefaultDesign.json in Resources */,
-				D0B95D1A21114A7B00D1A2B8 /* ArticleCell.xib in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
 				D0BCAC2A1780E02600C965F4 /* ArticleListCell.xib in Resources */,
 				D0F94F8D20AA777300833A7F /* RMessageView.xib in Resources */,
 				D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */,
+				D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */,
 				D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */,
 				D0BCAC8A178104FC00C965F4 /* rss.css in Resources */,
 				D0BCAC8B178104FC00C965F4 /* rss.html in Resources */,
@@ -740,42 +712,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D05A6FBC213E3247006D3AB8 /* SummaryHelper.m in Sources */,
 				D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */,
 				D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */,
 				D0BCAA32177900C400C965F4 /* main.m in Sources */,
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
 				D0BCAA73177909A600C965F4 /* ArticleListCell.m in Sources */,
+				D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */,
 				D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */,
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
-				D0BCAA77177909A600C965F4 /* OCWebController.m in Sources */,
 				D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D0F94F8F20AA777300833A7F /* RMessageView.m in Sources */,
+				D05A6FB4213B9508006D3AB8 /* NoThumbnailArticleCell.swift in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
-				D0B95D1921114A7B00D1A2B8 /* ArticleCell.m in Sources */,
 				D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */,
+				D05A6FB7213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift in Sources */,
 				D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */,
 				D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */,
 				D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */,
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
-				D06CB23117A073AA00A1310B /* Feed.m in Sources */,
-				D06CB23417A073C500A1310B /* Item.m in Sources */,
 				D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */,
-				D06CB23C17A1F88C00A1310B /* Feeds.m in Sources */,
-				D06CB24817A2EA9300A1310B /* _Feed.m in Sources */,
 				D0FB29611FA6A20D00578C29 /* PHThemeManager.m in Sources */,
-				D06CB24917A2EA9300A1310B /* _Feeds.m in Sources */,
 				D0F94F8E20AA777300833A7F /* RMessage.m in Sources */,
 				D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */,
-				D06CB24A17A2EA9300A1310B /* _Item.m in Sources */,
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
+				D05A6FBE213E35A8006D3AB8 /* ArticleCellWithWebView.swift in Sources */,
 				D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
-				D04AD65F1807125600FF6056 /* _Folder.m in Sources */,
-				D04AD6601807125600FF6056 /* Folder.m in Sources */,
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
@@ -1042,6 +1009,7 @@
 		D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D0223BC121338C2700BFD969 /* News 7.xcdatamodel */,
 				D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */,
 				D0622FE418C29BD40032E622 /* News 5.xcdatamodel */,
 				D0A33F2B187F5BF900C6DA92 /* News 4.xcdatamodel */,
@@ -1049,7 +1017,7 @@
 				D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */,
 				D06CB22D17A06E4F00A1310B /* News.xcdatamodel */,
 			);
-			currentVersion = D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */;
+			currentVersion = D0223BC121338C2700BFD969 /* News 7.xcdatamodel */;
 			path = News.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

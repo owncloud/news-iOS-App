@@ -33,9 +33,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "Folder.h"
-#import "Feed.h"
-#import "Item.h"
+#import "Folder+CoreDataClass.h"
+#import "Feed+CoreDataClass.h"
+#import "Item+CoreDataClass.h"
 
 // the type of the query (Feed: 0, Folder: 1, Starred: 2, All: 3)
 typedef NS_ENUM(NSInteger, OCUpdateType) {
@@ -65,20 +65,20 @@ typedef NS_ENUM(NSInteger, OCUpdateType) {
 
 - (void)sync:(void (^)(UIBackgroundFetchResult))completionHandler;
 
-- (Folder*)folderWithId:(NSNumber*)anId;
+- (Folder*)folderWithId:(NSInteger)anId;
 - (NSArray*)folders;
-- (Feed*)feedWithId:(NSNumber*)anId;
-- (NSArray*)feedsInFolderWithId:(NSNumber*)folderId;
-- (Item*)itemWithId:(NSNumber*)anId;
-- (void)faviconForFeedWithId:(NSNumber *)feedId imageView:(UIImageView *)imageView;
+- (Feed*)feedWithId:(NSInteger)anId;
+- (NSArray*)feedsInFolderWithId:(NSInteger)folderId;
+- (Item*)itemWithId:(NSInteger)anId;
+- (void)faviconForFeedWithId:(NSInteger)feedId imageView:(UIImageView *)imageView;
 - (int)addFolder:(id)JSON;
 - (void)deleteFolder:(Folder*)folder;
 - (void)updateFolders;
-- (void)updateFolderWithId:(NSNumber*)anId;
+- (void)updateFolderWithId:(NSInteger)anId;
 - (int)addFeed:(id)JSON;
 - (void)deleteFeed:(Feed*)feed;
 - (void)updateFeeds:(id)JSON;
-- (void)updateFeedWithId:(NSNumber*)anId;
+- (void)updateFeedWithId:(NSInteger)anId;
 - (void)updateReadItems:(NSArray*)items;
 - (void)updateFolderUnreadCount;
 - (void)updateTotalUnreadCount;
@@ -88,15 +88,15 @@ typedef NS_ENUM(NSInteger, OCUpdateType) {
 
 - (void)addFolderOffline:(NSString*)name;
 - (void)deleteFolderOffline:(Folder*)folder;
-- (void)renameFolderOfflineWithId:(NSNumber*)anId To:(NSString*)newName;
+- (void)renameFolderOfflineWithId:(NSInteger)anId To:(NSString*)newName;
 - (void)addFeedOffline:(NSString*)urlString;
 - (void)deleteFeedOffline:(Feed*)feed;
-- (void)moveFeedOfflineWithId:(NSNumber*)aFeedId toFolderWithId:(NSNumber*)aFolderId;
-- (void)renameFeedOfflineWithId:(NSNumber*)anId To:(NSString*)newName;
+- (void)moveFeedOfflineWithId:(NSInteger)aFeedId toFolderWithId:(NSInteger)aFolderId;
+- (void)renameFeedOfflineWithId:(NSInteger)anId To:(NSString*)newName;
 - (void)markItemsReadOffline:(NSMutableSet*)itemIds;
-- (void)markAllItemsRead:(OCUpdateType)updateType feedOrFolderId:(NSNumber *)feedOrFolderId;
-- (void)markItemUnreadOffline:(NSNumber*)itemId;
-- (void)starItemOffline:(NSNumber*)itemId;
-- (void)unstarItemOffline:(NSNumber*)itemId;
+- (void)markAllItemsRead:(OCUpdateType)updateType feedOrFolderId:(NSInteger)feedOrFolderId;
+- (void)markItemUnreadOffline:(NSInteger)itemId;
+- (void)starItemOffline:(NSInteger)itemId;
+- (void)unstarItemOffline:(NSInteger)itemId;
 
 @end

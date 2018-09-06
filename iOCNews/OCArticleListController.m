@@ -32,18 +32,19 @@
 
 #import "OCArticleListController.h"
 #import "ArticleListCell.h"
-#import "OCWebController.h"
 #import "NSString+HTML.h"
 #import <AFNetworking/AFNetworking.h>
 #import "OCArticleImage.h"
 #import "RMessage.h"
 #import "OCNewsHelper.h"
-#import "Item.h"
+#import "Item+CoreDataClass.h"
 #import "objc/runtime.h"
-#import "UIImageView+OCWebCache.h"
+//#import "UIImageView+OCWebCache.h"
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
 #import "ArticleController.h"
+//#import <WebImage/WebImage.h>
+#import "iOCNews-Swift.h"
 
 @interface OCArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout> {
     long currentIndex;
@@ -52,6 +53,7 @@
     NSArray *fetchedItems;
     BOOL aboutToFetch;
     CGFloat cellContentWidth;
+    BOOL comingFromDetail;
 }
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *markBarButtonItem;
@@ -81,8 +83,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 {
     // Update the user interface for the detail item.
     @try {
-        if (self.feed.myIdValue == -2) {
-            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
+        if (self.feed.myId == -2) {
+            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:self.folderId];
             if (folder && folder.name.length) {
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
                 if ([prefs boolForKey:@"HideRead"]) {
@@ -115,14 +117,16 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         self.navigationItem.title = self.feed.title;
     }
     @finally {
-        if (self.feed.myIdValue > -2) {
+        if (self.feed.myId > -2) {
             self.collectionView.refreshControl = self.feedRefreshControl;
         } else {
             self.collectionView.refreshControl = nil;
         }
         [self refresh];
-        if (fetchedItems.count > 0) {
-            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+        if (comingFromDetail == NO) {
+            if (fetchedItems.count > 0) {
+                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+            }
         }
         self.collectionView.scrollsToTop = YES;
     }
@@ -167,15 +171,15 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     self.navigationItem.leftItemsSupplementBackButton = YES;
     self.navigationItem.rightBarButtonItem = self.markBarButtonItem;
     self.markBarButtonItem.enabled = NO;
-//    self.folderId = 0;
-    [self.collectionView registerNib:[UINib nibWithNibName:@"ArticleListCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"ArticleCellWithThumbnail" bundle:nil] forCellWithReuseIdentifier:@"ArticleCellWithThumbnail"];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"NoThumbnailArticleCell" bundle:nil] forCellWithReuseIdentifier:@"NoThumbnailArticleCell"];
     self.collectionView.scrollsToTop = NO;
     [self.collectionView addGestureRecognizer:self.markGesture];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     [self.collectionView addGestureRecognizer:self.sideGestureRecognizer];
-//    self.tableView.tableFooterView = [UIView new];
     
+    comingFromDetail = NO;
     markingAllItemsRead = NO;
     aboutToFetch = NO;
     cellContentWidth = 700;
@@ -212,6 +216,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self configureView];
+    comingFromDetail = NO;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -273,147 +278,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     return result;
 }
 
-- (UIFont*) makeItalic:(UIFont*)font {
-    UIFontDescriptor *desc = font.fontDescriptor;
-    UIFontDescriptor *italic = [desc fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
-    return [UIFont fontWithDescriptor:italic size:0.0f];
-}
-
-- (UIFont*) makeSmaller:(UIFont*)font {
-    UIFontDescriptor *desc = font.fontDescriptor;
-    UIFontDescriptor *italic = [desc fontDescriptorWithSize:desc.pointSize - 1];
-    return [UIFont fontWithDescriptor:italic size:0.0f];
-}
-
-- (void)configureCell:(ArticleListCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    @try {
-        Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        
-        cell.mainCellViewWidthContraint.constant = cellContentWidth;
-        cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-        cell.dateLabel.font = [self makeItalic:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
-        cell.summaryLabel.font = [self makeSmaller:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-        
-        cell.titleLabel.text = [item.title stringByConvertingHTMLToPlainText];
-        NSString *dateLabelText = @"";
-        
-        NSNumber *dateNumber = item.pubDate;
-        if (![dateNumber isKindOfClass:[NSNull class]]) {
-            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[dateNumber doubleValue]];
-            if (date) {
-                NSLocale *currentLocale = [NSLocale currentLocale];
-                NSString *dateComponents = @"MMM d";
-                NSString *dateFormatString = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:currentLocale];
-                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                dateFormat.dateFormat = dateFormatString;
-                dateLabelText = [dateLabelText stringByAppendingString:[dateFormat stringFromDate:date]];
-            }
-        }
-        if (dateLabelText.length > 0) {
-            dateLabelText = [dateLabelText stringByAppendingString:@" | "];
-        }
-        
-        NSString *author = item.author;
-        if (![author isKindOfClass:[NSNull class]]) {
-            
-            if (author.length > 0) {
-                const int clipLength = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 50 : 25;
-                if([author length] > clipLength) {
-                    dateLabelText = [dateLabelText stringByAppendingString:[NSString stringWithFormat:@"%@...",[author substringToIndex:clipLength]]];
-                } else {
-                    dateLabelText = [dateLabelText stringByAppendingString:author];
-                }
-            }
-        }
-        Feed *feed = [[OCNewsHelper sharedHelper] feedWithId:item.feedId];
-        if (feed) {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
-                if (cell.tag == indexPath.row) {
-                    [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId imageView: cell.favIconImage];
-                    cell.favIconImage.hidden = NO;
-                    cell.dateLabelLeadingConstraint.constant = 21;
-                }
-            }
-            else {
-                cell.favIconImage.hidden = YES;
-                cell.dateLabelLeadingConstraint.constant = 0.0;
-            }
-            
-            if (feed.title && ![feed.title isEqualToString:author]) {
-                if (author.length > 0) {
-                    dateLabelText = [dateLabelText stringByAppendingString:@" | "];
-                }
-                dateLabelText = [dateLabelText stringByAppendingString:feed.title];
-            }
-        }
-        cell.dateLabel.text = dateLabelText;
-        
-        NSString *summary = item.body;
-        if ([summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-            if ([summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                NSRange r;
-                r.location = [summary rangeOfString:@"<style>" options:NSCaseInsensitiveSearch].location;
-                r.length = [summary rangeOfString:@"</style>" options:NSCaseInsensitiveSearch].location - r.location + 8;
-                NSString *sub = [summary substringWithRange:r];
-                summary = [summary stringByReplacingOccurrencesOfString:sub withString:@""];
-            }
-        }
-        cell.summaryLabel.text = [summary stringByConvertingHTMLToPlainText];
-        cell.starImage.image = nil;
-        if (item.starredValue) {
-            cell.starImage.image = [UIImage imageNamed:@"star_icon"];
-        }
-        NSNumber *read = item.unread;
-        if ([read boolValue] == YES) {
-            [cell.summaryLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
-            [cell.titleLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
-            [cell.dateLabel setThemeTextColor:PHThemeManager.sharedManager.unreadTextColor];
-            cell.articleImage.alpha = 1.0f;
-            cell.favIconImage.alpha = 1.0f;
-        } else {
-            [cell.summaryLabel setThemeTextColor:[UIColor readTextColor]];
-            [cell.titleLabel setThemeTextColor:[UIColor readTextColor]];
-            [cell.dateLabel setThemeTextColor:[UIColor readTextColor]];
-            cell.articleImage.alpha = 0.4f;
-            cell.favIconImage.alpha = 0.4f;
-        }
-        cell.summaryLabel.highlightedTextColor = cell.summaryLabel.textColor;
-        cell.titleLabel.highlightedTextColor = cell.titleLabel.textColor;
-        cell.dateLabel.highlightedTextColor = cell.dateLabel.textColor;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
-            NSString *urlString = [OCArticleImage findImage:summary];
-            if (urlString) {
-                if (cell.tag == indexPath.row) {
-                    dispatch_main_async_safe(^{
-                        [cell.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
-                        cell.articleImage.hidden = NO;
-                        cell.thumbnailContainerWidthConstraint.constant = cell.articleImage.frame.size.width;
-                        cell.articleImageWidthConstraint.constant = cell.articleImage.frame.size.width;
-                        cell.contentContainerLeadingConstraint.constant = cell.articleImage.frame.size.width;
-                    });
-                }
-            } else {
-                cell.articleImage.hidden = YES;
-                cell.thumbnailContainerWidthConstraint.constant = 0.0;
-                cell.articleImageWidthConstraint.constant = 0.0;
-                cell.contentContainerLeadingConstraint.constant = 0.0;
-            }
-        } else {
-            cell.articleImage.hidden = YES;
-            cell.thumbnailContainerWidthConstraint.constant = 0.0;
-            cell.articleImageWidthConstraint.constant = 0.0;
-            cell.contentContainerLeadingConstraint.constant = 0.0;
-        }
-        cell.highlighted = NO;
-    }
-    @catch (NSException *exception) {
-        //
-    }
-    @finally {
-        //
-    }
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 154.0;
 }
@@ -428,10 +292,66 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ArticleListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCell" forIndexPath:indexPath];
-    cell.tag = indexPath.row;
-    [self configureCell:cell atIndexPath:indexPath];
+    __block Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if (!item.imageLink) {
+        NoThumbnailArticleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"NoThumbnailArticleCell" forIndexPath:indexPath];
+        cell.contentWidth = cellContentWidth;
+        cell.item = item;
+        return cell;
+    }
+
+    ArticleCellWithThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithThumbnail" forIndexPath:indexPath];
+    cell.contentWidth = cellContentWidth;
+    cell.item = item;
     return cell;
+
+//    cell.tag = indexPath.row;
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
+//        NSString *urlString = [OCArticleImage findImage:summary];
+//        if (item.imageLink) {
+            //                if (self.tag == indexPath.row) {
+            //                    dispatch_main_async_safe(^{
+//            [self.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
+//            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:item.imageLink]];
+//            [cell.articleImage setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+//                [cell setNeedsLayout];
+//            } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
+//                [cell setNeedsLayout];
+//            }];
+//            [cell.articleImage setImageWithURL:[NSURL URLWithString:item.imageLink]]; // placeholderImage:nil options:SDWebImageAvoidAutoSetImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//                [UIView animateWithDuration:0.3f animations:^{
+//                    if (cell.item.imageLink && image && (cell.tag == indexPath.row)) {
+//                        cell.articleImage.image = image;
+//                         [cell setNeedsLayout];
+//                    }
+//                        cell.articleImage.hidden = NO;
+//                        cell.thumbnailContainerWidthConstraint.constant = cell.articleImage.frame.size.width;
+//                        cell.articleImageWidthConstraint.constant = cell.articleImage.frame.size.width;
+//                        cell.contentContainerLeadingConstraint.constant = cell.articleImage.frame.size.width;
+//                    } else {
+//                        cell.articleImage.hidden = YES;
+//                        cell.thumbnailContainerWidthConstraint.constant = 0.0;
+//                        cell.articleImageWidthConstraint.constant = 0.0;
+//                        cell.contentContainerLeadingConstraint.constant = 0.0;
+//                    }
+//
+//                }];
+//            }];
+            //                    });
+//                            }
+//        } else {
+//            cell.articleImage.hidden = YES;
+//            cell.thumbnailContainerWidthConstraint.constant = 0.0;
+//            cell.articleImageWidthConstraint.constant = 0.0;
+//            cell.contentContainerLeadingConstraint.constant = 0.0;
+//        }
+//    } else {
+//        cell.articleImage.hidden = YES;
+//        cell.thumbnailContainerWidthConstraint.constant = 0.0;
+//        cell.articleImageWidthConstraint.constant = 0.0;
+//        cell.contentContainerLeadingConstraint.constant = 0.0;
+//    }
+//
 }
 
 
@@ -448,9 +368,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 //        
 //        [self.navigationController pushViewController:self.articleManagerController animated:YES];
 //        [self.articleManagerController navigateToPageAtIndex:currentIndex animated:NO completion:nil];
-        if (selectedItem.unreadValue) {
-            selectedItem.unreadValue = NO;
-            [self updateUnreadCount:@[selectedItem.myId]];
+        if (selectedItem.unread) {
+            selectedItem.unread = NO;
+            [self updateUnreadCount:@[@(selectedItem.myId)]];
         }
     }
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
@@ -462,6 +382,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         articleController.feed = self.feed;
         articleController.folderId = self.folderId;
         articleController.selectedArticle = (Item *)sender;
+        articleController.articleListcontroller = self;
+        comingFromDetail = YES;
     }
 }
 
@@ -511,16 +433,30 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (IBAction)onMarkRead:(id)sender {
     markingAllItemsRead = YES;
-    
-    if (self.folderId > 0) {
-        [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFolder feedOrFolderId:@(self.folderId)];
-    } else {
-        if (self.feed.myIdValue == -2) {
-            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeAll feedOrFolderId:nil];
-        } else {
-            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFeed feedOrFolderId:self.feed.myId];
+    NSMutableArray *idsToMarkRead = [NSMutableArray new];
+    long unreadCount = [self unreadCount];
+    if (unreadCount > 0) {
+        if (self.fetchedResultsController.fetchedObjects.count > 0) {
+            NSInteger index = 0;
+            for (Item *item in self.fetchedResultsController.fetchedObjects) {
+                if (item.unread) {
+                    item.unread = NO;
+                    [idsToMarkRead addObject:@(item.myId)];
+                }
+                index += 1;
+            }
         }
     }
+    
+//    if (self.folderId > 0) {
+//        [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFolder feedOrFolderId:self.folderId];
+//    } else {
+//        if (self.feed.myId == -2) {
+//            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeAll feedOrFolderId:0];
+//        } else {
+//            [[OCNewsHelper sharedHelper] markAllItemsRead:OCUpdateTypeFeed feedOrFolderId:self.feed.myId];
+//        }
+//    }
     self.markBarButtonItem.enabled = NO;
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
         [self.navigationController.navigationController popToRootViewControllerAnimated:YES];
@@ -541,7 +477,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             }
         }];
     }
-    [self refresh];
+    [self updateUnreadCount:idsToMarkRead];
+//    [self refresh];
 }
 
 - (void) markRowsRead {
@@ -561,17 +498,17 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                             if (index > topVisibleRow) {
                                 break;
                             }
-                            if (item.unreadValue) {
-                                item.unreadValue = NO;
-                                [idsToMarkRead addObject:item.myId];
+                            if (item.unread) {
+                                item.unread = NO;
+                                [idsToMarkRead addObject:@(item.myId)];
                             }
                             index += 1;
                         }
                         unreadCount = unreadCount - [idsToMarkRead count];
                         [self updateUnreadCount:idsToMarkRead];
-                        dispatch_main_async_safe(^{
+//                        dispatch_main_async_safe(^{
                             self.markBarButtonItem.enabled = (unreadCount > 0);
-                        });
+//                        });
                     }
                 }
             }
@@ -624,15 +561,15 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                 @try {
                     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
                     if (item && item.myId) {
-                        if (item.unreadValue) {
-                            item.unreadValue = NO;
-                            [self updateUnreadCount:@[item.myId]];
+                        if (item.unread) {
+                            item.unread = NO;
+                            [self updateUnreadCount:@[@(item.myId)]];
                         } else {
-                            if (item.starredValue) {
-                                item.starredValue = NO;
+                            if (item.starred) {
+                                item.starred = NO;
                                 [[OCNewsHelper sharedHelper] unstarItemOffline:item.myId];
                             } else {
-                                item.starredValue = YES;
+                                item.starred = YES;
                                 [[OCNewsHelper sharedHelper] starItemOffline:item.myId];
                             }
                         }
@@ -746,11 +683,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (NSInteger)unreadCount {
     NSInteger result = 0;
     if (self.feed) {
-        if ((self.feed.myIdValue == -2) && (self.folderId > 0)) {
-            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
-            result = folder.unreadCountValue;
+        if ((self.feed.myId == -2) && (self.folderId > 0)) {
+            Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:self.folderId];
+            result = folder.unreadCount;
         } else {
-            result = self.feed.unreadCountValue;
+            result = self.feed.unreadCount;
         }
     }
     return result;

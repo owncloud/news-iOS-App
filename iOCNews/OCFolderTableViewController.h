@@ -31,10 +31,10 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "Feed.h"
+#import "Feed+CoreDataClass.h"
 
 @protocol OCFolderControllerDelegate
-- (void)folderSelected:(NSNumber*)folder;
+- (void)folderSelected:(int)folder;
 @end
 
 

@@ -36,7 +36,7 @@
 
 @interface OCFeedSettingsController () {
     NSArray *_cells;
-    NSNumber *_newFolderId;
+    int _newFolderId;
 }
 
 @end
@@ -72,10 +72,10 @@
         [self.tableView beginUpdates];
         self.urlTextView.text = self.feed.url;
         self.titleTextField.text = self.feed.title;
-        self.fullArticleSwitch.on = self.feed.preferWebValue;
-        self.readerSwitch.on = self.feed.useReaderValue;
+        self.fullArticleSwitch.on = self.feed.preferWeb;
+        self.readerSwitch.on = self.feed.useReader;
         self.readerSwitch.enabled = self.fullArticleSwitch.on;
-        self.keepStepper.value = self.feed.articleCountValue;
+        self.keepStepper.value = self.feed.articleCount;
         self.keepLabel.text = [NSString stringWithFormat:@"%.f", self.keepStepper.value];
         _newFolderId = self.feed.folderId;
         [self.tableView endUpdates];
@@ -83,10 +83,10 @@
 }
 
 - (IBAction)doSave:(id)sender {
-    self.feed.preferWebValue = self.fullArticleSwitch.on;
-    self.feed.useReaderValue = self.readerSwitch.on;
-    self.feed.articleCountValue = self.keepStepper.value;
-    if (![self.feed.folderId isEqual:_newFolderId]) {
+    self.feed.preferWeb = self.fullArticleSwitch.on;
+    self.feed.useReader = self.readerSwitch.on;
+    self.feed.articleCount = self.keepStepper.value;
+    if (self.feed.folderId != _newFolderId) {
         self.feed.folderId = _newFolderId;
         [[OCNewsHelper sharedHelper] moveFeedOfflineWithId:self.feed.myId toFolderWithId:self.feed.folderId];
     }
@@ -130,7 +130,7 @@
      }
  }
 
-- (void)folderSelected:(NSNumber *)folder {
+- (void)folderSelected:(int)folder {
     _newFolderId = folder;
 }
  

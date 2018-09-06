@@ -74,7 +74,7 @@ static char operationArticleImageKey;
                                                 radius = 9;
                                             }
                                             
-                                            [[UIBezierPath bezierPathWithRoundedRect:sself.bounds cornerRadius:radius] addClip];
+                                            [[UIBezierPath bezierPathWithRoundedRect:sself.bounds cornerRadius:1] addClip];
                                             
                                             [image drawInRect:thumbnailRect];
                                             

@@ -35,8 +35,8 @@
 #import "OCLoginController.h"
 #import "RMessage.h"
 #import "OCNewsHelper.h"
-#import "Folder.h"
-#import "Feed.h"
+#import "Folder+CoreDataClass.h"
+#import "Feed+CoreDataClass.h"
 #import <AFNetworking/AFNetworking.h>
 #import "UIColor+PHColor.h"
 #import "PHThemeManager.h"
@@ -44,7 +44,7 @@
 static NSString *DetailSegueIdentifier = @"showDetail";
 
 @interface OCFeedListController () <UIActionSheetDelegate, UISplitViewControllerDelegate> {
-    NSNumber *currentRenameId;
+    NSInteger currentRenameId;
     long currentIndex;
     BOOL networkHasBeenUnreachable;
     NSIndexPath *editingPath;
@@ -274,7 +274,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 [cell.imageView setImage:[UIImage imageNamed:@"folder"]];
                 cell.textLabel.text = folder.name;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.countBadge.value = folder.unreadCountValue;
+                cell.countBadge.value = folder.unreadCount;
             } else {
                 Feed *feed;
                 if (indexPath.section == 0) {
@@ -291,8 +291,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 }
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 if ((self.folderId > 0) && (indexPath.section == 0) && indexPath.row == 0) {
-                    Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:[NSNumber numberWithLong:self.folderId]];
-                    cell.countBadge.value = folder.unreadCountValue;
+                    Folder *folder = [[OCNewsHelper sharedHelper] folderWithId:self.folderId] ;
+                    cell.countBadge.value = folder.unreadCount;
                     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
                     if ([prefs boolForKey:@"HideRead"]) {
                         cell.textLabel.text = [NSString stringWithFormat:@"All Unread %@ Articles", folder.name];
@@ -301,7 +301,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                     }
                 } else {
 //                    NSLog(@"Unread count: %d", feed.unreadCountValue);
-                    cell.countBadge.value = feed.unreadCountValue;
+                    cell.countBadge.value = feed.unreadCount;
                     cell.textLabel.text = feed.title;
                 }
             }
@@ -435,7 +435,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                     NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:currentIndex inSection:0];
                     OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
                     Folder *folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                    folderController.folderId = folder.myIdValue;
+                    folderController.folderId = folder.myId;
                     folderController.navigationItem.title = folder.name;
                     [folderController updatePredicate];
                     folderController.detailViewController = self.detailViewController;
@@ -494,7 +494,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                         if (self.folderId == 0) {
                             OCFeedListController *folderController = [self.storyboard instantiateViewControllerWithIdentifier:@"feed_list"];
                             folder = [self.foldersFetchedResultsController objectAtIndexPath:indexPathTemp];
-                            folderController.folderId = folder.myIdValue;
+                            folderController.folderId = folder.myId;
                             folderController.navigationItem.title = folder.name;
                             [folderController updatePredicate];
                             folderController.detailViewController = self.detailViewController;
@@ -676,7 +676,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     BOOL hideRead = [prefs boolForKey:@"HideRead"];
     [prefs setBool:!hideRead forKey:@"HideRead"];
     [prefs synchronize];
-    [[OCNewsHelper sharedHelper] renameFeedOfflineWithId:[NSNumber numberWithInt:-2] To:hideRead == YES ? @"All Articles" : @"All Unread Articles"];
+    [[OCNewsHelper sharedHelper] renameFeedOfflineWithId:-2 To:hideRead == YES ? @"All Articles" : @"All Unread Articles"];
 }
 
 - (IBAction)doSettings:(id)sender {
@@ -698,7 +698,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     if (self.folderId == 0) {
         [[OCNewsHelper sharedHelper] sync:nil];
     } else {
-        [[OCNewsHelper sharedHelper] updateFolderWithId:[NSNumber numberWithLong:self.folderId]];
+        [[OCNewsHelper sharedHelper] updateFolderWithId:self.folderId];
     }
 }
 

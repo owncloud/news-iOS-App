@@ -14,7 +14,6 @@
 #import "OCFeedCell.h"
 #import "ArticleListCell.h"
 #import "ArticleController.h"
-#import "ArticleCell.h"
 
 @implementation UILabel (ThemeColor)
 

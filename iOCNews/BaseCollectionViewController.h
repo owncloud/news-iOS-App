@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Feed.h"
+#import "Feed+CoreDataClass.h"
 
 @interface BaseCollectionViewController : UICollectionViewController
 

@@ -30,16 +30,20 @@
  
  *************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
+#import "Item+CoreDataClass.h"
 @interface ArticleListCell : UICollectionViewCell
+
+@property (strong, nonatomic) Item *item;
+@property (nonatomic, assign) NSInteger contentWidth;
 
 @property (strong, nonatomic) IBOutlet UIView *mainView;
 @property (strong, nonatomic) IBOutlet UIView *mainSubView;
 @property (strong, nonatomic) IBOutlet UIView *contentContainerView;
 @property (strong, nonatomic) IBOutlet UIView *thumbnailContainerView;
 @property (strong, nonatomic) IBOutlet UIView *starContainerView;
-@property (weak, nonatomic) IBOutlet UIImageView *articleImage;
+@property (strong, nonatomic) IBOutlet UIImageView *articleImage;
 @property (strong, nonatomic) IBOutlet UIImageView *starImage;
 @property (strong, nonatomic) IBOutlet UIImageView *favIconImage;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;

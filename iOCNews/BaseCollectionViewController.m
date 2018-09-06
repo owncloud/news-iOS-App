@@ -46,19 +46,19 @@
 //        }
         
         NSPredicate *fetchPredicate;
-        if (self.feed.myIdValue == -1) {
+        if (self.feed.myId == -1) {
             fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
-            self.fetchRequest.fetchLimit = self.feed.unreadCountValue;
+            self.fetchRequest.fetchLimit = self.feed.unreadCount;
         } else {
             if (hideRead) {
-                if (self.feed.myIdValue == -2) {
+                if (self.feed.myId == -2) {
                     if (self.folderId > 0) {
                         NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
+                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:self.folderId];
                         __block NSInteger fetchLimit = 0;
                         [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId], [NSPredicate predicateWithFormat:@"unread == 1"] ]]];
-                            fetchLimit += feed.articleCountValue;
+                            [feedsArray addObject:[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@"feedId == %@", @(feed.myId)], [NSPredicate predicateWithFormat:@"unread == 1"] ]]];
+                            fetchLimit += feed.articleCount;
                         }];
                         fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
                         _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
@@ -66,32 +66,32 @@
                         fetchPredicate = [NSPredicate predicateWithFormat:@"unread == 1"];
                     }
                 } else {
-                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
+                    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", @(self.feed.myId)];
                     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == 1"];
                     NSArray *predArray = @[pred1, pred2];
                     fetchPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-                    _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
+                    _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCount;
                 }
                 _fetchedResultsController.delegate = nil;
             } else {
-                if (self.feed.myIdValue == -2) {
+                if (self.feed.myId == -2) {
                     if (self.folderId > 0) {
                         NSMutableArray *feedsArray = [NSMutableArray new];
-                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:[NSNumber numberWithInteger:self.folderId]];
+                        NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:self.folderId];
                         __block NSInteger fetchLimit = 0;
                         [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", feed.myId]];
-                            fetchLimit += feed.articleCountValue;
+                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", @(feed.myId)]];
+                            fetchLimit += feed.articleCount;
                         }];
                         fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
                         _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
                     } else {
                         fetchPredicate = nil;
-                        _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
+                        _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCount;
                     }
                 } else {
-                    fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", self.feed.myId];
-                    _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCountValue;
+                    fetchPredicate = [NSPredicate predicateWithFormat:@"feedId == %@", @(self.feed.myId)];
+                    _fetchedResultsController.fetchRequest.fetchLimit = self.feed.articleCount;
                 }
                 _fetchedResultsController.delegate = self;
             }
