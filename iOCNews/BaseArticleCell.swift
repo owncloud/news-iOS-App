@@ -52,7 +52,7 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
         let bottomBorder = CALayer()
         bottomBorder.frame = CGRect(x: 0, y: 153.0, width: 10000.0, height: 0.5)
         bottomBorder.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
-//        self.view.layer.addSublayer(bottomBorder)
+        self.layer.addSublayer(bottomBorder)
     }
     
     
