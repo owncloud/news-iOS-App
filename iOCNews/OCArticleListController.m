@@ -283,7 +283,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGRect bounds = [UIScreen mainScreen].bounds;
+    CGRect bounds = collectionView.bounds;
     if (indexPath.section == 0) {
         return CGSizeMake(bounds.size.width, 154.0);
     } else {
