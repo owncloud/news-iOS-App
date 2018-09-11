@@ -1,11 +1,11 @@
 //
-//  ArticleCell.h
+//  ArticleListController.h
 //  iOCNews
 //
 
 /************************************************************************
  
- Copyright 2012-2016 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2013 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -31,29 +31,15 @@
  *************************************************************************/
 
 @import UIKit;
+#import "BaseCollectionViewController.h"
 
-#import "Item+CoreDataClass.h"
-@interface ArticleListCell : UICollectionViewCell
+@interface ArticleListController: BaseCollectionViewController
 
-@property (strong, nonatomic) Item *item;
-@property (nonatomic, assign) NSInteger contentWidth;
+@property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
-@property (strong, nonatomic) IBOutlet UIView *mainView;
-@property (strong, nonatomic) IBOutlet UIView *mainSubView;
-@property (strong, nonatomic) IBOutlet UIView *contentContainerView;
-@property (strong, nonatomic) IBOutlet UIView *thumbnailContainerView;
-@property (strong, nonatomic) IBOutlet UIView *starContainerView;
-@property (strong, nonatomic) IBOutlet UIImageView *articleImage;
-@property (strong, nonatomic) IBOutlet UIImageView *starImage;
-@property (strong, nonatomic) IBOutlet UIImageView *favIconImage;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *summaryLabel;
-
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *thumbnailContainerWidthConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *articleImageWidthConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *contentContainerLeadingConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *dateLabelLeadingConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *mainCellViewWidthContraint;
+- (void)refresh;
+//- (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode;
+- (IBAction)doRefresh:(id)sender;
+- (IBAction)onMarkRead:(id)sender;
 
 @end

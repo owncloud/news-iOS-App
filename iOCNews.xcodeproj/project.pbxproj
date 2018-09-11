@@ -36,14 +36,13 @@
 		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
 		D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */; };
-		D05A6FB4213B9508006D3AB8 /* NoThumbnailArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB2213B9508006D3AB8 /* NoThumbnailArticleCell.swift */; };
+		D05A6FB4213B9508006D3AB8 /* ArticleCellNoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */; };
 		D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */; };
 		D05A6FB7213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB6213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift */; };
 		D05A6FB9213DED1D006D3AB8 /* ArticleCellWithThumbnail.xib in Resources */ = {isa = PBXBuildFile; fileRef = D05A6FB8213DEC31006D3AB8 /* ArticleCellWithThumbnail.xib */; };
 		D05A6FBC213E3247006D3AB8 /* SummaryHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FBB213E3247006D3AB8 /* SummaryHelper.m */; };
 		D05A6FBE213E35A8006D3AB8 /* ArticleCellWithWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
-		D06CB21F179C887300A1310B /* ArticleListCell~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
 		D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
@@ -70,8 +69,7 @@
 		D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA35177900C400C965F4 /* OCAppDelegate.m */; };
 		D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* Main.storyboard */; };
 		D0BCAA681779091000C965F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA671779091000C965F4 /* QuartzCore.framework */; };
-		D0BCAA73177909A600C965F4 /* ArticleListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6A177909A500C965F4 /* ArticleListCell.m */; };
-		D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6C177909A500C965F4 /* OCArticleListController.m */; };
+		D0BCAA74177909A600C965F4 /* ArticleListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6C177909A500C965F4 /* ArticleListController.m */; };
 		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAADA17790C9100C965F4 /* libxml2.dylib */; };
@@ -79,7 +77,6 @@
 		D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
 		D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABE21779119300C965F4 /* MessageUI.framework */; };
 		D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */; };
-		D0BCAC2A1780E02600C965F4 /* ArticleListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC291780E02500C965F4 /* ArticleListCell.xib */; };
 		D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC301780E97200C965F4 /* OCArticleImage.m */; };
 		D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC42178104FC00C965F4 /* defaults.plist */; };
 		D0BCAC8A178104FC00C965F4 /* rss.css in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC5F178104FC00C965F4 /* rss.css */; };
@@ -136,7 +133,7 @@
 		D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
 		D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcreposix.a; sourceTree = "<group>"; };
 		D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseArticleCell.swift; sourceTree = "<group>"; };
-		D05A6FB2213B9508006D3AB8 /* NoThumbnailArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoThumbnailArticleCell.swift; sourceTree = "<group>"; };
+		D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellNoThumbnail.swift; sourceTree = "<group>"; };
 		D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoThumbnailArticleCell.xib; sourceTree = "<group>"; };
 		D05A6FB6213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellWithThumbnail.swift; sourceTree = "<group>"; };
 		D05A6FB8213DEC31006D3AB8 /* ArticleCellWithThumbnail.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleCellWithThumbnail.xib; sourceTree = "<group>"; };
@@ -145,7 +142,6 @@
 		D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellWithWebView.swift; sourceTree = "<group>"; };
 		D0622FE418C29BD40032E622 /* News 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 5.xcdatamodel"; sourceTree = "<group>"; };
 		D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = News.xcmappingmodel; sourceTree = "<group>"; };
-		D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ArticleListCell~iphone.xib"; sourceTree = "<group>"; };
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
 		D06CB22D17A06E4F00A1310B /* News.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = News.xcdatamodel; sourceTree = "<group>"; };
 		D06CB23517A074AA00A1310B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -187,10 +183,8 @@
 		D0BCAA35177900C400C965F4 /* OCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCAppDelegate.m; sourceTree = "<group>"; };
 		D0BCAA49177903F500C965F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D0BCAA671779091000C965F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		D0BCAA69177909A500C965F4 /* ArticleListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ArticleListCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D0BCAA6A177909A500C965F4 /* ArticleListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArticleListCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D0BCAA6B177909A500C965F4 /* OCArticleListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCArticleListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D0BCAA6C177909A500C965F4 /* OCArticleListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCArticleListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D0BCAA6B177909A500C965F4 /* ArticleListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ArticleListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		D0BCAA6C177909A500C965F4 /* ArticleListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArticleListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA6D177909A600C965F4 /* OCFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA6E177909A600C965F4 /* OCFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA6F177909A600C965F4 /* OCFeedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -202,7 +196,6 @@
 		D0BCABE21779119300C965F4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCAPIClient.h; sourceTree = "<group>"; };
 		D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCAPIClient.m; sourceTree = "<group>"; };
-		D0BCAC291780E02500C965F4 /* ArticleListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArticleListCell.xib; sourceTree = "<group>"; };
 		D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCArticleImage.h; sourceTree = "<group>"; };
 		D0BCAC301780E97200C965F4 /* OCArticleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCArticleImage.m; sourceTree = "<group>"; };
 		D0BCAC42178104FC00C965F4 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = defaults.plist; sourceTree = "<group>"; };
@@ -407,17 +400,13 @@
 				D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */,
 				D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */,
 				D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */,
-				D05A6FB2213B9508006D3AB8 /* NoThumbnailArticleCell.swift */,
+				D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */,
 				D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */,
 				D05A6FB6213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift */,
 				D05A6FB8213DEC31006D3AB8 /* ArticleCellWithThumbnail.xib */,
 				D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */,
-				D0BCAA69177909A500C965F4 /* ArticleListCell.h */,
-				D0BCAA6A177909A500C965F4 /* ArticleListCell.m */,
-				D0BCAC291780E02500C965F4 /* ArticleListCell.xib */,
-				D06CB21E179C887300A1310B /* ArticleListCell~iphone.xib */,
-				D0BCAA6B177909A500C965F4 /* OCArticleListController.h */,
-				D0BCAA6C177909A500C965F4 /* OCArticleListController.m */,
+				D0BCAA6B177909A500C965F4 /* ArticleListController.h */,
+				D0BCAA6C177909A500C965F4 /* ArticleListController.m */,
 				D0B95D13211144A200D1A2B8 /* ArticleController.h */,
 				D0B95D14211144A200D1A2B8 /* ArticleController.m */,
 				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
@@ -641,14 +630,12 @@
 				D0F94F8C20AA777300833A7F /* RMessageDefaultDesign.json in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
-				D0BCAC2A1780E02600C965F4 /* ArticleListCell.xib in Resources */,
 				D0F94F8D20AA777300833A7F /* RMessageView.xib in Resources */,
 				D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */,
 				D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */,
 				D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */,
 				D0BCAC8A178104FC00C965F4 /* rss.css in Resources */,
 				D0BCAC8B178104FC00C965F4 /* rss.html in Resources */,
-				D06CB21F179C887300A1310B /* ArticleListCell~iphone.xib in Resources */,
 				D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -717,15 +704,14 @@
 				D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */,
 				D0BCAA32177900C400C965F4 /* main.m in Sources */,
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
-				D0BCAA73177909A600C965F4 /* ArticleListCell.m in Sources */,
 				D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */,
-				D0BCAA74177909A600C965F4 /* OCArticleListController.m in Sources */,
+				D0BCAA74177909A600C965F4 /* ArticleListController.m in Sources */,
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D09B14A41C39E2A50019DB51 /* UIImageView+OCWebCache.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D0F94F8F20AA777300833A7F /* RMessageView.m in Sources */,
-				D05A6FB4213B9508006D3AB8 /* NoThumbnailArticleCell.swift in Sources */,
+				D05A6FB4213B9508006D3AB8 /* ArticleCellNoThumbnail.swift in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,

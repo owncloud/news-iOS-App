@@ -8,12 +8,12 @@
 
 #import "BaseCollectionViewController.h"
 #import "Item+CoreDataClass.h"
-#import "OCArticleListController.h"
+#import "ArticleListController.h"
 
 @interface ArticleController : BaseCollectionViewController
 
 @property (nonatomic, strong) Item *selectedArticle;
 @property (nonatomic, assign) NSUInteger itemIndex;
-@property (nonatomic, strong) OCArticleListController *articleListcontroller;
+@property (nonatomic, strong) ArticleListController *articleListcontroller;
 
 @end

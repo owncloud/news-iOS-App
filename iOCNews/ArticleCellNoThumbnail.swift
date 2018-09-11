@@ -1,5 +1,5 @@
 //
-//  NoThumbnailArticleCell.swift
+//  ArticleCellNoThumbnail.swift
 //  iOCNews
 //
 //  Created by Peter Hedlund on 9/1/18.
@@ -8,11 +8,10 @@
 
 import UIKit
 
-class NoThumbnailArticleCell: BaseArticleCell {
+class ArticleCellNoThumbnail: BaseArticleCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     override func configureView() {
@@ -20,7 +19,6 @@ class NoThumbnailArticleCell: BaseArticleCell {
         guard let item = self.item else {
             return
         }
-        self.mainCellViewWidthConstraint.constant = self.contentWidth
         self.titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
         self.dateLabel.font = self.makeItalic(font: UIFont.preferredFont(forTextStyle: .subheadline))
         self.summaryLabel.font = self.makeSmaller(font: UIFont.preferredFont(forTextStyle: .body))
@@ -49,14 +47,10 @@ class NoThumbnailArticleCell: BaseArticleCell {
                 }
             }
         }
-        if let feed = OCNewsHelper.shared().feed(withId: Int(item.feedId)) {
-            
+        if let feed = OCNewsHelper.shared().feed(withId: Int(item.feedId)) {            
             if UserDefaults.standard.bool(forKey: "ShowFavicons") == true {
-                //                if (cell.tag == indexPath.row) {
                 OCNewsHelper.shared().faviconForFeed(withId: Int(feed.myId), imageView: self.favIconImage)
                 self.favIconImage.isHidden = false
-                self.dateLabelLeadingConstraint.constant = 21
-                //                }
             }
             else {
                 self.favIconImage.isHidden = true
@@ -77,11 +71,8 @@ class NoThumbnailArticleCell: BaseArticleCell {
         if var summary = item.body {
             if summary.range(of: "<style>", options: .caseInsensitive) != nil {
                 if summary.range(of: "</style>", options: .caseInsensitive) != nil {
-                    
                     let start = summary.range(of:"<style>", options: .caseInsensitive)?.lowerBound
                     let end = summary.range(of: "</style>", options: .caseInsensitive)?.upperBound
-                    
-                    //                        location - r.location + 8;
                     let sub = summary.substring(with: start..<end)
                     summary = summary.replacingOccurrences(of: sub, with: "")
                 }
@@ -95,45 +86,18 @@ class NoThumbnailArticleCell: BaseArticleCell {
                 self.summaryLabel.setThemeTextColor(PHThemeManager.shared().unreadTextColor)
                 self.titleLabel.setThemeTextColor(PHThemeManager.shared().unreadTextColor)
                 self.dateLabel.setThemeTextColor(PHThemeManager.shared().unreadTextColor)
-                //                    self.articleImage.alpha = 1.0
                 self.favIconImage.alpha = 1.0
             } else {
                 self.summaryLabel.setThemeTextColor(UIColor.readText())
                 self.titleLabel.setThemeTextColor(UIColor.readText())
                 self.dateLabel.setThemeTextColor(UIColor.readText())
-                //                    self.articleImage.alpha = 0.4
                 self.favIconImage.alpha = 0.4
             }
             self.summaryLabel.highlightedTextColor = self.summaryLabel.textColor;
             self.titleLabel.highlightedTextColor = self.titleLabel.textColor;
             self.dateLabel.highlightedTextColor = self.dateLabel.textColor;
         }
-                //    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
-                //        NSString *urlString = [OCArticleImage findImage:summary];
-                //        if (urlString) {
-                //            //                if (self.tag == indexPath.row) {
-                //            //                    dispatch_main_async_safe(^{
-                //            self.articleImage.hidden = NO;
-                //            self.thumbnailContainerWidthConstraint.constant = self.articleImage.frame.size.width;
-                //            self.articleImageWidthConstraint.constant = self.articleImage.frame.size.width;
-                //            self.contentContainerLeadingConstraint.constant = self.articleImage.frame.size.width;
-                //            [self.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
-                //            //                    });
-                //            //                }
-                //        } else {
-                //            self.articleImage.hidden = YES;
-                //            self.thumbnailContainerWidthConstraint.constant = 0.0;
-                //            self.articleImageWidthConstraint.constant = 0.0;
-                //            self.contentContainerLeadingConstraint.constant = 0.0;
-                //        }
-                //    } else {
-                //        self.articleImage.hidden = YES;
-                //        self.thumbnailContainerWidthConstraint.constant = 0.0;
-                //        self.articleImageWidthConstraint.constant = 0.0;
-                //        self.contentContainerLeadingConstraint.constant = 0.0;
-                //    }
         self.isHighlighted = false
-                //    [self setNeedsLayout];
     }
 
 }

@@ -30,8 +30,7 @@
  
  *************************************************************************/
 
-#import "OCArticleListController.h"
-#import "ArticleListCell.h"
+#import "ArticleListController.h"
 #import "NSString+HTML.h"
 #import <AFNetworking/AFNetworking.h>
 #import "OCArticleImage.h"
@@ -46,7 +45,7 @@
 //#import <WebImage/WebImage.h>
 #import "iOCNews-Swift.h"
 
-@interface OCArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout> {
+@interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout> {
     long currentIndex;
     BOOL markingAllItemsRead;
     BOOL hideRead;
@@ -69,7 +68,7 @@
 
 @end
 
-@implementation OCArticleListController
+@implementation ArticleListController
 
 @synthesize feedRefreshControl;
 @synthesize feed = _feed;
@@ -219,25 +218,14 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     comingFromDetail = NO;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        NSLog(@"My width = %f", size.width);
-        [self willUpdateToDisplayMode: self.splitViewController.displayMode];
-    }
-}
-
-- (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
-    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        CGFloat screenWidth = UIScreen.mainScreen.bounds.size.width;
-        if (displayMode == UISplitViewControllerDisplayModeAllVisible) {
-            cellContentWidth = ((screenWidth / 3) * 2) - 50;
-            [self.collectionView reloadData];
-        } else if (displayMode == UISplitViewControllerDisplayModePrimaryHidden) {
-            cellContentWidth = MIN(700, screenWidth  - 100);
-            [self.collectionView reloadData];
-        }
-    }
-}
+//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+////    NSLog(@"My width = %f", size.width);
+//    [self willUpdateToDisplayMode: self.splitViewController.displayMode];
+//}
+//
+//- (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
+//    [self.collectionView reloadData];
+//}
 
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
@@ -284,6 +272,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGRect bounds = collectionView.bounds;
+    NSLog(@"Collectionview Width: %f", bounds.size.width);
     if (indexPath.section == 0) {
         return CGSizeMake(bounds.size.width, 154.0);
     } else {
@@ -293,15 +282,14 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     __block Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if (!item.imageLink) {
-        NoThumbnailArticleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"NoThumbnailArticleCell" forIndexPath:indexPath];
-        cell.contentWidth = cellContentWidth;
+    if (([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"] == YES) && item.imageLink) {
+        ArticleCellWithThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithThumbnail" forIndexPath:indexPath];
+        //    cell.contentWidth = cellContentWidth;
         cell.item = item;
         return cell;
     }
-
-    ArticleCellWithThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithThumbnail" forIndexPath:indexPath];
-    cell.contentWidth = cellContentWidth;
+    ArticleCellNoThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"NoThumbnailArticleCell" forIndexPath:indexPath];
+    //        cell.contentWidth = cellContentWidth;
     cell.item = item;
     return cell;
 
@@ -687,7 +675,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     if ([self.sideGestureRecognizer translationInView:self.collectionView].x > 10) {
         [UIView animateWithDuration:0.3 animations:^{
             self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-        } completion: nil];
+        } completion:^(BOOL finished) {
+            if (finished) {
+                [self.collectionView reloadData];
+            }
+        }];
     }
 }
 

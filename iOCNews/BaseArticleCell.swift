@@ -10,7 +10,6 @@ import UIKit
 
 protocol ArticleCellProtocol {
     var item: Item? {get set}
-    var contentWidth: CGFloat {get set}
     func configureView()
 }
 
@@ -27,15 +26,19 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
     @IBOutlet var summaryLabel: UILabel!
     
     @IBOutlet var dateLabelLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet var mainCellViewWidthConstraint: NSLayoutConstraint!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        //        self.contentView.autoresizingMask.insert(.flexibleHeight)
+        self.contentView.autoresizingMask.insert(.flexibleWidth)
+        self.contentView.translatesAutoresizingMaskIntoConstraints = true
+    }
+
     var item: Item? {
         didSet {
             self.configureView()
         }
     }
-    
-    var contentWidth:CGFloat = 700.0
     
     func configureView() {
         //

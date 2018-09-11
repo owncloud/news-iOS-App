@@ -59,7 +59,7 @@
         <!--Articles-->
         <scene sceneID="Bbl-oE-fsB">
             <objects>
-                <collectionViewController id="9xT-UO-N4u" customClass="OCArticleListController" sceneMemberID="viewController">
+                <collectionViewController id="9xT-UO-N4u" customClass="ArticleListController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="mMD-CZ-qdZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

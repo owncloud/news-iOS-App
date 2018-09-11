@@ -462,7 +462,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:currentIndex inSection:0];
 
         UINavigationController *navigationController = (UINavigationController *)segue.destinationViewController;
-        self.detailViewController = (OCArticleListController *)navigationController.topViewController;
+        self.detailViewController = (ArticleListController *)navigationController.topViewController;
 
         if (!self.tableView.isEditing) {
             Folder *folder;
@@ -526,8 +526,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 default:
                     break;
             }
-//            self.detailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-//            self.detailViewController.navigationItem.leftItemsSupplementBackButton = YES;
+            self.detailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
+            self.detailViewController.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
     if ([segue.identifier isEqualToString:@"feedSettings"]) {
@@ -929,9 +929,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 - (void)splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
     NSLog(@"My display mode = %ld", (long)displayMode);
-    if (self.detailViewController) {
-        [(OCArticleListController *)self.detailViewController willUpdateToDisplayMode:displayMode];
-    }
+//    if (self.detailViewController) {
+//        [(OCArticleListController *)self.detailViewController willUpdateToDisplayMode:displayMode];
+//    }
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
