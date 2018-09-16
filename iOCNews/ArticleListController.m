@@ -139,8 +139,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 #pragma mark - View lifecycle
 
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
+- (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
     if (self) {
         [[NSUserDefaults standardUserDefaults] addObserver:self
@@ -161,8 +160,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
@@ -218,15 +216,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     comingFromDetail = NO;
 }
 
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-////    NSLog(@"My width = %f", size.width);
-//    [self willUpdateToDisplayMode: self.splitViewController.displayMode];
-//}
-//
-//- (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
-//    [self.collectionView reloadData];
-//}
-
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
@@ -241,8 +230,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowThumbnails"];
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowFavicons"];

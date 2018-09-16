@@ -46,7 +46,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
-    [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];// Nib:[UINib nibWithNibName:@"ArticleCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
     [self.fetchedResultsController performFetch:nil];
     [self writeCss];
 }
@@ -54,6 +54,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         NSLog(@"My width = %f", size.width);
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground ) {
+            return;
+        }
         NSIndexPath *currentIndexPath = [self.collectionView indexPathForCell:currentCell];
         [self.collectionView reloadData];
         self.collectionView.contentOffset = CGPointMake(size.width * currentIndexPath.item, 0);
