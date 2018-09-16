@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreImage
 
 class ArticleCellNoThumbnail: BaseArticleCell {
 
@@ -80,7 +81,11 @@ class ArticleCellNoThumbnail: BaseArticleCell {
             self.summaryLabel.text = summary.convertingHTMLToPlainText()
             self.starImage.image = nil;
             if item.starred {
-                self.starImage.image = UIImage(named: "star_icon")
+                if PHThemeManager.shared().currentTheme == .night {
+                    self.starImage.image = UIImage(named: "star_icon")?.inverted
+                } else {
+                    self.starImage.image = UIImage(named: "star_icon")
+                }
             }
             if item.unread == true {
                 self.summaryLabel.setThemeTextColor(PHThemeManager.shared().unreadTextColor)
@@ -100,4 +105,20 @@ class ArticleCellNoThumbnail: BaseArticleCell {
         self.isHighlighted = false
     }
 
+}
+
+extension UIImage {
+    
+    var inverted: UIImage {
+        var result = UIImage()
+        if let filter = CIFilter(name: "CIColorInvert") {
+            filter.setDefaults()
+            filter.setValue(CIImage(image: self), forKey: kCIInputImageKey)
+            if let output = filter.outputImage {
+                result = UIImage(ciImage: output)
+            }
+        }
+        return result
+    }
+    
 }
