@@ -31,7 +31,7 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "Feed.h"
+#import "Feed+CoreDataClass.h"
 #import "OCFolderTableViewController.h"
 
 @protocol OCFeedSettingsDelegate;

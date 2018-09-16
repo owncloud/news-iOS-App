@@ -31,12 +31,12 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "OCArticleListController.h"
+#import "ArticleListController.h"
 #import "OCFeedSettingsController.h"
 
 @interface OCFeedListController : UITableViewController <NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, OCFeedSettingsDelegate>
 
-@property (strong, nonatomic) OCArticleListController *detailViewController;
+@property (strong, nonatomic) ArticleListController *detailViewController;
 @property (nonatomic, retain) NSFetchedResultsController *specialFetchedResultsController;
 @property (nonatomic, retain) NSFetchedResultsController *foldersFetchedResultsController;
 @property (nonatomic, retain) NSFetchedResultsController *feedsFetchedResultsController;

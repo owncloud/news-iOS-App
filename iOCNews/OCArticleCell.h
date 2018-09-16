@@ -32,7 +32,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OCArticleCell : UITableViewCell
+@interface ArticleListCell : UICollectionViewCell
 
 @property (strong, nonatomic) IBOutlet UIView *mainView;
 @property (strong, nonatomic) IBOutlet UIView *mainSubView;

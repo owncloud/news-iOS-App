@@ -8,14 +8,14 @@
   "tvOS" : [
     {
       "name" : "WebImage",
-      "hash" : "7be180de7346ddd76bad47c39655d8e4339885576601efcf7a8a454a0f329db2"
+      "hash" : "2ba7a3e20de4a6b7a08d6a10bb739aafe7caa109fcafa30d1952c74e23ea24b4"
     }
   ],
   "commitish" : "3.8.2",
   "iOS" : [
     {
       "name" : "WebImage",
-      "hash" : "b84b016ff07166ec060d4baddabba66d8cd69520be08c913324b13b15671aa28"
+      "hash" : "f7390aaa7a44433b2fdc235794e5294d6058a59d26d842b7afbb79ddcbf452e9"
     }
   ]
 }

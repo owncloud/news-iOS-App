@@ -3,3 +3,4 @@ github "kstenerud/KSCrash"
 github "rs/SDWebImage" ~> 3.8
 github "phedlund/TUSafariActivity" "master"
 github "phedlund/BRYHTMLParser" "carthage_support"
+github "uias/Pageboy" ~> 2.5

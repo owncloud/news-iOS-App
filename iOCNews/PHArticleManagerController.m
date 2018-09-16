@@ -9,10 +9,11 @@
 #import "PHArticleManagerController.h"
 #import "OCWebController.h"
 #import "OCNewsHelper.h"
+#import "AlzheimerPageViewController.h"
 
 @interface PHArticleManagerController () <UIPageViewControllerDataSource>
 
-@property (nonatomic, strong) UIPageViewController *pageViewController;
+@property (nonatomic, strong) AlzheimerPageViewController *pageViewController;
 
 @end
 
@@ -40,7 +41,8 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     if ([segue.identifier isEqualToString:@"pageControllerEmbedSegue"]) {
-        self.pageViewController = (UIPageViewController *)segue.destinationViewController;
+        self.pageViewController = (AlzheimerPageViewController *)segue.destinationViewController;
+        self.pageViewController.view.backgroundColor = [UIColor greenColor];
     }
 }
 

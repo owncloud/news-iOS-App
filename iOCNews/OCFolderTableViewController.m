@@ -31,10 +31,10 @@
  *************************************************************************/
 
 #import "OCFolderTableViewController.h"
-#import "Folder.h"
+#import "Folder+CoreDataClass.h"
 
 @interface OCFolderTableViewController () {
-    NSNumber *_selectedFolderId;
+    NSInteger _selectedFolderId;
 }
 
 @end
@@ -101,14 +101,14 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
     if (indexPath.row == 0) {
         cell.textLabel.text = @"(No Folder)";
-        if ([_selectedFolderId isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        if (_selectedFolderId == 0) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
     } else {
         Folder *folder = [self.folders objectAtIndex:indexPath.row - 1];
         cell.textLabel.text = folder.name;
         NSArray *folderIds = [self.folders valueForKeyPath:@"myId"];
-        long folderIdIndex = [folderIds indexOfObject:_selectedFolderId];
+        long folderIdIndex = [folderIds indexOfObject:@(_selectedFolderId)];
         if (folderIdIndex == indexPath.row - 1) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
@@ -121,12 +121,12 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (_delegate != nil) {
         if (indexPath.row == 0) {
-            _selectedFolderId = [NSNumber numberWithInt:0];
-            [_delegate folderSelected:[NSNumber numberWithInt:0]];
+            _selectedFolderId = 0;
+            [_delegate folderSelected:0];
         } else {
             NSNumber *newFolderId = [[self.folders valueForKeyPath:@"myId"] objectAtIndex:(indexPath.row - 1)];
-            _selectedFolderId = newFolderId;
-            [_delegate folderSelected:newFolderId];
+            _selectedFolderId = [newFolderId integerValue];
+            [_delegate folderSelected:(int)_selectedFolderId];
         }
 	}
     [self.tableView reloadData];
