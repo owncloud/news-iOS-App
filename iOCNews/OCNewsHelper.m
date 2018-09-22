@@ -936,11 +936,11 @@
         // Enter the group for each request we create
         dispatch_group_enter(group);
         int batchSize = MAX(50, feed.unreadCount);
-        NSDictionary *itemParams = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:batchSize], @"batchSize",
-                                    [NSNumber numberWithInt:0], @"offset",
-                                    [NSNumber numberWithInt:0], @"type",
-                                    feed.myId, @"id",
-                                    @"true", @"getRead", nil];
+        NSDictionary *itemParams = @{@"batchSize": @(batchSize),
+                                     @"offset": @(0),
+                                     @"type": @(0),
+                                     @"id": @(feed.myId),
+                                     @"getRead": @"true"};
         
         NSURLSessionDataTask *task = [client GET:@"items" parameters:itemParams progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             dispatch_group_leave(group);
