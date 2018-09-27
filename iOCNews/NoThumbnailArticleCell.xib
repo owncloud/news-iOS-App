@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,13 +20,13 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="yVb-Vw-1Y1">
-                        <rect key="frame" x="131.5" y="1" width="679" height="152"/>
+                        <rect key="frame" x="131.5" y="0.5" width="679" height="152"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFd-C9-oy6" userLabel="ContentContainer">
                                 <rect key="frame" x="1" y="0.0" width="672" height="152"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="1000" text="This is a long title to see what happens when it goes over more than one line" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ffa-i3-5t0">
-                                        <rect key="frame" x="0.0" y="0.0" width="662" height="48"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="662" height="20.5"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="48" id="PUa-x7-bfF"/>
@@ -36,7 +36,7 @@
                                         <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xev-yu-qfW">
-                                        <rect key="frame" x="0.0" y="56" width="662" height="16"/>
+                                        <rect key="frame" x="0.0" y="30.5" width="662" height="16"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2qe-3o-g1P">
                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -63,8 +63,8 @@
                                             <constraint firstItem="uC3-yk-SSI" firstAttribute="leading" secondItem="2qe-3o-g1P" secondAttribute="leading" constant="21" id="sXB-iW-Bw0"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="749" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bve-Iq-wHe">
-                                        <rect key="frame" x="0.0" y="77" width="662" height="70"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="999" verticalCompressionResistancePriority="749" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bve-Iq-wHe">
+                                        <rect key="frame" x="0.0" y="49.5" width="662" height="97.5"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="82" id="cxD-40-oF1">
@@ -84,10 +84,10 @@
                                     <constraint firstAttribute="trailing" secondItem="bve-Iq-wHe" secondAttribute="trailing" constant="10" id="Hqv-0z-Gnq"/>
                                     <constraint firstItem="ffa-i3-5t0" firstAttribute="top" secondItem="LFd-C9-oy6" secondAttribute="top" id="IS3-hh-peE"/>
                                     <constraint firstAttribute="trailing" secondItem="ffa-i3-5t0" secondAttribute="trailing" constant="10" id="K4G-MT-Iiv"/>
-                                    <constraint firstItem="xev-yu-qfW" firstAttribute="top" secondItem="ffa-i3-5t0" secondAttribute="bottom" constant="8" id="dps-Dl-Bhi"/>
+                                    <constraint firstItem="xev-yu-qfW" firstAttribute="top" secondItem="ffa-i3-5t0" secondAttribute="bottom" constant="10" id="dps-Dl-Bhi"/>
                                     <constraint firstItem="xev-yu-qfW" firstAttribute="width" secondItem="ffa-i3-5t0" secondAttribute="width" id="i1q-Nn-SaX"/>
                                     <constraint firstItem="ffa-i3-5t0" firstAttribute="leading" secondItem="bve-Iq-wHe" secondAttribute="leading" id="i6u-54-zWN"/>
-                                    <constraint firstItem="bve-Iq-wHe" firstAttribute="top" secondItem="xev-yu-qfW" secondAttribute="bottom" constant="5" id="ukZ-gP-hHr"/>
+                                    <constraint firstItem="bve-Iq-wHe" firstAttribute="top" secondItem="xev-yu-qfW" secondAttribute="bottom" constant="3" id="ukZ-gP-hHr"/>
                                     <constraint firstAttribute="bottom" secondItem="bve-Iq-wHe" secondAttribute="bottom" constant="5" id="wTE-1g-sVD"/>
                                 </constraints>
                             </view>

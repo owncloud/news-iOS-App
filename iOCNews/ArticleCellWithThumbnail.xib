@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,13 +20,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQP-3C-1Dr">
-                        <rect key="frame" x="124.66666666666669" y="64.666666666666686" width="696.33333333333326" height="152"/>
+                        <rect key="frame" x="122" y="69.5" width="700" height="152"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lty-Lj-23R" userLabel="ThumbnailContainer">
-                                <rect key="frame" x="0.3333333333333286" y="5" width="66" height="66"/>
+                                <rect key="frame" x="0.0" y="20" width="112" height="112"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6">
-                                        <rect key="frame" x="0.6666666666666714" y="0.0" width="66" height="66"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="112" height="112"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="112" id="KQc-Fu-PPm">
                                                 <variation key="widthClass=compact" constant="66"/>
@@ -56,10 +56,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fl2-Me-Ib6" userLabel="ContentContainer">
-                                <rect key="frame" x="76.333333333333314" y="0.0" width="604" height="134.33333333333334"/>
+                                <rect key="frame" x="122" y="0.0" width="578" height="134.5"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="1000" text="This is a long title to see what happens when it goes over more than one line" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3">
-                                        <rect key="frame" x="4.6666666666666856" y="0.0" width="583.33333333333326" height="42.333333333333336"/>
+                                        <rect key="frame" x="5" y="0.0" width="557" height="42.5"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="48" id="NpP-4r-yTC"/>
@@ -69,7 +69,7 @@
                                         <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXF-mX-KAd">
-                                        <rect key="frame" x="5.6666666666666856" y="50.333333333333329" width="598.33333333333326" height="16"/>
+                                        <rect key="frame" x="5" y="52.5" width="573" height="16"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ENK-Fa-lo4">
                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -79,7 +79,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="Author &amp; Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                                                <rect key="frame" x="21" y="0.0" width="578" height="16"/>
+                                                <rect key="frame" x="21" y="-1" width="552" height="18"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="czU-T8-OBG"/>
@@ -124,8 +124,8 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="749" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                                        <rect key="frame" x="-74" y="71.333333333333329" width="662" height="57.999999999999986"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="999" verticalCompressionResistancePriority="250" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                                        <rect key="frame" x="5" y="71.5" width="557" height="58"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="82" id="HRx-p9-9tv">
@@ -152,18 +152,18 @@
                                     <constraint firstAttribute="trailing" secondItem="cXF-mX-KAd" secondAttribute="trailing" id="DWQ-Iv-Uuz"/>
                                     <constraint firstItem="cXF-mX-KAd" firstAttribute="leading" secondItem="fl2-Me-Ib6" secondAttribute="leading" constant="5" id="DWd-4k-VhM"/>
                                     <constraint firstItem="3" firstAttribute="leading" secondItem="fl2-Me-Ib6" secondAttribute="leading" constant="5" id="QO3-m9-Ayf"/>
-                                    <constraint firstItem="cXF-mX-KAd" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="8" id="cd9-bQ-uW6"/>
+                                    <constraint firstItem="cXF-mX-KAd" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="10" id="cd9-bQ-uW6"/>
                                     <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" constant="16" id="fEg-AN-Jwe"/>
                                     <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="16" id="hkd-f6-AB6"/>
                                     <constraint firstItem="3" firstAttribute="top" secondItem="fl2-Me-Ib6" secondAttribute="top" id="iuU-MP-v1O"/>
-                                    <constraint firstItem="5" firstAttribute="top" secondItem="cXF-mX-KAd" secondAttribute="bottom" constant="5" id="kgT-m4-LUN"/>
+                                    <constraint firstItem="5" firstAttribute="top" secondItem="cXF-mX-KAd" secondAttribute="bottom" constant="3" id="kgT-m4-LUN"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="peC-zy-JQ2" userLabel="StarContainer">
-                                <rect key="frame" x="681" y="0.0" width="16" height="134.33333333333334"/>
+                                <rect key="frame" x="684" y="0.0" width="16" height="134.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uAr-hd-b6i">
-                                        <rect key="frame" x="0.33333333333337123" y="0.0" width="16" height="16"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="8DJ-uz-xMV"/>
                                             <constraint firstAttribute="width" constant="16" id="ny9-4B-egp"/>
@@ -246,7 +246,7 @@
                 <outlet property="thumbnailContainerView" destination="lty-Lj-23R" id="CHx-DB-89d"/>
                 <outlet property="titleLabel" destination="3" id="ZVP-us-of7"/>
             </connections>
-            <point key="canvasLocation" x="523" y="236.5"/>
+            <point key="canvasLocation" x="846" y="243"/>
         </collectionViewCell>
     </objects>
 </document>
