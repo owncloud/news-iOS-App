@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Feed+CoreDataClass.h"
 
-@interface BaseCollectionViewController : UICollectionViewController
+@interface BaseCollectionViewController : UIViewController
+
+@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) Feed *feed;
 @property (nonatomic, assign) NSInteger folderId;

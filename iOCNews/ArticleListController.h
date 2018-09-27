@@ -38,7 +38,6 @@
 @property (nonatomic, strong, readonly) UIRefreshControl *feedRefreshControl;
 
 - (void)refresh;
-//- (void)willUpdateToDisplayMode:(UISplitViewControllerDisplayMode)displayMode;
 - (IBAction)doRefresh:(id)sender;
 - (IBAction)onMarkRead:(id)sender;
 

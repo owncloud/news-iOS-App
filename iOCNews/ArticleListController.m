@@ -260,7 +260,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGRect bounds = collectionView.bounds;
-    NSLog(@"Collectionview Width: %f", bounds.size.width);
     if (indexPath.section == 0) {
         return CGSizeMake(bounds.size.width, 154.0);
     } else {

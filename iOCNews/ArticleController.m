@@ -17,7 +17,6 @@
 #import "iOCNews-Swift.h"
 
 @interface ArticleController () <UICollectionViewDelegateFlowLayout, WKUIDelegate, WKNavigationDelegate, PHPrefViewControllerDelegate, UIPopoverPresentationControllerDelegate> {
-    ArticleCellWithWebView *currentCell;
     BOOL shouldScrollToInitialArticle;
     BOOL loadingComplete;
     BOOL loadingSummary;
@@ -32,6 +31,8 @@
 
 @property (nonatomic, strong, readonly) PHPrefViewController *settingsViewController;
 @property (nonatomic, strong, readonly) UIPopoverPresentationController *settingsPresentationController;
+@property (nonatomic, strong) ArticleCellWithWebView *currentCell;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 @end
 
@@ -40,27 +41,51 @@
 @synthesize selectedArticle;
 @synthesize settingsViewController;
 @synthesize settingsPresentationController;
+@synthesize currentCell;
+@synthesize currentIndexPath;
 
 static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
+//    self.collectionView.contentInset = UIEdgeInsetsZero;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
+    UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+        CGFloat width = self.view.frame.size.width;
+        CGFloat height = self.view.frame.size.height;
+        layout.itemSize = CGSizeMake(width, height);
+        [layout invalidateLayout];
+    } else if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
+        CGFloat width = self.view.frame.size.width;
+        CGFloat height = self.view.frame.size.height - self.collectionView.contentInset.top - 1;
+        layout.itemSize = CGSizeMake(width, height);
+    }
     [self.fetchedResultsController performFetch:nil];
     [self writeCss];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        NSLog(@"My width = %f", size.width);
-        if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground ) {
-            return;
-        }
-        NSIndexPath *currentIndexPath = [self.collectionView indexPathForCell:currentCell];
-        [self.collectionView reloadData];
-        self.collectionView.contentOffset = CGPointMake(size.width * currentIndexPath.item, 0);
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+        CGFloat width = self.view.frame.size.height;
+        CGFloat height = self.view.frame.size.width;
+        layout.itemSize = CGSizeMake(width, height);
+        [layout invalidateLayout];
+    } else if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
+        CGFloat width = self.view.frame.size.height;
+        CGFloat height = self.view.frame.size.width - self.collectionView.contentInset.top - 1;
+        layout.itemSize = CGSizeMake(width, height);
     }
+    [layout invalidateLayout];
+
+    if (currentCell) {
+        self.currentIndexPath = [self.collectionView indexPathForCell:currentCell];
+    }
+    self.collectionView.contentOffset = CGPointMake(size.width * self.currentIndexPath.item, 0);
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -79,33 +104,33 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     ArticleCellWithWebView *articleCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithWebView" forIndexPath:indexPath];
     // Configure the cell
     Item *cellItem = (Item *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-    articleCell.item = cellItem;
     articleCell.webView.navigationDelegate = self;
     articleCell.webView.UIDelegate = self;
-    currentCell = articleCell;
+    articleCell.item = cellItem;
+    if (!currentCell) {
+        self.currentCell = articleCell;
+    }
+
     return articleCell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGRect bounds = [UIScreen mainScreen].bounds;
-    CGFloat topBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    topBarHeight += self.navigationController.navigationBar.frame.size.height;
-    if (indexPath.section == 0) {
-        return CGSizeMake(bounds.size.width, bounds.size.height - topBarHeight);
-    } else {
-        return CGSizeZero;
-    }
-}
-
-- (void)viewDidLayoutSubviews{
+- (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     if (shouldScrollToInitialArticle) {
         if (self.selectedArticle) {
             NSArray *articles = self.fetchedResultsController.fetchedObjects;
             NSUInteger initialIndex = [articles indexOfObject:self.selectedArticle];
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:initialIndex inSection:0];
-            [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
-            currentCell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
+            NSLog(@"Content insets: %f, %f", self.collectionView.contentInset.top, self.collectionView.contentInset.bottom);
+            NSLog(@"Collection view height: %f", self.collectionView.frame.size.height);
+            UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+            NSLog(@"Item height: %f", layout.itemSize.height);
+            NSLog(@"Section insets: %f, %f", layout.sectionInset.top, layout.sectionInset.bottom);
+
+            [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+//            ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
+//            self.currentCell = cell;
+            self.currentIndexPath = indexPath;
             [self updateNavigationItemTitle];
         }
         shouldScrollToInitialArticle = NO;
@@ -120,7 +145,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
 //        cell.webView.navigationDelegate = self;
 //        cell.webView.UIDelegate = self;
-//        currentCell = cell;
+        self.currentCell = cell;
+        self.currentIndexPath = indexPath;
         Item *item = cell.item;
         if (item.unread) {
             item.unread = NO;
