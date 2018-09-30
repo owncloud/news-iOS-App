@@ -173,3 +173,10 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+.aspectRatioSizer {
+    display: grid;
+}
+.aspectRatioSizer > * {
+    grid-area: 1 / 1 / 2 / 2;
+}

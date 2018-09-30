@@ -90,17 +90,7 @@
         if (inputNode) {
             NSString *videoID = [SummaryHelper extractYoutubeVideoID:item.url];
             if (videoID) {
-                NSString *height = [inputNode getAttributeNamed:@"height"];
-                NSString *width = [inputNode getAttributeNamed:@"width"];
-                NSString *heightString = @"";
-                NSString *widthString = @"";
-                if (height.length > 0) {
-                    heightString = [NSString stringWithFormat:@"height=\"%@\"", height];
-                }
-                if (width.length > 0) {
-                    widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
-                }
-                NSString *embed = [NSString stringWithFormat:@"<embed class=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
+                NSString *embed = [NSString stringWithFormat:@"<div class=\"aspectRatioSizer\"><svg viewBox=\"0 0 16 9\"></svg><div><embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\"></embed></div></div>", videoID];
                 result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
             }
         }
@@ -127,34 +117,14 @@
             if (src && [src rangeOfString:@"youtu"].location != NSNotFound) {
                 NSString *videoID = [SummaryHelper extractYoutubeVideoID:src];
                 if (videoID) {
-                    NSString *height = [inputNode getAttributeNamed:@"height"];
-                    NSString *width = [inputNode getAttributeNamed:@"width"];
-                    NSString *heightString = @"";
-                    NSString *widthString = @"";
-                    if (height.length > 0) {
-                        heightString = [NSString stringWithFormat:@"height=\"%@\"", height];
-                    }
-                    if (width.length > 0) {
-                        widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
-                    }
-                    NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" %@ %@></embed>", videoID, heightString, widthString];
+                     NSString *embed = [NSString stringWithFormat:@"<div class=\"aspectRatioSizer\"><svg viewBox=\"0 0 16 9\"></svg><div><embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\"></embed></div></div>", videoID];
                     result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
                 }
             }
             if (src && [src rangeOfString:@"vimeo"].location != NSNotFound) {
                 NSString *videoID = [SummaryHelper extractVimeoVideoID:src];
                 if (videoID) {
-                    NSString *height = [inputNode getAttributeNamed:@"height"];
-                    NSString *width = [inputNode getAttributeNamed:@"width"];
-                    NSString *heightString = @"";
-                    NSString *widthString = @"";
-                    if (height.length > 0) {
-                        heightString = [NSString stringWithFormat:@"height=\"%@\"", height];
-                    }
-                    if (width.length > 0) {
-                        widthString = [NSString stringWithFormat:@"width=\"%@\"", width];
-                    }
-                    NSString *embed = [NSString stringWithFormat:@"<iframe id=\"vimeo\" src=\"http://player.vimeo.com/video/%@\" type=\"text/html\" frameborder=\"0\" %@ %@></iframe>", videoID, heightString, widthString];
+                    NSString *embed = [NSString stringWithFormat:@"<div class=\"aspectRatioSizer\"><svg viewBox=\"0 0 16 9\"></svg><div><iframe id=\"vimeo\" src=\"http://player.vimeo.com/video/%@\" type=\"text/html\" frameborder=\"0\"></iframe></div></div>", videoID];
                     result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
                 }
             }
