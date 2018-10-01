@@ -68,24 +68,26 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
+    CGFloat offsetWidth = 0.0;
+    
     UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
         CGFloat width = self.view.frame.size.height;
         CGFloat height = self.view.frame.size.width;
         layout.itemSize = CGSizeMake(width, height);
-        [layout invalidateLayout];
+        offsetWidth = width;
     } else if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
         CGFloat width = self.view.frame.size.height;
         CGFloat height = self.view.frame.size.width - self.collectionView.contentInset.top - 1;
         layout.itemSize = CGSizeMake(width, height);
+        offsetWidth = width;
     }
     [layout invalidateLayout];
 
     if (currentCell) {
         self.currentIndexPath = [self.collectionView indexPathForCell:currentCell];
     }
-    self.collectionView.contentOffset = CGPointMake(size.width * self.currentIndexPath.item, 0);
+    self.collectionView.contentOffset = CGPointMake(offsetWidth * self.currentIndexPath.item, 0);
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -131,6 +133,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 //            ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
 //            self.currentCell = cell;
             self.currentIndexPath = indexPath;
+            self.collectionView.contentOffset = CGPointMake(layout.itemSize.width * self.currentIndexPath.item, 0);
+
             [self updateNavigationItemTitle];
         }
         shouldScrollToInitialArticle = NO;
