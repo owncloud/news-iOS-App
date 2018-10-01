@@ -90,7 +90,11 @@
         if (inputNode) {
             NSString *videoID = [SummaryHelper extractYoutubeVideoID:item.url];
             if (videoID) {
-                NSString *embed = [NSString stringWithFormat:@"<div class=\"aspectRatioSizer\"><svg viewBox=\"0 0 16 9\"></svg><div><embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\"></embed></div></div>", videoID];
+                CGSize screenSize = [UIScreen mainScreen].nativeBounds.size;
+                NSInteger margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"MarginPortrait"];
+                double currentWidth = (screenSize.width / [UIScreen mainScreen].scale) * ((double)margin / 100);
+                double newheight = currentWidth * 0.5625;
+                NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" width=\"%ldpx\" height=\"%ldpdx\"></embed>", videoID, (long)currentWidth, (long)newheight];
                 result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
             }
         }
@@ -117,14 +121,22 @@
             if (src && [src rangeOfString:@"youtu"].location != NSNotFound) {
                 NSString *videoID = [SummaryHelper extractYoutubeVideoID:src];
                 if (videoID) {
-                     NSString *embed = [NSString stringWithFormat:@"<div class=\"aspectRatioSizer\"><svg viewBox=\"0 0 16 9\"></svg><div><embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\"></embed></div></div>", videoID];
+                    CGSize screenSize = [UIScreen mainScreen].nativeBounds.size;
+                    NSInteger margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"MarginPortrait"];
+                    double currentWidth = (screenSize.width / [UIScreen mainScreen].scale) * ((double)margin / 100);
+                    double newheight = currentWidth * 0.5625;
+                    NSString *embed = [NSString stringWithFormat:@"<embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" width=\"%ldpx\" height=\"%ldpdx\"></embed>", videoID, (long)currentWidth, (long)newheight];
                     result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
                 }
             }
             if (src && [src rangeOfString:@"vimeo"].location != NSNotFound) {
                 NSString *videoID = [SummaryHelper extractVimeoVideoID:src];
                 if (videoID) {
-                    NSString *embed = [NSString stringWithFormat:@"<div class=\"aspectRatioSizer\"><svg viewBox=\"0 0 16 9\"></svg><div><iframe id=\"vimeo\" src=\"http://player.vimeo.com/video/%@\" type=\"text/html\" frameborder=\"0\"></iframe></div></div>", videoID];
+                    CGSize screenSize = [UIScreen mainScreen].nativeBounds.size;
+                    NSInteger margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"MarginPortrait"];
+                    double currentWidth = (screenSize.width / [UIScreen mainScreen].scale) * ((double)margin / 100);
+                    double newheight = currentWidth * 0.5625;
+                    NSString *embed = [NSString stringWithFormat:@"<iframe id=\"vimeo\" src=\"http://player.vimeo.com/video/%@\" type=\"text/html\" frameborder=\"0\" width=\"%ldpx\" height=\"%ldpdx\"></iframe>", videoID, (long)currentWidth, (long)newheight];
                     result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
                 }
             }
