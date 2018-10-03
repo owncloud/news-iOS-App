@@ -40,6 +40,11 @@
 
 #define kPHSwitchTintColorArray        @[kPHWhitePopoverBorderColor, kPHSepiaPopoverBorderColor, kPHNightIconColor]
 
+#define kPHBackgroundHexArray          @[@"#FFFFFF", @"#F5EFDC", @"#000000"]
+#define kPHTextHexArray                @[@"#000000", @"#000000", @"#999999"]
+#define kPHLinkArray                   @[@"#1F31B9", @"#416596", @"#9BB9F2"]
+#define kPHFooterLinkHex               @[@"#F0F2F0", @"#F1EDE7", @"#1F1F1F"]
+
 + (PHThemeManager*)sharedManager {
     static dispatch_once_t once_token;
     static id sharedManager;
@@ -95,6 +100,11 @@
 
     [WKWebView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
 
+    _backgroundHex = [kPHBackgroundHexArray objectAtIndex:currentTheme];
+    _textHex = [kPHTextHexArray objectAtIndex:currentTheme];
+    _linkHex = [kPHLinkArray objectAtIndex:currentTheme];
+    _footerLinkHex = [kPHFooterLinkHex objectAtIndex:currentTheme];
+    
     _unreadTextColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
     _readTextColor = [kPHReadTextColorArray objectAtIndex:currentTheme];
     [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[UITextField class]]] setThemeTextColor:_readTextColor];

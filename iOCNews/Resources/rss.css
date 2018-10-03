@@ -6,11 +6,11 @@ html {
 @media only screen
 and (orientation: portrait) {
     body {
-        background: $BACKGROUND$;
-        color:$COLOR$;
-        font-size:$FONTSIZE$;
+        background: var(--bg-color);
+        color: var(--text-color);
+        font-size: var(--font-size);
         align: center;
-        width: $MARGIN$;
+        width: var(--body-width-portrait);
         margin-top: 40px;
         margin-bottom: 40px;
         margin-left: auto;
@@ -18,7 +18,7 @@ and (orientation: portrait) {
     }
     
     div.header {
-        width:$MARGIN$;
+        width: var(--body-width-portrait);
         margin-left:auto;
         margin-right:auto;
         margin-top:30px;
@@ -29,11 +29,11 @@ and (orientation: portrait) {
 @media only screen
 and (orientation: landscape) {
     body {
-        background: $BACKGROUND$;
-        color:$COLOR$;
-        font-size:$FONTSIZE$;
+        background: var(--bg-color);
+        color: var(--text-color);
+        font-size: var(--font-size);
         align: center;
-        width: $MARGIN_LANDSCAPE$;
+        width: var(--body-width-landscape);
         margin-top: 40px;
         margin-bottom: 40px;
         margin-left: auto;
@@ -41,7 +41,7 @@ and (orientation: landscape) {
     }
     
     div.header {
-        width:$MARGIN_LANDSCAPE$;
+        width: var(--body-width-landscape);
         margin-left:auto;
         margin-right:auto;
         margin-top:30px;
@@ -50,9 +50,9 @@ and (orientation: landscape) {
 }
 
 h1 {
-   font-family:"HelveticaNeue";
-   font-size:150%;
-   line-height:$LINEHEIGHT$;
+   font-family: "HelveticaNeue";
+   font-size: 150%;
+   line-height: var(--line-height);
    clear: both;
 }
 
@@ -60,32 +60,31 @@ h2 {
     font-family:"HelveticaNeue";
     font-size:110%;
     /*margin-top:-0.8em;*/
-    line-height:$LINEHEIGHT$;
+    line-height: var(--line-height);
 }
 
 h3 {
     font-family:"HelveticaNeue";
     font-size:100%;
-    line-height:$LINEHEIGHT$;
+    line-height: var(--line-height);
 }
 
 h4 {
     font-family:"Arial";
     font-size:80%;
-    line-height:$LINEHEIGHT$;
+    line-height: var(--line-height);
 }
 
 p {
     font-family:"Palatino";
     font-size:100%;
-    line-height:$LINEHEIGHT$;
+    line-height: var(--line-height);
     clear:both;
 }
 
-/* links always have a dark blue color */
 a {
     text-decoration: none;
-    /*color:$COLORLINK$;*/
+    color:var(--link-color);
 }
 
 /* make sure sub and superscript don't mess up line height */
@@ -105,16 +104,16 @@ sub {
 }
 
 div.articleTitle {
-    background: $BACKGROUND$;
+    background: var(--bg-color);
     font-size: 175%;
     font-family: HelveticaNeue;
-    color: $COLOR$;
+    color: var(--text-color);
     margin-top:10px;
 }
 
 a.articleTitleLink {
     text-decoration: none;
-    color: $COLOR$;
+    color: var(--text-color);
 }
 
 div.feedTitle {
@@ -133,9 +132,9 @@ div.articleDate {
 }
 
 div.titleHeader {
-    border-bottom-style:groove;
-    border-bottom-color:#F5F5F5;
-    border-bottom-width:2px;
+    border-bottom-style: groove;
+    border-bottom-color: var(--footer-link);
+    border-bottom-width: 2px;
 }
 
 div.articleAuthor {
@@ -146,8 +145,8 @@ div.articleAuthor {
 }
 
 div.content {
-    margin-top:30px;
-    line-height:$LINEHEIGHT$;
+    margin-top: 30px;
+    line-height: var(--line-height);
 }
 
 div.footer {
@@ -155,8 +154,8 @@ div.footer {
 }
 
 a.footerLink {
-    border:2px solid WhiteSmoke;
-    background:WhiteSmoke;
+    border:2px solid var(--footer-link);
+    background: var(--footer-link);
     border-radius:3px;
     text-align:center;
     font-family:HelveticaNeue;
@@ -172,11 +171,4 @@ a.footerLink {
 img {
     max-width: 100%;
     height: auto;
-}
-
-.aspectRatioSizer {
-    display: grid;
-}
-.aspectRatioSizer > * {
-    grid-area: 1 / 1 / 2 / 2;
 }

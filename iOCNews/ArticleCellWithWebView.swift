@@ -141,7 +141,9 @@ class ArticleCellWithWebView: BaseArticleCell {
             dateFormat.dateStyle = .medium;
             dateFormat.timeStyle = .short;
             dateText += dateFormat.string(from: date)
-            
+
+            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleStyle$", with: self.updateCss())
+
             if let feedTitle = feedTitle {
                 htmlTemplate = htmlTemplate.replacingOccurrences(of: "$FeedTitle$", with: feedTitle)
             }
@@ -174,6 +176,30 @@ class ArticleCellWithWebView: BaseArticleCell {
         }
     }
 
+    func updateCss() -> String {
+        let fontSize = UserDefaults.standard.integer(forKey: "FontSize")
+        
+        let screenSize = UIScreen.main.nativeBounds.size
+        let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
+        let currentWidth = Int((screenSize.width / UIScreen.main.scale) * CGFloat((Double(margin) / 100.0)))
+        
+        let marginLandscape = UserDefaults.standard.integer(forKey: "MarginLandscape")
+        let currentWidthLandscape = (screenSize.height / UIScreen.main.scale) * CGFloat((Double(marginLandscape) / 100.0))
+        
+        let lineHeight = UserDefaults.standard.double(forKey: "LineHeight")
+       
+        return ":root {" +
+                    "--bg-color: \(PHThemeManager.shared()?.backgroundHex ?? "#FFFFFF");" +
+                    "--text-color: \(PHThemeManager.shared()?.textHex ?? "#000000");" +
+                    "--font-size: \(fontSize)px;" +
+                    "--body-width-portrait: \(currentWidth)px;" +
+                    "--body-width-landscape: \(currentWidthLandscape)px;" +
+                    "--line-height: \(lineHeight)em;" +
+                    "--link-color: \(PHThemeManager.shared()?.linkHex ?? "#1F31B9");" +
+                    "--footer-link: \(PHThemeManager.shared()?.footerLinkHex ?? "#1F31B9");" +
+                "}"
+    }
+    
     func fileUrlInDocumentsDirectory(_ fileName: String, fileExtension: String) -> URL
     {
         do {

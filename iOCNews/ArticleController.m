@@ -49,7 +49,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
-//    self.collectionView.contentInset = UIEdgeInsetsZero;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
     UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
@@ -63,7 +62,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         layout.itemSize = CGSizeMake(width, height);
     }
     [self.fetchedResultsController performFetch:nil];
-    [self writeCss];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -106,6 +104,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     ArticleCellWithWebView *articleCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithWebView" forIndexPath:indexPath];
     // Configure the cell
     Item *cellItem = (Item *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    [articleCell addWebView];
     articleCell.webView.navigationDelegate = self;
     articleCell.webView.UIDelegate = self;
     articleCell.item = cellItem;
@@ -362,10 +361,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         }
     }
     
-    [self writeCss];
     if (currentCell.webView != nil) {
-        currentCell.webView.scrollView.backgroundColor = [self myBackgroundColor];
-        [currentCell.webView reload];
+        [currentCell prepareForReuse];
+        [currentCell configureView];
     }
 }
 
@@ -388,46 +386,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         backColor = [UIColor colorWithRed:0.96 green:0.94 blue:0.86 alpha:1];
     }
     return backColor;
-}
-
-- (void) writeCss {
-    NSBundle *appBundle = [NSBundle mainBundle];
-    NSURL *cssTemplateURL = [appBundle URLForResource:@"rss" withExtension:@"css" subdirectory:nil];
-    NSString *cssTemplate = [NSString stringWithContentsOfURL:cssTemplateURL encoding:NSUTF8StringEncoding error:nil];
-    
-    long fontSize =[[NSUserDefaults standardUserDefaults] integerForKey:@"FontSize"];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$FONTSIZE$" withString:[NSString stringWithFormat:@"%ldpx", fontSize]];
-    
-    CGSize screenSize = [UIScreen mainScreen].nativeBounds.size;
-    NSInteger margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"MarginPortrait"];
-    double currentWidth = (screenSize.width / [UIScreen mainScreen].scale) * ((double)margin / 100);
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN$" withString:[NSString stringWithFormat:@"%ldpx", (long)currentWidth]];
-    
-    NSInteger marginLandscape = [[NSUserDefaults standardUserDefaults] integerForKey:@"MarginLandscape"];
-    double currentWidthLandscape = (screenSize.height / [UIScreen mainScreen].scale) * ((double)marginLandscape / 100);
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$MARGIN_LANDSCAPE$" withString:[NSString stringWithFormat:@"%ldpx", (long)currentWidthLandscape]];
-    
-    double lineHeight =[[NSUserDefaults standardUserDefaults] doubleForKey:@"LineHeight"];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$LINEHEIGHT$" withString:[NSString stringWithFormat:@"%fem", lineHeight]];
-    
-    NSArray *backgrounds = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Backgrounds"];
-    long backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    NSString *background = [backgrounds objectAtIndex:backgroundIndex];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$BACKGROUND$" withString:background];
-    
-    NSArray *colors = [[NSUserDefaults standardUserDefaults] arrayForKey:@"Colors"];
-    NSString *color = [colors objectAtIndex:backgroundIndex];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$COLOR$" withString:color];
-    
-    NSArray *colorsLink = [[NSUserDefaults standardUserDefaults] arrayForKey:@"ColorsLink"];
-    NSString *colorLink = [colorsLink objectAtIndex:backgroundIndex];
-    cssTemplate = [cssTemplate stringByReplacingOccurrencesOfString:@"$COLORLINK$" withString:colorLink];
-    
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSURL *docDir = [paths objectAtIndex:0];
-    
-    [cssTemplate writeToURL:[docDir URLByAppendingPathComponent:@"rss.css"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
 #pragma mark - Lazy Objects

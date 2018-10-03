@@ -63,6 +63,8 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
 
+    [self writeCss];
+    
     [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {
         if(completed) {
 //            NSLog(@"Sent %d reports", (int)[reports count]);
@@ -127,6 +129,16 @@
     [email setReportStyle:KSCrashEmailReportStyleApple useDefaultFilenameFormat:YES];
     
     return email;
+}
+
+- (void) writeCss {
+    NSBundle *appBundle = [NSBundle mainBundle];
+    NSURL *cssTemplateURL = [appBundle URLForResource:@"rss" withExtension:@"css" subdirectory:nil];
+    NSString *cssTemplate = [NSString stringWithContentsOfURL:cssTemplateURL encoding:NSUTF8StringEncoding error:nil];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *paths = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSURL *docDir = [paths objectAtIndex:0];
+    [cssTemplate writeToURL:[docDir URLByAppendingPathComponent:@"rss.css"] atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
 @end
