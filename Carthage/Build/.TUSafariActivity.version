@@ -1,18 +1,9 @@
 {
-  "Mac" : [
-
-  ],
-  "watchOS" : [
-
-  ],
-  "tvOS" : [
-
-  ],
   "commitish" : "48923729bc26d834f9cf9225c8e114586f97ade1",
   "iOS" : [
     {
       "name" : "TUSafariActivity",
-      "hash" : "f0ac0133d4e88bc057dbdf713acc4f208f903b112f3cc2b8c57f70a3d66fd19e"
+      "hash" : "2bfe0c157d4dcfa92abede3a20638e9eaa566cc493b39c1c0f8afa2cfe13bdf7"
     }
   ]
 }

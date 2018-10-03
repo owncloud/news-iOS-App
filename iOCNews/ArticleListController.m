@@ -37,15 +37,12 @@
 #import "RMessage.h"
 #import "OCNewsHelper.h"
 #import "Item+CoreDataClass.h"
-#import "objc/runtime.h"
-//#import "UIImageView+OCWebCache.h"
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
 #import "ArticleController.h"
-//#import <WebImage/WebImage.h>
 #import "iOCNews-Swift.h"
 
-@interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout> {
+@interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource> {
     long currentIndex;
     BOOL markingAllItemsRead;
     BOOL hideRead;
@@ -271,62 +268,12 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     __block Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"] == YES) && item.imageLink) {
         ArticleCellWithThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithThumbnail" forIndexPath:indexPath];
-        //    cell.contentWidth = cellContentWidth;
         cell.item = item;
         return cell;
     }
     ArticleCellNoThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"NoThumbnailArticleCell" forIndexPath:indexPath];
-    //        cell.contentWidth = cellContentWidth;
     cell.item = item;
     return cell;
-
-//    cell.tag = indexPath.row;
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"]) {
-//        NSString *urlString = [OCArticleImage findImage:summary];
-//        if (item.imageLink) {
-            //                if (self.tag == indexPath.row) {
-            //                    dispatch_main_async_safe(^{
-//            [self.articleImage setRoundedImageWithURL:[NSURL URLWithString:urlString]];
-//            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:item.imageLink]];
-//            [cell.articleImage setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
-//                [cell setNeedsLayout];
-//            } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
-//                [cell setNeedsLayout];
-//            }];
-//            [cell.articleImage setImageWithURL:[NSURL URLWithString:item.imageLink]]; // placeholderImage:nil options:SDWebImageAvoidAutoSetImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//                [UIView animateWithDuration:0.3f animations:^{
-//                    if (cell.item.imageLink && image && (cell.tag == indexPath.row)) {
-//                        cell.articleImage.image = image;
-//                         [cell setNeedsLayout];
-//                    }
-//                        cell.articleImage.hidden = NO;
-//                        cell.thumbnailContainerWidthConstraint.constant = cell.articleImage.frame.size.width;
-//                        cell.articleImageWidthConstraint.constant = cell.articleImage.frame.size.width;
-//                        cell.contentContainerLeadingConstraint.constant = cell.articleImage.frame.size.width;
-//                    } else {
-//                        cell.articleImage.hidden = YES;
-//                        cell.thumbnailContainerWidthConstraint.constant = 0.0;
-//                        cell.articleImageWidthConstraint.constant = 0.0;
-//                        cell.contentContainerLeadingConstraint.constant = 0.0;
-//                    }
-//
-//                }];
-//            }];
-            //                    });
-//                            }
-//        } else {
-//            cell.articleImage.hidden = YES;
-//            cell.thumbnailContainerWidthConstraint.constant = 0.0;
-//            cell.articleImageWidthConstraint.constant = 0.0;
-//            cell.contentContainerLeadingConstraint.constant = 0.0;
-//        }
-//    } else {
-//        cell.articleImage.hidden = YES;
-//        cell.thumbnailContainerWidthConstraint.constant = 0.0;
-//        cell.articleImageWidthConstraint.constant = 0.0;
-//        cell.contentContainerLeadingConstraint.constant = 0.0;
-//    }
-//
 }
 
 
@@ -339,10 +286,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
         [self performSegueWithIdentifier:@"showArticleSegue" sender:selectedItem];
-//
-//        
-//        [self.navigationController pushViewController:self.articleManagerController animated:YES];
-//        [self.articleManagerController navigateToPageAtIndex:currentIndex animated:NO completion:nil];
         if (selectedItem.unread) {
             selectedItem.unread = NO;
             [self updateUnreadCount:@[@(selectedItem.myId)]];
@@ -363,7 +306,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    //NSLog(@"We have scrolled");
     hideRead = false;
 }
 
@@ -471,9 +413,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                         }
                         unreadCount = unreadCount - [idsToMarkRead count];
                         [self updateUnreadCount:idsToMarkRead];
-//                        dispatch_main_async_safe(^{
-                            self.markBarButtonItem.enabled = (unreadCount > 0);
-//                        });
+                        self.markBarButtonItem.enabled = (unreadCount > 0);
                     }
                 }
             }
@@ -590,61 +530,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                           canBeDismissedByUser:YES];
 }
 
-/*
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-//    [self.collectionView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    UICollectionView *collectionView = self.collectionView;
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:(ArticleListCell*)[collectionView cellForItemAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            [collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-            break;
-    }
-}
-
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        default:
-            break;
-    }
-}
-
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-//    [self.collectionView endUpdates];
-    self.markBarButtonItem.enabled = ([self unreadCount] > 0);
-}
-*/
 - (NSInteger)unreadCount {
     NSInteger result = 0;
     if (self.feed) {
