@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="ipad9_7" orientation="portrait">
+    <device id="ipad10_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -56,20 +56,20 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fl2-Me-Ib6" userLabel="ContentContainer">
-                                <rect key="frame" x="122" y="0.0" width="578" height="134.5"/>
+                                <rect key="frame" x="122" y="0.0" width="578" height="152"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="1000" text="This is a long title to see what happens when it goes over more than one line" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3">
-                                        <rect key="frame" x="5" y="0.0" width="557" height="42.5"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" text="This is a long title to see what happens when it goes over more than one line" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3">
+                                        <rect key="frame" x="5" y="5" width="557" height="48"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="48" id="NpP-4r-yTC"/>
+                                            <constraint firstAttribute="height" priority="750" constant="48" id="NpP-4r-yTC"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXF-mX-KAd">
-                                        <rect key="frame" x="5" y="52.5" width="573" height="16"/>
+                                        <rect key="frame" x="5" y="63" width="573" height="16"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ENK-Fa-lo4">
                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -124,8 +124,8 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="999" verticalCompressionResistancePriority="250" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                                        <rect key="frame" x="5" y="71.5" width="557" height="58"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                                        <rect key="frame" x="5" y="89" width="557" height="58"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="82" id="HRx-p9-9tv">
@@ -140,9 +140,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fl2-Me-Ib6" secondAttribute="top" constant="5" id="0fa-F1-xK8">
-                                        <variation key="widthClass=compact" constant="70"/>
-                                    </constraint>
+                                    <constraint firstAttribute="height" constant="152" id="2lI-Hw-KZz"/>
                                     <constraint firstItem="5" firstAttribute="leading" secondItem="fl2-Me-Ib6" secondAttribute="leading" constant="5" id="4Wy-7p-w8Q">
                                         <variation key="widthClass=compact" constant="-74"/>
                                     </constraint>
@@ -155,12 +153,12 @@
                                     <constraint firstItem="cXF-mX-KAd" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="10" id="cd9-bQ-uW6"/>
                                     <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" constant="16" id="fEg-AN-Jwe"/>
                                     <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="16" id="hkd-f6-AB6"/>
-                                    <constraint firstItem="3" firstAttribute="top" secondItem="fl2-Me-Ib6" secondAttribute="top" id="iuU-MP-v1O"/>
-                                    <constraint firstItem="5" firstAttribute="top" secondItem="cXF-mX-KAd" secondAttribute="bottom" constant="3" id="kgT-m4-LUN"/>
+                                    <constraint firstItem="3" firstAttribute="top" secondItem="fl2-Me-Ib6" secondAttribute="top" constant="5" id="iuU-MP-v1O"/>
+                                    <constraint firstItem="5" firstAttribute="top" secondItem="cXF-mX-KAd" secondAttribute="bottom" constant="10" id="kgT-m4-LUN"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="peC-zy-JQ2" userLabel="StarContainer">
-                                <rect key="frame" x="684" y="0.0" width="16" height="134.5"/>
+                                <rect key="frame" x="684" y="0.0" width="16" height="152"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uAr-hd-b6i">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
