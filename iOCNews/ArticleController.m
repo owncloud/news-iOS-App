@@ -51,12 +51,12 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     shouldScrollToInitialArticle = YES;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
     UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
         CGFloat width = self.view.frame.size.width;
         CGFloat height = self.view.frame.size.height;
         layout.itemSize = CGSizeMake(width, height);
         [layout invalidateLayout];
-    } else if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
+    } else if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
         CGFloat width = self.view.frame.size.width;
         CGFloat height = self.view.frame.size.height - self.collectionView.contentInset.top - 1;
         layout.itemSize = CGSizeMake(width, height);

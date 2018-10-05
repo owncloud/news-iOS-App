@@ -211,7 +211,7 @@
     }
     
     if (sender == self.decreaseMarginButton) {
-        if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
+        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
             NSInteger currentMargin = [[prefs valueForKey:@"MarginPortrait"] integerValue];
             if (currentMargin < MAX_WIDTH) {
                 currentMargin += 5;
@@ -227,7 +227,7 @@
     }
     
     if (sender == self.increaseMarginButton) {
-        if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
+        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
             NSInteger currentMargin = [[prefs valueForKey:@"MarginPortrait"] integerValue];
             if (currentMargin > MIN_WIDTH) {
                 currentMargin -= 5;
