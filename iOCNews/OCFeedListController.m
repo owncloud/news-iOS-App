@@ -642,7 +642,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         }];
         UIAlertAction *renameButton = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self.tableView setEditing:NO animated:YES];
-            [[OCNewsHelper sharedHelper] renameFolderOfflineWithId:currentRenameId To:[[alertController.textFields objectAtIndex:0] text]];
+            [[OCNewsHelper sharedHelper] renameFolderOfflineWithId:self->currentRenameId To:[[alertController.textFields objectAtIndex:0] text]];
         }];
         [alertController addAction:cancelButton];
         [alertController addAction:renameButton];

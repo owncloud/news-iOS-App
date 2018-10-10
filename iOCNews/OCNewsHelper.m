@@ -323,9 +323,9 @@
         [[OCAPIClient sharedClient] GET:@"feeds" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (![responseObject isKindOfClass:[NSDictionary class]])
             {
-                if (_completionHandler && !completionHandlerCalled) {
-                    _completionHandler(UIBackgroundFetchResultFailed);
-                    completionHandlerCalled = YES;
+                if (self->_completionHandler && !self->completionHandlerCalled) {
+                    self->_completionHandler(UIBackgroundFetchResultFailed);
+                    self->completionHandlerCalled = YES;
                 }
                 NSDictionary *userInfo = @{@"Title": @"Error Updating Feeds",
                                            @"Message": @"Unknown data returned from the server"};
@@ -338,9 +338,9 @@
             [self updateFolders];
 
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            if (_completionHandler && !completionHandlerCalled) {
-                _completionHandler(UIBackgroundFetchResultFailed);
-                completionHandlerCalled = YES;
+            if (self->_completionHandler && !self->completionHandlerCalled) {
+                self->_completionHandler(UIBackgroundFetchResultFailed);
+                self->completionHandlerCalled = YES;
             }
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
             NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -421,22 +421,22 @@
                 [deletedOnServer removeLastObject];
             }
             
-            for (NSNumber *folderId in foldersToDelete) {
+            for (NSNumber *folderId in self->foldersToDelete) {
                 Folder *folder = [self folderWithId:[folderId integerValue]];
                 [self deleteFolderOffline:folder]; //the feed will have been readded as new on server
             }
-            [foldersToDelete removeAllObjects];
+            [self->foldersToDelete removeAllObjects];
             
-            for (NSString *name in foldersToAdd) {
+            for (NSString *name in self->foldersToAdd) {
                 [self addFolderOffline:name];
             }
 //            [foldersToAdd removeAllObjects];
             
             //@{@"folderId": anId, @"name": newName}
-            for (NSDictionary *dict in foldersToRename) {
+            for (NSDictionary *dict in self->foldersToRename) {
                 [self renameFolderOfflineWithId:[[dict objectForKey:@"folderId"] integerValue] To:[dict objectForKey:@"name"]];
             }
-            [foldersToRename removeAllObjects];
+            [self->foldersToRename removeAllObjects];
             NSInteger lastMod = [[NSUserDefaults standardUserDefaults] integerForKey:@"LastModified"];
             if ([self itemCount] > 0) {
                 [self updateItemsWithLastModified:lastMod type:OCUpdateTypeAll andId:0];
@@ -447,9 +447,9 @@
         }
         [self updateTotalUnreadCount];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        if (_completionHandler && !completionHandlerCalled) {
-            _completionHandler(UIBackgroundFetchResultFailed);
-            completionHandlerCalled = YES;
+        if (self->_completionHandler && !self->completionHandlerCalled) {
+            self->_completionHandler(UIBackgroundFetchResultFailed);
+            self->completionHandlerCalled = YES;
         }
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
         NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -670,38 +670,38 @@
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
             [self.itemRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
 //            NSLog(@"Feeds with new items: %lu", (unsigned long)feedsWithNewItems.count);
-            [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
-                Feed *feed = [self feedWithId:[feedId integerValue]];
-                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
-                
+            
+            for (NSNumber *feedWithNewItems in feedsWithNewItems) {
+                Feed *feed = [self feedWithId:[feedWithNewItems integerValue]];
+                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedWithNewItems]];
                 NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:nil];
                 NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
                 filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
                 while (filteredArray.count > feed.articleCount) {
-//                    Item *itemToRemove = [filteredArray lastObject];
-//                    [self.context deleteObject:itemToRemove];
+                    Item *itemToRemove = [filteredArray lastObject];
+                    [self.context deleteObject:itemToRemove];
                     [filteredArray removeLastObject];
                 }
-                
+                [self saveContext];
                 NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
-//                NSLog(@"Unread item count: %lu", (unsigned long)unreadItems.count);
+                //                NSLog(@"Unread item count: %lu", (unsigned long)unreadItems.count);
                 if (feed.unreadCount != unreadItems.count) {
                     ++errorCount;
                 }
                 feed.unreadCount = (int)unreadItems.count;
-            }];
+            }
         }
         
         switch (aType) {
             case OCUpdateTypeAll: {
-                [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
-                for (NSNumber *itemId in itemsToMarkUnread) {
+                [self markItemsReadOffline:[self->itemsToMarkRead mutableCopy]];
+                for (NSNumber *itemId in self->itemsToMarkUnread) {
                     [self markItemUnreadOffline:[itemId integerValue]];
                 }
-                for (NSNumber *itemId in itemsToStar) {
+                for (NSNumber *itemId in self->itemsToStar) {
                     [self starItemOffline:[itemId integerValue]];
                 }
-                for (NSNumber *itemId in itemsToUnstar) {
+                for (NSNumber *itemId in self->itemsToUnstar) {
                     [self unstarItemOffline:[itemId integerValue]];
                 }
                 [self updateStarredCount];
@@ -731,9 +731,9 @@
         
         [self updateStarredCount];
         [self updateTotalUnreadCount];
-        if (_completionHandler && !completionHandlerCalled) {
-            _completionHandler((newItems.count > 0) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData);
-            completionHandlerCalled = YES;
+        if (self->_completionHandler && !self->completionHandlerCalled) {
+            self->_completionHandler((newItems.count > 0) ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData);
+            self->completionHandlerCalled = YES;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
         
@@ -751,9 +751,9 @@
                 break;
             case OCUpdateTypeFeed:
             case OCUpdateTypeStarred: {
-                if (_completionHandler && !completionHandlerCalled) {
-                    _completionHandler(UIBackgroundFetchResultFailed);
-                    completionHandlerCalled = YES;
+                if (self->_completionHandler && !self->completionHandlerCalled) {
+                    self->_completionHandler(UIBackgroundFetchResultFailed);
+                    self->completionHandlerCalled = YES;
                 }
                 NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
                 NSString *message = [NSString stringWithFormat:@"The server responded '%@' and the error reported was '%@'", [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], [error localizedDescription]];
@@ -883,14 +883,14 @@
                 [self saveContext];
             }];
             if (aType == OCUpdateTypeAll) {
-                [self markItemsReadOffline:[itemsToMarkRead mutableCopy]];
-                for (NSNumber *itemId in itemsToMarkUnread) {
+                [self markItemsReadOffline:[self->itemsToMarkRead mutableCopy]];
+                for (NSNumber *itemId in self->itemsToMarkUnread) {
                     [self markItemUnreadOffline:[itemId integerValue]];
                 }
-                for (NSNumber *itemId in itemsToStar) {
+                for (NSNumber *itemId in self->itemsToStar) {
                     [self starItemOffline:[itemId integerValue]];
                 }
-                for (NSNumber *itemId in itemsToUnstar) {
+                for (NSNumber *itemId in self->itemsToUnstar) {
                     [self unstarItemOffline:[itemId integerValue]];
                 }
             }
@@ -898,18 +898,18 @@
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         if (errorCount > 0) {
-            if (_completionHandler && !completionHandlerCalled) {
-                _completionHandler(UIBackgroundFetchResultFailed);
-                completionHandlerCalled = YES;
+            if (self->_completionHandler && !self->completionHandlerCalled) {
+                self->_completionHandler(UIBackgroundFetchResultFailed);
+                self->completionHandlerCalled = YES;
             }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
-            if (_completionHandler && !completionHandlerCalled) {
-                _completionHandler(UIBackgroundFetchResultNewData);
-                completionHandlerCalled = YES;
+            if (self->_completionHandler && !self->completionHandlerCalled) {
+                self->_completionHandler(UIBackgroundFetchResultNewData);
+                self->completionHandlerCalled = YES;
             }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
@@ -971,18 +971,18 @@
         [self updateStarredCount];
         [self updateTotalUnreadCount];
         if (errorCount > 0) {
-            if (_completionHandler && !completionHandlerCalled) {
-                _completionHandler(UIBackgroundFetchResultFailed);
-                completionHandlerCalled = YES;
+            if (self->_completionHandler && !self->completionHandlerCalled) {
+                self->_completionHandler(UIBackgroundFetchResultFailed);
+                self->completionHandlerCalled = YES;
             }
             NSString *message = @"At least one feed failed to update properly. Try syncing again.";
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Updating Items", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkError" object:self userInfo:userInfo];
         } else {
-            if (_completionHandler && !completionHandlerCalled) {
-                _completionHandler(UIBackgroundFetchResultNewData);
-                completionHandlerCalled = YES;
+            if (self->_completionHandler && !self->completionHandlerCalled) {
+                self->_completionHandler(UIBackgroundFetchResultNewData);
+                self->completionHandlerCalled = YES;
             }
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"LastModified"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
@@ -1074,7 +1074,7 @@
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] POST:@"folders" parameters:params progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             __unused int newFolderId = [self addFolder:responseObject];
-            [foldersToAdd removeObject:name];
+            [self->foldersToAdd removeObject:name];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSString *message;
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
@@ -1355,11 +1355,11 @@
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:@"items/read/multiple" parameters:[NSDictionary dictionaryWithObject:[itemIds allObjects] forKey:@"items"] success:^(NSURLSessionDataTask *task, id responseObject) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
-                [itemsToMarkRead removeObject:itemId];
+                [self->itemsToMarkRead removeObject:itemId];
             }];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
-                [itemsToMarkRead addObject:itemId];
+                [self->itemsToMarkRead addObject:itemId];
             }];
         }];
     } else {
@@ -1368,7 +1368,7 @@
             [itemsToMarkUnread removeObject:itemId];
         }
         [itemIds enumerateObjectsUsingBlock:^(NSNumber *itemId, BOOL *stop) {
-            [itemsToMarkRead addObject:itemId];
+            [self->itemsToMarkRead addObject:itemId];
         }];
     }
     [self updateReadItems:[itemIds allObjects]];
@@ -1382,9 +1382,9 @@
             NSString *path = [NSString stringWithFormat:@"items/%ld/unread", (long)item.myId];
             [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                [itemsToMarkUnread removeObject:@(itemId)];
+                [self->itemsToMarkUnread removeObject:@(itemId)];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [itemsToMarkUnread addObject:@(itemId)];
+                [self->itemsToMarkUnread addObject:@(itemId)];
             }];
         }
     } else {
@@ -1402,9 +1402,9 @@
             NSString *path = [NSString stringWithFormat:@"items/%ld/%@/star", (long)item.feedId, item.guidHash];
             [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                [itemsToStar removeObject:@(itemId)];
+                [self->itemsToStar removeObject:@(itemId)];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [itemsToStar addObject:@(itemId)];
+                [self->itemsToStar addObject:@(itemId)];
             }];
         }
     } else {
@@ -1423,9 +1423,9 @@
             NSString *path = [NSString stringWithFormat:@"items/%ld/%@/unstar", (long)item.feedId, item.guidHash];
             [OCAPIClient sharedClient].requestSerializer = [OCAPIClient httpRequestSerializer];
             [[OCAPIClient sharedClient] PUT:path parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                [itemsToUnstar removeObject:@(itemId)];
+                [self->itemsToUnstar removeObject:@(itemId)];
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [itemsToUnstar addObject:@(itemId)];
+                [self->itemsToUnstar addObject:@(itemId)];
             }];
         }
     } else {

@@ -101,25 +101,6 @@
     }
 }
 
-- (void)viewDidUnload
-{
-    [self setStarButton:nil];
-    [self setMarkUnreadButton:nil];
-    [self setDecreaseFontSizeButton:nil];
-    [self setIncreaseFontSizeButton:nil];
-    [self setDecreaseLineHeightButton:nil];
-    [self setIncreaseLineHeightButton:nil];
-    [self setDecreaseMarginButton:nil];
-    [self setIncreaseMarginButton:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
-}
-
 - (void)updateBackgrounds {
     self.view.backgroundColor = [UIColor popoverBackgroundColor];
     

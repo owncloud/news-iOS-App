@@ -397,7 +397,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                 NSArray *visibleCells = self.collectionView.indexPathsForVisibleItems;
                 if (visibleCells.count > 0) {
                     NSInteger topVisibleRow = [[visibleCells valueForKeyPath:@"@min.item"] integerValue];
-                    NSLog(@"Top row: %ld", topVisibleRow);
+                    NSLog(@"Top row: %ld", (long)topVisibleRow);
                     if (self.fetchedResultsController.fetchedObjects.count > 0) {
                         NSMutableArray *idsToMarkRead = [NSMutableArray new];
                         NSInteger index = 0;

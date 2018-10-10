@@ -205,7 +205,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         if (response != nil) {
             if ([response isEqualToString:@"complete"]) {
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                loadingComplete = YES;
+                self->loadingComplete = YES;
                 [self updateNavigationItemTitle];
             }
         }
