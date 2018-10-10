@@ -110,7 +110,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    blockOperations = [NSMutableArray<NSBlockOperation *> new];
     hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
 }
 
@@ -171,8 +170,12 @@
 }
 */
 
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    blockOperations = [NSMutableArray<NSBlockOperation *> new];
+}
+
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-        __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
 
     if (type == NSFetchedResultsChangeInsert) {
         NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
@@ -191,33 +194,29 @@
 //            if ([visibleIndexPath isEqual:indexPath]) {
 //                //
 //            } else {
-//                NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-//                    [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-//                }];
-//                [blockOperations addObject:operation];
+                NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                    [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                }];
+                [blockOperations addObject:operation];
 //            }
 //        }
     }
     if (type == NSFetchedResultsChangeMove) {
         NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-            [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-            [weakSelf.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+            [weakSelf.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
         }];
         [blockOperations addObject:operation];
     }
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.collectionView performBatchUpdates:^{
-            for (NSBlockOperation *operation in blockOperations) {
-                [operation start];
-            }
-        } completion:^(BOOL finished) {
-            [blockOperations removeAllObjects];
-        }];
-    });
-
+    [self.collectionView performBatchUpdates:^{
+        for (NSBlockOperation *operation in self->blockOperations) {
+            [operation start];
+        }
+    } completion:^(BOOL finished) {
+        self->blockOperations = nil;
+    }];
 }
 
 @end
