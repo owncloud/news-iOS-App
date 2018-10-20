@@ -15,6 +15,7 @@
 #import "UIColor+PHColor.h"
 #import <TUSafariActivity/TUSafariActivity.h>
 #import "iOCNews-Swift.h"
+#import "UICollectionView+ValidIndexPath.h"
 
 @interface ArticleController () <UICollectionViewDelegateFlowLayout, WKUIDelegate, WKNavigationDelegate, PHPrefViewControllerDelegate, UIPopoverPresentationControllerDelegate> {
     BOOL shouldScrollToInitialArticle;
@@ -119,20 +120,21 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [super viewDidLayoutSubviews];
     if (shouldScrollToInitialArticle) {
         if (self.selectedArticle) {
-            NSArray *articles = self.fetchedResultsController.fetchedObjects;
-            NSUInteger initialIndex = [articles indexOfObject:self.selectedArticle];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:initialIndex inSection:0];
+            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:self.selectedArticle];
             NSLog(@"Content insets: %f, %f", self.collectionView.contentInset.top, self.collectionView.contentInset.bottom);
             NSLog(@"Collection view height: %f", self.collectionView.frame.size.height);
             UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
             NSLog(@"Item height: %f", layout.itemSize.height);
             NSLog(@"Section insets: %f, %f", layout.sectionInset.top, layout.sectionInset.bottom);
 
-            [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-//            ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
-//            self.currentCell = cell;
+            [self.collectionView scrollToItemIfAvailable:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
             self.currentIndexPath = indexPath;
             self.collectionView.contentOffset = CGPointMake(layout.itemSize.width * self.currentIndexPath.item, 0);
+            if (self.selectedArticle.unread) {
+                self.selectedArticle.unread = NO;
+                NSMutableSet *set = [NSMutableSet setWithObject:@(self.selectedArticle.myId)];
+                [[OCNewsHelper sharedHelper] markItemsReadOffline:set];
+            }
 
             [self updateNavigationItemTitle];
         }
@@ -143,11 +145,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if ([scrollView isKindOfClass:[UICollectionView class]]) {
         CGFloat currentPage = self.collectionView.contentOffset.x / self.collectionView.frame.size.width;
-        //        NSLog(@"Current page: %f", ceil(currentPage));
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:currentPage inSection:0];
         ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
-//        cell.webView.navigationDelegate = self;
-//        cell.webView.UIDelegate = self;
         self.currentCell = cell;
         self.currentIndexPath = indexPath;
         Item *item = cell.item;
@@ -156,7 +155,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             NSMutableSet *set = [NSMutableSet setWithObject:@(item.myId)];
             [[OCNewsHelper sharedHelper] markItemsReadOffline:set];
         }
-        [self.articleListcontroller.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+        [self.articleListcontroller.collectionView scrollToItemIfAvailable:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         [self updateNavigationItemTitle];
         [self updateToolbar];
     }

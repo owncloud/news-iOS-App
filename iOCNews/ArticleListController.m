@@ -286,10 +286,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
         [self performSegueWithIdentifier:@"showArticleSegue" sender:selectedItem];
-        if (selectedItem.unread) {
-            selectedItem.unread = NO;
-            [self updateUnreadCount:@[@(selectedItem.myId)]];
-        }
     }
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }

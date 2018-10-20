@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
+		D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */; };
 		D01ACADB17B83637005D1463 /* rd_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABA17B83637005D1463 /* rd_list.c */; };
 		D01ACADC17B83637005D1463 /* readable.c in Sources */ = {isa = PBXBuildFile; fileRef = D01ACABC17B83637005D1463 /* readable.c */; };
 		D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
@@ -101,6 +102,8 @@
 /* Begin PBXFileReference section */
 		D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSharingProvider.h; sourceTree = "<group>"; };
 		D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSharingProvider.m; sourceTree = "<group>"; };
+		D0171AAE2179596100D2D34B /* UICollectionView+ValidIndexPath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+ValidIndexPath.h"; sourceTree = "<group>"; };
+		D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+ValidIndexPath.m"; sourceTree = "<group>"; };
 		D01ACAB517B83637005D1463 /* khash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = khash.h; sourceTree = "<group>"; };
 		D01ACABA17B83637005D1463 /* rd_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rd_list.c; sourceTree = "<group>"; };
 		D01ACABB17B83637005D1463 /* rd_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rd_list.h; sourceTree = "<group>"; };
@@ -395,6 +398,8 @@
 				D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */,
 				D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */,
 				D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */,
+				D0171AAE2179596100D2D34B /* UICollectionView+ValidIndexPath.h */,
+				D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */,
 				D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */,
 				D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */,
 				D05A6FB6213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift */,
@@ -728,6 +733,7 @@
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
+				D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
