@@ -11,6 +11,10 @@ import WebKit
 
 class ViewController: NSViewController {
 
+    @IBOutlet var leftTopView: NSView!
+    @IBOutlet var centerTopView: NSView!
+    @IBOutlet var rightTopView: NSView!
+    
     @IBOutlet var feedOutlineView: NSOutlineView!
     @IBOutlet var itemsTableView: NSTableView!
     @IBOutlet var webView: WKWebView!
@@ -20,9 +24,10 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.leftTopView.wantsLayer = true
+        self.centerTopView.wantsLayer = true
+        self.rightTopView.wantsLayer = true
 
-        // Do any additional setup after loading the view.
-        
         self.toplevelArray.append("All Articles")
         self.toplevelArray.append("Starred Articles")
         if let folders = CDFolder.all() {
@@ -34,13 +39,24 @@ class ViewController: NSViewController {
         self.feedOutlineView.reloadData()
     }
 
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        self.leftTopView.layer?.backgroundColor = NSColor(calibratedRed: 0.886, green: 0.890, blue: 0.894, alpha: 1.00).cgColor
+        self.centerTopView.layer?.backgroundColor = NSColor(calibratedRed: 0.965, green: 0.965, blue: 0.965, alpha: 1.00).cgColor
+        self.rightTopView.layer?.backgroundColor = NSColor(calibratedRed: 0.965, green: 0.965, blue: 0.965, alpha: 1.00).cgColor
+        self.feedOutlineView.backgroundColor = NSColor(calibratedRed: 0.886, green: 0.890, blue: 0.894, alpha: 1.00)
+    }
+    
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
     }
 
-
+    @IBAction func onRefresh(_ sender: Any) {
+        NewsManager.shared.sync()
+    }
+    
 }
 
 extension ViewController: NSOutlineViewDataSource {
@@ -85,11 +101,19 @@ extension ViewController: NSOutlineViewDelegate {
                 textField.stringValue = special
                 textField.sizeToFit()
             }
+            if let imageView = view?.imageView {
+                let image = NSImage(named: special)
+                imageView.image = image
+            }
         } else if let folder = item as? FolderProtocol {
             view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FolderCell"), owner: self) as? NSTableCellView
             if let textField = view?.textField {
                 textField.stringValue = folder.name ?? ""
                 textField.sizeToFit()
+            }
+            if let imageView = view?.imageView {
+                let image = NSImage(named: "folder")
+                imageView.image = image
             }
         } else if let feed = item as? FeedProtocol {
             view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FeedCell"), owner: self) as? NSTableCellView
@@ -98,6 +122,11 @@ extension ViewController: NSOutlineViewDelegate {
                 textField.stringValue = feed.title ?? ""
                 textField.sizeToFit()
             }
+            if let imageView = view?.imageView, let faviconLink = feed.faviconLink, let url = URL(string: faviconLink) {
+                let image = NSImage(byReferencing: url)
+                imageView.image = image
+            }
+
         }
         //More code here
         return view
@@ -194,4 +223,10 @@ extension ViewController: NSTableViewDelegate {
         }
     }
 
+}
+
+extension ViewController: NSWindowDelegate {
+    
+    
+    
 }

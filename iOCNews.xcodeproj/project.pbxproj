@@ -50,6 +50,7 @@
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
 		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
+		D03C63252193F466007A5F15 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C63242193F466007A5F15 /* WindowController.swift */; };
 		D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */; };
 		D04BBB8A20ABC87900D770DA /* BRYHTMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */; };
 		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
@@ -179,6 +180,7 @@
 		D035160619DA403E0016573F /* PDKeychainBindingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindingsController.h; sourceTree = "<group>"; };
 		D035160719DA403E0016573F /* PDKeychainBindingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindingsController.m; sourceTree = "<group>"; };
 		D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		D03C63242193F466007A5F15 /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		D042A9A120842E340086FBE9 /* OCThemeSettingsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCThemeSettingsController.h; sourceTree = "<group>"; };
 		D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCThemeSettingsController.m; sourceTree = "<group>"; };
 		D04AD65618070C4800FF6056 /* News 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				D05A7C4D218AB78C00961E29 /* Models */,
 				D0171ADE21852D9700D2D34B /* ResponseSerializer.swift */,
 				D0171AB7217BE6D600D2D34B /* AppDelegate.swift */,
+				D03C63242193F466007A5F15 /* WindowController.swift */,
 				D0171AB9217BE6D600D2D34B /* ViewController.swift */,
 				D0171AD0217C45DA00D2D34B /* NewsSessionManager.swift */,
 				D0171AD2217C4B2600D2D34B /* NewsRouter.swift */,
@@ -889,6 +892,7 @@
 				D05A7C48218AAE5E00961E29 /* CDItem+CoreDataClass.swift in Sources */,
 				D05A7C46218AAE5E00961E29 /* CDFeed+CoreDataClass.swift in Sources */,
 				D0171AE121852D9800D2D34B /* Items.swift in Sources */,
+				D03C63252193F466007A5F15 /* WindowController.swift in Sources */,
 				D05A7C4A218AAE5E00961E29 /* CDFolder+CoreDataClass.swift in Sources */,
 				D0171AD1217C45DA00D2D34B /* NewsSessionManager.swift in Sources */,
 				D05A7C44218AAE5E00961E29 /* CDFeeds+CoreDataClass.swift in Sources */,

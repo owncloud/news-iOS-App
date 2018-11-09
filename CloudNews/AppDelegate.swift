@@ -67,4 +67,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         })
     }
 
+    @IBAction func onRefresh(_ sender: Any) {
+        NewsManager.shared.sync()
+    }
+
 }

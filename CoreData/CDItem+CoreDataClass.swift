@@ -121,7 +121,7 @@ public class CDItem: NSManagedObject, ItemProtocol {
     }
 
     static func lastModified() -> Int32 {
-        var result: Int32 = Int32(Date.distantPast.timeIntervalSince1970)
+        var result: Int32 = 0
         let request : NSFetchRequest<CDItem> = self.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "lastModified", ascending: false)
         request.sortDescriptors = [sortDescriptor]
