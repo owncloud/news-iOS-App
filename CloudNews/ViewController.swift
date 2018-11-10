@@ -11,6 +11,7 @@ import WebKit
 
 class ViewController: NSViewController {
 
+    @IBOutlet var splitView: NSSplitView!
     @IBOutlet var leftTopView: NSView!
     @IBOutlet var centerTopView: NSView!
     @IBOutlet var rightTopView: NSView!
@@ -24,6 +25,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.splitView.setHoldingPriority(NSLayoutConstraint.Priority(rawValue: 249), forSubviewAt: 2)
         self.leftTopView.wantsLayer = true
         self.centerTopView.wantsLayer = true
         self.rightTopView.wantsLayer = true

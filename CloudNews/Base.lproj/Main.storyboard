@@ -774,7 +774,7 @@
                                                                             </connections>
                                                                         </tableCellView>
                                                                         <tableCellView identifier="FeedCell" id="loZ-ea-Rwh">
-                                                                            <rect key="frame" x="1" y="30" width="213" height="28"/>
+                                                                            <rect key="frame" x="1" y="32" width="213" height="28"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JK0-5o-iLA">
@@ -986,6 +986,7 @@
                         <outlet property="itemsTableView" destination="MzK-VK-t4c" id="We9-mN-BKg"/>
                         <outlet property="leftTopView" destination="70o-WG-6WI" id="AEy-0C-4RR"/>
                         <outlet property="rightTopView" destination="hBZ-Jx-h7L" id="HRx-80-ekf"/>
+                        <outlet property="splitView" destination="qto-lP-25p" id="OdR-3D-vdR"/>
                         <outlet property="webView" destination="tN8-xX-rOj" id="JZ5-vc-EFI"/>
                     </connections>
                 </viewController>
