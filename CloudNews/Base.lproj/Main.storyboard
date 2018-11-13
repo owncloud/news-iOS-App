@@ -859,13 +859,13 @@
                                                     <constraint firstItem="9Nc-n0-k5V" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zO6-jo-ybz" secondAttribute="leading" constant="20" symbolic="YES" id="pt2-0B-dx4"/>
                                                 </constraints>
                                             </customView>
-                                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="102" horizontalPageScroll="10" verticalLineScroll="102" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHw-xr-XCg">
+                                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="132" horizontalPageScroll="10" verticalLineScroll="132" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHw-xr-XCg">
                                                 <rect key="frame" x="0.0" y="0.0" width="331" height="479"/>
                                                 <clipView key="contentView" drawsBackground="NO" id="R29-gz-ZeR">
                                                     <rect key="frame" x="0.0" y="0.0" width="331" height="479"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="100" viewBased="YES" id="MzK-VK-t4c">
+                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="130" viewBased="YES" id="MzK-VK-t4c">
                                                             <rect key="frame" x="0.0" y="0.0" width="337" height="479"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -887,30 +887,30 @@
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     <prototypeCellViews>
                                                                         <tableCellView identifier="ItemCell" id="HdU-aD-B5l" customClass="ArticleCellView" customModule="CloudNews" customModuleProvider="target">
-                                                                            <rect key="frame" x="1" y="1" width="334" height="100"/>
+                                                                            <rect key="frame" x="1" y="1" width="334" height="130"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX">
-                                                                                    <rect key="frame" x="5" y="14" width="72" height="72"/>
+                                                                                    <rect key="frame" x="5" y="29" width="72" height="72"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="72" id="2ig-df-NgT"/>
                                                                                         <constraint firstAttribute="height" constant="72" id="jtf-2j-31B"/>
                                                                                     </constraints>
                                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="All Articles" id="6c5-xu-kw5"/>
                                                                                 </imageView>
-                                                                                <textField verticalHuggingPriority="1000" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juY-k3-pes">
-                                                                                    <rect key="frame" x="80" y="66" width="251" height="34"/>
+                                                                                <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juY-k3-pes">
+                                                                                    <rect key="frame" x="80" y="87" width="251" height="38"/>
                                                                                     <constraints>
-                                                                                        <constraint firstAttribute="height" priority="750" constant="36" id="1V1-Sz-V0u"/>
+                                                                                        <constraint firstAttribute="height" priority="750" constant="38" id="1V1-Sz-V0u"/>
                                                                                     </constraints>
                                                                                     <textFieldCell key="cell" truncatesLastVisibleLine="YES" title="This is a long title to see what happens when it goes over more than one line." id="LgJ-9a-SyP">
-                                                                                        <font key="font" metaFont="systemSemibold" size="13"/>
+                                                                                        <font key="font" metaFont="systemSemibold" size="15"/>
                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textFieldCell>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="G2X-LV-rJG">
-                                                                                    <rect key="frame" x="82" y="47" width="247" height="17"/>
+                                                                                    <rect key="frame" x="82" y="62" width="247" height="17"/>
                                                                                     <subviews>
                                                                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Db-Ftb">
                                                                                             <rect key="frame" x="0.0" y="1" width="16" height="16"/>
@@ -926,7 +926,7 @@
                                                                                                 <constraint firstAttribute="height" constant="17" id="hdw-wd-AaK"/>
                                                                                             </constraints>
                                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" title="Label" allowsEditingTextAttributes="YES" usesSingleLineMode="YES" id="bR2-4o-z9F">
-                                                                                                <font key="font" metaFont="system" size="12"/>
+                                                                                                <font key="font" size="12" name="HelveticaNeue-Italic"/>
                                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                             </textFieldCell>
@@ -943,9 +943,9 @@
                                                                                     </constraints>
                                                                                 </customView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="MVS-vC-wBs">
-                                                                                    <rect key="frame" x="80" y="29" width="251" height="17"/>
+                                                                                    <rect key="frame" x="80" y="37" width="251" height="17"/>
                                                                                     <constraints>
-                                                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="82" id="jP6-hC-uOZ"/>
+                                                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="62" id="jP6-hC-uOZ"/>
                                                                                     </constraints>
                                                                                     <textFieldCell key="cell" truncatesLastVisibleLine="YES" title="Label" id="vSw-Yx-yXF">
                                                                                         <font key="font" metaFont="system"/>
@@ -955,15 +955,15 @@
                                                                                 </textField>
                                                                             </subviews>
                                                                             <constraints>
-                                                                                <constraint firstItem="G2X-LV-rJG" firstAttribute="top" secondItem="juY-k3-pes" secondAttribute="bottom" constant="2" id="4Tr-FV-KYA"/>
-                                                                                <constraint firstItem="MVS-vC-wBs" firstAttribute="top" secondItem="G2X-LV-rJG" secondAttribute="bottom" constant="1" id="6pj-5k-e46"/>
+                                                                                <constraint firstItem="G2X-LV-rJG" firstAttribute="top" secondItem="juY-k3-pes" secondAttribute="bottom" constant="8" id="4Tr-FV-KYA"/>
+                                                                                <constraint firstItem="MVS-vC-wBs" firstAttribute="top" secondItem="G2X-LV-rJG" secondAttribute="bottom" constant="8" id="6pj-5k-e46"/>
                                                                                 <constraint firstItem="juY-k3-pes" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="5" id="K5R-zn-epq"/>
                                                                                 <constraint firstItem="MVS-vC-wBs" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="5" id="MEQ-vG-nuC"/>
                                                                                 <constraint firstItem="Q4S-NQ-5bX" firstAttribute="leading" secondItem="HdU-aD-B5l" secondAttribute="leading" constant="5" id="OoV-eD-8rE"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="MVS-vC-wBs" secondAttribute="trailing" constant="5" id="YyM-OI-sIV"/>
                                                                                 <constraint firstItem="G2X-LV-rJG" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="5" id="caM-6I-SwE"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="G2X-LV-rJG" secondAttribute="trailing" constant="5" id="d4r-A3-JEf"/>
-                                                                                <constraint firstItem="juY-k3-pes" firstAttribute="top" secondItem="HdU-aD-B5l" secondAttribute="top" id="kGS-4c-FMb"/>
+                                                                                <constraint firstItem="juY-k3-pes" firstAttribute="top" secondItem="HdU-aD-B5l" secondAttribute="top" constant="5" id="kGS-4c-FMb"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="juY-k3-pes" secondAttribute="trailing" constant="5" id="rre-nS-j2J"/>
                                                                                 <constraint firstItem="Q4S-NQ-5bX" firstAttribute="centerY" secondItem="HdU-aD-B5l" secondAttribute="centerY" id="x7f-Em-aHd"/>
                                                                             </constraints>
