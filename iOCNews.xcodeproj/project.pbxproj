@@ -69,6 +69,9 @@
 		D05A7C48218AAE5E00961E29 /* CDItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A7C40218AAE5E00961E29 /* CDItem+CoreDataClass.swift */; };
 		D05A7C4A218AAE5E00961E29 /* CDFolder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A7C42218AAE5E00961E29 /* CDFolder+CoreDataClass.swift */; };
 		D05A7C4F218AB7CC00961E29 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A7C4E218AB7CC00961E29 /* Protocols.swift */; };
+		D05C4A102197EDCA008BA66F /* ArticleCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */; };
+		D05C4A13219A7E12008BA66F /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D05C4A16219A7E75008BA66F /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
@@ -133,6 +136,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D0171ACE217BE98200D2D34B /* Alamofire.framework in Embed Frameworks */,
+				D05C4A13219A7E12008BA66F /* SwiftSoup.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +212,8 @@
 		D05A7C40218AAE5E00961E29 /* CDItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D05A7C42218AAE5E00961E29 /* CDFolder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDFolder+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D05A7C4E218AB7CC00961E29 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellView.swift; sourceTree = "<group>"; };
+		D05C4A11219A7E11008BA66F /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftSoup.framework; sourceTree = "<group>"; };
 		D0622FE418C29BD40032E622 /* News 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 5.xcdatamodel"; sourceTree = "<group>"; };
 		D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = News.xcmappingmodel; sourceTree = "<group>"; };
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
@@ -304,6 +310,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D05C4A16219A7E75008BA66F /* SwiftSoup.framework in Frameworks */,
 				D0171ACD217BE98200D2D34B /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +356,7 @@
 				D0171AB7217BE6D600D2D34B /* AppDelegate.swift */,
 				D03C63242193F466007A5F15 /* WindowController.swift */,
 				D0171AB9217BE6D600D2D34B /* ViewController.swift */,
+				D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */,
 				D0171AD0217C45DA00D2D34B /* NewsSessionManager.swift */,
 				D0171AD2217C4B2600D2D34B /* NewsRouter.swift */,
 				D0171ABB217BE6D800D2D34B /* Assets.xcassets */,
@@ -474,6 +482,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D05C4A11219A7E11008BA66F /* SwiftSoup.framework */,
 				D0171ACB217BE97800D2D34B /* Alamofire.framework */,
 				D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */,
 				D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */,
@@ -818,11 +827,13 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/Mac/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/SwiftSoup.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftSoup.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -903,6 +914,7 @@
 				D0171AE521852D9800D2D34B /* Avatar.swift in Sources */,
 				D0171AE321852D9800D2D34B /* Feeds.swift in Sources */,
 				D0171AE421852D9800D2D34B /* Folders.swift in Sources */,
+				D05C4A102197EDCA008BA66F /* ArticleCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

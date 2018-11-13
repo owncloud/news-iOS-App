@@ -1,0 +1,13 @@
+os:
+  - linux
+  - osx
+ # safelist
+branches:
+  only:
+  - master
+language: generic
+sudo: required
+dist: trusty
+osx_image: xcode10
+script:
+  - ./ci

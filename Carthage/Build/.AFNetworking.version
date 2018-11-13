@@ -1,9 +1,27 @@
 {
+  "Mac" : [
+    {
+      "name" : "AFNetworking",
+      "hash" : "8c076813ddf1cf6c798c262dd1c9985f560ff84d123320802f0586d486a39714"
+    }
+  ],
+  "watchOS" : [
+    {
+      "name" : "AFNetworking",
+      "hash" : "2fe1a808299604337094ed12c30a11a2d5b7c799e391ec1c5a7fce573a8a1a01"
+    }
+  ],
+  "tvOS" : [
+    {
+      "name" : "AFNetworking",
+      "hash" : "d22dacd165e95d7c4708cb84630ac8148651112daa3db11fa6496ec41016a24e"
+    }
+  ],
   "commitish" : "3.2.1",
   "iOS" : [
     {
       "name" : "AFNetworking",
-      "hash" : "fc35fa02754377ff60d2a3a6e0f8877bea2fb489b4702efb5f69e4da24efbb6f"
+      "hash" : "773dbf776ccd0c43c6f3552738a8d5ce07bfb3d116da1d9b5bbee155f486be92"
     }
   ]
 }

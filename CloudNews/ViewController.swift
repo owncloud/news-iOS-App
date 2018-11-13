@@ -11,7 +11,6 @@ import WebKit
 
 class ViewController: NSViewController {
 
-    @IBOutlet var splitView: NSSplitView!
     @IBOutlet var leftTopView: NSView!
     @IBOutlet var centerTopView: NSView!
     @IBOutlet var rightTopView: NSView!
@@ -25,7 +24,6 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.splitView.setHoldingPriority(NSLayoutConstraint.Priority(rawValue: 249), forSubviewAt: 2)
         self.leftTopView.wantsLayer = true
         self.centerTopView.wantsLayer = true
         self.rightTopView.wantsLayer = true
@@ -183,26 +181,9 @@ extension ViewController: NSTableViewDataSource {
 extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        
-//        var image: NSImage?
-        var text: String = ""
-        var cellIdentifier: String = ""
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .long
-        
         let item = self.itemsArray[row]
-        
-        if tableColumn == tableView.tableColumns[0] {
-//            image = item.icon
-            text = item.title ?? "No Title"
-            cellIdentifier = "ItemCell"
-        }
-        
-        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
-            cell.textField?.stringValue = text
-//            cell.imageView?.image = image ?? nil
+        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ItemCell"), owner: nil) as? ArticleCellView {
+            cell.item = item
             return cell
         }
         return nil

@@ -29,6 +29,20 @@ public class CDFeed: NSManagedObject, FeedProtocol {
         return feedList
     }
 
+    static func feed(id: Int32) -> FeedProtocol? {
+        let request: NSFetchRequest<CDFeed> = self.fetchRequest()
+        let predicate = NSPredicate(format: "id == %d", id)
+        request.predicate = predicate
+        request.fetchLimit = 1
+        do {
+            let results  = try NewsData.mainThreadContext.fetch(request)
+            return results.first
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return nil
+    }
+
     static func withoutFolder() -> [FeedProtocol]? {
         let request: NSFetchRequest<CDFeed> = self.fetchRequest()
         let predicate = NSPredicate(format: "folderId == 0")
