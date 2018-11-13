@@ -11,6 +11,7 @@ import WebKit
 
 class ViewController: NSViewController {
 
+    @IBOutlet var splitView: NSSplitView!
     @IBOutlet var leftTopView: NSView!
     @IBOutlet var centerTopView: NSView!
     @IBOutlet var rightTopView: NSView!
@@ -27,7 +28,8 @@ class ViewController: NSViewController {
         self.leftTopView.wantsLayer = true
         self.centerTopView.wantsLayer = true
         self.rightTopView.wantsLayer = true
-
+        self.splitView.delegate = self
+        
         self.toplevelArray.append("All Articles")
         self.toplevelArray.append("Starred Articles")
         if let folders = CDFolder.all() {
@@ -208,8 +210,39 @@ extension ViewController: NSTableViewDelegate {
 
 }
 
-extension ViewController: NSWindowDelegate {
+extension ViewController: NSSplitViewDelegate {
     
+    func splitView(_ splitView: NSSplitView, constrainMaxCoordinate proposedMaximumPosition: CGFloat, ofSubviewAt dividerIndex: Int) -> CGFloat {
+        var result: CGFloat = 5000.0
+        switch dividerIndex {
+        case 0:
+            result = 400.0
+        case 1:
+            result = self.leftTopView.frame.width + 700.0
+        default:
+            result = 5000.0
+        }
+        return result
+    }
     
+    func splitView(_ splitView: NSSplitView, constrainMinCoordinate proposedMinimumPosition: CGFloat, ofSubviewAt dividerIndex: Int) -> CGFloat {
+        var result: CGFloat = 300.0
+        switch dividerIndex {
+        case 0:
+            result = 100.0
+        case 1:
+            result = self.leftTopView.frame.width + 100.0
+        default:
+            result = 300.0
+        }
+        return result
+    }
+    
+    func splitView(_ splitView: NSSplitView, shouldAdjustSizeOfSubview view: NSView) -> Bool {
+        if view == self.leftTopView || view == self.centerTopView {
+            return false
+        }
+        return true
+    }
     
 }

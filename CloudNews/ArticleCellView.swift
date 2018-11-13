@@ -88,6 +88,12 @@ class ArticleCellView: NSTableCellView {
                         }
                     }
                     self.summaryLabel.stringValue = self.plainSummary(raw: summary) //.convertingHTMLToPlainText()
+                    
+                    if let imageURL = self.imageURL(summary: summary) {
+                        let image = NSImage(byReferencing: imageURL)
+                        self.thumbnailImage.image = image
+                    }
+                    
                     //                    self.starImage.image = nil;
                     //                    if item.starred {
                     //                        self.starImage.image = UIImage(named: "star_icon")
@@ -128,6 +134,25 @@ class ArticleCellView: NSTableCellView {
             return raw
         }
        return txt
+    }
+    
+    func imageURL(summary: String) -> URL? {
+        guard let doc: Document = try? SwiftSoup.parse(summary) else {
+            return nil
+        } // parse html
+        do {
+            let srcs: Elements = try doc.select("img[src]")
+            let srcsStringArray: [String?] = srcs.array().map { try? $0.attr("src").description }
+            if let firstString = srcsStringArray.first, let urlString = firstString, let url = URL(string: urlString) {
+                return url
+            }
+        } catch Exception.Error(_, let message) {
+            print(message)
+        } catch {
+            print("error")
+            
+        }
+        return nil
     }
     
 }

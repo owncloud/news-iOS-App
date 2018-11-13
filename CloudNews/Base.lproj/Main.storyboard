@@ -873,7 +873,7 @@
                                                             <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                             <tableColumns>
-                                                                <tableColumn width="334" minWidth="40" maxWidth="500" id="QJQ-yt-xQ3">
+                                                                <tableColumn width="334" minWidth="100" maxWidth="700" id="QJQ-yt-xQ3">
                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Item">
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -891,15 +891,15 @@
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX">
-                                                                                    <rect key="frame" x="5" y="29" width="72" height="72"/>
+                                                                                    <rect key="frame" x="10" y="29" width="72" height="72"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="72" id="2ig-df-NgT"/>
                                                                                         <constraint firstAttribute="height" constant="72" id="jtf-2j-31B"/>
                                                                                     </constraints>
-                                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="All Articles" id="6c5-xu-kw5"/>
+                                                                                    <imageCell key="cell" scrollable="YES" lineBreakMode="clipping" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="All Articles" id="6c5-xu-kw5"/>
                                                                                 </imageView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juY-k3-pes">
-                                                                                    <rect key="frame" x="80" y="87" width="251" height="38"/>
+                                                                                    <rect key="frame" x="90" y="87" width="241" height="38"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" priority="750" constant="38" id="1V1-Sz-V0u"/>
                                                                                     </constraints>
@@ -910,7 +910,7 @@
                                                                                     </textFieldCell>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="G2X-LV-rJG">
-                                                                                    <rect key="frame" x="82" y="62" width="247" height="17"/>
+                                                                                    <rect key="frame" x="92" y="62" width="237" height="17"/>
                                                                                     <subviews>
                                                                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Db-Ftb">
                                                                                             <rect key="frame" x="0.0" y="1" width="16" height="16"/>
@@ -921,7 +921,7 @@
                                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="7FI-Ym-Mud"/>
                                                                                         </imageView>
                                                                                         <textField translatesAutoresizingMaskIntoConstraints="NO" id="IFW-uP-aw0">
-                                                                                            <rect key="frame" x="17" y="0.0" width="232" height="17"/>
+                                                                                            <rect key="frame" x="17" y="0.0" width="222" height="17"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="height" constant="17" id="hdw-wd-AaK"/>
                                                                                             </constraints>
@@ -943,7 +943,7 @@
                                                                                     </constraints>
                                                                                 </customView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="MVS-vC-wBs">
-                                                                                    <rect key="frame" x="80" y="37" width="251" height="17"/>
+                                                                                    <rect key="frame" x="90" y="37" width="241" height="17"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="62" id="jP6-hC-uOZ"/>
                                                                                     </constraints>
@@ -957,11 +957,11 @@
                                                                             <constraints>
                                                                                 <constraint firstItem="G2X-LV-rJG" firstAttribute="top" secondItem="juY-k3-pes" secondAttribute="bottom" constant="8" id="4Tr-FV-KYA"/>
                                                                                 <constraint firstItem="MVS-vC-wBs" firstAttribute="top" secondItem="G2X-LV-rJG" secondAttribute="bottom" constant="8" id="6pj-5k-e46"/>
-                                                                                <constraint firstItem="juY-k3-pes" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="5" id="K5R-zn-epq"/>
-                                                                                <constraint firstItem="MVS-vC-wBs" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="5" id="MEQ-vG-nuC"/>
-                                                                                <constraint firstItem="Q4S-NQ-5bX" firstAttribute="leading" secondItem="HdU-aD-B5l" secondAttribute="leading" constant="5" id="OoV-eD-8rE"/>
+                                                                                <constraint firstItem="juY-k3-pes" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="10" id="K5R-zn-epq"/>
+                                                                                <constraint firstItem="MVS-vC-wBs" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="10" id="MEQ-vG-nuC"/>
+                                                                                <constraint firstItem="Q4S-NQ-5bX" firstAttribute="leading" secondItem="HdU-aD-B5l" secondAttribute="leading" constant="10" id="OoV-eD-8rE"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="MVS-vC-wBs" secondAttribute="trailing" constant="5" id="YyM-OI-sIV"/>
-                                                                                <constraint firstItem="G2X-LV-rJG" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="5" id="caM-6I-SwE"/>
+                                                                                <constraint firstItem="G2X-LV-rJG" firstAttribute="leading" secondItem="Q4S-NQ-5bX" secondAttribute="trailing" constant="10" id="caM-6I-SwE"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="G2X-LV-rJG" secondAttribute="trailing" constant="5" id="d4r-A3-JEf"/>
                                                                                 <constraint firstItem="juY-k3-pes" firstAttribute="top" secondItem="HdU-aD-B5l" secondAttribute="top" constant="5" id="kGS-4c-FMb"/>
                                                                                 <constraint firstAttribute="trailing" secondItem="juY-k3-pes" secondAttribute="trailing" constant="5" id="rre-nS-j2J"/>
@@ -1038,9 +1038,9 @@
                                     </customView>
                                 </subviews>
                                 <holdingPriorities>
-                                    <real value="250"/>
-                                    <real value="250"/>
-                                    <real value="249"/>
+                                    <real value="490"/>
+                                    <real value="490"/>
+                                    <real value="1"/>
                                 </holdingPriorities>
                             </splitView>
                         </subviews>
@@ -1057,6 +1057,7 @@
                         <outlet property="itemsTableView" destination="MzK-VK-t4c" id="We9-mN-BKg"/>
                         <outlet property="leftTopView" destination="70o-WG-6WI" id="AEy-0C-4RR"/>
                         <outlet property="rightTopView" destination="hBZ-Jx-h7L" id="HRx-80-ekf"/>
+                        <outlet property="splitView" destination="qto-lP-25p" id="o9a-Tk-1Dc"/>
                         <outlet property="webView" destination="tN8-xX-rOj" id="JZ5-vc-EFI"/>
                     </connections>
                 </viewController>
