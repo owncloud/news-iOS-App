@@ -26,7 +26,6 @@ class NewsManager {
     static let shared = NewsManager()
     
     init() {
-//        self.initialSync()
         let _ = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { (_) in
             self.sync()
         }
@@ -70,7 +69,7 @@ class NewsManager {
 //            debugPrint(response)
             if let items = response.value?.items {
                 CDItem.update(items: items)
-                NSApp.dockTile.badgeLabel = "\(CDItem.unreadCount())"
+                self.updateBadge()
             }
         })
 
@@ -121,7 +120,11 @@ class NewsManager {
 
      */
     func sync() {
-        
+        guard let _ = CDItem.all() else {
+            self.initialSync()
+            return
+        }
+
         // 5.
         NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
             //            debugPrint(response)
@@ -151,10 +154,19 @@ class NewsManager {
             //            debugPrint(response)
             if let items = response.value?.items {
                 CDItem.update(items: items)
-                NSApp.dockTile.badgeLabel = "\(CDItem.unreadCount())"
+                self.updateBadge()
             }
         })
 
-        
     }
+
+    func updateBadge() {
+        let unreadCount = CDItem.unreadCount()
+        if unreadCount > 0 {
+            NSApp.dockTile.badgeLabel = "\(CDItem.unreadCount())"
+        } else {
+            NSApp.dockTile.badgeLabel = nil
+        }
+    }
+
 }
