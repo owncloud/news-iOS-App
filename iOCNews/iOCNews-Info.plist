@@ -46,6 +46,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Allow access to your photo library to save images from feed articles.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
