@@ -12,7 +12,11 @@
   "iOS" : [
     {
       "name" : "TUSafariActivity",
+<<<<<<< HEAD
       "hash" : "2769c11700dfda65d8c4a9e6a27d363026a176b0dec6a4ce2da4bc1c02138068"
+=======
+      "hash" : "9bf6d6bff735f4c30634d2dbb0bbd560876e4b414472fd2386dec1c05eecfa6d"
+>>>>>>> develop
     }
   ]
 }

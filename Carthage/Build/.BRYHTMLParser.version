@@ -12,7 +12,11 @@
   "iOS" : [
     {
       "name" : "BRYHTMLParser",
+<<<<<<< HEAD
       "hash" : "2ef1af16e431e61904d5e125648e9d931f185182db58623bc479567d73ad547e"
+=======
+      "hash" : "56ee941d551a10227209cc94d87218045f6cc69754db597f9a6f80ab437386ae"
+>>>>>>> develop
     }
   ]
 }

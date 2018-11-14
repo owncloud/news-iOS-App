@@ -22,7 +22,11 @@
   "iOS" : [
     {
       "name" : "KSCrash",
+<<<<<<< HEAD
       "hash" : "bb2fe4552ec5749cc5d6e4173b1115e6c70c0f665eb9631e1aa5120250c33dd2"
+=======
+      "hash" : "31d998ce7465268b408b2cb8427c8d34401ba966a1f8c0a3784a24d19c847d94"
+>>>>>>> develop
     }
   ]
 }

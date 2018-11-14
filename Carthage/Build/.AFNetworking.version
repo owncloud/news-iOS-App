@@ -21,7 +21,11 @@
   "iOS" : [
     {
       "name" : "AFNetworking",
+<<<<<<< HEAD
       "hash" : "773dbf776ccd0c43c6f3552738a8d5ce07bfb3d116da1d9b5bbee155f486be92"
+=======
+      "hash" : "fbf5447c22c8346698fb977634e559c8099178792b03cf4be15fc7da457cf5b4"
+>>>>>>> develop
     }
   ]
 }
