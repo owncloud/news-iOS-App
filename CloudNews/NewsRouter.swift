@@ -34,7 +34,7 @@ enum Router: URLRequestConvertible {
     case itemsUnstarred(paramters: Parameters)
     case allItemsRead
     
-    static let baseURLString = "https://www.pbhcloud.site/nextcloud/apps/news/api/v1-2"
+    static let baseURLString = "https://pbhcloud.site/nextcloud/apps/news/api/v1-2"
 
     var method: HTTPMethod {
         switch self {

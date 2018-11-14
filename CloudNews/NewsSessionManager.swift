@@ -24,6 +24,13 @@ class NewsSessionManager: Alamofire.SessionManager {
 class NewsManager {
     
     static let shared = NewsManager()
+    
+    init() {
+//        self.initialSync()
+        let _ = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { (_) in
+            self.sync()
+        }
+    }
 
     func addFeed(url: String) {
         let router = Router.createFeed(url: url, folder: 0)
@@ -63,6 +70,7 @@ class NewsManager {
 //            debugPrint(response)
             if let items = response.value?.items {
                 CDItem.update(items: items)
+                NSApp.dockTile.badgeLabel = "\(CDItem.unreadCount())"
             }
         })
 
@@ -143,6 +151,7 @@ class NewsManager {
             //            debugPrint(response)
             if let items = response.value?.items {
                 CDItem.update(items: items)
+                NSApp.dockTile.badgeLabel = "\(CDItem.unreadCount())"
             }
         })
 

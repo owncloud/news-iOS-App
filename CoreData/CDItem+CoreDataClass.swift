@@ -128,9 +128,20 @@ public class CDItem: NSManagedObject, ItemProtocol {
         request.fetchLimit = 1
         do {
             let results  = try NewsData.mainThreadContext.fetch(request)
-            result = Int32(results.first?.lastModified ?? Int32(Date.distantPast.timeIntervalSince1970))
+            result = Int32(results.first?.lastModified ?? Int32(0))
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return result
+    }
+    
+    static func unreadCount() -> Int {
+        var result = 0
+        let request : NSFetchRequest<CDItem> = self.fetchRequest()
+        let predicate = NSPredicate(format: "unread == true")
+        request.predicate = predicate
+        if let count = try? NewsData.mainThreadContext.count(for: request) {
+            result = count
         }
         return result
     }
