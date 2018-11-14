@@ -6,20 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		D06CB23D17A2E8F900A1310B /* Mogenerator */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = D06CB23E17A2E8F900A1310B /* Build configuration list for PBXAggregateTarget "Mogenerator" */;
-			buildPhases = (
-				D06CB24117A2E91D00A1310B /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = Mogenerator;
-			productName = Mogenerator;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
 		D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */; };
@@ -776,7 +762,6 @@
 			projectRoot = "";
 			targets = (
 				D0BCAA21177900C300C965F4 /* iOCNews */,
-				D06CB23D17A2E8F900A1310B /* Mogenerator */,
 				D0171AB4217BE6D600D2D34B /* CloudNews */,
 			);
 		};
@@ -838,19 +823,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-		D06CB24117A2E91D00A1310B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd ~/Projects/iOCNews/iOCNews\nmogenerator --template-var arc=true -m \"News.xcdatamodeld/News 5.xcdatamodel/\"";
 		};
 		D0735DC61F8337B0002D3AB3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1079,20 +1051,6 @@
 			};
 			name = Release;
 		};
-		D06CB23F17A2E8F900A1310B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		D06CB24017A2E8F900A1310B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		D0BCAA43177900C400C965F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1290,15 +1248,6 @@
 			buildConfigurations = (
 				D0171AC3217BE6D800D2D34B /* Debug */,
 				D0171AC4217BE6D800D2D34B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D06CB23E17A2E8F900A1310B /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D06CB23F17A2E8F900A1310B /* Debug */,
-				D06CB24017A2E8F900A1310B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
