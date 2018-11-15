@@ -59,6 +59,10 @@
 		D05C4A13219A7E12008BA66F /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05C4A16219A7E75008BA66F /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; };
 		D05C4A17219D2335008BA66F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
+		D05C4A20219D29C6008BA66F /* CDRead+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A18219D29C6008BA66F /* CDRead+CoreDataClass.swift */; };
+		D05C4A22219D29C6008BA66F /* CDStarred+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A1A219D29C6008BA66F /* CDStarred+CoreDataClass.swift */; };
+		D05C4A24219D29C6008BA66F /* CDUnread+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A1C219D29C6008BA66F /* CDUnread+CoreDataClass.swift */; };
+		D05C4A26219D29C6008BA66F /* CDUnstarred+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A1E219D29C6008BA66F /* CDUnstarred+CoreDataClass.swift */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
@@ -201,6 +205,10 @@
 		D05A7C4E218AB7CC00961E29 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellView.swift; sourceTree = "<group>"; };
 		D05C4A11219A7E11008BA66F /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftSoup.framework; sourceTree = "<group>"; };
+		D05C4A18219D29C6008BA66F /* CDRead+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDRead+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D05C4A1A219D29C6008BA66F /* CDStarred+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDStarred+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D05C4A1C219D29C6008BA66F /* CDUnread+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDUnread+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D05C4A1E219D29C6008BA66F /* CDUnstarred+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDUnstarred+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D0622FE418C29BD40032E622 /* News 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 5.xcdatamodel"; sourceTree = "<group>"; };
 		D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = News.xcmappingmodel; sourceTree = "<group>"; };
 		D06CB220179C8E7500A1310B /* defaults~iphone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "defaults~iphone.plist"; sourceTree = "<group>"; };
@@ -421,6 +429,10 @@
 				D05A7C3E218AAE5E00961E29 /* CDFeed+CoreDataClass.swift */,
 				D05A7C42218AAE5E00961E29 /* CDFolder+CoreDataClass.swift */,
 				D05A7C40218AAE5E00961E29 /* CDItem+CoreDataClass.swift */,
+				D05C4A18219D29C6008BA66F /* CDRead+CoreDataClass.swift */,
+				D05C4A1A219D29C6008BA66F /* CDStarred+CoreDataClass.swift */,
+				D05C4A1C219D29C6008BA66F /* CDUnread+CoreDataClass.swift */,
+				D05C4A1E219D29C6008BA66F /* CDUnstarred+CoreDataClass.swift */,
 			);
 			name = CoreData;
 			path = ../CoreData;
@@ -870,11 +882,14 @@
 				D05A7C3A2189497000961E29 /* NewsData.xcdatamodeld in Sources */,
 				D0171AE221852D9800D2D34B /* Feed.swift in Sources */,
 				D0171ABA217BE6D600D2D34B /* ViewController.swift in Sources */,
+				D05C4A20219D29C6008BA66F /* CDRead+CoreDataClass.swift in Sources */,
 				D0171AD721818F3200D2D34B /* NewsData.swift in Sources */,
 				D0171AE821852D9800D2D34B /* Item.swift in Sources */,
 				D05A7C4F218AB7CC00961E29 /* Protocols.swift in Sources */,
+				D05C4A24219D29C6008BA66F /* CDUnread+CoreDataClass.swift in Sources */,
 				D0171AD3217C4B2600D2D34B /* NewsRouter.swift in Sources */,
 				D05A7C48218AAE5E00961E29 /* CDItem+CoreDataClass.swift in Sources */,
+				D05C4A26219D29C6008BA66F /* CDUnstarred+CoreDataClass.swift in Sources */,
 				D05A7C46218AAE5E00961E29 /* CDFeed+CoreDataClass.swift in Sources */,
 				D0171AE121852D9800D2D34B /* Items.swift in Sources */,
 				D03C63252193F466007A5F15 /* WindowController.swift in Sources */,
@@ -883,6 +898,7 @@
 				D05A7C44218AAE5E00961E29 /* CDFeeds+CoreDataClass.swift in Sources */,
 				D0171AB8217BE6D600D2D34B /* AppDelegate.swift in Sources */,
 				D0171AE621852D9800D2D34B /* User.swift in Sources */,
+				D05C4A22219D29C6008BA66F /* CDStarred+CoreDataClass.swift in Sources */,
 				D0171AE721852D9800D2D34B /* ResponseSerializer.swift in Sources */,
 				D0171AE921852D9800D2D34B /* Folder.swift in Sources */,
 				D0171AE521852D9800D2D34B /* Avatar.swift in Sources */,

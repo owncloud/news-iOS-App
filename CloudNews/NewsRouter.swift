@@ -23,15 +23,15 @@ enum Router: URLRequestConvertible {
     case markFolderRead(id: Int, newestItemId: Int)
     
     case items(parameters: Parameters)
-    case updatedItems(paramters: Parameters)
+    case updatedItems(parameters: Parameters)
     case itemRead(id: Int)
-    case itemsRead(paramters: Parameters)
+    case itemsRead(parameters: Parameters)
     case itemUnread(id: Int)
-    case itemsUnread(paramters: Parameters)
+    case itemsUnread(parameters: Parameters)
     case itemStarred(id: Int, guid: String)
-    case itemsStarred(paramters: Parameters)
+    case itemsStarred(parameters: Parameters)
     case itemUnstarred(id: Int, guid: String)
-    case itemsUnstarred(paramters: Parameters)
+    case itemsUnstarred(parameters: Parameters)
     case allItemsRead
     
     static let baseURLString = "https://pbhcloud.site/nextcloud/apps/news/api/v1-2"
@@ -44,7 +44,7 @@ enum Router: URLRequestConvertible {
             return .post
         case .deleteFeed, .deleteFolder:
             return .delete
-    case .moveFeed, .renameFeed, .markFeedRead, .renameFolder, .markFolderRead, .itemRead, .itemsRead, .itemUnread, .itemsUnread, .itemStarred,. itemsStarred, .itemUnstarred, .itemsUnstarred, .allItemsRead:
+        case .moveFeed, .renameFeed, .markFeedRead, .renameFolder, .markFolderRead, .itemRead, .itemsRead, .itemUnread, .itemsUnread, .itemStarred,. itemsStarred, .itemUnstarred, .itemsUnstarred, .allItemsRead:
             return .put
         }
     }
@@ -134,6 +134,9 @@ enum Router: URLRequestConvertible {
         case .items(let parameters):
             urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
             
+        case .itemsRead(let parameters):
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
+
         default:
             break
         }

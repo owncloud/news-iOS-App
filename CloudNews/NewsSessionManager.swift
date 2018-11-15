@@ -125,6 +125,20 @@ class NewsManager {
             return
         }
 
+        
+        // 2.
+        if let localRead = CDRead.all(), localRead.count > 0 {
+            let readParameters: Parameters = ["items": localRead]
+            NewsSessionManager.shared.request(Router.itemsRead(parameters: readParameters)).responseData { response in
+                switch response.result {
+                case .success:
+                    CDRead.clear()
+                default:
+                    break
+                }
+            }
+        }
+        
         // 5.
         NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
             //            debugPrint(response)
@@ -148,7 +162,7 @@ class NewsManager {
         let updatedParameters: Parameters = ["type": 3,
                                             "lastModified": CDItem.lastModified()]
         
-        let updatedItemRouter = Router.updatedItems(paramters: updatedParameters)
+        let updatedItemRouter = Router.updatedItems(parameters: updatedParameters)
         
         NewsSessionManager.shared.request(updatedItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
             //            debugPrint(response)

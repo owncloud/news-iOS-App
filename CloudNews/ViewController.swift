@@ -95,9 +95,9 @@ class ViewController: NSViewController {
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>, !updatedObjects.isEmpty {
             print(updatedObjects)
             if let _ = updatedObjects.first as? CDFolder {
-                self.feedOutlineView.reloadData()
+                self.rebuildFoldersAndFeedsList()
             } else if let _ = updatedObjects.first as? CDFeed {
-                self.feedOutlineView.reloadData()
+               self.rebuildFoldersAndFeedsList()
             } else {
                 self.itemsTableView.reloadData()
             }
@@ -255,7 +255,10 @@ extension ViewController: NSTableViewDelegate {
         
         let selectedIndex = tableView.selectedRow
         let item = self.itemsArray[selectedIndex]
-
+        if item.unread == true {
+            CDRead.update(items: [item.id])
+        }
+        
         if let itemUrl = item.url {
         let url = URL(string: itemUrl)
 

@@ -27,7 +27,7 @@ class ArticleCellView: NSTableCellView {
     var item: ItemProtocol? {
         didSet {
             if let item = self.item {
-                //        var image: NSImage?
+                self.thumbnailImage.image = nil
                 if let incoming = item.title {
                     self.titleLabel?.stringValue = self.plainSummary(raw: incoming)
                 } else {
@@ -100,6 +100,11 @@ class ArticleCellView: NSTableCellView {
                     } else {
                         self.alphaValue = 0.5
                     }
+                    let localRead = CDRead.all()?.contains(item.id) ?? false
+                    if localRead == true {
+                        self.alphaValue = 0.5
+                    }
+                    
                     if item.starred == true {
                         self.starImage.image = NSImage(named: "star_icon")
                     } else {
