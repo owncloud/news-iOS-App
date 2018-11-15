@@ -58,6 +58,7 @@
 		D05C4A102197EDCA008BA66F /* ArticleCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */; };
 		D05C4A13219A7E12008BA66F /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05C4A16219A7E75008BA66F /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; };
+		D05C4A17219D2335008BA66F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
 		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
@@ -772,6 +773,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D05C4A17219D2335008BA66F /* Images.xcassets in Resources */,
 				D0171ABC217BE6D800D2D34B /* Assets.xcassets in Resources */,
 				D0171ABF217BE6D800D2D34B /* Main.storyboard in Resources */,
 			);

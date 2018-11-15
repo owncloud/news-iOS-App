@@ -16,6 +16,7 @@ class ArticleCellView: NSTableCellView {
     @IBOutlet var authorLabel: NSTextField!
     @IBOutlet var faviconImage: NSImageView!
     @IBOutlet var summaryLabel: NSTextField!
+    @IBOutlet var starImage: NSImageView!
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
@@ -99,36 +100,13 @@ class ArticleCellView: NSTableCellView {
                     } else {
                         self.alphaValue = 0.5
                     }
-                    
-                    //                    self.starImage.image = nil;
-                    //                    if item.starred {
-                    //                        self.starImage.image = UIImage(named: "star_icon")
-                    //                    }
-                    //                    if item.unread == true {
-                    //                        self.summaryLabel.setThemeTextColor(PHThemeManager.shared().unreadTextColor)
-                    //                        self.titleLabel.setThemeTextColor(PHThemeManager.shared().unreadTextColor)
-                    //                        self.dateLabel.setThemeTextColor(PHThemeManager.shared().unreadTextColor)
-                    //                        self.favIconImage.alpha = 1.0
-                    //                    } else {
-                    //                        self.summaryLabel.setThemeTextColor(UIColor.readText())
-                    //                        self.titleLabel.setThemeTextColor(UIColor.readText())
-                    //                        self.dateLabel.setThemeTextColor(UIColor.readText())
-                    //                        self.favIconImage.alpha = 0.4
-                    //                    }
-                    //                    self.summaryLabel.highlightedTextColor = self.summaryLabel.textColor;
-                    //                    self.titleLabel.highlightedTextColor = self.titleLabel.textColor;
-                    //                    self.dateLabel.highlightedTextColor = self.dateLabel.textColor;
+                    if item.starred == true {
+                        self.starImage.image = NSImage(named: "star_icon")
+                    } else {
+                        self.starImage.image = nil
+                    }
                 }
-                //                self.isHighlighted = false
             }
-            
-            
-            
-            
-            //                self.authorLabel.stringValue = "Author"
-            //                self.summaryLabel.stringValue = "Summary"
-            //                //            cell.imageView?.image = image ?? nil
-            
         }
     }
     
