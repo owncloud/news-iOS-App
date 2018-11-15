@@ -30,15 +30,12 @@ class ViewController: NSViewController {
         self.rightTopView.wantsLayer = true
         self.splitView.delegate = self
         
-        self.toplevelArray.append("All Articles")
-        self.toplevelArray.append("Starred Articles")
-        if let folders = CDFolder.all() {
-            self.toplevelArray.append(contentsOf: folders)
-        }
-        if let feeds = CDFeed.inFolder(folder: 0) {
-            self.toplevelArray.append(contentsOf: feeds)
-        }
-        self.feedOutlineView.reloadData()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(contextDidSave(_:)),
+                                               name: Notification.Name.NSManagedObjectContextDidSave,
+                                               object: nil)
+
+        self.rebuildFoldersAndFeedsList()
     }
 
     override func viewWillAppear() {
@@ -59,6 +56,66 @@ class ViewController: NSViewController {
         NewsManager.shared.sync()
     }
     
+    func rebuildFoldersAndFeedsList() {
+        self.toplevelArray.removeAll()
+        self.toplevelArray.append("All Articles")
+        self.toplevelArray.append("Starred Articles")
+        if let folders = CDFolder.all() {
+            self.toplevelArray.append(contentsOf: folders)
+        }
+        if let feeds = CDFeed.inFolder(folder: 0) {
+            self.toplevelArray.append(contentsOf: feeds)
+        }
+        self.feedOutlineView.reloadData()
+    }
+    
+    @objc func contextDidSave(_ notification: Notification) {
+        print(notification)
+        
+        if let insertedObjects = notification.userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject>, !insertedObjects.isEmpty {
+            if let _ = insertedObjects.first as? CDFolder {
+                self.rebuildFoldersAndFeedsList()
+            } else if let _ = insertedObjects.first as? CDFeed {
+                self.rebuildFoldersAndFeedsList()
+            } else {
+                self.itemsTableView.reloadData()
+            }
+        }
+        
+        if let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>, !deletedObjects.isEmpty {
+            if let _ = deletedObjects.first as? CDFolder {
+                self.rebuildFoldersAndFeedsList()
+            } else if let _ = deletedObjects.first as? CDFeed {
+                self.rebuildFoldersAndFeedsList()
+            } else {
+                self.itemsTableView.reloadData()
+            }
+        }
+
+        if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>, !updatedObjects.isEmpty {
+            print(updatedObjects)
+            if let _ = updatedObjects.first as? CDFolder {
+                self.feedOutlineView.reloadData()
+            } else if let _ = updatedObjects.first as? CDFeed {
+                self.feedOutlineView.reloadData()
+            } else {
+                self.itemsTableView.reloadData()
+            }
+        }
+
+        if let refreshedObjects = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject>, !refreshedObjects.isEmpty {
+            print(refreshedObjects)
+        }
+        
+        if let invalidatedObjects = notification.userInfo?[NSInvalidatedObjectsKey] as? Set<NSManagedObject>, !invalidatedObjects.isEmpty {
+            print(invalidatedObjects)
+        }
+        
+        if let areInvalidatedAllObjects = notification.userInfo?[NSInvalidatedAllObjectsKey] as? Bool {
+            print(areInvalidatedAllObjects)
+        }
+    }
+
 }
 
 extension ViewController: NSOutlineViewDataSource {

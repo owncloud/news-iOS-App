@@ -682,10 +682,14 @@
                                                 <rect key="frame" x="0.0" y="479" width="376" height="40"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="biR-6D-P8K">
-                                                        <rect key="frame" x="215" y="11" width="21" height="19"/>
-                                                        <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRefreshTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GHt-es-XBX">
+                                                        <rect key="frame" x="219" y="10" width="21" height="21"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="21" id="Lol-F7-hQ8"/>
+                                                            <constraint firstAttribute="width" constant="21" id="bv0-fK-r90"/>
+                                                        </constraints>
+                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRefreshTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" state="on" imageScaling="proportionallyDown" inset="2" id="GHt-es-XBX">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="systemBold" size="12"/>
+                                                            <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
                                                             <action selector="onRefresh:" target="XfG-lQ-9wD" id="mJg-zL-yg1"/>
@@ -709,9 +713,9 @@
                                                     <constraint firstItem="biR-6D-P8K" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="70o-WG-6WI" secondAttribute="leading" constant="15" id="0RB-g0-jw9"/>
                                                     <constraint firstItem="snD-gk-rSP" firstAttribute="centerY" secondItem="70o-WG-6WI" secondAttribute="centerY" id="6vF-ji-qQK"/>
                                                     <constraint firstAttribute="height" constant="40" id="DZq-fY-QCS"/>
-                                                    <constraint firstItem="biR-6D-P8K" firstAttribute="centerY" secondItem="70o-WG-6WI" secondAttribute="centerY" constant="-1" id="Oy4-q5-igC"/>
+                                                    <constraint firstItem="biR-6D-P8K" firstAttribute="centerY" secondItem="70o-WG-6WI" secondAttribute="centerY" id="Oy4-q5-igC"/>
                                                     <constraint firstAttribute="trailing" secondItem="snD-gk-rSP" secondAttribute="trailing" constant="10" id="khT-on-jGZ"/>
-                                                    <constraint firstItem="snD-gk-rSP" firstAttribute="leading" secondItem="biR-6D-P8K" secondAttribute="trailing" constant="5" id="oxB-1h-vD7"/>
+                                                    <constraint firstItem="snD-gk-rSP" firstAttribute="leading" secondItem="biR-6D-P8K" secondAttribute="trailing" constant="1" id="oxB-1h-vD7"/>
                                                 </constraints>
                                             </customView>
                                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="31" horizontalPageScroll="10" verticalLineScroll="31" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AeG-BX-wuv">

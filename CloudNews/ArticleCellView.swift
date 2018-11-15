@@ -87,11 +87,17 @@ class ArticleCellView: NSTableCellView {
                             }
                         }
                     }
-                    self.summaryLabel.stringValue = self.plainSummary(raw: summary) //.convertingHTMLToPlainText()
+                    self.summaryLabel.stringValue = self.plainSummary(raw: summary)
                     
                     if let imageURL = self.imageURL(summary: summary) {
                         let image = NSImage(byReferencing: imageURL)
                         self.thumbnailImage.image = image
+                    }
+                    
+                    if item.unread == true {
+                        self.alphaValue = 1.0
+                    } else {
+                        self.alphaValue = 0.5
                     }
                     
                     //                    self.starImage.image = nil;
