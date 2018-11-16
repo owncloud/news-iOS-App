@@ -35,7 +35,9 @@ class ViewController: NSViewController {
                                                object: nil)
 
         self.rebuildFoldersAndFeedsList()
+        self.feedOutlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
         try? self.itemsArrayController.fetch(with: nil, merge: false)
+        self.itemsTableView.reloadData()
     }
 
     override func viewWillAppear() {
