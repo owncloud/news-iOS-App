@@ -21,7 +21,6 @@ class ViewController: NSViewController {
     @IBOutlet var webView: WKWebView!
     
     var toplevelArray = [Any]()
-    var itemsArray = [ItemProtocol]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +35,7 @@ class ViewController: NSViewController {
                                                object: nil)
 
         self.rebuildFoldersAndFeedsList()
+        try? self.itemsArrayController.fetch(with: nil, merge: false)
     }
 
     override func viewWillAppear() {
@@ -55,6 +55,16 @@ class ViewController: NSViewController {
     @IBAction func onRefresh(_ sender: Any) {
         NewsManager.shared.sync()
     }
+    
+    let itemsArrayController: NSArrayController = {
+        let result = NSArrayController()
+        result.managedObjectContext = NewsData.mainThreadContext
+        result.entityName = "CDItem"
+        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
+        result.sortDescriptors = [sortDescription]
+        result.automaticallyRearrangesObjects = true
+        return result
+    }()
     
     func rebuildFoldersAndFeedsList() {
         self.toplevelArray.removeAll()
@@ -95,9 +105,9 @@ class ViewController: NSViewController {
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>, !updatedObjects.isEmpty {
             print(updatedObjects)
             if let _ = updatedObjects.first as? CDFolder {
-                self.rebuildFoldersAndFeedsList()
+                self.feedOutlineView.reloadData()
             } else if let _ = updatedObjects.first as? CDFeed {
-               self.rebuildFoldersAndFeedsList()
+               self.feedOutlineView.reloadData()
             } else {
                 self.itemsTableView.reloadData()
             }
@@ -196,26 +206,29 @@ extension ViewController: NSOutlineViewDelegate {
             return
         }
 
-        self.itemsArray.removeAll()
         let selectedIndex = outlineView.selectedRow
         
         if selectedIndex == 0 {
             print("All articles selected")
-            if let items = CDItem.all() {
-                self.itemsArray.append(contentsOf: items)
-            }
+            self.itemsArrayController.filterPredicate = nil
+            self.itemsTableView.reloadData()
         } else if selectedIndex == 1 {
             print("Starred articles selected")
-            if let items = CDItem.starredItems() {
-                self.itemsArray.append(contentsOf: items)
-            }
+            let predicate = NSPredicate(format: "starred == true")
+            self.itemsArrayController.filterPredicate = predicate
+            self.itemsTableView.reloadData()
         } else if let folder = outlineView.item(atRow: selectedIndex) as? FolderProtocol {
             print("Folder: \(folder.name ?? "") selected")
+            if let feedIds = CDFeed.idsInFolder(folder: folder.id) {
+                let predicate = NSPredicate(format:"feedId IN %@", feedIds)
+                self.itemsArrayController.filterPredicate = predicate
+                self.itemsTableView.reloadData()
+            }
         } else if let feed = outlineView.item(atRow: selectedIndex) as? FeedProtocol {
             print("Feed: \(feed.title ?? "") selected")
-            if let items = CDItem.items(feed: feed.id) {
-                self.itemsArray.append(contentsOf: items)
-            }
+            let predicate = NSPredicate(format: "feedId == %d", feed.id)
+            self.itemsArrayController.filterPredicate = predicate
+            self.itemsTableView.reloadData()
         }
         self.itemsTableView.reloadData()
     }
@@ -225,12 +238,15 @@ extension ViewController: NSOutlineViewDelegate {
 extension ViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return self.itemsArray.count
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            return items.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        if self.itemsArray.count > 0 {
-            return self.itemsArray[row]
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            return items[row]
         }
         return nil
     }
@@ -240,10 +256,13 @@ extension ViewController: NSTableViewDataSource {
 extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let item = self.itemsArray[row]
-        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ItemCell"), owner: nil) as? ArticleCellView {
-            cell.item = item
-            return cell
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            let item = items[row]
+            if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ItemCell"), owner: nil) as? ArticleCellView {
+                cell.item = item
+                return cell
+            }
+            return nil
         }
         return nil
     }
@@ -254,16 +273,18 @@ extension ViewController: NSTableViewDelegate {
         }
         
         let selectedIndex = tableView.selectedRow
-        let item = self.itemsArray[selectedIndex]
-        if item.unread == true {
-            CDRead.update(items: [item.id])
-        }
-        
-        if let itemUrl = item.url {
-        let url = URL(string: itemUrl)
-
-            if let url = url {
-                self.webView.load(URLRequest(url: url))
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            let item = items[selectedIndex]
+            if item.unread == true {
+                CDRead.update(items: [item.id])
+            }
+            
+            if let itemUrl = item.url {
+                let url = URL(string: itemUrl)
+                
+                if let url = url {
+                    self.webView.load(URLRequest(url: url))
+                }
             }
         }
     }

@@ -75,6 +75,13 @@ public class CDFeed: NSManagedObject, FeedProtocol {
         return feedList
     }
 
+    static func idsInFolder(folder: Int32) -> [Int32]? {
+        if let feeds = CDFeed.inFolder(folder: folder) {
+            return feeds.map { $0.id }
+        }
+        return nil
+    }
+    
     static func update(feeds: [FeedProtocol]) {
         NewsData.mainThreadContext.perform {
             let request: NSFetchRequest<CDFeed> = CDFeed.fetchRequest()
