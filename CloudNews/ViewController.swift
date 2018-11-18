@@ -132,8 +132,6 @@ class ViewController: NSViewController {
 
 extension ViewController: NSOutlineViewDataSource {
     
-//    Must implement outlineView:numberOfChildrenOfItem:, outlineView:isItemExpandable:, outlineView:child:ofItem: and outlineView:objectValueForTableColumn:byItem:
-    
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let folder = item as? FolderProtocol {
             return CDFeed.inFolder(folder: folder.id)?.count ?? 0
@@ -157,50 +155,26 @@ extension ViewController: NSOutlineViewDataSource {
         return self.toplevelArray[index]
     }
 
-//    func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
-//        <#code#>
-//    }
 }
 
 extension ViewController: NSOutlineViewDelegate {
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        var view: NSTableCellView?
-        if let special = item as? String {
-            view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FeedCell"), owner: self) as? NSTableCellView
-            if let textField = view?.textField {
-                textField.stringValue = special
-                textField.sizeToFit()
+        if let feedView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FeedCell"), owner: self) as? FeedCellView {
+            if let special = item as? String {
+                if special == "All Articles" {
+                    feedView.special(name: special, starred: false)
+                } else {
+                    feedView.special(name: special, starred: true)
+                }
+            } else if let folder = item as? FolderProtocol {              
+                feedView.folder = folder
+            } else if let feed = item as? FeedProtocol {
+                feedView.feed = feed
             }
-            if let imageView = view?.imageView {
-                let image = NSImage(named: special)
-                imageView.image = image
-            }
-        } else if let folder = item as? FolderProtocol {
-            view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FolderCell"), owner: self) as? NSTableCellView
-            if let textField = view?.textField {
-                textField.stringValue = folder.name ?? ""
-                textField.sizeToFit()
-            }
-            if let imageView = view?.imageView {
-                let image = NSImage(named: "folder")
-                imageView.image = image
-            }
-        } else if let feed = item as? FeedProtocol {
-            view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FeedCell"), owner: self) as? NSTableCellView
-            
-            if let textField = view?.textField {
-                textField.stringValue = feed.title ?? ""
-                textField.sizeToFit()
-            }
-            if let imageView = view?.imageView, let faviconLink = feed.faviconLink, let url = URL(string: faviconLink) {
-                let image = NSImage(byReferencing: url)
-                imageView.image = image
-            }
-
+            return feedView
         }
-        //More code here
-        return view
+        return nil
     }
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
