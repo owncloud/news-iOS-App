@@ -253,6 +253,14 @@ extension ViewController: NSTableViewDelegate {
             let item = items[selectedIndex]
             if item.unread == true {
                 CDRead.update(items: [item.id])
+                item.unread = false
+                CDItem.update(items: [item])
+                if var feed = CDFeed.feed(id: item.feedId) {
+                    let feedUnreadCount = feed.unreadCount - 1
+                    feed.unreadCount = feedUnreadCount
+                    CDFeed.update(feeds: [feed])
+                }
+                NewsManager.shared.updateBadge()
             }
             
             if let itemUrl = item.url {
@@ -263,6 +271,7 @@ extension ViewController: NSTableViewDelegate {
                 }
             }
         }
+        self.feedOutlineView.reloadData()
     }
 
 }
