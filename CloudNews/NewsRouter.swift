@@ -131,8 +131,8 @@ enum Router: URLRequestConvertible {
 //            renameFolder
 //            markFolderRead
         
-        case .items(let parameters):
-            urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
+        case .items(let parameters), .updatedItems(let parameters):
+            urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             
         case .itemsRead(let parameters):
             urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)

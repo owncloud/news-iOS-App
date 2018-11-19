@@ -64,7 +64,6 @@ class NewsManager {
                                             "batchSize": -1]
         
         let unreadItemRouter = Router.items(parameters: unreadParameters)
-        
         NewsSessionManager.shared.request(unreadItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
 //            debugPrint(response)
             if let items = response.value?.items {
@@ -74,15 +73,18 @@ class NewsManager {
         })
 
         // 2.
-//        let starredParameters: Parameters = ["type": 2,
-//                                             "getRead": true,
-//                                             "batchSize": -1]
-//        
-//        let starredItemRouter = Router.items(parameters: starredParameters)
-//        
-//        NewsSessionManager.shared.request(starredItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
+        let starredParameters: Parameters = ["type": 2,
+                                             "getRead": true,
+                                             "batchSize": -1]
+        
+        let starredItemRouter = Router.items(parameters: starredParameters)
+        NewsSessionManager.shared.request(starredItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
 //            debugPrint(response)
-//        })
+            if let items = response.value?.items {
+                CDItem.update(items: items)
+                self.updateBadge()
+            }
+        })
 
         // 3.
         NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
@@ -160,15 +162,26 @@ class NewsManager {
 
         // 7.
         let updatedParameters: Parameters = ["type": 3,
-                                            "lastModified": CDItem.lastModified()]
+                                            "lastModified": CDItem.lastModified(),
+                                            "id": 0]
         
-        let updatedItemRouter = Router.updatedItems(parameters: updatedParameters)
-        
+        let updatedItemRouter = Router.updatedItems(parameters: updatedParameters)        
         NewsSessionManager.shared.request(updatedItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
             //            debugPrint(response)
             if let items = response.value?.items {
                 CDItem.update(items: items)
                 self.updateBadge()
+                
+                let notification = NSUserNotification()
+                notification.identifier = NSUUID().uuidString
+                notification.title = "CloudNews"
+                notification.subtitle = "Updates available"
+                notification.informativeText = "\(items.count) new or updated articles"
+                notification.soundName = NSUserNotificationDefaultSoundName
+//                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
+                // Manually display the notification
+                let notificationCenter = NSUserNotificationCenter.default
+                notificationCenter.deliver(notification)
             }
         })
 

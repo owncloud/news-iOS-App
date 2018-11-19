@@ -995,7 +995,7 @@
                                                     </subviews>
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
-                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1N7-PF-Zyk">
+                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.16666666666666666" horizontal="YES" id="1N7-PF-Zyk">
                                                     <rect key="frame" x="0.0" y="463" width="331" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
@@ -1028,7 +1028,7 @@
                                                             <constraint firstAttribute="width" constant="21" id="4Ih-tG-019"/>
                                                             <constraint firstAttribute="height" constant="21" id="VY0-dk-zEr"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="unstarred" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="cZt-CB-3SR">
+                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="unstarred" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="cZt-CB-3SR">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -1039,7 +1039,7 @@
                                                             <constraint firstAttribute="width" constant="21" id="TqA-5F-bWt"/>
                                                             <constraint firstAttribute="height" constant="21" id="lgq-fg-DmB"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSShareTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="bYI-53-9tr">
+                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSShareTemplate" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="bYI-53-9tr">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
