@@ -687,8 +687,8 @@
                                                             <constraint firstAttribute="height" constant="21" id="Lol-F7-hQ8"/>
                                                             <constraint firstAttribute="width" constant="21" id="bv0-fK-r90"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRefreshTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" state="on" imageScaling="proportionallyDown" inset="2" id="GHt-es-XBX">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRefreshTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="GHt-es-XBX">
+                                                            <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
@@ -832,10 +832,13 @@
                                                             <constraint firstAttribute="height" constant="21" id="OVJ-aN-ehT"/>
                                                             <constraint firstAttribute="width" constant="21" id="b6N-mO-589"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="mark" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="wd9-BL-tga">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="mark_mac" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="wd9-BL-tga">
+                                                            <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                        <connections>
+                                                            <action selector="onMarkRead:" target="XfG-lQ-9wD" id="f6q-WF-jwP"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -875,7 +878,7 @@
                                                                             <rect key="frame" x="1" y="1" width="334" height="130"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
-                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX">
+                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX" customClass="AspectFillImageView" customModule="CloudNews" customModuleProvider="target">
                                                                                     <rect key="frame" x="10" y="29" width="72" height="72"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="72" id="2ig-df-NgT"/>
@@ -995,7 +998,7 @@
                                                     </subviews>
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
-                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.16666666666666666" horizontal="YES" id="1N7-PF-Zyk">
+                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1N7-PF-Zyk">
                                                     <rect key="frame" x="0.0" y="463" width="331" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
@@ -1028,10 +1031,13 @@
                                                             <constraint firstAttribute="width" constant="21" id="4Ih-tG-019"/>
                                                             <constraint firstAttribute="height" constant="21" id="VY0-dk-zEr"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="unstarred" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="cZt-CB-3SR">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="unstarred_mac" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="cZt-CB-3SR">
+                                                            <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                        <connections>
+                                                            <action selector="onStar:" target="XfG-lQ-9wD" id="bOD-U1-bqg"/>
+                                                        </connections>
                                                     </button>
                                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="gV3-xP-BfO">
                                                         <rect key="frame" x="41" y="10" width="21" height="21"/>
@@ -1039,10 +1045,13 @@
                                                             <constraint firstAttribute="width" constant="21" id="TqA-5F-bWt"/>
                                                             <constraint firstAttribute="height" constant="21" id="lgq-fg-DmB"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSShareTemplate" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="bYI-53-9tr">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSShareTemplate" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="bYI-53-9tr">
+                                                            <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
+                                                        <connections>
+                                                            <action selector="onShare:" target="XfG-lQ-9wD" id="kGA-pV-D5z"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -1105,9 +1114,9 @@
         <image name="All Articles" width="33" height="33"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="NSShareTemplate" width="11" height="16"/>
-        <image name="mark" width="38.400001525878906" height="70.400001525878906"/>
+        <image name="mark_mac" width="42" height="42"/>
         <image name="read" width="70.819671630859375" height="70.819671630859375"/>
         <image name="unread" width="70.819671630859375" height="70.819671630859375"/>
-        <image name="unstarred" width="70.819671630859375" height="70.819671630859375"/>
+        <image name="unstarred_mac" width="42" height="42"/>
     </resources>
 </document>

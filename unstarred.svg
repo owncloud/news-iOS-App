@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="86"
+   height="86"
+   id="svg5330"
+   version="1.1"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="unstarred.svg"
+   inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/unstarred@3x.png"
+   inkscape:export-xdpi="92.050003"
+   inkscape:export-ydpi="92.050003">
+  <defs
+     id="defs5332" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="6.3465909"
+     inkscape:cx="19.341092"
+     inkscape:cy="44"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:showpageshadow="false"
+     inkscape:window-width="2493"
+     inkscape:window-height="1385"
+     inkscape:window-x="67"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid5338"
+       empspacing="4"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       dotted="false" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5335">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(0,22)">
+    <path
+       sodipodi:type="star"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:20.01527214;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2987"
+       sodipodi:sides="5"
+       sodipodi:cx="100"
+       sodipodi:cy="280.93362"
+       sodipodi:r1="377.31598"
+       sodipodi:r2="188.65799"
+       sodipodi:arg1="1.5707963"
+       sodipodi:arg2="2.1991149"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 100.00001,658.2496 -10.89039,433.56114 -258.84882,397.53068 -79.424408,222.63509 -121.78078,-24.321409 100.00001,92.275635 321.78076,-24.321421 279.42441,222.63511 458.84882,397.53066 210.89038,433.56115 Z"
+       inkscape:transform-center-y="-38.992356"
+       transform="matrix(0.09759095,0,0,-0.10248794,33.162072,53.344863)"
+       inkscape:export-filename="/Users/peter/Projects/iOCNews/iOCNews/Resources/star_open-7.png"
+       inkscape:export-xdpi="45"
+       inkscape:export-ydpi="45" />
+  </g>
+</svg>

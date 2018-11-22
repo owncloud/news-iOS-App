@@ -57,6 +57,20 @@ class ViewController: NSViewController {
     @IBAction func onRefresh(_ sender: Any) {
         NewsManager.shared.sync()
     }
+  
+    @IBAction func onMarkRead(_ sender: Any) {
+        if let items = self.itemsArrayController.arrangedObjects as? [ItemProtocol] {
+            self.markItemsRead(items: items)
+            let ids = items.map { $0.id }
+            CDRead.update(items: ids)
+        }
+    }
+    
+    @IBAction func onStar(_ sender: Any) {
+    }
+    
+    @IBAction func onShare(_ sender: Any) {
+    }
     
     let itemsArrayController: NSArrayController = {
         let result = NSArrayController()
@@ -111,6 +125,7 @@ class ViewController: NSViewController {
             } else if let _ = updatedObjects.first as? CDFeed {
                self.feedOutlineView.reloadData()
             } else {
+                self.feedOutlineView.reloadData()
                 self.itemsTableView.reloadData()
             }
         }
@@ -128,6 +143,22 @@ class ViewController: NSViewController {
         }
     }
 
+    func markItemsRead(items: [ItemProtocol]) {
+        for var item in items {
+            if item.unread == true {
+                CDRead.update(items: [item.id])
+                item.unread = false
+                if var feed = CDFeed.feed(id: item.feedId) {
+                    let feedUnreadCount = feed.unreadCount - 1
+                    feed.unreadCount = feedUnreadCount
+                    CDFeed.update(feeds: [feed])
+                }
+            }
+        }
+        CDItem.update(items: items)
+        NewsManager.shared.updateBadge()
+    }
+    
 }
 
 extension ViewController: NSOutlineViewDataSource {
@@ -251,18 +282,7 @@ extension ViewController: NSTableViewDelegate {
         let selectedIndex = tableView.selectedRow
         if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
             let item = items[selectedIndex]
-            if item.unread == true {
-                CDRead.update(items: [item.id])
-                item.unread = false
-                CDItem.update(items: [item])
-                if var feed = CDFeed.feed(id: item.feedId) {
-                    let feedUnreadCount = feed.unreadCount - 1
-                    feed.unreadCount = feedUnreadCount
-                    CDFeed.update(feeds: [feed])
-                }
-                NewsManager.shared.updateBadge()
-            }
-            
+            self.markItemsRead(items: [item])
             if let itemUrl = item.url {
                 let url = URL(string: itemUrl)
                 
