@@ -43,6 +43,8 @@
 		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
 		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
+		D05795A321A7C378009F618A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A221A7C378009F618A /* Kingfisher.framework */; };
+		D05795A521A7C380009F618A /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A221A7C378009F618A /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */; };
 		D05A6FB4213B9508006D3AB8 /* ArticleCellNoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */; };
 		D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */; };
@@ -128,6 +130,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D0171ACE217BE98200D2D34B /* Alamofire.framework in Embed Frameworks */,
+				D05795A521A7C380009F618A /* Kingfisher.framework in Embed Frameworks */,
 				D05C4A13219A7E12008BA66F /* SwiftSoup.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -191,6 +194,7 @@
 		D04C7DCB1BABBEFC000FB342 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
 		D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
 		D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcreposix.a; sourceTree = "<group>"; };
+		D05795A221A7C378009F618A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/Mac/Kingfisher.framework; sourceTree = "<group>"; };
 		D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseArticleCell.swift; sourceTree = "<group>"; };
 		D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellNoThumbnail.swift; sourceTree = "<group>"; };
 		D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoThumbnailArticleCell.xib; sourceTree = "<group>"; };
@@ -308,6 +312,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D05795A321A7C378009F618A /* Kingfisher.framework in Frameworks */,
 				D05C4A16219A7E75008BA66F /* SwiftSoup.framework in Frameworks */,
 				D0171ACD217BE98200D2D34B /* Alamofire.framework in Frameworks */,
 			);
@@ -486,6 +491,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D05795A221A7C378009F618A /* Kingfisher.framework */,
 				D05C4A11219A7E11008BA66F /* SwiftSoup.framework */,
 				D0171ACB217BE97800D2D34B /* Alamofire.framework */,
 				D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */,
@@ -831,12 +837,14 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/Mac/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/SwiftSoup.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/Kingfisher.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftSoup.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

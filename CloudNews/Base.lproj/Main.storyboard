@@ -878,7 +878,7 @@
                                                                             <rect key="frame" x="1" y="1" width="334" height="130"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
-                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX" customClass="AspectFillImageView" customModule="CloudNews" customModuleProvider="target">
+                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX">
                                                                                     <rect key="frame" x="10" y="29" width="72" height="72"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="72" id="2ig-df-NgT"/>

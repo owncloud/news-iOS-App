@@ -8,6 +8,7 @@
 
 import Cocoa
 import SwiftSoup
+import Kingfisher
 
 class ArticleCellView: NSTableCellView {
     
@@ -91,8 +92,8 @@ class ArticleCellView: NSTableCellView {
                     self.summaryLabel.stringValue = self.plainSummary(raw: summary)
                     
                     if let imageURL = self.imageURL(summary: summary) {
-                        let image = NSImage(byReferencing: imageURL)
-                        self.thumbnailImage.image = image
+                        let processor = ResizingImageProcessor(referenceSize: CGSize(width: 72, height: 72), mode: .aspectFill) >> RoundCornerImageProcessor(cornerRadius: 20)
+                        self.thumbnailImage.kf.setImage(with: imageURL, placeholder: nil, options: [.processor(processor)])
                     }
                     
                     if item.unread == true {
