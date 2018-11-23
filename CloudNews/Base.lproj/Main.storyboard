@@ -687,7 +687,7 @@
                                                             <constraint firstAttribute="height" constant="21" id="Lol-F7-hQ8"/>
                                                             <constraint firstAttribute="width" constant="21" id="bv0-fK-r90"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRefreshTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="GHt-es-XBX">
+                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRefreshTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" refusesFirstResponder="YES" inset="2" id="GHt-es-XBX">
                                                             <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -1031,7 +1031,7 @@
                                                             <constraint firstAttribute="width" constant="21" id="4Ih-tG-019"/>
                                                             <constraint firstAttribute="height" constant="21" id="VY0-dk-zEr"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="unstarred_mac" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="cZt-CB-3SR">
+                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="unstarred_mac" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="cZt-CB-3SR">
                                                             <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -1045,7 +1045,7 @@
                                                             <constraint firstAttribute="width" constant="21" id="TqA-5F-bWt"/>
                                                             <constraint firstAttribute="height" constant="21" id="lgq-fg-DmB"/>
                                                         </constraints>
-                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSShareTemplate" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" inset="2" id="bYI-53-9tr">
+                                                        <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSShareTemplate" imagePosition="only" alignment="center" refusesFirstResponder="YES" inset="2" id="bYI-53-9tr">
                                                             <behavior key="behavior" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
