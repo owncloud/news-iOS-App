@@ -33,7 +33,7 @@ public class CDFolder: NSManagedObject, FolderProtocol {
     }
     
     static func update(folders: [FolderProtocol]) {
-        NewsData.mainThreadContext.perform {
+        NewsData.mainThreadContext.performAndWait {
             let request: NSFetchRequest<CDFolder> = CDFolder.fetchRequest()
             do {
                 for folder in folders {
@@ -53,6 +53,20 @@ public class CDFolder: NSManagedObject, FolderProtocol {
                 print("Could not fetch \(error), \(error.userInfo)")
             }
         }
+    }
+
+    static func folder(id: Int32) -> CDFolder? {
+        let request: NSFetchRequest<CDFolder> = self.fetchRequest()
+        let predicate = NSPredicate(format: "id == %d", id)
+        request.predicate = predicate
+        request.fetchLimit = 1
+        do {
+            let results  = try NewsData.mainThreadContext.fetch(request)
+            return results.first
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return nil
     }
 
 }

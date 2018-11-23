@@ -9,6 +9,8 @@
 import Cocoa
 import Alamofire
 
+typealias SyncCompletionBlock = () -> Void
+
 class NewsSessionManager: Alamofire.SessionManager {
 
     static let shared = NewsSessionManager()
@@ -27,7 +29,9 @@ class NewsManager {
     
     init() {
         let _ = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { (_) in
-            self.sync()
+            self.sync(completion: {
+                //
+            })
         }
     }
 
@@ -121,70 +125,77 @@ class NewsManager {
      7. Get new items and modified items: GET /items/updated?lastModified=12123123123&type=3
 
      */
-    func sync() {
+    func sync(completion: @escaping SyncCompletionBlock) {
         guard let _ = CDItem.all() else {
             self.initialSync()
             return
         }
 
+        func localRead(completion: @escaping SyncCompletionBlock) {
+            if let localRead = CDRead.all(), localRead.count > 0 {
+                let readParameters: Parameters = ["items": localRead]
+                NewsSessionManager.shared.request(Router.itemsRead(parameters: readParameters)).responseData { response in
+                    switch response.result {
+                    case .success:
+                        CDRead.clear()
+                    default:
+                        break
+                    }
+                    completion()
+                }
+            } else {
+                completion()
+            }
+        }
         
-        // 2.
-        if let localRead = CDRead.all(), localRead.count > 0 {
-            let readParameters: Parameters = ["items": localRead]
-            NewsSessionManager.shared.request(Router.itemsRead(parameters: readParameters)).responseData { response in
-                switch response.result {
-                case .success:
-                    CDRead.clear()
-                default:
-                    break
+        func folders(completion: @escaping SyncCompletionBlock) {
+            NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
+                //            debugPrint(response)
+                if let folders = response.value?.folders {
+                    CDFolder.update(folders: folders)
+                }
+                completion()
+            })
+        }
+        
+        func feeds(completion: @escaping SyncCompletionBlock) {
+            NewsSessionManager.shared.request(Router.feeds).responseDecodable(completionHandler: { (response: DataResponse<Feeds>) in
+                //            debugPrint(response)
+                if let newestItemId = response.value?.newestItemId, let starredCount = response.value?.starredCount {
+                    CDFeeds.update(starredCount: starredCount, newestItemId: newestItemId)
+                }
+                if let feeds = response.value?.feeds {
+                    CDFeed.update(feeds: feeds)
+                }
+                completion()
+            })
+        }
+        
+        func items(completion: @escaping SyncCompletionBlock) {
+            let updatedParameters: Parameters = ["type": 3,
+                                                 "lastModified": CDItem.lastModified(),
+                                                 "id": 0]
+            
+            let updatedItemRouter = Router.updatedItems(parameters: updatedParameters)
+            NewsSessionManager.shared.request(updatedItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
+                //            debugPrint(response)
+                if let items = response.value?.items {
+                    CDItem.update(items: items)
+                }
+                completion()
+            })
+        }
+        
+        localRead {
+            folders {
+                feeds {
+                    items {
+                        completion()
+                    }
                 }
             }
         }
         
-        // 5.
-        NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
-            //            debugPrint(response)
-            if let folders = response.value?.folders {
-                CDFolder.update(folders: folders)
-            }
-        })
-        
-        // 6.
-        NewsSessionManager.shared.request(Router.feeds).responseDecodable(completionHandler: { (response: DataResponse<Feeds>) in
-            //            debugPrint(response)
-            if let newestItemId = response.value?.newestItemId, let starredCount = response.value?.starredCount {
-                CDFeeds.update(starredCount: starredCount, newestItemId: newestItemId)
-            }
-            if let feeds = response.value?.feeds {
-                CDFeed.update(feeds: feeds)
-            }
-        })
-
-        // 7.
-        let updatedParameters: Parameters = ["type": 3,
-                                            "lastModified": CDItem.lastModified(),
-                                            "id": 0]
-        
-        let updatedItemRouter = Router.updatedItems(parameters: updatedParameters)        
-        NewsSessionManager.shared.request(updatedItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
-            //            debugPrint(response)
-            if let items = response.value?.items {
-                CDItem.update(items: items)
-                self.updateBadge()
-                
-                let notification = NSUserNotification()
-                notification.identifier = NSUUID().uuidString
-                notification.title = "CloudNews"
-                notification.subtitle = "Updates available"
-                notification.informativeText = "\(items.count) new or updated articles"
-                notification.soundName = NSUserNotificationDefaultSoundName
-//                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
-                // Manually display the notification
-                let notificationCenter = NSUserNotificationCenter.default
-                notificationCenter.deliver(notification)
-            }
-        })
-
     }
 
     func updateBadge() {

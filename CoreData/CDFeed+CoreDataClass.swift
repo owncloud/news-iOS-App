@@ -83,7 +83,7 @@ public class CDFeed: NSManagedObject, FeedProtocol {
     }
     
     static func update(feeds: [FeedProtocol]) {
-        NewsData.mainThreadContext.perform {
+        NewsData.mainThreadContext.performAndWait {
             let request: NSFetchRequest<CDFeed> = CDFeed.fetchRequest()
             do {
                 for feed in feeds {

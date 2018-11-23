@@ -29,15 +29,15 @@ class ViewController: NSViewController {
         self.rightTopView.wantsLayer = true
         self.splitView.delegate = self
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(contextDidSave(_:)),
-                                               name: Notification.Name.NSManagedObjectContextDidSave,
-                                               object: nil)
-
+//        NotificationCenter.default.addObserver(self,
+//                                               selector: #selector(contextDidSave(_:)),
+//                                               name: Notification.Name.NSManagedObjectContextDidSave,
+//                                               object: nil)
+//
         self.rebuildFoldersAndFeedsList()
         self.feedOutlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
-        try? self.itemsArrayController.fetch(with: nil, merge: false)
-        self.itemsTableView.reloadData()
+//        try? self.itemsArrayController.fetch(with: nil, merge: false)
+//        self.itemsTableView.reloadData()
     }
 
     override func viewWillAppear() {
@@ -54,15 +54,17 @@ class ViewController: NSViewController {
         }
     }
 
-    @IBAction func onRefresh(_ sender: Any) {
-        NewsManager.shared.sync()
+    @IBAction func onSync(_ sender: Any) {
+        NewsManager.shared.sync {
+            self.rebuildFoldersAndFeedsList()
+            self.feedOutlineView.reloadData()
+            self.itemsTableView.reloadData()
+        }
     }
   
     @IBAction func onMarkRead(_ sender: Any) {
-        if let items = self.itemsArrayController.arrangedObjects as? [ItemProtocol] {
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
             self.markItemsRead(items: items)
-            let ids = items.map { $0.id }
-            CDRead.update(items: ids)
         }
     }
     
@@ -93,11 +95,14 @@ class ViewController: NSViewController {
             self.toplevelArray.append(contentsOf: feeds)
         }
         self.feedOutlineView.reloadData()
+        try? self.itemsArrayController.fetch(with: nil, merge: false)
+        self.itemsTableView.reloadData()
     }
     
     @objc func contextDidSave(_ notification: Notification) {
         print(notification)
-        
+        self.feedOutlineView.beginUpdates()
+        self.itemsTableView.beginUpdates()
         if let insertedObjects = notification.userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject>, !insertedObjects.isEmpty {
             if let _ = insertedObjects.first as? CDFolder {
                 self.rebuildFoldersAndFeedsList()
@@ -120,13 +125,14 @@ class ViewController: NSViewController {
 
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>, !updatedObjects.isEmpty {
             print(updatedObjects)
-            if let _ = updatedObjects.first as? CDFolder {
-                self.feedOutlineView.reloadData()
-            } else if let _ = updatedObjects.first as? CDFeed {
-               self.feedOutlineView.reloadData()
-            } else {
-                self.feedOutlineView.reloadData()
-                self.itemsTableView.reloadData()
+            for object in updatedObjects {
+                if let folder = object as? CDFolder {
+                    self.feedOutlineView.reloadItem(folder)
+                } else if let feed = object as? CDFeed {
+                    self.feedOutlineView.reloadItem(feed)
+                } else {
+                    self.itemsTableView.reloadData()
+                }
             }
         }
 
@@ -141,10 +147,12 @@ class ViewController: NSViewController {
         if let areInvalidatedAllObjects = notification.userInfo?[NSInvalidatedAllObjectsKey] as? Bool {
             print(areInvalidatedAllObjects)
         }
+        self.itemsTableView.endUpdates()
+        self.feedOutlineView.endUpdates()
     }
 
-    func markItemsRead(items: [ItemProtocol]) {
-        for var item in items {
+    func markItemsRead(items: [CDItem]) {
+        for item in items {
             if item.unread == true {
                 CDRead.update(items: [item.id])
                 item.unread = false
@@ -152,10 +160,17 @@ class ViewController: NSViewController {
                     let feedUnreadCount = feed.unreadCount - 1
                     feed.unreadCount = feedUnreadCount
                     CDFeed.update(feeds: [feed])
+                    if let folder = CDFolder.folder(id: feed.folderId) {
+                        let folderUnreadCount = folder.unreadCount - 1
+                        folder.unreadCount = folderUnreadCount
+                        CDFolder.update(folders: [folder])
+                    }
                 }
             }
         }
         CDItem.update(items: items)
+        self.feedOutlineView.reloadData()
+        self.itemsTableView.reloadData()
         NewsManager.shared.updateBadge()
     }
     
@@ -218,24 +233,20 @@ extension ViewController: NSOutlineViewDelegate {
         if selectedIndex == 0 {
             print("All articles selected")
             self.itemsArrayController.filterPredicate = nil
-            self.itemsTableView.reloadData()
         } else if selectedIndex == 1 {
             print("Starred articles selected")
             let predicate = NSPredicate(format: "starred == true")
             self.itemsArrayController.filterPredicate = predicate
-            self.itemsTableView.reloadData()
-        } else if let folder = outlineView.item(atRow: selectedIndex) as? FolderProtocol {
+        } else if let folder = outlineView.item(atRow: selectedIndex) as? CDFolder {
             print("Folder: \(folder.name ?? "") selected")
             if let feedIds = CDFeed.idsInFolder(folder: folder.id) {
                 let predicate = NSPredicate(format:"feedId IN %@", feedIds)
                 self.itemsArrayController.filterPredicate = predicate
-                self.itemsTableView.reloadData()
             }
-        } else if let feed = outlineView.item(atRow: selectedIndex) as? FeedProtocol {
+        } else if let feed = outlineView.item(atRow: selectedIndex) as? CDFeed {
             print("Feed: \(feed.title ?? "") selected")
             let predicate = NSPredicate(format: "feedId == %d", feed.id)
             self.itemsArrayController.filterPredicate = predicate
-            self.itemsTableView.reloadData()
         }
         self.itemsTableView.reloadData()
     }

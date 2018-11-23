@@ -692,7 +692,7 @@
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
-                                                            <action selector="onRefresh:" target="XfG-lQ-9wD" id="mJg-zL-yg1"/>
+                                                            <action selector="onSync:" target="XfG-lQ-9wD" id="mJg-zL-yg1"/>
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="snD-gk-rSP">
@@ -837,7 +837,7 @@
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
-                                                            <action selector="onMarkRead:" target="XfG-lQ-9wD" id="f6q-WF-jwP"/>
+                                                            <action selector="onMarkRead:" target="XfG-lQ-9wD" id="BdF-Bl-GYb"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -1036,7 +1036,7 @@
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
-                                                            <action selector="onStar:" target="XfG-lQ-9wD" id="bOD-U1-bqg"/>
+                                                            <action selector="onSync:" target="XfG-lQ-9wD" id="bOD-U1-bqg"/>
                                                         </connections>
                                                     </button>
                                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="gV3-xP-BfO">
@@ -1050,7 +1050,7 @@
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
-                                                            <action selector="onShare:" target="XfG-lQ-9wD" id="kGA-pV-D5z"/>
+                                                            <action selector="onSync:" target="XfG-lQ-9wD" id="kGA-pV-D5z"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>

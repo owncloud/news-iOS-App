@@ -16,7 +16,7 @@ public class CDRead: NSManagedObject {
     static private let entityName = "CDRead"
 
     static func update(items: [Int32]) {
-        NewsData.mainThreadContext.perform {
+        NewsData.mainThreadContext.performAndWait {
             let request: NSFetchRequest<CDRead> = CDRead.fetchRequest()
             do {
                 for item in items {

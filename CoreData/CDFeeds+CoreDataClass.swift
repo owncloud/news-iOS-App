@@ -16,7 +16,7 @@ public class CDFeeds: NSManagedObject {
     static private let entityName = "CDFeeds"
 
     static func update(starredCount: Int, newestItemId: Int) {
-        NewsData.mainThreadContext.perform {
+        NewsData.mainThreadContext.performAndWait {
             let request: NSFetchRequest<CDFeeds> = CDFeeds.fetchRequest()
             do {
                 let records = try NewsData.mainThreadContext.fetch(request)
