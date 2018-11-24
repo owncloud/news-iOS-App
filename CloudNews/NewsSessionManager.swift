@@ -30,7 +30,7 @@ class NewsManager {
     init() {
         let _ = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { (_) in
             self.sync(completion: {
-                //
+                NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
             })
         }
     }

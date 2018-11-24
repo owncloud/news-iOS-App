@@ -29,11 +29,12 @@ class ViewController: NSViewController {
         self.rightTopView.wantsLayer = true
         self.splitView.delegate = self
         
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(contextDidSave(_:)),
-//                                               name: Notification.Name.NSManagedObjectContextDidSave,
-//                                               object: nil)
-//
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
+            self?.rebuildFoldersAndFeedsList()
+            self?.feedOutlineView.reloadData()
+            self?.itemsTableView.reloadData()
+        }
+
         self.rebuildFoldersAndFeedsList()
         self.feedOutlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
 //        try? self.itemsArrayController.fetch(with: nil, merge: false)
@@ -56,9 +57,7 @@ class ViewController: NSViewController {
 
     @IBAction func onSync(_ sender: Any) {
         NewsManager.shared.sync {
-            self.rebuildFoldersAndFeedsList()
-            self.feedOutlineView.reloadData()
-            self.itemsTableView.reloadData()
+            NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
         }
     }
   
