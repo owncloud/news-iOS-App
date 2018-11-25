@@ -670,8 +670,8 @@
         <!--Window Controller-->
         <scene sceneID="vPO-st-A8m">
             <objects>
-                <windowController id="DQC-ed-s4z" customClass="PrefsWindowController" customModule="CloudNews" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="cEn-Q6-kKi">
+                <windowController showSeguePresentationStyle="single" id="DQC-ed-s4z" customClass="PrefsWindowController" customModule="CloudNews" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="cEn-Q6-kKi">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="425" y="461" width="480" height="270"/>
@@ -688,10 +688,10 @@
             </objects>
             <point key="canvasLocation" x="957" y="362"/>
         </scene>
-        <!--Prefs View Controller-->
+        <!--Preferences-->
         <scene sceneID="mDL-fl-gm2">
             <objects>
-                <viewController id="uLl-1l-NvZ" customClass="PrefsViewController" customModule="CloudNews" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Preferences" showSeguePresentationStyle="single" id="uLl-1l-NvZ" customClass="PrefsViewController" customModule="CloudNews" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="WCa-HR-yWt">
                         <rect key="frame" x="0.0" y="0.0" width="456" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -706,17 +706,43 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="rnL-2L-k0u">
-                                                    <rect key="frame" x="15" y="219" width="380" height="18"/>
-                                                    <buttonCell key="cell" type="check" title="Sync on Start" bezelStyle="regularSquare" imagePosition="left" inset="2" id="C1U-qP-keu">
+                                                    <rect key="frame" x="15" y="219" width="89" height="18"/>
+                                                    <buttonCell key="cell" type="check" title="Sync every" bezelStyle="regularSquare" imagePosition="left" inset="2" id="C1U-qP-keu">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                    <connections>
+                                                        <action selector="onSyncCheckbox:" target="uLl-1l-NvZ" id="8tv-ju-2UO"/>
+                                                    </connections>
                                                 </button>
+                                                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Vf-o2-PRH">
+                                                    <rect key="frame" x="115" y="215" width="125" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="120" id="AGr-Tb-vxC"/>
+                                                    </constraints>
+                                                    <popUpButtonCell key="cell" type="push" title="15 minutes" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="egE-Ob-e3y" id="kBP-ht-Lki">
+                                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="menu"/>
+                                                        <menu key="menu" id="Nny-aT-TUb">
+                                                            <items>
+                                                                <menuItem title="Never" id="5zj-Sy-xSx"/>
+                                                                <menuItem title="15 minutes" state="on" id="egE-Ob-e3y"/>
+                                                                <menuItem title="30 minutes" id="TOY-NJ-vWF"/>
+                                                                <menuItem title="60 minutes" id="7B7-Ma-njZ"/>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpButtonCell>
+                                                    <connections>
+                                                        <action selector="onIntervalPopup:" target="uLl-1l-NvZ" id="m1f-bZ-lBZ"/>
+                                                    </connections>
+                                                </popUpButton>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="rnL-2L-k0u" firstAttribute="leading" secondItem="hwP-40-Dq9" secondAttribute="leading" constant="17" id="22t-XM-mlq"/>
-                                                <constraint firstAttribute="trailing" secondItem="rnL-2L-k0u" secondAttribute="trailing" constant="17" id="BHQ-bT-OFh"/>
+                                                <constraint firstItem="rnL-2L-k0u" firstAttribute="centerY" secondItem="8Vf-o2-PRH" secondAttribute="centerY" id="SVz-qP-UCZ"/>
+                                                <constraint firstItem="8Vf-o2-PRH" firstAttribute="leading" secondItem="rnL-2L-k0u" secondAttribute="trailing" constant="15" id="clB-cy-7ag"/>
                                                 <constraint firstItem="rnL-2L-k0u" firstAttribute="top" secondItem="hwP-40-Dq9" secondAttribute="top" constant="3" id="g4E-n3-o1X"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8Vf-o2-PRH" secondAttribute="trailing" priority="249" constant="178" id="nHN-kv-039"/>
                                             </constraints>
                                         </view>
                                     </tabViewItem>
@@ -849,9 +875,11 @@
                     </view>
                     <connections>
                         <outlet property="connectionActivityIndicator" destination="wDE-D4-hNs" id="be0-JR-bg0"/>
+                        <outlet property="intervalPopup" destination="8Vf-o2-PRH" id="4HE-7g-Omn"/>
                         <outlet property="passwordTextField" destination="O65-7g-Ujk" id="f75-4Z-k07"/>
                         <outlet property="serverTextField" destination="afe-IT-TRX" id="oPu-a2-paD"/>
                         <outlet property="statusLabel" destination="IIl-Eh-dji" id="MSo-r9-hry"/>
+                        <outlet property="syncCheckbox" destination="rnL-2L-k0u" id="Rm5-p2-hOe"/>
                         <outlet property="tabView" destination="7wA-BY-pf9" id="843-RT-3Cw"/>
                         <outlet property="usernameTextField" destination="Awr-Yd-NZ7" id="m7Q-di-snc"/>
                     </connections>

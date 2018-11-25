@@ -12,6 +12,8 @@ import Alamofire
 
 class PrefsViewController: NSViewController {
     
+    @IBOutlet var syncCheckbox: NSButton!
+    @IBOutlet var intervalPopup: NSPopUpButton!
     @IBOutlet var serverTextField: NSTextField!
     @IBOutlet var usernameTextField: NSTextField!
     @IBOutlet var passwordTextField: NSSecureTextField!
@@ -21,6 +23,13 @@ class PrefsViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let sync = UserDefaults.standard.bool(forKey: "sync")
+        self.syncCheckbox.state = sync == true ? .on : .off
+        self.intervalPopup.isEnabled = sync
+        let interval = UserDefaults.standard.integer(forKey: "interval")
+        self.intervalPopup.selectItem(at: interval)
+        
         let keychain = Keychain(service: "com.peterandlinda.CloudNews")
         let username = keychain["username"]
         let password = keychain["password"]
@@ -70,5 +79,21 @@ class PrefsViewController: NSViewController {
             self.connectionActivityIndicator.stopAnimation(nil)
         }
     }
+    
+    @IBAction func onSyncCheckbox(_ sender: Any) {
+        if self.syncCheckbox.state == .on {
+            self.intervalPopup.isEnabled = true
+            UserDefaults.standard.set(true, forKey: "sync")
+        } else {
+            self.intervalPopup.isEnabled = false
+            UserDefaults.standard.set(false, forKey: "sync")
+        }
+    }
+    
+    @IBAction func onIntervalPopup(_ sender: Any) {
+        UserDefaults.standard.set(self.intervalPopup.indexOfSelectedItem, forKey: "interval")
+        NewsManager.shared.setupSyncTimer()
+    }
+    
 }
 

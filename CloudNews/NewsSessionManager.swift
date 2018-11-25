@@ -27,11 +27,28 @@ class NewsManager {
     
     static let shared = NewsManager()
     
+    var syncTimer: Timer?
+    
     init() {
-        let _ = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { (_) in
-            self.sync(completion: {
-                NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
-            })
+        self.setupSyncTimer()
+    }
+    
+    func setupSyncTimer() {
+        self.syncTimer?.invalidate()
+        self.syncTimer = nil
+        let interval = UserDefaults.standard.integer(forKey: "interval")
+        if interval > 0 {
+            var timeInterval: TimeInterval = 900
+            switch interval {
+            case 2: timeInterval = 30 * 60
+            case 3: timeInterval = 60 * 60
+            default: timeInterval = 15 * 60
+            }
+            self.syncTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { (_) in
+                self.sync(completion: {
+                    NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
+                })
+            }
         }
     }
 
