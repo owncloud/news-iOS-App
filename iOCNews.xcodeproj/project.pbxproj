@@ -45,6 +45,10 @@
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
 		D05795A321A7C378009F618A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A221A7C378009F618A /* Kingfisher.framework */; };
 		D05795A521A7C380009F618A /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A221A7C378009F618A /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D05795A721A90941009F618A /* PrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05795A621A90941009F618A /* PrefsViewController.swift */; };
+		D05795A921A9D139009F618A /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A821A9D138009F618A /* KeychainAccess.framework */; };
+		D05795AB21A9D141009F618A /* KeychainAccess.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A821A9D138009F618A /* KeychainAccess.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D05795AE21AA2CD9009F618A /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795AC21AA2CD9009F618A /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */; };
 		D05A6FB4213B9508006D3AB8 /* ArticleCellNoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */; };
 		D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */; };
@@ -59,8 +63,6 @@
 		D05A7C4A218AAE5E00961E29 /* CDFolder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A7C42218AAE5E00961E29 /* CDFolder+CoreDataClass.swift */; };
 		D05A7C4F218AB7CC00961E29 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A7C4E218AB7CC00961E29 /* Protocols.swift */; };
 		D05C4A102197EDCA008BA66F /* ArticleCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */; };
-		D05C4A13219A7E12008BA66F /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D05C4A16219A7E75008BA66F /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; };
 		D05C4A20219D29C6008BA66F /* CDRead+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A18219D29C6008BA66F /* CDRead+CoreDataClass.swift */; };
 		D05C4A22219D29C6008BA66F /* CDStarred+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A1A219D29C6008BA66F /* CDStarred+CoreDataClass.swift */; };
 		D05C4A24219D29C6008BA66F /* CDUnread+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05C4A1C219D29C6008BA66F /* CDUnread+CoreDataClass.swift */; };
@@ -131,7 +133,8 @@
 			files = (
 				D0171ACE217BE98200D2D34B /* Alamofire.framework in Embed Frameworks */,
 				D05795A521A7C380009F618A /* Kingfisher.framework in Embed Frameworks */,
-				D05C4A13219A7E12008BA66F /* SwiftSoup.framework in Embed Frameworks */,
+				D05795AB21A9D141009F618A /* KeychainAccess.framework in Embed Frameworks */,
+				D05795AE21AA2CD9009F618A /* SwiftSoup.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,6 +198,9 @@
 		D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
 		D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcreposix.a; sourceTree = "<group>"; };
 		D05795A221A7C378009F618A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/Mac/Kingfisher.framework; sourceTree = "<group>"; };
+		D05795A621A90941009F618A /* PrefsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsViewController.swift; sourceTree = "<group>"; };
+		D05795A821A9D138009F618A /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/Mac/KeychainAccess.framework; sourceTree = "<group>"; };
+		D05795AC21AA2CD9009F618A /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/Mac/SwiftSoup.framework; sourceTree = "<group>"; };
 		D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseArticleCell.swift; sourceTree = "<group>"; };
 		D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellNoThumbnail.swift; sourceTree = "<group>"; };
 		D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoThumbnailArticleCell.xib; sourceTree = "<group>"; };
@@ -312,8 +318,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D05795A921A9D139009F618A /* KeychainAccess.framework in Frameworks */,
 				D05795A321A7C378009F618A /* Kingfisher.framework in Frameworks */,
-				D05C4A16219A7E75008BA66F /* SwiftSoup.framework in Frameworks */,
 				D0171ACD217BE98200D2D34B /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,6 +367,7 @@
 				D0171AB9217BE6D600D2D34B /* ViewController.swift */,
 				D05C4A2821A0E42B008BA66F /* FeedCellView.swift */,
 				D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */,
+				D05795A621A90941009F618A /* PrefsViewController.swift */,
 				D03CC1BA21A28DCE009B925C /* AspectFillImageView.swift */,
 				D0171AD0217C45DA00D2D34B /* NewsSessionManager.swift */,
 				D0171AD2217C4B2600D2D34B /* NewsRouter.swift */,
@@ -467,6 +474,7 @@
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
+				D05795AC21AA2CD9009F618A /* SwiftSoup.framework */,
 				D0F94F8120AA777200833A7F /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,
@@ -491,6 +499,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D05795A821A9D138009F618A /* KeychainAccess.framework */,
 				D05795A221A7C378009F618A /* Kingfisher.framework */,
 				D05C4A11219A7E11008BA66F /* SwiftSoup.framework */,
 				D0171ACB217BE97800D2D34B /* Alamofire.framework */,
@@ -838,6 +847,7 @@
 				"$(SRCROOT)/Carthage/Build/Mac/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/SwiftSoup.framework",
 				"$(SRCROOT)/Carthage/Build/Mac/Kingfisher.framework",
+				"$(SRCROOT)/Carthage/Build/Mac/KeychainAccess.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -845,6 +855,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftSoup.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KeychainAccess.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -909,6 +920,7 @@
 				D05A7C4A218AAE5E00961E29 /* CDFolder+CoreDataClass.swift in Sources */,
 				D0171AD1217C45DA00D2D34B /* NewsSessionManager.swift in Sources */,
 				D05A7C44218AAE5E00961E29 /* CDFeeds+CoreDataClass.swift in Sources */,
+				D05795A721A90941009F618A /* PrefsViewController.swift in Sources */,
 				D0171AB8217BE6D600D2D34B /* AppDelegate.swift in Sources */,
 				D0171AE621852D9800D2D34B /* User.swift in Sources */,
 				D05C4A22219D29C6008BA66F /* CDStarred+CoreDataClass.swift in Sources */,

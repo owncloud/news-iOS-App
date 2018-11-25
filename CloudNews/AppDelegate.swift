@@ -12,6 +12,8 @@ import Alamofire
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    let prefsWindowController = PrefsWindowController()
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
@@ -70,6 +72,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NewsManager.shared.sync {
             NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
         }
+    }
+
+    @IBAction func onPreferences(_ sender: Any) {
+        self.prefsWindowController.showWindow(nil)
     }
 
 }

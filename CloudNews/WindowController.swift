@@ -18,3 +18,9 @@ class WindowController: NSWindowController {
     }
 
 }
+
+
+class PrefsWindowController: NSWindowController {
+
+
+}

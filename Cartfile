@@ -5,3 +5,4 @@ github "phedlund/BRYHTMLParser" "carthage_support"
 github "Alamofire/Alamofire"
 github "scinfu/SwiftSoup"
 github "onevcat/Kingfisher" ~> 4.0
+github "kishikawakatsumi/KeychainAccess"
