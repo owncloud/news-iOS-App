@@ -726,7 +726,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iJe-Bl-Hye">
-                                                    <rect key="frame" x="307" y="98" width="92" height="32"/>
+                                                    <rect key="frame" x="307" y="120" width="92" height="32"/>
                                                     <buttonCell key="cell" type="push" title="Connect" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uM1-N3-8Pa">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -736,19 +736,16 @@
                                                     </connections>
                                                 </button>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IIl-Eh-dji">
-                                                    <rect key="frame" x="100" y="47" width="290" height="50"/>
+                                                    <rect key="frame" x="100" y="68" width="242" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="8SZ-3r-zLC"/>
                                                     </constraints>
-                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Currently not connected to an ownCloud Notes server." id="n7Z-oA-WBS">
+                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Currently not connected to News on a server." id="n7Z-oA-WBS">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="wDE-D4-hNs">
-                                                    <rect key="frame" x="17" y="65" width="32" height="32"/>
-                                                </progressIndicator>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nqf-gL-KX9">
                                                     <rect key="frame" x="17" y="218" width="79" height="17"/>
                                                     <constraints>
@@ -809,37 +806,30 @@
                                                         </allowedInputSourceLocales>
                                                     </secureTextFieldCell>
                                                 </secureTextField>
-                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="Ucg-2L-MZ7">
-                                                    <rect key="frame" x="100" y="139" width="214" height="18"/>
-                                                    <buttonCell key="cell" type="check" title="Allow Untrusted SSL Certificate" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="WRK-6r-SHl">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                </button>
+                                                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="wDE-D4-hNs">
+                                                    <rect key="frame" x="282" y="130" width="16" height="16"/>
+                                                </progressIndicator>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IIl-Eh-dji" secondAttribute="trailing" constant="20" symbolic="YES" id="0JI-Gw-pc2"/>
                                                 <constraint firstItem="cmC-Jn-2Z7" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="28" id="1S0-Mp-4ox"/>
                                                 <constraint firstItem="tbM-58-CiH" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="19" id="2BD-XH-xnV"/>
+                                                <constraint firstItem="iJe-Bl-Hye" firstAttribute="leading" secondItem="wDE-D4-hNs" secondAttribute="trailing" constant="15" id="2yy-EE-BjW"/>
                                                 <constraint firstAttribute="trailing" secondItem="O65-7g-Ujk" secondAttribute="trailing" constant="17" id="5OI-NT-Dcx"/>
                                                 <constraint firstItem="Awr-Yd-NZ7" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="102" id="6RW-8L-ADA"/>
                                                 <constraint firstItem="Nqf-gL-KX9" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="19" id="BfI-Ot-31W"/>
+                                                <constraint firstItem="iJe-Bl-Hye" firstAttribute="top" secondItem="O65-7g-Ujk" secondAttribute="bottom" constant="15" id="BrV-M0-AbX"/>
                                                 <constraint firstItem="Nqf-gL-KX9" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="3" id="CnB-qO-rTE"/>
-                                                <constraint firstItem="iJe-Bl-Hye" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="310" id="DNY-Zq-hgn"/>
-                                                <constraint firstItem="IIl-Eh-dji" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="141" id="JO7-Xw-Jr8"/>
+                                                <constraint firstItem="wDE-D4-hNs" firstAttribute="top" secondItem="O65-7g-Ujk" secondAttribute="bottom" constant="17" id="D0a-OK-9Ge"/>
+                                                <constraint firstItem="IIl-Eh-dji" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="120" id="JO7-Xw-Jr8"/>
                                                 <constraint firstItem="O65-7g-Ujk" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="102" id="LFW-sA-Im9"/>
                                                 <constraint firstAttribute="trailing" secondItem="afe-IT-TRX" secondAttribute="trailing" constant="17" id="RdD-Gv-rFv"/>
-                                                <constraint firstItem="wDE-D4-hNs" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="17" id="ajm-hh-ZFs"/>
-                                                <constraint firstItem="Ucg-2L-MZ7" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="102" id="bW0-dZ-pxt"/>
                                                 <constraint firstItem="IIl-Eh-dji" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="102" id="c3j-N5-jQn"/>
                                                 <constraint firstItem="O65-7g-Ujk" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="53" id="d0G-A2-rrX"/>
+                                                <constraint firstItem="wDE-D4-hNs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="282" id="dQt-v5-v8R"/>
                                                 <constraint firstItem="cmC-Jn-2Z7" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="19" id="eTf-Hv-ezf"/>
-                                                <constraint firstItem="Ucg-2L-MZ7" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="83" id="f4z-i7-upu"/>
                                                 <constraint firstAttribute="trailing" secondItem="Awr-Yd-NZ7" secondAttribute="trailing" constant="17" id="ggN-aZ-3aD"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ucg-2L-MZ7" secondAttribute="trailing" constant="20" symbolic="YES" id="idt-Br-MjK"/>
-                                                <constraint firstItem="iJe-Bl-Hye" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="112" id="muV-qC-n4T"/>
                                                 <constraint firstAttribute="trailing" secondItem="iJe-Bl-Hye" secondAttribute="trailing" constant="17" id="pou-39-57g"/>
-                                                <constraint firstItem="wDE-D4-hNs" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="141" id="tPr-rs-vsV"/>
                                                 <constraint firstItem="afe-IT-TRX" firstAttribute="leading" secondItem="V2B-XK-XJ5" secondAttribute="leading" constant="102" id="xJI-PG-CKQ"/>
                                                 <constraint firstItem="Awr-Yd-NZ7" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="28" id="xxj-38-GC3"/>
                                                 <constraint firstItem="tbM-58-CiH" firstAttribute="top" secondItem="V2B-XK-XJ5" secondAttribute="top" constant="53" id="ycD-4a-M1h"/>

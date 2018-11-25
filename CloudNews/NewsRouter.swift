@@ -7,6 +7,7 @@
 //
 
 import Alamofire
+import KeychainAccess
 
 enum Router: URLRequestConvertible {
     case feeds
@@ -33,8 +34,6 @@ enum Router: URLRequestConvertible {
     case itemUnstarred(id: Int, guid: String)
     case itemsUnstarred(parameters: Parameters)
     case allItemsRead
-    
-    static let baseURLString = "https://pbhcloud.site/nextcloud/apps/news/api/v1-2"
 
     var method: HTTPMethod {
         switch self {
@@ -103,11 +102,15 @@ enum Router: URLRequestConvertible {
     // MARK: URLRequestConvertible
     
     func asURLRequest() throws -> URLRequest {
-        let url = try Router.baseURLString.asURL()
+        let baseURLString = "\(UserDefaults.standard.string(forKey: "server") ?? "")/apps/news/api/v1-2"
+        let url = try baseURLString.asURL()
       
         var urlRequest = URLRequest(url: url.appendingPathComponent(path))
         urlRequest.httpMethod = method.rawValue
-        if let authorizationHeader = Request.authorizationHeader(user: "peter", password: "sb269970") {
+        let keychain = Keychain(service: "com.peterandlinda.CloudNews")
+        let username = keychain["username"] ?? ""
+        let password = keychain["password"] ?? ""
+        if let authorizationHeader = Request.authorizationHeader(user: username, password: password) {
             urlRequest.setValue(authorizationHeader.value, forHTTPHeaderField: authorizationHeader.key)
         }
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")

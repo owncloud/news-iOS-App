@@ -49,6 +49,7 @@
 		D05795A921A9D139009F618A /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A821A9D138009F618A /* KeychainAccess.framework */; };
 		D05795AB21A9D141009F618A /* KeychainAccess.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A821A9D138009F618A /* KeychainAccess.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05795AE21AA2CD9009F618A /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795AC21AA2CD9009F618A /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D05795B021AA66F4009F618A /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05795AF21AA66F4009F618A /* Status.swift */; };
 		D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */; };
 		D05A6FB4213B9508006D3AB8 /* ArticleCellNoThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */; };
 		D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */; };
@@ -201,6 +202,7 @@
 		D05795A621A90941009F618A /* PrefsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsViewController.swift; sourceTree = "<group>"; };
 		D05795A821A9D138009F618A /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/Mac/KeychainAccess.framework; sourceTree = "<group>"; };
 		D05795AC21AA2CD9009F618A /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/Mac/SwiftSoup.framework; sourceTree = "<group>"; };
+		D05795AF21AA66F4009F618A /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseArticleCell.swift; sourceTree = "<group>"; };
 		D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellNoThumbnail.swift; sourceTree = "<group>"; };
 		D05A6FB3213B9508006D3AB8 /* NoThumbnailArticleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoThumbnailArticleCell.xib; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 				D0171ADB21852D9700D2D34B /* Folders.swift */,
 				D0171ADF21852D9700D2D34B /* Item.swift */,
 				D0171AD821852D9600D2D34B /* Items.swift */,
+				D05795AF21AA66F4009F618A /* Status.swift */,
 				D0171ADD21852D9700D2D34B /* User.swift */,
 			);
 			path = Models;
@@ -928,6 +931,7 @@
 				D0171AE721852D9800D2D34B /* ResponseSerializer.swift in Sources */,
 				D0171AE921852D9800D2D34B /* Folder.swift in Sources */,
 				D0171AE521852D9800D2D34B /* Avatar.swift in Sources */,
+				D05795B021AA66F4009F618A /* Status.swift in Sources */,
 				D0171AE321852D9800D2D34B /* Feeds.swift in Sources */,
 				D0171AE421852D9800D2D34B /* Folders.swift in Sources */,
 				D05C4A102197EDCA008BA66F /* ArticleCellView.swift in Sources */,
