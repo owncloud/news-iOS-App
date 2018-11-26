@@ -218,7 +218,7 @@ class NewsManager {
     func updateBadge() {
         let unreadCount = CDItem.unreadCount()
         if unreadCount > 0 {
-            NSApp.dockTile.badgeLabel = "\(CDItem.unreadCount())"
+            NSApp.dockTile.badgeLabel = "\(unreadCount)"
         } else {
             NSApp.dockTile.badgeLabel = nil
         }
