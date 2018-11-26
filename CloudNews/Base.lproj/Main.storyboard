@@ -1086,7 +1086,7 @@
                                                             <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                             <tableColumns>
-                                                                <tableColumn width="334" minWidth="100" maxWidth="700" id="QJQ-yt-xQ3">
+                                                                <tableColumn editable="NO" width="334" minWidth="100" maxWidth="700" id="QJQ-yt-xQ3">
                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Item">
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1223,7 +1223,7 @@
                                                     </subviews>
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
-                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1N7-PF-Zyk">
+                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.16666666666666666" horizontal="YES" id="1N7-PF-Zyk">
                                                     <rect key="frame" x="0.0" y="463" width="331" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
@@ -1278,13 +1278,30 @@
                                                             <action selector="onSync:" target="XfG-lQ-9wD" id="kGA-pV-D5z"/>
                                                         </connections>
                                                     </button>
+                                                    <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HRz-bW-hNR">
+                                                        <rect key="frame" x="229.5" y="8" width="104" height="23"/>
+                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="nk8-Im-b1A">
+                                                            <font key="font" metaFont="system"/>
+                                                            <segments>
+                                                                <segment label="Summary" width="32"/>
+                                                                <segment label="Readable" width="32" selected="YES" tag="1"/>
+                                                                <segment label="Web" width="32"/>
+                                                            </segments>
+                                                        </segmentedCell>
+                                                        <connections>
+                                                            <action selector="onArticleView:" target="XfG-lQ-9wD" id="Ad4-XY-lhd"/>
+                                                            <binding destination="Hy0-1g-VDa" name="selectedIndex" keyPath="values.articleView" id="LSd-Wi-5CC"/>
+                                                        </connections>
+                                                    </segmentedControl>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="GcC-rx-ETz" firstAttribute="centerY" secondItem="hBZ-Jx-h7L" secondAttribute="centerY" id="AFn-Ed-JYD"/>
                                                     <constraint firstItem="gV3-xP-BfO" firstAttribute="leading" secondItem="GcC-rx-ETz" secondAttribute="trailing" constant="10" id="FuI-uP-tyS"/>
+                                                    <constraint firstAttribute="trailing" secondItem="HRz-bW-hNR" secondAttribute="trailing" constant="15" id="LpL-eK-cKZ"/>
                                                     <constraint firstItem="GcC-rx-ETz" firstAttribute="leading" secondItem="hBZ-Jx-h7L" secondAttribute="leading" constant="10" id="Y3n-dA-5KO"/>
                                                     <constraint firstItem="gV3-xP-BfO" firstAttribute="centerY" secondItem="hBZ-Jx-h7L" secondAttribute="centerY" id="bT7-bu-j1w"/>
                                                     <constraint firstAttribute="height" constant="40" id="hr8-UK-dEQ"/>
+                                                    <constraint firstItem="HRz-bW-hNR" firstAttribute="centerY" secondItem="hBZ-Jx-h7L" secondAttribute="centerY" id="uF7-uW-WTF"/>
                                                 </constraints>
                                             </customView>
                                             <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tN8-xX-rOj">
@@ -1321,8 +1338,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="articleSegmentedControl" destination="HRz-bW-hNR" id="9fu-TW-55N"/>
                         <outlet property="centerTopView" destination="zO6-jo-ybz" id="W5b-sj-1C3"/>
                         <outlet property="feedOutlineView" destination="Phx-fX-rhh" id="dFB-5n-sKn"/>
+                        <outlet property="itemsArrayController" destination="gn2-OO-znS" id="2Fc-Ky-QFW"/>
                         <outlet property="itemsTableView" destination="MzK-VK-t4c" id="We9-mN-BKg"/>
                         <outlet property="leftTopView" destination="70o-WG-6WI" id="AEy-0C-4RR"/>
                         <outlet property="rightTopView" destination="hBZ-Jx-h7L" id="HRx-80-ekf"/>
@@ -1331,6 +1350,8 @@
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="Hy0-1g-VDa"/>
+                <arrayController mode="entity" entityName="CDItem" editable="NO" automaticallyRearrangesObjects="YES" id="gn2-OO-znS"/>
             </objects>
             <point key="canvasLocation" x="21.5" y="791.5"/>
         </scene>

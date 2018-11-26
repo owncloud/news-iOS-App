@@ -19,7 +19,10 @@ class ViewController: NSViewController {
     @IBOutlet var feedOutlineView: NSOutlineView!
     @IBOutlet var itemsTableView: NSTableView!
     @IBOutlet var webView: WKWebView!
+    @IBOutlet var articleSegmentedControl: NSSegmentedControl!
     
+    @IBOutlet var itemsArrayController: NSArrayController!
+
     var toplevelArray = [Any]()
     
     override func viewDidLoad() {
@@ -28,6 +31,13 @@ class ViewController: NSViewController {
         self.centerTopView.wantsLayer = true
         self.rightTopView.wantsLayer = true
         self.splitView.delegate = self
+        
+        self.itemsArrayController.managedObjectContext = NewsData.mainThreadContext
+        self.itemsArrayController.entityName = "CDItem"
+        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
+        self.itemsArrayController.sortDescriptors = [sortDescription]
+        self.itemsArrayController.automaticallyRearrangesObjects = true
+        
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
             self?.rebuildFoldersAndFeedsList()
@@ -72,16 +82,6 @@ class ViewController: NSViewController {
     
     @IBAction func onShare(_ sender: Any) {
     }
-    
-    let itemsArrayController: NSArrayController = {
-        let result = NSArrayController()
-        result.managedObjectContext = NewsData.mainThreadContext
-        result.entityName = "CDItem"
-        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
-        result.sortDescriptors = [sortDescription]
-        result.automaticallyRearrangesObjects = true
-        return result
-    }()
     
     func rebuildFoldersAndFeedsList() {
         self.toplevelArray.removeAll()
@@ -171,6 +171,11 @@ class ViewController: NSViewController {
         self.feedOutlineView.reloadData()
         self.itemsTableView.reloadData()
         NewsManager.shared.updateBadge()
+    }
+    @IBAction func onArticleView(_ sender: Any) {
+//        let selectedIndex = self.itemsTableView.selectedRow
+//        self.itemsTableView.selectRowIndexes(IndexSet(integer: selectedIndex), byExtendingSelection: false)
+//        self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
     
 }
@@ -289,21 +294,36 @@ extension ViewController: NSTableViewDelegate {
             return
         }
         
-        let selectedIndex = tableView.selectedRow
+        let selectedIndex = self.itemsTableView.selectedRow
         if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
             let item = items[selectedIndex]
             self.markItemsRead(items: [item])
-            if let itemUrl = item.url {
-                let url = URL(string: itemUrl)
-                
-                if let url = url {
-                    self.webView.load(URLRequest(url: url))
+            switch self.articleSegmentedControl.selectedSegment {
+            case 0:
+                do {
+                    if let summary = item.body {
+                        if let url = ArticleHelper.writeAndLoadHtml(html: summary, item: item as ItemProtocol) {
+                            let containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                            self.webView.loadFileURL(url, allowingReadAccessTo: containerURL)
+                        }
+                    }
+                } catch { }
+            case 1:
+                break
+            case 2:
+                if let itemUrl = item.url {
+                    let url = URL(string: itemUrl)
+                    if let url = url {
+                        self.webView.load(URLRequest(url: url))
+                    }
                 }
+            default:
+                break
             }
         }
         self.feedOutlineView.reloadData()
     }
-
+    
 }
 
 extension ViewController: NSSplitViewDelegate {
