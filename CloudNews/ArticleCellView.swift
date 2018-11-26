@@ -18,11 +18,14 @@ class ArticleCellView: NSTableCellView {
     @IBOutlet var faviconImage: NSImageView!
     @IBOutlet var summaryLabel: NSTextField!
     @IBOutlet var starImage: NSImageView!
-    
+
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         
-        // Drawing code here.
+        self.thumbnailImage.wantsLayer = true
+        self.thumbnailImage.canDrawSubviewsIntoLayer = true
+        self.thumbnailImage.layer?.cornerRadius = 14.0
+        self.thumbnailImage.layer?.masksToBounds = true
     }
     
     var item: ItemProtocol? {
@@ -92,7 +95,7 @@ class ArticleCellView: NSTableCellView {
                     self.summaryLabel.stringValue = self.plainSummary(raw: summary)
                     
                     if let imageURL = self.imageURL(summary: summary) {
-                        let processor = ResizingImageProcessor(referenceSize: CGSize(width: 72, height: 72), mode: .aspectFill) >> RoundCornerImageProcessor(cornerRadius: 20)
+                        let processor = ResizingImageProcessor(referenceSize: CGSize(width: 72, height: 72), mode: .aspectFill)
                         self.thumbnailImage.kf.setImage(with: imageURL, placeholder: nil, options: [.processor(processor)])
                     }
                     
