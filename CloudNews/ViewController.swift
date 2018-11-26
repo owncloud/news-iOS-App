@@ -167,7 +167,7 @@ class ViewController: NSViewController {
                 }
             }
         }
-        CDItem.update(items: items)
+        CDItem.update(items: items, completion: nil)
         self.feedOutlineView.reloadData()
         self.itemsTableView.reloadData()
         NewsManager.shared.updateBadge()

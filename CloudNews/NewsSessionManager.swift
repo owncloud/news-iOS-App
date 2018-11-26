@@ -10,6 +10,7 @@ import Cocoa
 import Alamofire
 
 typealias SyncCompletionBlock = () -> Void
+typealias SyncCompletionBlockNewItems = (_ newItems: [ItemProtocol]) -> Void
 
 class NewsSessionManager: Alamofire.SessionManager {
 
@@ -88,7 +89,7 @@ class NewsManager {
         NewsSessionManager.shared.request(unreadItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
 //            debugPrint(response)
             if let items = response.value?.items {
-                CDItem.update(items: items)
+                CDItem.update(items: items, completion: nil)
                 self.updateBadge()
             }
         })
@@ -102,7 +103,7 @@ class NewsManager {
         NewsSessionManager.shared.request(starredItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
 //            debugPrint(response)
             if let items = response.value?.items {
-                CDItem.update(items: items)
+                CDItem.update(items: items, completion: nil)
                 self.updateBadge()
             }
         })
@@ -197,7 +198,20 @@ class NewsManager {
             NewsSessionManager.shared.request(updatedItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
                 //            debugPrint(response)
                 if let items = response.value?.items {
-                    CDItem.update(items: items)
+                    CDItem.update(items: items, completion: { (newItems) in
+                        if newItems.count > 0 {
+                            let notification = NSUserNotification()
+                            notification.identifier = NSUUID().uuidString
+                            notification.title = "CloudNews"
+                            notification.subtitle = "Updates available"
+                            notification.informativeText = "\(newItems.count) new articles"
+                            notification.soundName = NSUserNotificationDefaultSoundName
+                            //                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
+                            // Manually display the notification
+                            let notificationCenter = NSUserNotificationCenter.default
+                            notificationCenter.deliver(notification)
+                        }
+                    })
                 }
                 completion()
             })

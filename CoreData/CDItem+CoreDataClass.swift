@@ -70,11 +70,12 @@ public class CDItem: NSManagedObject, ItemProtocol {
         return itemList
     }
     
-    static func update(items: [ItemProtocol]) {
+    static func update(items: [ItemProtocol], completion: SyncCompletionBlockNewItems?) {
         NewsData.mainThreadContext.performAndWait {
             let request: NSFetchRequest<CDItem> = CDItem.fetchRequest()
             do {
                 var newItemsCount = 0
+                var newItems = [ItemProtocol]()
                 for item in items {
                     let predicate = NSPredicate(format: "id == %d", item.id)
                     request.predicate = predicate
@@ -112,21 +113,13 @@ public class CDItem: NSManagedObject, ItemProtocol {
                         newRecord.title = item.title
                         newRecord.unread = item.unread
                         newRecord.url = item.url
+                        newItems.append(newRecord)
                         newItemsCount += 1
                     }
                 }
                 try NewsData.mainThreadContext.save()
-                if newItemsCount > 0 {
-                    let notification = NSUserNotification()
-                    notification.identifier = NSUUID().uuidString
-                    notification.title = "CloudNews"
-                    notification.subtitle = "Updates available"
-                    notification.informativeText = "\(newItemsCount) new articles"
-                    notification.soundName = NSUserNotificationDefaultSoundName
-                    //                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
-                    // Manually display the notification
-                    let notificationCenter = NSUserNotificationCenter.default
-                    notificationCenter.deliver(notification)
+                if let completion = completion, newItemsCount > 0 {
+                    completion(newItems)
                 }
             } catch let error as NSError {
                 print("Could not fetch \(error), \(error.userInfo)")
