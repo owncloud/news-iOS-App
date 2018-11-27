@@ -292,7 +292,7 @@ extension ViewController: NSTableViewDelegate {
     }
     
     func tableViewSelectionDidChange(_ notification: Notification) {
-        guard let tableView = notification.object as? NSTableView else {
+        guard let _ = notification.object as? NSTableView else {
             return
         }
         
@@ -302,14 +302,14 @@ extension ViewController: NSTableViewDelegate {
             self.markItemsRead(items: [item])
             switch self.articleSegmentedControl.selectedSegment {
             case 0:
-                do {
-                    if let summary = item.body {
-                        if let url = ArticleHelper.writeAndLoadHtml(html: summary, item: item as ItemProtocol) {
-                            let containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                if let summary = item.body {
+                    let feed = CDFeed.feed(id: item.feedId)
+                    if let url = ArticleHelper.writeAndLoadHtml(html: summary, item: item as ItemProtocol, feedTitle: feed?.title) {
+                        if let containerURL = ArticleHelper.documentsFolderURL {
                             self.webView.loadFileURL(url, allowingReadAccessTo: containerURL)
                         }
                     }
-                } catch { }
+                }
             case 1:
                 break
             case 2:

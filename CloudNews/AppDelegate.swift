@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        
+        self.writeCss()
         NewsManager.shared.updateBadge()
     }
 
@@ -78,4 +78,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.prefsWindowController.showWindow(nil)
     }
 
+    private func writeCss() {
+        if let templateURL = Bundle.main.url(forResource: "rss", withExtension: "css") {
+            do {
+                let css = try String(contentsOf: templateURL, encoding: .utf8)
+                if let saveUrl = ArticleHelper.documentsFolderURL?
+                    .appendingPathComponent("rss")
+                    .appendingPathExtension("css") {
+                    try css.write(to: saveUrl, atomically: true, encoding: .utf8)
+                }
+            } catch {
+                print("Error copying css from bundle")
+            }
+        }
+    }
+    
 }

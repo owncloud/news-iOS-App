@@ -16,7 +16,14 @@ class ArticleHelper {
         }
         return nil
     }
-    
+
+    static var documentsFolderURL: URL? {
+        do {
+            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        } catch { }
+            return nil
+    }
+
     static func writeAndLoadHtml(html: String, item: ItemProtocol, feedTitle: String? = nil) -> URL? {
 //        guard let item = self.item else {
 //            return
@@ -33,7 +40,7 @@ class ArticleHelper {
             dateFormat.timeStyle = .short;
             dateText += dateFormat.string(from: date)
             
-//            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleStyle$", with: self.updateCss())
+            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleStyle$", with: self.updateCss())
             
             if let feedTitle = feedTitle {
                 htmlTemplate = htmlTemplate.replacingOccurrences(of: "$FeedTitle$", with: feedTitle)
@@ -43,9 +50,9 @@ class ArticleHelper {
             if let title = item.title {
                 htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleTitle$", with: title)
             }
-            if let url = item.url {
-                htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleLink$", with: url)
-            }
+//            if let url = item.url {
+                htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleLink$", with: "")
+//            }
             var author = ""
             if let itemAuthor = item.author, itemAuthor.count > 0 {
                 author = "By \(itemAuthor)"
@@ -55,43 +62,43 @@ class ArticleHelper {
             htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleSummary$", with: summary ?? html)
             
             do {
-                let containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                var saveUrl = containerURL.appendingPathComponent("summary")
-                saveUrl = saveUrl.appendingPathExtension("html")
-                try htmlTemplate.write(to: saveUrl, atomically: true, encoding: .utf8)
-//                self.webView?.loadFileURL(saveUrl, allowingReadAccessTo: containerURL)
-                result = saveUrl
+                if let saveUrl = ArticleHelper.documentsFolderURL?
+                    .appendingPathComponent("summary")
+                    .appendingPathExtension("html") {
+                    try htmlTemplate.write(to: saveUrl, atomically: true, encoding: .utf8)
+                    result = saveUrl
+                }
             } catch {
                 //
             }
         }
         return result
     }
-/*
+    
     static func updateCss() -> String {
-        let fontSize = UserDefaults.standard.integer(forKey: "FontSize")
+        let fontSize = 12 // UserDefaults.standard.integer(forKey: "FontSize")
         
-        let screenSize = UIScreen.main.nativeBounds.size
-        let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
-        let currentWidth = Int((screenSize.width / UIScreen.main.scale) * CGFloat((Double(margin) / 100.0)))
+//        let screenSize = UIScreen.main.nativeBounds.size
+//        let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
+        let currentWidth = 90 // Int((screenSize.width / UIScreen.main.scale) * CGFloat((Double(margin) / 100.0)))
         
-        let marginLandscape = UserDefaults.standard.integer(forKey: "MarginLandscape")
-        let currentWidthLandscape = (screenSize.height / UIScreen.main.scale) * CGFloat((Double(marginLandscape) / 100.0))
+//        let marginLandscape = UserDefaults.standard.integer(forKey: "MarginLandscape")
+//        let currentWidthLandscape = (screenSize.height / UIScreen.main.scale) * CGFloat((Double(marginLandscape) / 100.0))
         
-        let lineHeight = UserDefaults.standard.double(forKey: "LineHeight")
+        let lineHeight = 1.5 // UserDefaults.standard.double(forKey: "LineHeight")
         
         return ":root {" +
-            "--bg-color: \(PHThemeManager.shared()?.backgroundHex ?? "#FFFFFF");" +
-            "--text-color: \(PHThemeManager.shared()?.textHex ?? "#000000");" +
-            "--font-size: \(fontSize)px;" +
-            "--body-width-portrait: \(currentWidth)px;" +
-            "--body-width-landscape: \(currentWidthLandscape)px;" +
+            "--bg-color: #FFFFFF);" +
+            "--text-color: #000000);" +
+            "--font-size: \(fontSize)pt;" +
+            "--body-width-portrait: \(currentWidth)%;" +
+            "--body-width-landscape: \(currentWidth)%;" +
             "--line-height: \(lineHeight)em;" +
-            "--link-color: \(PHThemeManager.shared()?.linkHex ?? "#1F31B9");" +
-            "--footer-link: \(PHThemeManager.shared()?.footerLinkHex ?? "#1F31B9");" +
+            "--link-color: #1F31B9;" +
+            "--footer-link: #F0F2F0;" +
         "}"
     }
-   */
+
     static func fileUrlInDocumentsDirectory(_ fileName: String, fileExtension: String) -> URL
     {
         do {
