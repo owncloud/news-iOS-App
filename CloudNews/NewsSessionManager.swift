@@ -199,18 +199,32 @@ class NewsManager {
                 //            debugPrint(response)
                 if let items = response.value?.items {
                     CDItem.update(items: items, completion: { (newItems) in
-                        if newItems.count > 0 {
+                        for newItem in newItems {
+                            let feed = CDFeed.feed(id: newItem.feedId)
                             let notification = NSUserNotification()
                             notification.identifier = NSUUID().uuidString
                             notification.title = "CloudNews"
-                            notification.subtitle = "Updates available"
-                            notification.informativeText = "\(newItems.count) new articles"
+                            notification.subtitle = feed?.title ?? "New article"
+                            notification.informativeText = newItem.title ?? ""
                             notification.soundName = NSUserNotificationDefaultSoundName
                             //                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
                             // Manually display the notification
                             let notificationCenter = NSUserNotificationCenter.default
                             notificationCenter.deliver(notification)
                         }
+
+//                        if newItems.count > 0 {
+//                            let notification = NSUserNotification()
+//                            notification.identifier = NSUUID().uuidString
+//                            notification.title = "CloudNews"
+//                            notification.subtitle = "Updates available"
+//                            notification.informativeText = "\(newItems.count) new articles"
+//                            notification.soundName = NSUserNotificationDefaultSoundName
+//                            //                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
+//                            // Manually display the notification
+//                            let notificationCenter = NSUserNotificationCenter.default
+//                            notificationCenter.deliver(notification)
+//                        }
                     })
                 }
                 completion()
