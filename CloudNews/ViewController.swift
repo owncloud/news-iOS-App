@@ -169,13 +169,13 @@ class ViewController: NSViewController {
         }
         CDItem.update(items: items, completion: nil)
         self.feedOutlineView.reloadData()
-        self.itemsTableView.reloadData()
+        self.itemsTableView.reloadDataKeepingSelection()
         NewsManager.shared.updateBadge()
     }
     @IBAction func onArticleView(_ sender: Any) {
 //        let selectedIndex = self.itemsTableView.selectedRow
 //        self.itemsTableView.selectRowIndexes(IndexSet(integer: selectedIndex), byExtendingSelection: false)
-//        self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
+        self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
     
 }
@@ -361,4 +361,14 @@ extension ViewController: NSSplitViewDelegate {
         return true
     }
     
+}
+
+extension NSTableView {
+
+    func reloadDataKeepingSelection() {
+        let selectedRowIndexes = self.selectedRowIndexes
+        self.reloadData()
+        self.selectRowIndexes(selectedRowIndexes, byExtendingSelection: false)
+    }
+
 }
