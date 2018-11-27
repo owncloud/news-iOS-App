@@ -1283,8 +1283,8 @@
                                                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="nk8-Im-b1A">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
-                                                                <segment label="Summary" width="32"/>
-                                                                <segment label="Web" width="32" selected="YES" tag="1"/>
+                                                                <segment image="summary" width="32"/>
+                                                                <segment image="web" width="32" selected="YES" tag="1"/>
                                                             </segments>
                                                         </segmentedCell>
                                                         <connections>
@@ -1361,7 +1361,9 @@
         <image name="NSShareTemplate" width="11" height="16"/>
         <image name="mark_mac" width="42" height="42"/>
         <image name="read" width="69.677421569824219" height="69.677421569824219"/>
+        <image name="summary" width="42" height="42"/>
         <image name="unread" width="69.677421569824219" height="69.677421569824219"/>
         <image name="unstarred_mac" width="42" height="42"/>
+        <image name="web" width="42" height="42"/>
     </resources>
 </document>
