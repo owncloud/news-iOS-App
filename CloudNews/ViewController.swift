@@ -255,6 +255,7 @@ extension ViewController: NSOutlineViewDelegate {
             self.itemsArrayController.filterPredicate = predicate
         }
         self.itemsTableView.reloadData()
+        self.itemsTableView.scrollRowToVisible(0)
     }
 
 }
