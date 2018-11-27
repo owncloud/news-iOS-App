@@ -297,33 +297,33 @@ extension ViewController: NSTableViewDelegate {
         }
         
         let selectedIndex = self.itemsTableView.selectedRow
-        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            let item = items[selectedIndex]
-            self.markItemsRead(items: [item])
-            switch self.articleSegmentedControl.selectedSegment {
-            case 0:
-                if let summary = item.body {
-                    let feed = CDFeed.feed(id: item.feedId)
-                    if let url = ArticleHelper.writeAndLoadHtml(html: summary, item: item as ItemProtocol, feedTitle: feed?.title) {
-                        if let containerURL = ArticleHelper.documentsFolderURL {
-                            self.webView.loadFileURL(url, allowingReadAccessTo: containerURL)
+        if selectedIndex > -1 {
+            if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+                let item = items[selectedIndex]
+                self.markItemsRead(items: [item])
+                switch self.articleSegmentedControl.selectedSegment {
+                case 0:
+                    if let summary = item.body {
+                        let feed = CDFeed.feed(id: item.feedId)
+                        if let url = ArticleHelper.writeAndLoadHtml(html: summary, item: item as ItemProtocol, feedTitle: feed?.title) {
+                            if let containerURL = ArticleHelper.documentsFolderURL {
+                                self.webView.loadFileURL(url, allowingReadAccessTo: containerURL)
+                            }
                         }
                     }
-                }
-            case 1:
-                break
-            case 2:
-                if let itemUrl = item.url {
-                    let url = URL(string: itemUrl)
-                    if let url = url {
-                        self.webView.load(URLRequest(url: url))
+                case 1:
+                    if let itemUrl = item.url {
+                        let url = URL(string: itemUrl)
+                        if let url = url {
+                            self.webView.load(URLRequest(url: url))
+                        }
                     }
+                default:
+                    break
                 }
-            default:
-                break
             }
+            self.feedOutlineView.reloadData()
         }
-        self.feedOutlineView.reloadData()
     }
     
 }
