@@ -151,8 +151,11 @@ class ViewController: NSViewController {
     }
 
     func markItemsRead(items: [CDItem]) {
-        for item in items {
-            if item.unread == true {
+        let unreadItems = items.filter { (item) -> Bool in
+            return item.unread == true
+        }
+        if unreadItems.count > 0 {
+            for item in unreadItems {
                 CDRead.update(items: [item.id])
                 item.unread = false
                 if var feed = CDFeed.feed(id: item.feedId) {
@@ -166,15 +169,14 @@ class ViewController: NSViewController {
                     }
                 }
             }
+            CDItem.update(items: items, completion: nil)
+            self.feedOutlineView.reloadData()
+            self.itemsTableView.reloadDataKeepingSelection()
+            NewsManager.shared.updateBadge()
         }
-        CDItem.update(items: items, completion: nil)
-        self.feedOutlineView.reloadData()
-        self.itemsTableView.reloadDataKeepingSelection()
-        NewsManager.shared.updateBadge()
     }
+    
     @IBAction func onArticleView(_ sender: Any) {
-//        let selectedIndex = self.itemsTableView.selectedRow
-//        self.itemsTableView.selectRowIndexes(IndexSet(integer: selectedIndex), byExtendingSelection: false)
         self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
     
