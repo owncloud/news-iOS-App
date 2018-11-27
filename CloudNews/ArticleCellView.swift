@@ -67,9 +67,11 @@ class ArticleCellView: NSTableCellView {
                 }
                 
                 if let feed = CDFeed.feed(id: item.feedId) {
+                    self.faviconImage.image = nil
                     if let faviconLink = feed.faviconLink, let url = URL(string: faviconLink) {
-                        let image = NSImage(byReferencing: url)
-                        self.faviconImage.image = image
+                        self.faviconImage.kf.setImage(with: url, placeholder: NSImage(named: "All Articles"))
+                    } else {
+                        self.faviconImage.image = NSImage(named: "All Articles")
                     }
                     if let title = feed.title {
                         if let author = item.author, author.count > 0 {

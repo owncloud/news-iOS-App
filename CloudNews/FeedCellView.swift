@@ -10,7 +10,7 @@ import Cocoa
 
 class FeedCellView: NSTableCellView {
     
-    @IBOutlet var favIconImage: NSImageView!
+    @IBOutlet var faviconImage: NSImageView!
     @IBOutlet var nameLabel: NSTextField!
     @IBOutlet var unreadCountButton: NSButton!
     
@@ -18,7 +18,7 @@ class FeedCellView: NSTableCellView {
         self.nameLabel.stringValue = name
         if starred {
             let image = NSImage(named: "Starred Articles")
-            self.favIconImage.image = image
+            self.faviconImage.image = image
             let unreadCount = CDItem.starredItems()?.count
             if let unreadCount = unreadCount {
                 if unreadCount > 0 {
@@ -31,7 +31,7 @@ class FeedCellView: NSTableCellView {
             }            
         } else {
             let image = NSImage(named: "All Articles")
-            self.favIconImage.image = image
+            self.faviconImage.image = image
             let unreadCount = CDItem.unreadCount()
             
             if unreadCount > 0 {
@@ -49,7 +49,7 @@ class FeedCellView: NSTableCellView {
             if let folder = self.folder {
                 self.nameLabel.stringValue = folder.name ?? ""
                 let image = NSImage(named: "folder")
-                self.favIconImage.image = image
+                self.faviconImage.image = image
                 let folderFeeds = CDFeed.inFolder(folder: folder.id)
                 let unreadCount = folderFeeds?.map { $0.unreadCount }.reduce(0) { $0 + $1 }
                 
@@ -71,8 +71,9 @@ class FeedCellView: NSTableCellView {
             if let feed = self.feed {
                 self.nameLabel.stringValue = feed.title ?? ""
                 if let faviconLink = feed.faviconLink, let url = URL(string: faviconLink) {
-                    let image = NSImage(byReferencing: url)
-                    self.favIconImage.image = image
+                    self.faviconImage.kf.setImage(with: url, placeholder: NSImage(named: "All Articles"))
+                } else {
+                    self.faviconImage.image = NSImage(named: "All Articles")
                 }
                 let unreadCount = feed.unreadCount
                 if unreadCount > 0 {
