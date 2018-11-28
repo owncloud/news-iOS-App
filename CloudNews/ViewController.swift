@@ -154,11 +154,18 @@ class ViewController: NSViewController {
         let unreadItems = items.filter { (item) -> Bool in
             return item.unread == true
         }
+        var selectedIndexes = [Int]()
+        if let allItems = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            let myselectedItems = allItems.filter({ (item) -> Bool in
+                unreadItems.firstIndex(of: item) != nil
+            })
+            selectedIndexes = myselectedItems.map({ allItems.index(of: $0) }).compactMap({ $0 })
+        }
+        
         if unreadItems.count > 0 {
             let unreadIds = unreadItems.map { $0.id }
             CDRead.update(items: unreadIds)
             for item in unreadItems {
-//                item.unread = false
                 if var feed = CDFeed.feed(id: item.feedId) {
                     let feedUnreadCount = feed.unreadCount - 1
                     feed.unreadCount = feedUnreadCount
@@ -172,7 +179,8 @@ class ViewController: NSViewController {
             }
             CDItem.markRead(itemIds: unreadIds, completion: {
                 self.feedOutlineView.reloadData()
-                self.itemsTableView.reloadDataKeepingSelection()
+                self.itemsTableView.reloadData(forRowIndexes: IndexSet(selectedIndexes), columnIndexes: [0])
+//                self.itemsTableView.reloadDataKeepingSelection()
                 NewsManager.shared.updateBadge()
             })
         }
