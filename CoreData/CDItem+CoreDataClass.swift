@@ -70,6 +70,27 @@ public class CDItem: NSManagedObject, ItemProtocol {
         return itemList
     }
     
+    static func markRead(itemIds: [Int32], completion: SyncCompletionBlock) {
+        NewsData.mainThreadContext.performAndWait {
+            let batchRequest = NSBatchUpdateRequest(entityName: self.entityName)
+            batchRequest.propertiesToUpdate = ["unread": false]
+            batchRequest.resultType = .updatedObjectIDsResultType
+            let predicate = NSPredicate(format:"id IN %@", itemIds)
+            batchRequest.predicate = predicate
+            
+            do {
+                let objectIDs = try NewsData.mainThreadContext.execute(batchRequest) as! NSBatchUpdateResult
+                let objects = objectIDs.result as! [NSManagedObjectID]
+                
+                objects.forEach({ objID in
+                    let managedObject = NewsData.mainThreadContext.object(with: objID)
+                    NewsData.mainThreadContext.refresh(managedObject, mergeChanges: false)
+                })
+            } catch { }
+            completion()
+        }
+    }
+    
     static func update(items: [ItemProtocol], completion: SyncCompletionBlockNewItems?) {
         NewsData.mainThreadContext.performAndWait {
             let request: NSFetchRequest<CDItem> = CDItem.fetchRequest()

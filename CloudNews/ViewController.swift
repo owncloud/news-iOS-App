@@ -155,9 +155,10 @@ class ViewController: NSViewController {
             return item.unread == true
         }
         if unreadItems.count > 0 {
+            let unreadIds = unreadItems.map { $0.id }
+            CDRead.update(items: unreadIds)
             for item in unreadItems {
-                CDRead.update(items: [item.id])
-                item.unread = false
+//                item.unread = false
                 if var feed = CDFeed.feed(id: item.feedId) {
                     let feedUnreadCount = feed.unreadCount - 1
                     feed.unreadCount = feedUnreadCount
@@ -169,10 +170,11 @@ class ViewController: NSViewController {
                     }
                 }
             }
-            CDItem.update(items: items, completion: nil)
-            self.feedOutlineView.reloadData()
-            self.itemsTableView.reloadDataKeepingSelection()
-            NewsManager.shared.updateBadge()
+            CDItem.markRead(itemIds: unreadIds, completion: {
+                self.feedOutlineView.reloadData()
+                self.itemsTableView.reloadDataKeepingSelection()
+                NewsManager.shared.updateBadge()
+            })
         }
     }
     
