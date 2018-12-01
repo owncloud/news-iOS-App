@@ -235,6 +235,7 @@ class NewsManager {
             folders {
                 feeds {
                     items {
+                        self.updateBadge()
                         completion()
                     }
                 }
