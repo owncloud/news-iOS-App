@@ -171,6 +171,14 @@ class NewsManager {
                 //            debugPrint(response)
                 if let folders = response.value?.folders {
                     CDFolder.update(folders: folders)
+                    let ids = folders.map({ $0.id })
+                    if let knownFolders = CDFolder.all() {
+                        let knownIds = knownFolders.map({ $0.id })
+                        let deletedFolders = knownIds.filter({
+                            return !ids.contains($0)
+                        })
+                        CDFolder.delete(ids: deletedFolders, in: NewsData.mainThreadContext)
+                    }
                 }
                 completion()
             })
@@ -184,6 +192,21 @@ class NewsManager {
                 }
                 if let feeds = response.value?.feeds {
                     CDFeed.update(feeds: feeds)
+                    let ids = feeds.map({ $0.id })
+                    if let knownFeeds = CDFeed.all() {
+                        let knownIds = knownFeeds.map({ $0.id })
+                        let deletedFeeds = knownIds.filter({
+                            return !ids.contains($0)
+                        })
+                        CDFeed.delete(ids: deletedFeeds, in: NewsData.mainThreadContext)
+                        if let allItems = CDItem.all() {
+                            let deletedFeedItems = allItems.filter({
+                                return deletedFeeds.contains($0.feedId)
+                            })
+                            let deletedFeedItemIds = deletedFeedItems.map({ $0.id })
+                            CDItem.delete(ids: deletedFeedItemIds, in: NewsData.mainThreadContext)
+                        }
+                    }
                 }
                 completion()
             })
@@ -207,24 +230,9 @@ class NewsManager {
                             notification.subtitle = feed?.title ?? "New article"
                             notification.informativeText = newItem.title ?? ""
                             notification.soundName = NSUserNotificationDefaultSoundName
-                            //                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
-                            // Manually display the notification
                             let notificationCenter = NSUserNotificationCenter.default
                             notificationCenter.deliver(notification)
                         }
-
-//                        if newItems.count > 0 {
-//                            let notification = NSUserNotification()
-//                            notification.identifier = NSUUID().uuidString
-//                            notification.title = "CloudNews"
-//                            notification.subtitle = "Updates available"
-//                            notification.informativeText = "\(newItems.count) new articles"
-//                            notification.soundName = NSUserNotificationDefaultSoundName
-//                            //                notification.contentImage = NSImage(contentsOfURL: NSURL(string: "https://placehold.it/300")!)
-//                            // Manually display the notification
-//                            let notificationCenter = NSUserNotificationCenter.default
-//                            notificationCenter.deliver(notification)
-//                        }
                     })
                 }
                 completion()

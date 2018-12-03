@@ -173,4 +173,5 @@ public class CDItem: NSManagedObject, ItemProtocol {
         }
         return result
     }
+
 }

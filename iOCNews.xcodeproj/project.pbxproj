@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD816AA821B5CAE6001C41DF /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */; };
 		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
 		D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */; };
 		D0171AB8217BE6D600D2D34B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0171AB7217BE6D600D2D34B /* AppDelegate.swift */; };
@@ -145,6 +146,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSharingProvider.h; sourceTree = "<group>"; };
 		D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSharingProvider.m; sourceTree = "<group>"; };
 		D0171AAE2179596100D2D34B /* UICollectionView+ValidIndexPath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+ValidIndexPath.h"; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 			children = (
 				D05A7C382189497000961E29 /* NewsData.xcdatamodeld */,
 				D0171AD621818F3200D2D34B /* NewsData.swift */,
+				BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */,
 				D05A7C3C218AAE5E00961E29 /* CDFeeds+CoreDataClass.swift */,
 				D05A7C3E218AAE5E00961E29 /* CDFeed+CoreDataClass.swift */,
 				D05A7C42218AAE5E00961E29 /* CDFolder+CoreDataClass.swift */,
@@ -929,6 +932,7 @@
 				D0171AD1217C45DA00D2D34B /* NewsSessionManager.swift in Sources */,
 				D05A7C44218AAE5E00961E29 /* CDFeeds+CoreDataClass.swift in Sources */,
 				D05795A721A90941009F618A /* PrefsViewController.swift in Sources */,
+				BD816AA821B5CAE6001C41DF /* CoreDataExtension.swift in Sources */,
 				D0171AB8217BE6D600D2D34B /* AppDelegate.swift in Sources */,
 				D0171AE621852D9800D2D34B /* User.swift in Sources */,
 				D05C4A22219D29C6008BA66F /* CDStarred+CoreDataClass.swift in Sources */,
