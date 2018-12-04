@@ -43,12 +43,13 @@
 		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
 		D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCD1BABBEFC000FB342 /* libpcrecpp.a */; };
 		D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCF1BABBEFC000FB342 /* libpcreposix.a */; };
+		D053DE5221B6430B00E7F3DF /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; };
+		D053DE5321B6430B00E7F3DF /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05C4A11219A7E11008BA66F /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05795A321A7C378009F618A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A221A7C378009F618A /* Kingfisher.framework */; };
 		D05795A521A7C380009F618A /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A221A7C378009F618A /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05795A721A90941009F618A /* PrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05795A621A90941009F618A /* PrefsViewController.swift */; };
 		D05795A921A9D139009F618A /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A821A9D138009F618A /* KeychainAccess.framework */; };
 		D05795AB21A9D141009F618A /* KeychainAccess.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795A821A9D138009F618A /* KeychainAccess.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D05795AE21AA2CD9009F618A /* SwiftSoup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D05795AC21AA2CD9009F618A /* SwiftSoup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D05795B021AA66F4009F618A /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05795AF21AA66F4009F618A /* Status.swift */; };
 		D05795B121ABA64F009F618A /* rss.css in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC5F178104FC00C965F4 /* rss.css */; };
 		D05795B221ABA64F009F618A /* rss.html in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC60178104FC00C965F4 /* rss.html */; };
@@ -138,7 +139,7 @@
 				D0171ACE217BE98200D2D34B /* Alamofire.framework in Embed Frameworks */,
 				D05795A521A7C380009F618A /* Kingfisher.framework in Embed Frameworks */,
 				D05795AB21A9D141009F618A /* KeychainAccess.framework in Embed Frameworks */,
-				D05795AE21AA2CD9009F618A /* SwiftSoup.framework in Embed Frameworks */,
+				D053DE5321B6430B00E7F3DF /* SwiftSoup.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,7 +205,6 @@
 		D05795A221A7C378009F618A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/Mac/Kingfisher.framework; sourceTree = "<group>"; };
 		D05795A621A90941009F618A /* PrefsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsViewController.swift; sourceTree = "<group>"; };
 		D05795A821A9D138009F618A /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/Mac/KeychainAccess.framework; sourceTree = "<group>"; };
-		D05795AC21AA2CD9009F618A /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/Mac/SwiftSoup.framework; sourceTree = "<group>"; };
 		D05795AF21AA66F4009F618A /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		D05795B321ABA707009F618A /* ArticleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleHelper.swift; sourceTree = "<group>"; };
 		D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseArticleCell.swift; sourceTree = "<group>"; };
@@ -222,7 +222,7 @@
 		D05A7C42218AAE5E00961E29 /* CDFolder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDFolder+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D05A7C4E218AB7CC00961E29 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCellView.swift; sourceTree = "<group>"; };
-		D05C4A11219A7E11008BA66F /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftSoup.framework; sourceTree = "<group>"; };
+		D05C4A11219A7E11008BA66F /* SwiftSoup.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftSoup.framework; path = Carthage/Build/Mac/SwiftSoup.framework; sourceTree = "<group>"; };
 		D05C4A18219D29C6008BA66F /* CDRead+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDRead+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D05C4A1A219D29C6008BA66F /* CDStarred+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDStarred+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D05C4A1C219D29C6008BA66F /* CDUnread+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDUnread+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -327,6 +327,7 @@
 				D05795A921A9D139009F618A /* KeychainAccess.framework in Frameworks */,
 				D05795A321A7C378009F618A /* Kingfisher.framework in Frameworks */,
 				D0171ACD217BE98200D2D34B /* Alamofire.framework in Frameworks */,
+				D053DE5221B6430B00E7F3DF /* SwiftSoup.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,7 +483,6 @@
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
-				D05795AC21AA2CD9009F618A /* SwiftSoup.framework */,
 				D0F94F8120AA777200833A7F /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,

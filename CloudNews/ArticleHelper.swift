@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import SwiftSoup
 
 class ArticleHelper {
     
@@ -25,12 +26,22 @@ class ArticleHelper {
     }
 
     static func writeAndLoadHtml(html: String, item: ItemProtocol, feedTitle: String? = nil) -> URL? {
-//        guard let item = self.item else {
-//            return
-//        }
+
 //        let summary = SummaryHelper.replaceYTIframe(html)
+
         var result: URL? = nil
-        let summary = html
+        var summary = html
+
+        if let url = URL(string: item.url ?? "") {
+            let baseString = "\(url.scheme ?? "")://\(url.host ?? "")"
+//            if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
+//                if html.range(of: "iframe", options: .caseInsensitive) != nil {
+//                    html = SummaryHelper.createYoutubeItem(item)
+//                }
+//            }
+            summary = ArticleHelper.fixRelativeUrl(html: summary, baseUrlString: baseString)
+        }
+        
         if var htmlTemplate = ArticleHelper.template {
             var dateText = "";
             let dateNumber = TimeInterval(item.pubDate)
@@ -111,6 +122,34 @@ class ArticleHelper {
         }
     }
 
-    
+    private static func fixRelativeUrl(html: String, baseUrlString: String) -> String {
+        guard let doc: Document = try? SwiftSoup.parse(html), let baseURL = URL(string: baseUrlString) else {
+            return html
+        }
+        var result = html
+        do {
+            let srcs: Elements = try doc.select("img[src]")
+            let srcsStringArray: [String?] = srcs.array().map { try? $0.attr("src").description }
+            for src in srcsStringArray {
+                if let src = src, let newSrc = URL(string: src, relativeTo: baseURL) {
+                    let newSrcString = newSrc.absoluteString
+                    result = result.replacingOccurrences(of: src, with: newSrcString)
+                }
+            }
+
+            let hrefs: Elements = try doc.select("a[href]")
+            let hrefsStringArray: [String?] = hrefs.array().map { try? $0.attr("href").description }
+            for href in hrefsStringArray {
+                if let href = href, let newHref = URL(string: href, relativeTo: baseURL) {
+                    result = result.replacingOccurrences(of: href, with: newHref.absoluteString)
+                }
+            }
+        } catch Exception.Error(_, let message) {
+            print(message)
+        } catch {
+            print("error")
+        }
+        return result
+    }
 
 }
