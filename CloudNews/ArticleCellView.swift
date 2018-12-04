@@ -101,27 +101,33 @@ class ArticleCellView: NSTableCellView {
                         self.thumbnailImage.kf.setImage(with: imageURL, placeholder: nil, options: [.processor(processor)])
                     }
                     
-                    if item.unread == true {
-                        self.alphaValue = 1.0
-                    } else {
-                        self.alphaValue = 0.5
-                    }
-                    let localRead = CDRead.all()?.contains(item.id) ?? false
-                    if localRead == true {
-                        self.alphaValue = 0.5
-                    }
-                    
-                    if item.starred == true {
-                        self.starImage.image = NSImage(named: "star_icon")
-                    } else {
-                        self.starImage.image = nil
-                    }
+                    self.refresh()
                 }
             }
         }
     }
     
-    func plainSummary(raw: String) -> String {
+    func refresh() {
+        if let item = self.item {
+            if item.unread == true {
+                self.alphaValue = 1.0
+            } else {
+                self.alphaValue = 0.5
+            }
+            let localRead = CDRead.all()?.contains(item.id) ?? false
+            if localRead == true {
+                self.alphaValue = 0.5
+            }
+            
+            if item.starred == true {
+                self.starImage.image = NSImage(named: "star_icon")
+            } else {
+                self.starImage.image = nil
+            }
+        }
+    }
+    
+    private func plainSummary(raw: String) -> String {
         guard let doc: Document = try? SwiftSoup.parse(raw) else {
             return raw
         } // parse html
@@ -131,7 +137,7 @@ class ArticleCellView: NSTableCellView {
        return txt
     }
     
-    func imageURL(summary: String) -> URL? {
+    private func imageURL(summary: String) -> URL? {
         guard let doc: Document = try? SwiftSoup.parse(summary) else {
             return nil
         } // parse html

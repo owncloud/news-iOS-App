@@ -179,8 +179,11 @@ class ViewController: NSViewController {
             }
             CDItem.markRead(itemIds: unreadIds, completion: {
                 self.feedOutlineView.reloadData()
-                self.itemsTableView.reloadData(forRowIndexes: IndexSet(selectedIndexes), columnIndexes: [0])
-//                self.itemsTableView.reloadDataKeepingSelection()
+                for i in selectedIndexes {
+                    if let cellView = self.itemsTableView.view(atColumn: 0, row: i, makeIfNecessary: false) as? ArticleCellView {
+                        cellView.refresh()
+                    }
+                }
                 NewsManager.shared.updateBadge()
             })
         }
