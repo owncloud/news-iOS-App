@@ -387,6 +387,16 @@ extension ViewController: WKNavigationDelegate {
             return
         }
 
+        if let url = navigationAction.request.url, let scheme = url.scheme {
+            if (scheme == "file" || scheme.starts(with: "itms"))  {
+                if url.absoluteString.contains("itunes.apple.com") {
+                    NSWorkspace.shared.open(url)
+                    decisionHandler(.cancel);
+                    return;
+                }
+            }
+        }
+
         if navigationAction.navigationType != .other {
             if let url = navigationAction.request.url {
                 let showingSummary = (webView.url?.scheme == "file" || webView.url?.scheme == "about")
@@ -401,7 +411,7 @@ extension ViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        print("Starting navigation to \(navigation.description)")
+        print("Starting navigation to \(navigation.debugDescription)")
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
