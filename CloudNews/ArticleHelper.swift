@@ -32,13 +32,13 @@ class ArticleHelper {
         var result: URL? = nil
         var summary = html
 
-        if let url = URL(string: item.url ?? "") {
-            let baseString = "\(url.scheme ?? "")://\(url.host ?? "")"
-//            if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
-//                if html.range(of: "iframe", options: .caseInsensitive) != nil {
-//                    html = SummaryHelper.createYoutubeItem(item)
-//                }
-//            }
+        if let urlString = item.url,  let url = URL(string: urlString), let scheme = url.scheme, let host = url.host {
+            let baseString = "\(scheme)://\(host)"
+            if baseString.contains("youtu") {
+                if summary.contains("iframe") {
+                    summary = ArticleHelper.createYoutubeItem(html: summary, urlString: urlString)
+                }
+            }
             summary = ArticleHelper.fixRelativeUrl(html: summary, baseUrlString: baseString)
         }
         
@@ -150,6 +150,52 @@ class ArticleHelper {
             print("error")
         }
         return result
+    }
+
+    private static func createYoutubeItem(html: String, urlString: String) -> String {
+        guard let doc: Document = try? SwiftSoup.parse(html) else {
+            return html
+        }
+        var result = html
+        do {
+            let iframes: Elements = try doc.select("iframe")
+            for iframe in iframes {
+                if let videoId = ArticleHelper.extractYoutubeVideoID(urlYoutube: urlString) {
+                    let width = 700
+                    let height = 700 * 0.5625
+                    let embed = "<embed id=\"yt\" src=\"http://www.youtube.com/embed/\(videoId)?playsinline=1\" type=\"text/html\" frameborder=\"0\" width=\"\(width)px\" height=\"\(height)px\"></embed>"
+                    result = try result.replacingOccurrences(of: iframe.outerHtml(), with: embed)
+                }
+            }
+        } catch { }
+        
+        return result
+    }
+    
+    //based on https://gist.github.com/rais38/4683817
+    /**
+     @see https://devforums.apple.com/message/705665#705665
+     extractYoutubeVideoID: works for the following URL formats:
+     www.youtube.com/v/VIDEOID
+     www.youtube.com?v=VIDEOID
+     www.youtube.com/watch?v=WHsHKzYOV2E&feature=youtu.be
+     www.youtube.com/watch?v=WHsHKzYOV2E
+     youtu.be/KFPtWedl7wg_U923
+     www.youtube.com/watch?feature=player_detailpage&v=WHsHKzYOV2E#t=31s
+     youtube.googleapis.com/v/WHsHKzYOV2E
+     www.youtube.com/embed/VIDEOID
+     */
+    
+    private static func extractYoutubeVideoID(urlYoutube: String) -> String? {
+        let regexString = "(?<=v(=|/))([-a-zA-Z0-9_]+)|(?<=youtu.be/)([-a-zA-Z0-9_]+)|(?<=embed/)([-a-zA-Z0-9_]+)"
+        do {
+            let regex = try NSRegularExpression(pattern: regexString, options: [.caseInsensitive])
+            let firstMatchingRange = regex.rangeOfFirstMatch(in: urlYoutube, options: [], range: NSRange(location: 0, length: urlYoutube.count))
+            let startIndex = String.Index(encodedOffset: firstMatchingRange.lowerBound)
+            let endIndex = String.Index(encodedOffset: firstMatchingRange.upperBound)
+            return String(urlYoutube[startIndex..<endIndex])
+        } catch { }
+        return nil;
     }
 
 }
