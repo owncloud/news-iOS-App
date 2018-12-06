@@ -379,12 +379,36 @@ extension ViewController: NSSplitViewDelegate {
     
 }
 
-extension NSTableView {
+extension ViewController: WKNavigationDelegate {
 
-    func reloadDataKeepingSelection() {
-        let selectedRowIndexes = self.selectedRowIndexes
-        self.reloadData()
-        self.selectRowIndexes(selectedRowIndexes, byExtendingSelection: false)
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if webView != self.webView {
+            decisionHandler(.allow)
+            return
+        }
+
+        if navigationAction.navigationType != .other {
+            if let url = navigationAction.request.url {
+                let showingSummary = (webView.url?.scheme == "file" || webView.url?.scheme == "about")
+                if showingSummary {
+                    self.webView?.load(URLRequest(url: url))
+                    decisionHandler(.cancel)
+                    return
+                }
+            }
+        }
+        decisionHandler(.allow)
     }
 
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("Starting navigation to \(navigation.description)")
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        print(error.localizedDescription)
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        print(error.localizedDescription)
+    }
 }

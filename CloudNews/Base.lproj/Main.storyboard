@@ -1303,22 +1303,25 @@
                                                     <constraint firstItem="HRz-bW-hNR" firstAttribute="centerY" secondItem="hBZ-Jx-h7L" secondAttribute="centerY" id="uF7-uW-WTF"/>
                                                 </constraints>
                                             </customView>
-                                            <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tN8-xX-rOj">
+                                            <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RmO-ru-tq4">
                                                 <rect key="frame" x="0.0" y="0.0" width="348" height="479"/>
                                                 <wkWebViewConfiguration key="configuration">
                                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                                     <wkPreferences key="preferences"/>
                                                 </wkWebViewConfiguration>
+                                                <connections>
+                                                    <outlet property="navigationDelegate" destination="XfG-lQ-9wD" id="hwP-W4-dQo"/>
+                                                </connections>
                                             </wkWebView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="tN8-xX-rOj" firstAttribute="centerX" secondItem="fXI-6d-J7A" secondAttribute="centerX" id="1UN-3F-DZW"/>
-                                            <constraint firstAttribute="bottom" secondItem="tN8-xX-rOj" secondAttribute="bottom" id="84E-uq-sfw"/>
                                             <constraint firstItem="hBZ-Jx-h7L" firstAttribute="top" secondItem="fXI-6d-J7A" secondAttribute="top" id="8mC-2W-B79"/>
-                                            <constraint firstItem="tN8-xX-rOj" firstAttribute="top" secondItem="hBZ-Jx-h7L" secondAttribute="bottom" id="Oqp-0X-r5J"/>
+                                            <constraint firstAttribute="trailing" secondItem="RmO-ru-tq4" secondAttribute="trailing" id="JdV-6D-fD9"/>
                                             <constraint firstItem="hBZ-Jx-h7L" firstAttribute="width" secondItem="fXI-6d-J7A" secondAttribute="width" id="Q9u-bh-huU"/>
+                                            <constraint firstAttribute="bottom" secondItem="RmO-ru-tq4" secondAttribute="bottom" id="Rgo-Xl-de4"/>
                                             <constraint firstItem="hBZ-Jx-h7L" firstAttribute="centerX" secondItem="fXI-6d-J7A" secondAttribute="centerX" id="aXI-Cy-bez"/>
-                                            <constraint firstItem="tN8-xX-rOj" firstAttribute="width" secondItem="fXI-6d-J7A" secondAttribute="width" id="qtG-vv-RZk"/>
+                                            <constraint firstItem="RmO-ru-tq4" firstAttribute="leading" secondItem="fXI-6d-J7A" secondAttribute="leading" id="ex2-je-AGV"/>
+                                            <constraint firstItem="RmO-ru-tq4" firstAttribute="top" secondItem="hBZ-Jx-h7L" secondAttribute="bottom" id="zVc-Yz-J93"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
@@ -1345,7 +1348,7 @@
                         <outlet property="leftTopView" destination="70o-WG-6WI" id="AEy-0C-4RR"/>
                         <outlet property="rightTopView" destination="hBZ-Jx-h7L" id="HRx-80-ekf"/>
                         <outlet property="splitView" destination="qto-lP-25p" id="o9a-Tk-1Dc"/>
-                        <outlet property="webView" destination="tN8-xX-rOj" id="JZ5-vc-EFI"/>
+                        <outlet property="webView" destination="RmO-ru-tq4" id="Rum-XY-JYu"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
