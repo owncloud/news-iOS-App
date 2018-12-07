@@ -149,6 +149,7 @@ class NewsManager {
             return
         }
 
+        //2
         func localRead(completion: @escaping SyncCompletionBlock) {
             if let localRead = CDRead.all(), localRead.count > 0 {
                 let readParameters: Parameters = ["items": localRead]
@@ -166,6 +167,54 @@ class NewsManager {
             }
         }
         
+        //3
+        func localStarred(completion: @escaping SyncCompletionBlock) {
+            if let localStarred = CDStarred.all(), localStarred.count > 0 {
+                if let starredItems = CDItem.items(itemIds: localStarred) {
+                    var params: [Any] = []
+                    for starredItem in starredItems {
+                        var param: [String: Any] = [:]
+                        param["feedId"] = starredItem.feedId
+                        param["guidHash"] = starredItem.guidHash
+                        params.append(param)
+                    }
+                    let starredParameters: Parameters = ["items": params]
+                    NewsSessionManager.shared.request(Router.itemsStarred(parameters: starredParameters)).responseData { response in
+                        switch response.result {
+                        case .success:
+                            CDStarred.clear()
+                        default:
+                            break
+                        }
+                        completion()
+                    }
+                } else {
+                    completion()
+                }
+            } else {
+                completion()
+            }
+        }
+
+        //4
+        func localUnstarred(completion: @escaping SyncCompletionBlock) {
+            if let localUnstarred = CDUnstarred.all(), localUnstarred.count > 0 {
+                let unstarredParameters: Parameters = ["items": localRead]
+                NewsSessionManager.shared.request(Router.itemsUnstarred(parameters: unstarredParameters)).responseData { response in
+                    switch response.result {
+                    case .success:
+                        CDUnstarred.clear()
+                    default:
+                        break
+                    }
+                    completion()
+                }
+            } else {
+                completion()
+            }
+        }
+
+        //5
         func folders(completion: @escaping SyncCompletionBlock) {
             NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
                 //            debugPrint(response)
@@ -184,6 +233,7 @@ class NewsManager {
             })
         }
         
+        //6
         func feeds(completion: @escaping SyncCompletionBlock) {
             NewsSessionManager.shared.request(Router.feeds).responseDecodable(completionHandler: { (response: DataResponse<Feeds>) in
                 //            debugPrint(response)
@@ -212,6 +262,7 @@ class NewsManager {
             })
         }
         
+        //7
         func items(completion: @escaping SyncCompletionBlock) {
             let updatedParameters: Parameters = ["type": 3,
                                                  "lastModified": CDItem.lastModified(),
@@ -240,11 +291,13 @@ class NewsManager {
         }
         
         localRead {
-            folders {
-                feeds {
-                    items {
-                        self.updateBadge()
-                        completion()
+            localStarred {
+                folders {
+                    feeds {
+                        items {
+                            self.updateBadge()
+                            completion()
+                        }
                     }
                 }
             }

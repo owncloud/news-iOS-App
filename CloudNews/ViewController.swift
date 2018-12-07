@@ -26,7 +26,7 @@ class ViewController: NSViewController {
 
     var toplevelArray = [Any]()
 
-    private var currentItemIndex = -1
+    private var currentItemId: Int32 = -1
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,26 +82,29 @@ class ViewController: NSViewController {
     
     @IBAction func onStar(_ sender: Any) {
         if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            let currentIndex = self.currentItemIndex
-            if items.count > 0 && currentIndex > -1 && currentIndex < items.count {
-                let item = items[self.currentItemIndex]
-                let newState = !item.starred
-                if newState == true {
-                    CDStarred.update(items: [Int32(currentIndex)])
-                    CDFeeds.adjustStarredCount(increment: true)
-                } else {
-                    CDUnstarred.update(items: [Int32(currentIndex)])
-                    CDFeeds.adjustStarredCount(increment: false)
-                }
-                CDItem.markStarred(itemId: Int32(currentIndex), state: newState) { [weak self] in
-                    self?.feedOutlineView.reloadData()
-                    if newState {
-                        self?.starButton.image = NSImage(named: "starred_mac")
+            let currentId = self.currentItemId
+            if items.count > 0 && currentId > -1 {
+                let filteredItems = items.filter({ return $0.id == currentId })
+                if let currentItem = filteredItems.first {
+                    let itemRow = items.index(of: currentItem) ?? 0
+                    let newState = !currentItem.starred
+                    if newState == true {
+                        CDStarred.update(items: [currentItem.id])
+                        CDFeeds.adjustStarredCount(increment: true)
                     } else {
-                        self?.starButton.image = NSImage(named: "unstarred_mac")
+                        CDUnstarred.update(items: [currentItem.id])
+                        CDFeeds.adjustStarredCount(increment: false)
                     }
-                    if let cellView = self?.itemsTableView.view(atColumn: 0, row: currentIndex, makeIfNecessary: false) as? ArticleCellView {
-                        cellView.refresh()
+                    CDItem.markStarred(itemId: currentItem.id, state: newState) { [weak self] in
+                        self?.rebuildFoldersAndFeedsList()
+                        if newState {
+                            self?.starButton.image = NSImage(named: "starred_mac")
+                        } else {
+                            self?.starButton.image = NSImage(named: "unstarred_mac")
+                        }
+                        if let cellView = self?.itemsTableView.view(atColumn: 0, row: itemRow, makeIfNecessary: false) as? ArticleCellView {
+                            cellView.refresh()
+                        }
                     }
                 }
             }
@@ -342,8 +345,13 @@ extension ViewController: NSTableViewDelegate {
         if selectedIndex > -1 {
             if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
                 let item = items[selectedIndex]
-                self.currentItemIndex = selectedIndex
+                self.currentItemId = item.id
                 self.markItemsRead(items: [item])
+                if item.starred {
+                    self.starButton.image = NSImage(named: "starred_mac")
+                } else {
+                    self.starButton.image = NSImage(named: "unstarred_mac")
+                }
                 switch self.articleSegmentedControl.selectedSegment {
                 case 0:
                     if let summary = item.body {

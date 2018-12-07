@@ -137,7 +137,7 @@ enum Router: URLRequestConvertible {
         case .items(let parameters), .updatedItems(let parameters):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             
-        case .itemsRead(let parameters):
+        case .itemsRead(let parameters), .itemsStarred(let parameters):
             urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
 
         default:

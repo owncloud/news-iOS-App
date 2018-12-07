@@ -120,7 +120,7 @@ class ArticleCellView: NSTableCellView {
             }
             
             if item.starred == true {
-                self.starImage.image = NSImage(named: "star_icon")
+                self.starImage.image = NSImage(named: "starred_mac")
             } else {
                 self.starImage.image = nil
             }

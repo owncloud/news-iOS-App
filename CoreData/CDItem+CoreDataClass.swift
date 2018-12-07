@@ -51,6 +51,25 @@ public class CDItem: NSManagedObject, ItemProtocol {
         return itemList
     }
 
+    static func items(itemIds: [Int32]) -> [ItemProtocol]? {
+        let request : NSFetchRequest<CDItem> = self.fetchRequest()
+        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
+        request.sortDescriptors = [sortDescription]
+        let predicate = NSPredicate(format:"id IN %@", itemIds)
+        request.predicate = predicate
+        
+        var itemList = [ItemProtocol]()
+        do {
+            let results  = try NewsData.mainThreadContext.fetch(request)
+            for record in results {
+                itemList.append(record)
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return itemList
+    }
+
     static func starredItems() -> [ItemProtocol]? {
         let request : NSFetchRequest<CDItem> = self.fetchRequest()
         let sortDescription = NSSortDescriptor(key: "id", ascending: false)
@@ -96,7 +115,7 @@ public class CDItem: NSManagedObject, ItemProtocol {
             let batchRequest = NSBatchUpdateRequest(entityName: self.entityName)
             batchRequest.propertiesToUpdate = ["starred": state]
             batchRequest.resultType = .updatedObjectIDsResultType
-            let predicate = NSPredicate(format:"id == %d", itemId)
+            let predicate = NSPredicate(format:"id IN %@", [itemId])
             batchRequest.predicate = predicate
 
             do {

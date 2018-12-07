@@ -56,4 +56,20 @@ public class CDFeeds: NSManagedObject {
         }
     }
 
+    static func starredCount() -> Int {
+        var result = 0
+        NewsData.mainThreadContext.performAndWait {
+            let request: NSFetchRequest<CDFeeds> = CDFeeds.fetchRequest()
+            do {
+                let records = try NewsData.mainThreadContext.fetch(request)
+                if let existingRecord = records.first {
+                    result = Int(existingRecord.starredCount)
+                }
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
+        }
+        return result
+    }
+
 }
