@@ -907,7 +907,7 @@
                                                 <rect key="frame" x="0.0" y="479" width="376" height="40"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="biR-6D-P8K">
-                                                        <rect key="frame" x="278" y="10" width="21" height="21"/>
+                                                        <rect key="frame" x="277" y="10" width="21" height="21"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="21" id="Lol-F7-hQ8"/>
                                                             <constraint firstAttribute="width" constant="21" id="bv0-fK-r90"/>
@@ -921,7 +921,7 @@
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="snD-gk-rSP">
-                                                        <rect key="frame" x="299.5" y="7" width="67" height="26"/>
+                                                        <rect key="frame" x="299" y="7" width="67" height="26"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="fqg-Yw-3tG"/>
                                                         </constraints>
@@ -1279,7 +1279,7 @@
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HRz-bW-hNR">
-                                                        <rect key="frame" x="262.5" y="8" width="71" height="23"/>
+                                                        <rect key="frame" x="262" y="8" width="71" height="23"/>
                                                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="nk8-Im-b1A">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
@@ -1347,6 +1347,7 @@
                         <outlet property="itemsTableView" destination="MzK-VK-t4c" id="We9-mN-BKg"/>
                         <outlet property="leftTopView" destination="70o-WG-6WI" id="AEy-0C-4RR"/>
                         <outlet property="rightTopView" destination="hBZ-Jx-h7L" id="HRx-80-ekf"/>
+                        <outlet property="shareButton" destination="gV3-xP-BfO" id="CGF-LC-aTf"/>
                         <outlet property="splitView" destination="qto-lP-25p" id="o9a-Tk-1Dc"/>
                         <outlet property="starButton" destination="GcC-rx-ETz" id="pkM-Ro-qDK"/>
                         <outlet property="webView" destination="RmO-ru-tq4" id="Rum-XY-JYu"/>
@@ -1360,13 +1361,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="All Articles" width="33" height="33"/>
+        <image name="All Articles" width="16.5" height="16.5"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="NSShareTemplate" width="11" height="16"/>
         <image name="mark_mac" width="42" height="42"/>
-        <image name="read" width="70.819671630859375" height="70.819671630859375"/>
+        <image name="read" width="69.677421569824219" height="69.677421569824219"/>
         <image name="summary" width="42" height="42"/>
-        <image name="unread" width="70.819671630859375" height="70.819671630859375"/>
+        <image name="unread" width="69.677421569824219" height="69.677421569824219"/>
         <image name="unstarred_mac" width="42" height="42"/>
         <image name="web" width="42" height="42"/>
     </resources>

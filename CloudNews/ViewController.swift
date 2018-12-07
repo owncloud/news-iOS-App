@@ -21,6 +21,7 @@ class ViewController: NSViewController {
     @IBOutlet var webView: WKWebView!
     @IBOutlet var articleSegmentedControl: NSSegmentedControl!
     @IBOutlet weak var starButton: NSButton!
+    @IBOutlet weak var shareButton: NSButton!
 
     @IBOutlet var itemsArrayController: NSArrayController!
 
@@ -112,6 +113,20 @@ class ViewController: NSViewController {
     }
     
     @IBAction func onShare(_ sender: Any) {
+        //See https://github.com/hawkfalcon/CustomSharingService on how to customize this
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            let currentId = self.currentItemId
+            if items.count > 0 && currentId > -1 {
+                let filteredItems = items.filter({ return $0.id == currentId })
+                if let currentItem = filteredItems.first {
+                    if let url = URL(string: currentItem.url ?? "") {
+                        let shareItems = [url]
+                        let sharingPicker:NSSharingServicePicker = NSSharingServicePicker.init(items: shareItems)
+                        sharingPicker.show(relativeTo: self.shareButton.bounds, of: self.shareButton, preferredEdge: .minY)
+                    }
+                }
+            }
+        }
     }
     
     func rebuildFoldersAndFeedsList() {
