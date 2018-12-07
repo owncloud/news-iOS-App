@@ -199,14 +199,25 @@ class NewsManager {
         //4
         func localUnstarred(completion: @escaping SyncCompletionBlock) {
             if let localUnstarred = CDUnstarred.all(), localUnstarred.count > 0 {
-                let unstarredParameters: Parameters = ["items": localRead]
-                NewsSessionManager.shared.request(Router.itemsUnstarred(parameters: unstarredParameters)).responseData { response in
-                    switch response.result {
-                    case .success:
-                        CDUnstarred.clear()
-                    default:
-                        break
+                if let unstarredItems = CDItem.items(itemIds: localUnstarred) {
+                    var params: [Any] = []
+                    for unstarredItem in unstarredItems {
+                        var param: [String: Any] = [:]
+                        param["feedId"] = unstarredItem.feedId
+                        param["guidHash"] = unstarredItem.guidHash
+                        params.append(param)
                     }
+                    let unstarredParameters: Parameters = ["items": params]
+                    NewsSessionManager.shared.request(Router.itemsUnstarred(parameters: unstarredParameters)).responseData { response in
+                        switch response.result {
+                        case .success:
+                            CDUnstarred.clear()
+                        default:
+                            break
+                        }
+                        completion()
+                    }
+                } else {
                     completion()
                 }
             } else {
@@ -292,17 +303,18 @@ class NewsManager {
         
         localRead {
             localStarred {
-                folders {
-                    feeds {
-                        items {
-                            self.updateBadge()
-                            completion()
+                localUnstarred {
+                    folders {
+                        feeds {
+                            items {
+                                self.updateBadge()
+                                completion()
+                            }
                         }
                     }
                 }
             }
         }
-        
     }
 
     func updateBadge() {
