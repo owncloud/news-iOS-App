@@ -20,11 +20,14 @@ class ViewController: NSViewController {
     @IBOutlet var itemsTableView: NSTableView!
     @IBOutlet var webView: WKWebView!
     @IBOutlet var articleSegmentedControl: NSSegmentedControl!
-    
+    @IBOutlet weak var starButton: NSButton!
+
     @IBOutlet var itemsArrayController: NSArrayController!
 
     var toplevelArray = [Any]()
-    
+
+    private var currentItemIndex = -1
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.leftTopView.wantsLayer = true
@@ -78,6 +81,31 @@ class ViewController: NSViewController {
     }
     
     @IBAction func onStar(_ sender: Any) {
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            let currentIndex = self.currentItemIndex
+            if items.count > 0 && currentIndex > -1 && currentIndex < items.count {
+                let item = items[self.currentItemIndex]
+                let newState = !item.starred
+                if newState == true {
+                    CDStarred.update(items: [Int32(currentIndex)])
+                    CDFeeds.adjustStarredCount(increment: true)
+                } else {
+                    CDUnstarred.update(items: [Int32(currentIndex)])
+                    CDFeeds.adjustStarredCount(increment: false)
+                }
+                CDItem.markStarred(itemId: Int32(currentIndex), state: newState) { [weak self] in
+                    self?.feedOutlineView.reloadData()
+                    if newState {
+                        self?.starButton.image = NSImage(named: "starred_mac")
+                    } else {
+                        self?.starButton.image = NSImage(named: "unstarred_mac")
+                    }
+                    if let cellView = self?.itemsTableView.view(atColumn: 0, row: currentIndex, makeIfNecessary: false) as? ArticleCellView {
+                        cellView.refresh()
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func onShare(_ sender: Any) {
@@ -314,6 +342,7 @@ extension ViewController: NSTableViewDelegate {
         if selectedIndex > -1 {
             if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
                 let item = items[selectedIndex]
+                self.currentItemIndex = selectedIndex
                 self.markItemsRead(items: [item])
                 switch self.articleSegmentedControl.selectedSegment {
                 case 0:

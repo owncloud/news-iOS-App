@@ -35,5 +35,25 @@ public class CDFeeds: NSManagedObject {
             }
         }
     }
-    
+
+    static func adjustStarredCount(increment: Bool) {
+        NewsData.mainThreadContext.performAndWait {
+            let request: NSFetchRequest<CDFeeds> = CDFeeds.fetchRequest()
+            do {
+                let records = try NewsData.mainThreadContext.fetch(request)
+                if let existingRecord = records.first {
+                    let currentCount = existingRecord.starredCount
+                    if increment {
+                        existingRecord.starredCount = currentCount + 1
+                    } else {
+                        existingRecord.starredCount = currentCount - 1
+                    }
+                }
+                try NewsData.mainThreadContext.save()
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
+        }
+    }
+
 }

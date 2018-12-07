@@ -26,7 +26,7 @@ public class CDRead: NSManagedObject {
                     if let existingRecord = records.first {
                         existingRecord.itemId = item
                     } else {
-                        let newRecord = NSEntityDescription.insertNewObject(forEntityName: CDRead.entityName, into: NewsData.mainThreadContext) as! CDRead
+                        let newRecord = NSEntityDescription.insertNewObject(forEntityName: self.entityName, into: NewsData.mainThreadContext) as! CDRead
                         newRecord.itemId = item
                     }
                 }
