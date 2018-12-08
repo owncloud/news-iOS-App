@@ -907,7 +907,7 @@
                                                 <rect key="frame" x="0.0" y="479" width="376" height="40"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="biR-6D-P8K">
-                                                        <rect key="frame" x="277" y="10" width="21" height="21"/>
+                                                        <rect key="frame" x="269" y="10" width="21" height="21"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="21" id="Lol-F7-hQ8"/>
                                                             <constraint firstAttribute="width" constant="21" id="bv0-fK-r90"/>
@@ -921,15 +921,12 @@
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="snD-gk-rSP">
-                                                        <rect key="frame" x="299" y="7" width="67" height="26"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="25" id="fqg-Yw-3tG"/>
-                                                        </constraints>
-                                                        <segmentedCell key="cell" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="texturedRounded" trackingMode="selectAny" id="cyL-WC-oNr">
+                                                        <rect key="frame" x="295" y="8" width="71" height="23"/>
+                                                        <segmentedCell key="cell" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="cyL-WC-oNr">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
-                                                                <segment alignment="natural" image="read" width="30"/>
-                                                                <segment alignment="natural" image="unread" width="30" tag="1"/>
+                                                                <segment alignment="natural" image="read" width="32" selected="YES"/>
+                                                                <segment alignment="natural" image="unread" width="32" tag="1"/>
                                                             </segments>
                                                         </segmentedCell>
                                                     </segmentedControl>
@@ -940,7 +937,7 @@
                                                     <constraint firstAttribute="height" constant="40" id="DZq-fY-QCS"/>
                                                     <constraint firstItem="biR-6D-P8K" firstAttribute="centerY" secondItem="70o-WG-6WI" secondAttribute="centerY" id="Oy4-q5-igC"/>
                                                     <constraint firstAttribute="trailing" secondItem="snD-gk-rSP" secondAttribute="trailing" constant="10" id="khT-on-jGZ"/>
-                                                    <constraint firstItem="snD-gk-rSP" firstAttribute="leading" secondItem="biR-6D-P8K" secondAttribute="trailing" constant="1" id="oxB-1h-vD7"/>
+                                                    <constraint firstItem="snD-gk-rSP" firstAttribute="leading" secondItem="biR-6D-P8K" secondAttribute="trailing" constant="5" id="oxB-1h-vD7"/>
                                                 </constraints>
                                             </customView>
                                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="31" horizontalPageScroll="10" verticalLineScroll="31" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AeG-BX-wuv">
