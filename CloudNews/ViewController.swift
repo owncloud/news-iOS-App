@@ -238,7 +238,17 @@ class ViewController: NSViewController {
     @IBAction func onArticleView(_ sender: Any) {
         self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
-    
+
+    @IBAction func onSummary(_ sender: Any) {
+        self.articleSegmentedControl.selectSegment(withTag: 0)
+        self.onArticleView(self)
+    }
+
+    @IBAction func onWeb(_ sender: Any) {
+        self.articleSegmentedControl.selectSegment(withTag: 1)
+        self.onArticleView(self)
+    }
+
 }
 
 extension ViewController: NSOutlineViewDataSource {
