@@ -239,6 +239,20 @@ class ViewController: NSViewController {
         self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
 
+    @IBAction func onPreviousArticle(_ sender: Any) {
+        let selectedIndexes = self.itemsTableView.selectedRowIndexes
+        if let min = selectedIndexes.min(), min > 0 {
+            self.itemsTableView.selectRowIndexes(IndexSet(integer: min - 1), byExtendingSelection: false)
+        }
+    }
+
+    @IBAction func onNextArticle(_ sender: Any) {
+        let selectedIndexes = self.itemsTableView.selectedRowIndexes
+        if let min = selectedIndexes.min(), min >= 0 {
+            self.itemsTableView.selectRowIndexes(IndexSet(integer: min + 1), byExtendingSelection: false)
+        }
+    }
+
     @IBAction func onSummary(_ sender: Any) {
         self.articleSegmentedControl.selectSegment(withTag: 0)
         self.onArticleView(self)
