@@ -94,3 +94,55 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
 }
+
+/*
+NextCloud New keyboard shortcuts
+
+ // j, n, right arrow
+Next item
+
+ // k, p, left arrow
+Previous item
+
+ // u
+toggle unread
+
+ // e
+expand item
+
+ // s, i, l
+toggle star
+
+ // h
+toggle star, go to next
+
+ // o
+open link
+
+ // r
+refresh
+
+ // f
+next feed
+
+ // d
+previous feed
+
+ // c
+ previous folder
+
+ // a
+ } else if ([65].indexOf(keyCode) >= 0) {
+
+ event.preventDefault();
+ scrollToActiveNavigationEntry(navigationArea);
+
+ // v
+ next folder
+
+ // q
+ search
+
+ // shift + a
+ mark all read
+ */
