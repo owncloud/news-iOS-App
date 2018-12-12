@@ -28,6 +28,7 @@ class ViewController: NSViewController {
     var toplevelArray = [Any]()
 
     private var currentItemId: Int32 = -1
+    private var currentFeedRowIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +51,7 @@ class ViewController: NSViewController {
         }
 
         self.rebuildFoldersAndFeedsList()
-        self.feedOutlineView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
+        self.feedOutlineView.selectRowIndexes(IndexSet(integer: self.currentFeedRowIndex), byExtendingSelection: false)
 //        try? self.itemsArrayController.fetch(with: nil, merge: false)
 //        self.itemsTableView.reloadData()
     }
@@ -239,6 +240,26 @@ class ViewController: NSViewController {
         self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
 
+    @IBAction func onPreviousFeed(_ sender: Any) {
+        var selectedIndexes = self.feedOutlineView.selectedRowIndexes
+        if selectedIndexes.count == 0 {
+            selectedIndexes = IndexSet(integer: self.currentFeedRowIndex)
+        }
+        if let min = selectedIndexes.min(), min > 0 {
+            self.feedOutlineView.selectRowIndexes(IndexSet(integer: min - 1), byExtendingSelection: false)
+        }
+    }
+
+    @IBAction func onNextFeed(_ sender: Any) {
+        var selectedIndexes = self.feedOutlineView.selectedRowIndexes
+        if selectedIndexes.count == 0 {
+            selectedIndexes = IndexSet(integer: self.currentFeedRowIndex)
+        }
+        if let min = selectedIndexes.min(), min >= 0 {
+            self.feedOutlineView.selectRowIndexes(IndexSet(integer: min + 1), byExtendingSelection: false)
+        }
+    }
+
     @IBAction func onPreviousArticle(_ sender: Any) {
         let selectedIndexes = self.itemsTableView.selectedRowIndexes
         if let min = selectedIndexes.min(), min > 0 {
@@ -318,7 +339,7 @@ extension ViewController: NSOutlineViewDelegate {
         }
 
         let selectedIndex = outlineView.selectedRow
-        
+        self.currentFeedRowIndex = selectedIndex
         if selectedIndex == 0 {
             print("All articles selected")
             self.itemsArrayController.filterPredicate = nil
@@ -339,6 +360,7 @@ extension ViewController: NSOutlineViewDelegate {
         }
         self.itemsTableView.reloadData()
         self.itemsTableView.scrollRowToVisible(0)
+        self.webView.loadHTMLString("", baseURL: nil)
     }
 
 }

@@ -174,16 +174,16 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="hB3-LF-h0Y"/>
-                                        <menuItem title="Previous" id="axJ-wn-65e">
+                                        <menuItem title="Previous" keyEquivalent="d" id="axJ-wn-65e">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="onRefresh:" target="Voe-Tx-rLC" id="aBq-nw-2ed"/>
+                                                <action selector="onPreviousFeed:" target="Ady-hI-5gd" id="bGj-Ek-d2l"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Next" id="pn9-6R-p2L">
+                                        <menuItem title="Next" keyEquivalent="f" id="pn9-6R-p2L">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="onRefresh:" target="Voe-Tx-rLC" id="GHS-Bw-z7c"/>
+                                                <action selector="onNextFeed:" target="Ady-hI-5gd" id="A0J-Ca-Bv3"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -206,10 +206,10 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="jWk-kF-Hu7"/>
-                                        <menuItem title="Mark" id="K7F-Gi-3sY">
+                                        <menuItem title="Mark" keyEquivalent="u" id="K7F-Gi-3sY">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
-                                        <menuItem title="Star" id="pGH-8D-LDj">
+                                        <menuItem title="Star" keyEquivalent="s" id="pGH-8D-LDj">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="3jc-GO-Y86"/>
