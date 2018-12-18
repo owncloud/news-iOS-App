@@ -78,10 +78,25 @@ class ViewController: NSViewController {
   
     @IBAction func onMarkRead(_ sender: Any) {
         if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            self.markItemsRead(items: items)
+            let filteredItems = items.filter { (item) -> Bool in
+                return item.unread == true
+            }
+            self.markItems(items: filteredItems, unread: false)
         }
     }
-    
+
+    @IBAction func onMarkUnread(_ sender: Any) {
+        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+            let currentId = self.currentItemId
+            if items.count > 0 && currentId > -1 {
+                let filteredItems = items.filter({ return $0.id == currentId })
+                if let currentItem = filteredItems.first {
+                    self.markItems(items: [currentItem], unread: !currentItem.unread)
+                }
+            }
+        }
+    }
+
     @IBAction func onStar(_ sender: Any) {
         if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
             let currentId = self.currentItemId
@@ -197,42 +212,55 @@ class ViewController: NSViewController {
         self.feedOutlineView.endUpdates()
     }
 
-    func markItemsRead(items: [CDItem]) {
-        let unreadItems = items.filter { (item) -> Bool in
-            return item.unread == true
-        }
-        var selectedIndexes = [Int]()
-        if let allItems = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            let myselectedItems = allItems.filter({ (item) -> Bool in
-                unreadItems.firstIndex(of: item) != nil
-            })
-            selectedIndexes = myselectedItems.map({ allItems.index(of: $0) }).compactMap({ $0 })
-        }
+    func markItems(items: [CDItem], unread: Bool) {
+        if items.count > 0 {
+            var selectedIndexes = [Int]()
+            if let allItems = self.itemsArrayController.arrangedObjects as? [CDItem] {
+                let myselectedItems = allItems.filter({ (item) -> Bool in
+                    items.firstIndex(of: item) != nil
+                })
+                selectedIndexes = myselectedItems.map({ allItems.index(of: $0) }).compactMap({ $0 })
+            }
         
-        if unreadItems.count > 0 {
-            let unreadIds = unreadItems.map { $0.id }
-            CDRead.update(items: unreadIds)
-            for item in unreadItems {
+            let changingIds = items.map { $0.id }
+            if unread {
+                CDUnread.update(items: changingIds)
+                CDRead.deleteItemIds(itemIds: changingIds, in: NewsData.mainThreadContext)
+            } else {
+                CDRead.update(items: changingIds)
+                CDUnread.deleteItemIds(itemIds: changingIds, in: NewsData.mainThreadContext)
+            }
+            for item in items {
                 if var feed = CDFeed.feed(id: item.feedId) {
-                    let feedUnreadCount = feed.unreadCount - 1
+                    var feedUnreadCount = feed.unreadCount
+                    if unread {
+                        feedUnreadCount += 1
+                    } else {
+                        feedUnreadCount -= 1
+                    }
                     feed.unreadCount = feedUnreadCount
                     CDFeed.update(feeds: [feed])
                     if let folder = CDFolder.folder(id: feed.folderId) {
-                        let folderUnreadCount = folder.unreadCount - 1
+                        var folderUnreadCount = folder.unreadCount
+                        if unread {
+                            folderUnreadCount += 1
+                        } else {
+                            folderUnreadCount -= 1
+                        }
                         folder.unreadCount = folderUnreadCount
                         CDFolder.update(folders: [folder])
                     }
                 }
             }
-            CDItem.markRead(itemIds: unreadIds, completion: {
-                self.feedOutlineView.reloadData()
+            CDItem.markRead(itemIds: changingIds, state: unread) { [weak self] in
+                self?.rebuildFoldersAndFeedsList()
                 for i in selectedIndexes {
-                    if let cellView = self.itemsTableView.view(atColumn: 0, row: i, makeIfNecessary: false) as? ArticleCellView {
+                    if let cellView = self?.itemsTableView.view(atColumn: 0, row: i, makeIfNecessary: false) as? ArticleCellView {
                         cellView.refresh()
                     }
                 }
                 NewsManager.shared.updateBadge()
-            })
+            }
         }
     }
     
@@ -407,7 +435,9 @@ extension ViewController: NSTableViewDelegate {
             if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
                 let item = items[selectedIndex]
                 self.currentItemId = item.id
-                self.markItemsRead(items: [item])
+                if item.unread {
+                    self.markItems(items: [item], unread: false)
+                }
                 if item.starred {
                     self.starButton.image = NSImage(named: "starred_mac")
                 } else {
@@ -519,4 +549,17 @@ extension ViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print(error.localizedDescription)
     }
+}
+
+extension ViewController: NSUserInterfaceValidations {
+
+    func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+        if item.action == #selector(onStar(_:)) {
+            print("validating item \(item)")
+            return true
+        }
+        return true
+
+    }
+
 }

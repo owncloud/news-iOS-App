@@ -208,6 +208,9 @@
                                         <menuItem isSeparatorItem="YES" id="jWk-kF-Hu7"/>
                                         <menuItem title="Mark" keyEquivalent="u" id="K7F-Gi-3sY">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="onMarkUnread:" target="Ady-hI-5gd" id="uzw-Vo-STy"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Star" keyEquivalent="s" id="pGH-8D-LDj">
                                             <modifierMask key="keyEquivalentModifierMask"/>

@@ -89,10 +89,10 @@ public class CDItem: NSManagedObject, ItemProtocol {
         return itemList
     }
     
-    static func markRead(itemIds: [Int32], completion: SyncCompletionBlock) {
+    static func markRead(itemIds: [Int32], state: Bool, completion: SyncCompletionBlock) {
         NewsData.mainThreadContext.performAndWait {
             let batchRequest = NSBatchUpdateRequest(entityName: self.entityName)
-            batchRequest.propertiesToUpdate = ["unread": false]
+            batchRequest.propertiesToUpdate = ["unread": state]
             batchRequest.resultType = .updatedObjectIDsResultType
             let predicate = NSPredicate(format:"id IN %@", itemIds)
             batchRequest.predicate = predicate

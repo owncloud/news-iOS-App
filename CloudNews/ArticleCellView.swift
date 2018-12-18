@@ -118,7 +118,11 @@ class ArticleCellView: NSTableCellView {
             if localRead == true {
                 self.alphaValue = 0.5
             }
-            
+            let localUnead = CDUnread.all()?.contains(item.id) ?? false
+            if localUnead == true {
+                self.alphaValue = 1.0
+            }
+
             if item.starred == true {
                 self.starImage.image = NSImage(named: "starred_mac")
             } else {
