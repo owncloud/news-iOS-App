@@ -748,6 +748,9 @@
                                                                                         <constraint firstAttribute="height" constant="72" id="jtf-2j-31B"/>
                                                                                     </constraints>
                                                                                     <imageCell key="cell" scrollable="YES" lineBreakMode="clipping" refusesFirstResponder="YES" alignment="left" image="All Articles" id="6c5-xu-kw5"/>
+                                                                                    <connections>
+                                                                                        <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.thumbnail" id="yRT-E7-ReD"/>
+                                                                                    </connections>
                                                                                 </imageView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juY-k3-pes">
                                                                                     <rect key="frame" x="90" y="87" width="225" height="38"/>
@@ -759,6 +762,14 @@
                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textFieldCell>
+                                                                                    <connections>
+                                                                                        <binding destination="HdU-aD-B5l" name="textColor" keyPath="objectValue.labelTextColor" id="E3K-JW-kwc"/>
+                                                                                        <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.title" id="CtX-Pc-FZT">
+                                                                                            <dictionary key="options">
+                                                                                                <string key="NSValueTransformerName">TitleValueTransformer</string>
+                                                                                            </dictionary>
+                                                                                        </binding>
+                                                                                    </connections>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="G2X-LV-rJG">
                                                                                     <rect key="frame" x="92" y="62" width="221" height="17"/>
@@ -769,7 +780,10 @@
                                                                                                 <constraint firstAttribute="height" constant="16" id="1cR-ik-1i8"/>
                                                                                                 <constraint firstAttribute="width" constant="16" id="IeM-zc-vB6"/>
                                                                                             </constraints>
-                                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="7FI-Ym-Mud"/>
+                                                                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="All Articles" id="7FI-Ym-Mud"/>
+                                                                                            <connections>
+                                                                                                <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.favIcon" id="9hE-D2-bGZ"/>
+                                                                                            </connections>
                                                                                         </imageView>
                                                                                         <textField translatesAutoresizingMaskIntoConstraints="NO" id="IFW-uP-aw0">
                                                                                             <rect key="frame" x="17" y="0.0" width="213" height="17"/>
@@ -781,6 +795,10 @@
                                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                             </textFieldCell>
+                                                                                            <connections>
+                                                                                                <binding destination="HdU-aD-B5l" name="textColor" keyPath="objectValue.labelTextColor" id="Prj-0w-0eL"/>
+                                                                                                <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.dateAuthorFeed" id="8JH-dW-v6E"/>
+                                                                                            </connections>
                                                                                         </textField>
                                                                                     </subviews>
                                                                                     <constraints>
@@ -803,6 +821,14 @@
                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textFieldCell>
+                                                                                    <connections>
+                                                                                        <binding destination="HdU-aD-B5l" name="textColor" keyPath="objectValue.labelTextColor" id="hQn-f3-EcR"/>
+                                                                                        <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.body" id="66L-cH-KqO">
+                                                                                            <dictionary key="options">
+                                                                                                <string key="NSValueTransformerName">SummaryValueTransformer</string>
+                                                                                            </dictionary>
+                                                                                        </binding>
+                                                                                    </connections>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="EH7-d9-nQ6">
                                                                                     <rect key="frame" x="313" y="0.0" width="21" height="130"/>
@@ -814,6 +840,9 @@
                                                                                                 <constraint firstAttribute="width" constant="21" id="W86-cx-6ad"/>
                                                                                             </constraints>
                                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="3fo-Na-Jag"/>
+                                                                                            <connections>
+                                                                                                <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.starIcon" id="EOA-ti-2Th"/>
+                                                                                            </connections>
                                                                                         </imageView>
                                                                                     </subviews>
                                                                                     <constraints>
@@ -854,6 +883,8 @@
                                                                 </tableColumn>
                                                             </tableColumns>
                                                             <connections>
+                                                                <binding destination="gn2-OO-znS" name="content" keyPath="arrangedObjects" id="tRy-7S-zlm"/>
+                                                                <binding destination="gn2-OO-znS" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="tRy-7S-zlm" id="eJT-Qj-5R2"/>
                                                                 <outlet property="dataSource" destination="XfG-lQ-9wD" id="LEc-2q-dqa"/>
                                                                 <outlet property="delegate" destination="XfG-lQ-9wD" id="x00-7B-9yZ"/>
                                                             </connections>
@@ -861,7 +892,7 @@
                                                     </subviews>
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
-                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1N7-PF-Zyk">
+                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.16666666666666666" horizontal="YES" id="1N7-PF-Zyk">
                                                     <rect key="frame" x="0.0" y="463" width="331" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
@@ -900,6 +931,7 @@
                                                         </buttonCell>
                                                         <connections>
                                                             <action selector="onStar:" target="XfG-lQ-9wD" id="NW7-TO-Ags"/>
+                                                            <binding destination="gn2-OO-znS" name="image" keyPath="selection.starIcon" id="Uap-g5-PRc"/>
                                                         </connections>
                                                     </button>
                                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="gV3-xP-BfO">
@@ -993,7 +1025,12 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="Hy0-1g-VDa"/>
-                <arrayController mode="entity" entityName="CDItem" editable="NO" automaticallyRearrangesObjects="YES" id="gn2-OO-znS"/>
+                <arrayController mode="entity" entityName="CDItem" editable="NO" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="gn2-OO-znS">
+                    <connections>
+                        <binding destination="XfG-lQ-9wD" name="managedObjectContext" keyPath="self.managedContext" id="gbW-lD-7s4"/>
+                        <binding destination="XfG-lQ-9wD" name="sortDescriptors" keyPath="self.sortDescriptors" id="aGa-4C-ESW"/>
+                    </connections>
+                </arrayController>
             </objects>
             <point key="canvasLocation" x="21.5" y="791.5"/>
         </scene>

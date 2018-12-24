@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD16EAFF21CDC981003F562E /* SummaryValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD16EAFE21CDC981003F562E /* SummaryValueTransformer.swift */; };
 		BD816AA821B5CAE6001C41DF /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */; };
 		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
 		D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */; };
@@ -147,6 +148,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BD16EAFE21CDC981003F562E /* SummaryValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryValueTransformer.swift; sourceTree = "<group>"; };
 		BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSharingProvider.h; sourceTree = "<group>"; };
 		D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSharingProvider.m; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 				D0171AB9217BE6D600D2D34B /* ViewController.swift */,
 				D05C4A2821A0E42B008BA66F /* FeedCellView.swift */,
 				D05C4A0F2197EDCA008BA66F /* ArticleCellView.swift */,
+				BD16EAFE21CDC981003F562E /* SummaryValueTransformer.swift */,
 				D05795A621A90941009F618A /* PrefsViewController.swift */,
 				D0171AD0217C45DA00D2D34B /* NewsSessionManager.swift */,
 				D0171AD2217C4B2600D2D34B /* NewsRouter.swift */,
@@ -938,6 +941,7 @@
 				D05C4A22219D29C6008BA66F /* CDStarred+CoreDataClass.swift in Sources */,
 				D0171AE721852D9800D2D34B /* ResponseSerializer.swift in Sources */,
 				D0171AE921852D9800D2D34B /* Folder.swift in Sources */,
+				BD16EAFF21CDC981003F562E /* SummaryValueTransformer.swift in Sources */,
 				D0171AE521852D9800D2D34B /* Avatar.swift in Sources */,
 				D05795B021AA66F4009F618A /* Status.swift in Sources */,
 				D0171AE321852D9800D2D34B /* Feeds.swift in Sources */,

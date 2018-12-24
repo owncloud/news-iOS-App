@@ -16,6 +16,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+        ValueTransformer.setValueTransformer(SummaryValueTransformer(), forName: .summaryValueTransformerName)
+        ValueTransformer.setValueTransformer(TitleValueTransformer(), forName: .titleValueTransformerName)
+
+
         self.writeCss()
         NewsManager.shared.updateBadge()
     }

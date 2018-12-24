@@ -25,6 +25,9 @@ class ViewController: NSViewController {
 
     @IBOutlet var itemsArrayController: NSArrayController!
 
+    @objc dynamic let managedContext: NSManagedObjectContext = NewsData.mainThreadContext
+    @objc dynamic let sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+
     var toplevelArray = [Any]()
 
     private var currentItemId: Int32 = -1
@@ -37,12 +40,12 @@ class ViewController: NSViewController {
         self.rightTopView.wantsLayer = true
         self.splitView.delegate = self
         
-        self.itemsArrayController.managedObjectContext = NewsData.mainThreadContext
-        self.itemsArrayController.entityName = "CDItem"
-        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
-        self.itemsArrayController.sortDescriptors = [sortDescription]
-        self.itemsArrayController.automaticallyRearrangesObjects = true
-        
+//        self.itemsArrayController.managedObjectContext = NewsData.mainThreadContext
+//        self.itemsArrayController.entityName = "CDItem"
+//        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
+//        self.itemsArrayController.sortDescriptors = [sortDescription]
+//        self.itemsArrayController.automaticallyRearrangesObjects = true
+
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
             self?.rebuildFoldersAndFeedsList()
@@ -265,7 +268,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func onArticleView(_ sender: Any) {
-        self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
+//        self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
 
     @IBAction func onPreviousFeed(_ sender: Any) {
@@ -392,7 +395,7 @@ extension ViewController: NSOutlineViewDelegate {
     }
 
 }
-
+/*
 extension ViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
@@ -410,18 +413,18 @@ extension ViewController: NSTableViewDataSource {
     }
 }
 
-
+*/
 extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            let item = items[row]
+//        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+//            let item = items[row]
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ItemCell"), owner: nil) as? ArticleCellView {
-                cell.item = item
+//                cell.item = item
                 return cell
             }
-            return nil
-        }
+//            return nil
+//        }
         return nil
     }
     
@@ -438,11 +441,11 @@ extension ViewController: NSTableViewDelegate {
                 if item.unread {
                     self.markItems(items: [item], unread: false)
                 }
-                if item.starred {
-                    self.starButton.image = NSImage(named: "starred_mac")
-                } else {
-                    self.starButton.image = NSImage(named: "unstarred_mac")
-                }
+//                if item.starred {
+//                    self.starButton.image = NSImage(named: "starred_mac")
+//                } else {
+//                    self.starButton.image = NSImage(named: "unstarred_mac")
+//                }
                 switch self.articleSegmentedControl.selectedSegment {
                 case 0:
                     if let summary = item.body {
