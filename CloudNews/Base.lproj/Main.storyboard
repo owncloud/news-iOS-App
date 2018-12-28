@@ -548,7 +548,7 @@
                                                 <rect key="frame" x="0.0" y="479" width="376" height="40"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="biR-6D-P8K">
-                                                        <rect key="frame" x="270" y="10" width="21" height="21"/>
+                                                        <rect key="frame" x="269" y="10" width="21" height="21"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="21" id="Lol-F7-hQ8"/>
                                                             <constraint firstAttribute="width" constant="21" id="bv0-fK-r90"/>
@@ -562,7 +562,7 @@
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="snD-gk-rSP">
-                                                        <rect key="frame" x="295.5" y="8" width="71" height="23"/>
+                                                        <rect key="frame" x="295" y="8" width="71" height="23"/>
                                                         <segmentedCell key="cell" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="cyL-WC-oNr">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
@@ -749,7 +749,11 @@
                                                                                     </constraints>
                                                                                     <imageCell key="cell" scrollable="YES" lineBreakMode="clipping" refusesFirstResponder="YES" alignment="left" image="All Articles" id="6c5-xu-kw5"/>
                                                                                     <connections>
-                                                                                        <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.thumbnail" id="yRT-E7-ReD"/>
+                                                                                        <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.thumbnail" id="KAF-cP-U3A">
+                                                                                            <dictionary key="options">
+                                                                                                <bool key="NSValidatesImmediately" value="YES"/>
+                                                                                            </dictionary>
+                                                                                        </binding>
                                                                                     </connections>
                                                                                 </imageView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juY-k3-pes">
@@ -796,8 +800,8 @@
                                                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                             </textFieldCell>
                                                                                             <connections>
-                                                                                                <binding destination="HdU-aD-B5l" name="textColor" keyPath="objectValue.labelTextColor" id="Prj-0w-0eL"/>
                                                                                                 <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.dateAuthorFeed" id="8JH-dW-v6E"/>
+                                                                                                <binding destination="HdU-aD-B5l" name="textColor" keyPath="objectValue.labelTextColor" id="Prj-0w-0eL"/>
                                                                                             </connections>
                                                                                         </textField>
                                                                                     </subviews>
@@ -822,12 +826,12 @@
                                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textFieldCell>
                                                                                     <connections>
-                                                                                        <binding destination="HdU-aD-B5l" name="textColor" keyPath="objectValue.labelTextColor" id="hQn-f3-EcR"/>
                                                                                         <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.body" id="66L-cH-KqO">
                                                                                             <dictionary key="options">
                                                                                                 <string key="NSValueTransformerName">SummaryValueTransformer</string>
                                                                                             </dictionary>
                                                                                         </binding>
+                                                                                        <binding destination="HdU-aD-B5l" name="textColor" keyPath="objectValue.labelTextColor" id="hQn-f3-EcR"/>
                                                                                     </connections>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="EH7-d9-nQ6">
@@ -841,7 +845,11 @@
                                                                                             </constraints>
                                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="3fo-Na-Jag"/>
                                                                                             <connections>
-                                                                                                <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.starIcon" id="EOA-ti-2Th"/>
+                                                                                                <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.starIcon" id="5Yb-2F-aFe">
+                                                                                                    <dictionary key="options">
+                                                                                                        <bool key="NSValidatesImmediately" value="YES"/>
+                                                                                                    </dictionary>
+                                                                                                </binding>
                                                                                             </connections>
                                                                                         </imageView>
                                                                                     </subviews>
@@ -892,7 +900,7 @@
                                                     </subviews>
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
-                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.16666666666666666" horizontal="YES" id="1N7-PF-Zyk">
+                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1N7-PF-Zyk">
                                                     <rect key="frame" x="0.0" y="463" width="331" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
@@ -949,7 +957,7 @@
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HRz-bW-hNR">
-                                                        <rect key="frame" x="262.5" y="8" width="71" height="23"/>
+                                                        <rect key="frame" x="262" y="8" width="71" height="23"/>
                                                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="nk8-Im-b1A">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
@@ -1027,8 +1035,9 @@
                 <userDefaultsController representsSharedInstance="YES" id="Hy0-1g-VDa"/>
                 <arrayController mode="entity" entityName="CDItem" editable="NO" automaticallyPreparesContent="YES" automaticallyRearrangesObjects="YES" id="gn2-OO-znS">
                     <connections>
+                        <binding destination="XfG-lQ-9wD" name="filterPredicate" keyPath="self.itemsFilterPredicate" id="cf1-38-is6"/>
                         <binding destination="XfG-lQ-9wD" name="managedObjectContext" keyPath="self.managedContext" id="gbW-lD-7s4"/>
-                        <binding destination="XfG-lQ-9wD" name="sortDescriptors" keyPath="self.sortDescriptors" id="aGa-4C-ESW"/>
+                        <binding destination="XfG-lQ-9wD" name="sortDescriptors" keyPath="self.sortDescriptors" previousBinding="cf1-38-is6" id="e6W-8C-Elf"/>
                     </connections>
                 </arrayController>
             </objects>
@@ -1036,13 +1045,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="All Articles" width="33" height="33"/>
+        <image name="All Articles" width="16.5" height="16.5"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="NSShareTemplate" width="11" height="16"/>
         <image name="mark_mac" width="42" height="42"/>
-        <image name="read" width="70.819671630859375" height="70.819671630859375"/>
+        <image name="read" width="69.677421569824219" height="69.677421569824219"/>
         <image name="summary" width="42" height="42"/>
-        <image name="unread" width="70.819671630859375" height="70.819671630859375"/>
+        <image name="unread" width="69.677421569824219" height="69.677421569824219"/>
         <image name="unstarred_mac" width="42" height="42"/>
         <image name="web" width="42" height="42"/>
     </resources>

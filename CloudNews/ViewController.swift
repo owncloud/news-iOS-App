@@ -27,11 +27,14 @@ class ViewController: NSViewController {
 
     @objc dynamic let managedContext: NSManagedObjectContext = NewsData.mainThreadContext
     @objc dynamic let sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+    @objc dynamic var itemsFilterPredicate: NSPredicate? = nil
 
     var toplevelArray = [Any]()
 
     private var currentItemId: Int32 = -1
     private var currentFeedRowIndex: Int = 0
+
+    private var selectionObserver: Any? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +43,8 @@ class ViewController: NSViewController {
         self.rightTopView.wantsLayer = true
         self.splitView.delegate = self
         
-//        self.itemsArrayController.managedObjectContext = NewsData.mainThreadContext
-//        self.itemsArrayController.entityName = "CDItem"
-//        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
-//        self.itemsArrayController.sortDescriptors = [sortDescription]
-//        self.itemsArrayController.automaticallyRearrangesObjects = true
-
-        
         NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
+            self?.itemsArrayController.fetch(nil)
             self?.rebuildFoldersAndFeedsList()
             self?.feedOutlineView.reloadData()
             self?.itemsTableView.reloadData()
@@ -55,8 +52,6 @@ class ViewController: NSViewController {
 
         self.rebuildFoldersAndFeedsList()
         self.feedOutlineView.selectRowIndexes(IndexSet(integer: self.currentFeedRowIndex), byExtendingSelection: false)
-//        try? self.itemsArrayController.fetch(with: nil, merge: false)
-//        self.itemsTableView.reloadData()
     }
 
     override func viewWillAppear() {
@@ -89,44 +84,23 @@ class ViewController: NSViewController {
     }
 
     @IBAction func onMarkUnread(_ sender: Any) {
-        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            let currentId = self.currentItemId
-            if items.count > 0 && currentId > -1 {
-                let filteredItems = items.filter({ return $0.id == currentId })
-                if let currentItem = filteredItems.first {
-                    self.markItems(items: [currentItem], unread: !currentItem.unread)
-                }
-            }
+        if let currentItem = self.itemsArrayController.selectedObjects.first as? CDItem {
+            self.markItems(items: [currentItem], unread: !currentItem.unread)
         }
     }
 
     @IBAction func onStar(_ sender: Any) {
-        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            let currentId = self.currentItemId
-            if items.count > 0 && currentId > -1 {
-                let filteredItems = items.filter({ return $0.id == currentId })
-                if let currentItem = filteredItems.first {
-                    let itemRow = items.index(of: currentItem) ?? 0
-                    let newState = !currentItem.starred
-                    if newState == true {
-                        CDStarred.update(items: [currentItem.id])
-                        CDFeeds.adjustStarredCount(increment: true)
-                    } else {
-                        CDUnstarred.update(items: [currentItem.id])
-                        CDFeeds.adjustStarredCount(increment: false)
-                    }
-                    CDItem.markStarred(itemId: currentItem.id, state: newState) { [weak self] in
-                        self?.rebuildFoldersAndFeedsList()
-                        if newState {
-                            self?.starButton.image = NSImage(named: "starred_mac")
-                        } else {
-                            self?.starButton.image = NSImage(named: "unstarred_mac")
-                        }
-                        if let cellView = self?.itemsTableView.view(atColumn: 0, row: itemRow, makeIfNecessary: false) as? ArticleCellView {
-                            cellView.refresh()
-                        }
-                    }
-                }
+        if let currentItem = self.itemsArrayController.selectedObjects.first as? CDItem {
+            let newState = !currentItem.starred
+            if newState == true {
+                CDStarred.update(items: [currentItem.id])
+                CDFeeds.adjustStarredCount(increment: true)
+            } else {
+                CDUnstarred.update(items: [currentItem.id])
+                CDFeeds.adjustStarredCount(increment: false)
+            }
+            CDItem.markStarred(itemId: currentItem.id, state: newState) { [weak self] in
+                self?.rebuildFoldersAndFeedsList()
             }
         }
     }
@@ -159,8 +133,6 @@ class ViewController: NSViewController {
             self.toplevelArray.append(contentsOf: feeds)
         }
         self.feedOutlineView.reloadData()
-        try? self.itemsArrayController.fetch(with: nil, merge: false)
-        self.itemsTableView.reloadData()
     }
     
     @objc func contextDidSave(_ notification: Notification) {
@@ -217,14 +189,6 @@ class ViewController: NSViewController {
 
     func markItems(items: [CDItem], unread: Bool) {
         if items.count > 0 {
-            var selectedIndexes = [Int]()
-            if let allItems = self.itemsArrayController.arrangedObjects as? [CDItem] {
-                let myselectedItems = allItems.filter({ (item) -> Bool in
-                    items.firstIndex(of: item) != nil
-                })
-                selectedIndexes = myselectedItems.map({ allItems.index(of: $0) }).compactMap({ $0 })
-            }
-        
             let changingIds = items.map { $0.id }
             if unread {
                 CDUnread.update(items: changingIds)
@@ -257,11 +221,6 @@ class ViewController: NSViewController {
             }
             CDItem.markRead(itemIds: changingIds, state: unread) { [weak self] in
                 self?.rebuildFoldersAndFeedsList()
-                for i in selectedIndexes {
-                    if let cellView = self?.itemsTableView.view(atColumn: 0, row: i, makeIfNecessary: false) as? ArticleCellView {
-                        cellView.refresh()
-                    }
-                }
                 NewsManager.shared.updateBadge()
             }
         }
@@ -373,58 +332,31 @@ extension ViewController: NSOutlineViewDelegate {
         self.currentFeedRowIndex = selectedIndex
         if selectedIndex == 0 {
             print("All articles selected")
-            self.itemsArrayController.filterPredicate = nil
+            self.itemsFilterPredicate = nil
         } else if selectedIndex == 1 {
             print("Starred articles selected")
-            let predicate = NSPredicate(format: "starred == true")
-            self.itemsArrayController.filterPredicate = predicate
+            self.itemsFilterPredicate = NSPredicate(format: "starred == true")
         } else if let folder = outlineView.item(atRow: selectedIndex) as? CDFolder {
             print("Folder: \(folder.name ?? "") selected")
             if let feedIds = CDFeed.idsInFolder(folder: folder.id) {
-                let predicate = NSPredicate(format:"feedId IN %@", feedIds)
-                self.itemsArrayController.filterPredicate = predicate
+                self.itemsFilterPredicate = NSPredicate(format:"feedId IN %@", feedIds)
             }
         } else if let feed = outlineView.item(atRow: selectedIndex) as? CDFeed {
             print("Feed: \(feed.title ?? "") selected")
-            let predicate = NSPredicate(format: "feedId == %d", feed.id)
-            self.itemsArrayController.filterPredicate = predicate
+            self.itemsFilterPredicate = NSPredicate(format: "feedId == %d", feed.id)
         }
-        self.itemsTableView.reloadData()
         self.itemsTableView.scrollRowToVisible(0)
-        self.webView.loadHTMLString("", baseURL: nil)
+        self.itemsArrayController.setSelectionIndex(0)
     }
 
 }
-/*
-extension ViewController: NSTableViewDataSource {
-    
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            return items.count
-        }
-        return 0
-    }
-    
-    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-            return items[row]
-        }
-        return nil
-    }
-}
 
-*/
 extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-//        if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
-//            let item = items[row]
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ItemCell"), owner: nil) as? ArticleCellView {
-//                cell.item = item
                 return cell
             }
-//            return nil
-//        }
         return nil
     }
     
@@ -441,11 +373,6 @@ extension ViewController: NSTableViewDelegate {
                 if item.unread {
                     self.markItems(items: [item], unread: false)
                 }
-//                if item.starred {
-//                    self.starButton.image = NSImage(named: "starred_mac")
-//                } else {
-//                    self.starButton.image = NSImage(named: "unstarred_mac")
-//                }
                 switch self.articleSegmentedControl.selectedSegment {
                 case 0:
                     if let summary = item.body {
@@ -467,7 +394,7 @@ extension ViewController: NSTableViewDelegate {
                     break
                 }
             }
-            self.feedOutlineView.reloadData()
+//            self.feedOutlineView.reloadData()
         }
     }
     

@@ -113,7 +113,7 @@ public class CDItem: NSManagedObject, ItemProtocol {
     }
 
     @objc override public class func keyPathsForValuesAffectingValue(forKey key: String) -> Set<String> {
-        print("Debug: called for:", key)
+//        print("Debug: called for:", key)
 
         switch key {
         case "dateAuthorFeed" :
@@ -207,20 +207,15 @@ public class CDItem: NSManagedObject, ItemProtocol {
     
     static func markRead(itemIds: [Int32], state: Bool, completion: SyncCompletionBlock) {
         NewsData.mainThreadContext.performAndWait {
-            let batchRequest = NSBatchUpdateRequest(entityName: self.entityName)
-            batchRequest.propertiesToUpdate = ["unread": state]
-            batchRequest.resultType = .updatedObjectIDsResultType
-            let predicate = NSPredicate(format:"id IN %@", itemIds)
-            batchRequest.predicate = predicate
-            
+            let request: NSFetchRequest<CDItem> = CDItem.fetchRequest()
             do {
-                let objectIDs = try NewsData.mainThreadContext.execute(batchRequest) as! NSBatchUpdateResult
-                let objects = objectIDs.result as! [NSManagedObjectID]
-                
-                objects.forEach({ objID in
-                    let managedObject = NewsData.mainThreadContext.object(with: objID)
-                    NewsData.mainThreadContext.refresh(managedObject, mergeChanges: false)
+                let predicate = NSPredicate(format:"id IN %@", itemIds)
+                request.predicate = predicate
+                let records = try NewsData.mainThreadContext.fetch(request)
+                records.forEach({ (item) in
+                    item.unread = state
                 })
+                try NewsData.mainThreadContext.save()
             } catch { }
             completion()
         }
@@ -228,20 +223,15 @@ public class CDItem: NSManagedObject, ItemProtocol {
 
     static func markStarred(itemId: Int32, state: Bool, completion: SyncCompletionBlock) {
         NewsData.mainThreadContext.performAndWait {
-            let batchRequest = NSBatchUpdateRequest(entityName: self.entityName)
-            batchRequest.propertiesToUpdate = ["starred": state]
-            batchRequest.resultType = .updatedObjectIDsResultType
-            let predicate = NSPredicate(format:"id IN %@", [itemId])
-            batchRequest.predicate = predicate
-
+            let request: NSFetchRequest<CDItem> = CDItem.fetchRequest()
             do {
-                let objectIDs = try NewsData.mainThreadContext.execute(batchRequest) as! NSBatchUpdateResult
-                let objects = objectIDs.result as! [NSManagedObjectID]
-
-                objects.forEach({ objID in
-                    let managedObject = NewsData.mainThreadContext.object(with: objID)
-                    NewsData.mainThreadContext.refresh(managedObject, mergeChanges: false)
+                let predicate = NSPredicate(format:"id == %d", itemId)
+                request.predicate = predicate
+                let records = try NewsData.mainThreadContext.fetch(request)
+                records.forEach({ (item) in
+                    item.starred = state
                 })
+                try NewsData.mainThreadContext.save()
             } catch { }
             completion()
         }
