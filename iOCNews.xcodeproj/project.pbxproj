@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD16EAFF21CDC981003F562E /* SummaryValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD16EAFE21CDC981003F562E /* SummaryValueTransformer.swift */; };
+		BD5C4E7A21D6D1FC00AFCD54 /* AspectFillImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5C4E7921D6D1FC00AFCD54 /* AspectFillImageView.swift */; };
 		BD816AA821B5CAE6001C41DF /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */; };
 		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
 		D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */; };
@@ -149,6 +150,7 @@
 
 /* Begin PBXFileReference section */
 		BD16EAFE21CDC981003F562E /* SummaryValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryValueTransformer.swift; sourceTree = "<group>"; };
+		BD5C4E7921D6D1FC00AFCD54 /* AspectFillImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectFillImageView.swift; sourceTree = "<group>"; };
 		BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSharingProvider.h; sourceTree = "<group>"; };
 		D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSharingProvider.m; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				D0171AD0217C45DA00D2D34B /* NewsSessionManager.swift */,
 				D0171AD2217C4B2600D2D34B /* NewsRouter.swift */,
 				D05795B321ABA707009F618A /* ArticleHelper.swift */,
+				BD5C4E7921D6D1FC00AFCD54 /* AspectFillImageView.swift */,
 				D0171ABB217BE6D800D2D34B /* Assets.xcassets */,
 				D0171ABD217BE6D800D2D34B /* Main.storyboard */,
 				D0171AC0217BE6D800D2D34B /* Info.plist */,
@@ -925,6 +928,7 @@
 				D05A7C4F218AB7CC00961E29 /* Protocols.swift in Sources */,
 				D05C4A24219D29C6008BA66F /* CDUnread+CoreDataClass.swift in Sources */,
 				D0171AD3217C4B2600D2D34B /* NewsRouter.swift in Sources */,
+				BD5C4E7A21D6D1FC00AFCD54 /* AspectFillImageView.swift in Sources */,
 				D05A7C48218AAE5E00961E29 /* CDItem+CoreDataClass.swift in Sources */,
 				D05C4A26219D29C6008BA66F /* CDUnstarred+CoreDataClass.swift in Sources */,
 				D05A7C46218AAE5E00961E29 /* CDFeed+CoreDataClass.swift in Sources */,

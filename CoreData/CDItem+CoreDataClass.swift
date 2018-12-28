@@ -85,23 +85,11 @@ public class CDItem: NSManagedObject, ItemProtocol {
         return NSImage(named: "unstarred_mac")
     }
 
-    @objc dynamic var thumbnail: NSImage? {
-        var result: NSImage? = nil
+    @objc dynamic var thumbnailURL: URL? {
         if let summary = body, let imageURL = self.imageURL(summary: summary) {
-            var processor: ImageProcessor = ResizingImageProcessor(referenceSize: CGSize(width: 72, height: 72), mode: .aspectFill)
-            if !unread {
-                processor = processor >> CompositingImageProcessor(compositingOperation: .copy, alpha: 0.5, backgroundColor: nil)
-            }
-            KingfisherManager.shared.retrieveImage(with: imageURL,
-                                                   options: [.processor(processor)],
-                                                   progressBlock: nil)
-            { (image, error, cacheType, url) in
-                if let image = image {
-                    result = image
-                }
-            }
+            return imageURL
         }
-        return result
+        return nil
     }
 
     @objc dynamic var labelTextColor: NSColor {
@@ -123,6 +111,8 @@ public class CDItem: NSManagedObject, ItemProtocol {
         case "starIcon" :
             return Set(["starred"])
         case "thumbnail" :
+            return Set(["body", "unread"])
+        case "thumbnailURL" :
             return Set(["body", "unread"])
         case "labelTextColor" :
             return Set(["unread"])

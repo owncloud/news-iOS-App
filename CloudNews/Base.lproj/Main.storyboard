@@ -742,15 +742,18 @@
                                                                             <rect key="frame" x="1" y="1" width="334" height="130"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
-                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX">
+                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX" customClass="AspectFillImageView" customModule="CloudNews" customModuleProvider="target">
                                                                                     <rect key="frame" x="10" y="29" width="72" height="72"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="72" id="2ig-df-NgT"/>
                                                                                         <constraint firstAttribute="height" constant="72" id="jtf-2j-31B"/>
                                                                                     </constraints>
                                                                                     <imageCell key="cell" scrollable="YES" lineBreakMode="clipping" refusesFirstResponder="YES" alignment="left" image="All Articles" id="6c5-xu-kw5"/>
+                                                                                    <userDefinedRuntimeAttributes>
+                                                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="scaleAspectFill" value="YES"/>
+                                                                                    </userDefinedRuntimeAttributes>
                                                                                     <connections>
-                                                                                        <binding destination="HdU-aD-B5l" name="value" keyPath="objectValue.thumbnail" id="KAF-cP-U3A">
+                                                                                        <binding destination="HdU-aD-B5l" name="valueURL" keyPath="objectValue.thumbnailURL" id="eDz-3E-PtG">
                                                                                             <dictionary key="options">
                                                                                                 <bool key="NSValidatesImmediately" value="YES"/>
                                                                                             </dictionary>
