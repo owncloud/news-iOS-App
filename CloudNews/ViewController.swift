@@ -100,7 +100,7 @@ class ViewController: NSViewController {
                 CDFeeds.adjustStarredCount(increment: false)
             }
             CDItem.markStarred(itemId: currentItem.id, state: newState) { [weak self] in
-                self?.rebuildFoldersAndFeedsList()
+                self?.feedOutlineView.reloadData()
             }
         }
     }
@@ -135,58 +135,6 @@ class ViewController: NSViewController {
         self.feedOutlineView.reloadData()
     }
     
-    @objc func contextDidSave(_ notification: Notification) {
-        print(notification)
-        self.feedOutlineView.beginUpdates()
-        self.itemsTableView.beginUpdates()
-        if let insertedObjects = notification.userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject>, !insertedObjects.isEmpty {
-            if let _ = insertedObjects.first as? CDFolder {
-                self.rebuildFoldersAndFeedsList()
-            } else if let _ = insertedObjects.first as? CDFeed {
-                self.rebuildFoldersAndFeedsList()
-            } else {
-                self.itemsTableView.reloadData()
-            }
-        }
-        
-        if let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>, !deletedObjects.isEmpty {
-            if let _ = deletedObjects.first as? CDFolder {
-                self.rebuildFoldersAndFeedsList()
-            } else if let _ = deletedObjects.first as? CDFeed {
-                self.rebuildFoldersAndFeedsList()
-            } else {
-                self.itemsTableView.reloadData()
-            }
-        }
-
-        if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>, !updatedObjects.isEmpty {
-            print(updatedObjects)
-            for object in updatedObjects {
-                if let folder = object as? CDFolder {
-                    self.feedOutlineView.reloadItem(folder)
-                } else if let feed = object as? CDFeed {
-                    self.feedOutlineView.reloadItem(feed)
-                } else {
-                    self.itemsTableView.reloadData()
-                }
-            }
-        }
-
-        if let refreshedObjects = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject>, !refreshedObjects.isEmpty {
-            print(refreshedObjects)
-        }
-        
-        if let invalidatedObjects = notification.userInfo?[NSInvalidatedObjectsKey] as? Set<NSManagedObject>, !invalidatedObjects.isEmpty {
-            print(invalidatedObjects)
-        }
-        
-        if let areInvalidatedAllObjects = notification.userInfo?[NSInvalidatedAllObjectsKey] as? Bool {
-            print(areInvalidatedAllObjects)
-        }
-        self.itemsTableView.endUpdates()
-        self.feedOutlineView.endUpdates()
-    }
-
     func markItems(items: [CDItem], unread: Bool) {
         if items.count > 0 {
             let changingIds = items.map { $0.id }
@@ -220,7 +168,7 @@ class ViewController: NSViewController {
                 }
             }
             CDItem.markRead(itemIds: changingIds, state: unread) { [weak self] in
-                self?.rebuildFoldersAndFeedsList()
+                self?.feedOutlineView.reloadData()
                 NewsManager.shared.updateBadge()
             }
         }
