@@ -431,9 +431,28 @@ extension ViewController: NSUserInterfaceValidations {
 
     func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
         if item.action == #selector(onStar(_:)) {
-            print("validating item \(item)")
-            return true
+//            print("validating item \(item)")
+            if let currentItem = self.itemsArrayController.selectedObjects.first as? CDItem {
+                if let menuItem = item as? NSMenuItem {
+                    if currentItem.starred {
+                        menuItem.title = "Unstar"
+                    } else {
+                        menuItem.title = "Star"
+                    }
+                }
+            }
+        } else if item.action == #selector(onMarkUnread(_:)) {
+            if let currentItem = self.itemsArrayController.selectedObjects.first as? CDItem {
+                if let menuItem = item as? NSMenuItem {
+                    if currentItem.unread {
+                        menuItem.title = "Mark Read"
+                    } else {
+                        menuItem.title = "Mark Unread"
+                    }
+                }
+            }
         }
+
         return true
 
     }
