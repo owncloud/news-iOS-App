@@ -134,7 +134,7 @@ class ViewController: NSViewController {
         }
         self.feedOutlineView.reloadData()
     }
-    
+
     func markItems(items: [CDItem], unread: Bool) {
         if items.count > 0 {
             let changingIds = items.map { $0.id }
@@ -294,7 +294,6 @@ extension ViewController: NSOutlineViewDelegate {
             self.itemsFilterPredicate = NSPredicate(format: "feedId == %d", feed.id)
         }
         self.itemsTableView.scrollRowToVisible(0)
-        self.itemsArrayController.setSelectionIndex(0)
     }
 
 }
@@ -342,7 +341,6 @@ extension ViewController: NSTableViewDelegate {
                     break
                 }
             }
-//            self.feedOutlineView.reloadData()
         }
     }
     
