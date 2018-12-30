@@ -59,7 +59,7 @@ public class CDUnread: NSManagedObject {
         do {
             let batchDeleteResult = try NewsData.mainThreadContext.execute(batchDeleteRequest) as! NSBatchDeleteResult
             print("The batch delete request has deleted \(batchDeleteResult.result!) records.")
-            NewsData.mainThreadContext.reset() // reset managed object context (need it for working)
+//            NewsData.mainThreadContext.reset() // reset managed object context (need it for working)
         } catch {
             let updateError = error as NSError
             print("\(updateError), \(updateError.userInfo)")
