@@ -73,7 +73,12 @@ class ViewController: NSViewController {
             NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
         }
     }
-  
+
+    @IBAction func onShowHideRead(_ sender: Any) {
+        let notification = Notification(name: Notification.Name(""), object: self.feedOutlineView, userInfo: nil)
+        self.outlineViewSelectionDidChange(notification)
+    }
+
     @IBAction func onMarkRead(_ sender: Any) {
         if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
             let filteredItems = items.filter { (item) -> Bool in
@@ -175,7 +180,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func onArticleView(_ sender: Any) {
-//        self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
+        self.tableViewSelectionDidChange(Notification(name: NSTableView.selectionDidChangeNotification, object: self.itemsTableView, userInfo: nil))
     }
 
     @IBAction func onPreviousFeed(_ sender: Any) {
@@ -280,18 +285,34 @@ extension ViewController: NSOutlineViewDelegate {
         self.currentFeedRowIndex = selectedIndex
         if selectedIndex == 0 {
             print("All articles selected")
-            self.itemsFilterPredicate = nil
+            if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
+                self.itemsFilterPredicate = NSPredicate(format: "unread == true")
+            } else {
+                self.itemsFilterPredicate = nil
+            }
         } else if selectedIndex == 1 {
             print("Starred articles selected")
             self.itemsFilterPredicate = NSPredicate(format: "starred == true")
         } else if let folder = outlineView.item(atRow: selectedIndex) as? CDFolder {
             print("Folder: \(folder.name ?? "") selected")
             if let feedIds = CDFeed.idsInFolder(folder: folder.id) {
-                self.itemsFilterPredicate = NSPredicate(format:"feedId IN %@", feedIds)
+                if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
+                    let unreadPredicate = NSPredicate(format: "unread == true")
+                    let feedPredicate = NSPredicate(format:"feedId IN %@", feedIds)
+                    self.itemsFilterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [unreadPredicate, feedPredicate])
+                } else {
+                    self.itemsFilterPredicate = NSPredicate(format:"feedId IN %@", feedIds)
+                }
             }
         } else if let feed = outlineView.item(atRow: selectedIndex) as? CDFeed {
             print("Feed: \(feed.title ?? "") selected")
-            self.itemsFilterPredicate = NSPredicate(format: "feedId == %d", feed.id)
+            if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
+                let unreadPredicate = NSPredicate(format: "unread == true")
+                let feedPredicate = NSPredicate(format: "feedId == %d", feed.id)
+                self.itemsFilterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [unreadPredicate, feedPredicate])
+            } else {
+                self.itemsFilterPredicate = NSPredicate(format: "feedId == %d", feed.id)
+            }
         }
         self.itemsTableView.scrollRowToVisible(0)
     }
