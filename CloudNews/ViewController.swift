@@ -173,7 +173,9 @@ class ViewController: NSViewController {
                 }
             }
             CDItem.markRead(itemIds: changingIds, state: unread) { [weak self] in
+                let selectedRowIndexes = self?.feedOutlineView.selectedRowIndexes
                 self?.feedOutlineView.reloadData()
+                self?.feedOutlineView.selectRowIndexes(selectedRowIndexes!, byExtendingSelection: false)
                 NewsManager.shared.updateBadge()
             }
         }
