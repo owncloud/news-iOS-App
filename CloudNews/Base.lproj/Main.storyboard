@@ -65,16 +65,8 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="New Feed..." keyEquivalent="n" id="dGM-dZ-5QE" userLabel="New Feed...">
-                                            <connections>
-                                                <action selector="onNewFeed:" target="Voe-Tx-rLC" id="UYe-U7-0eP"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="New Folder..." keyEquivalent="N" id="Pag-S7-R1G" userLabel="New Folder...">
-                                            <connections>
-                                                <action selector="onNewFolder:" target="Voe-Tx-rLC" id="6Oq-HX-47q"/>
-                                            </connections>
-                                        </menuItem>
+                                        <menuItem title="New Feed..." enabled="NO" keyEquivalent="n" id="dGM-dZ-5QE" userLabel="New Feed..."/>
+                                        <menuItem title="New Folder..." enabled="NO" keyEquivalent="N" id="Pag-S7-R1G" userLabel="New Folder..."/>
                                     </items>
                                 </menu>
                             </menuItem>
