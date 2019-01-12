@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CDFeed" representedClassName="CDFeed" syncable="YES" codeGenerationType="category">
+    <entity name="CDFeed" representedClassName="CDFeed" versionHashModifier="Add index" syncable="YES" codeGenerationType="category">
         <attribute name="added" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="articleCount" optional="YES" attributeType="Integer 32" defaultValueString="250" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="faviconLink" optional="YES" attributeType="String" syncable="YES"/>
@@ -34,7 +34,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unreadCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="CDItem" representedClassName="CDItem" syncable="YES" codeGenerationType="category">
+    <entity name="CDItem" representedClassName="CDItem" versionHashModifier="Add index" syncable="YES" codeGenerationType="category">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="enclosureLink" optional="YES" attributeType="String" syncable="YES"/>

@@ -540,6 +540,9 @@
                                             <customView focusRingType="none" translatesAutoresizingMaskIntoConstraints="NO" id="70o-WG-6WI">
                                                 <rect key="frame" x="0.0" y="479" width="376" height="40"/>
                                                 <subviews>
+                                                    <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="7gt-Mi-gC4">
+                                                        <rect key="frame" x="249" y="12" width="16" height="16"/>
+                                                    </progressIndicator>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="biR-6D-P8K">
                                                         <rect key="frame" x="270" y="10" width="21" height="21"/>
                                                         <constraints>
@@ -575,10 +578,12 @@
                                                     </segmentedControl>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="biR-6D-P8K" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="70o-WG-6WI" secondAttribute="leading" constant="15" id="0RB-g0-jw9"/>
                                                     <constraint firstItem="snD-gk-rSP" firstAttribute="centerY" secondItem="70o-WG-6WI" secondAttribute="centerY" id="6vF-ji-qQK"/>
                                                     <constraint firstAttribute="height" constant="40" id="DZq-fY-QCS"/>
+                                                    <constraint firstItem="7gt-Mi-gC4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="70o-WG-6WI" secondAttribute="leading" constant="15" id="NMl-c5-eI6"/>
                                                     <constraint firstItem="biR-6D-P8K" firstAttribute="centerY" secondItem="70o-WG-6WI" secondAttribute="centerY" id="Oy4-q5-igC"/>
+                                                    <constraint firstItem="biR-6D-P8K" firstAttribute="leading" secondItem="7gt-Mi-gC4" secondAttribute="trailing" constant="5" id="UhZ-oE-GBd"/>
+                                                    <constraint firstItem="7gt-Mi-gC4" firstAttribute="centerY" secondItem="70o-WG-6WI" secondAttribute="centerY" id="dxh-UV-w1l"/>
                                                     <constraint firstAttribute="trailing" secondItem="snD-gk-rSP" secondAttribute="trailing" constant="10" id="khT-on-jGZ"/>
                                                     <constraint firstItem="snD-gk-rSP" firstAttribute="leading" secondItem="biR-6D-P8K" secondAttribute="trailing" constant="5" id="oxB-1h-vD7"/>
                                                 </constraints>
@@ -1033,6 +1038,7 @@
                         <outlet property="shareButton" destination="gV3-xP-BfO" id="CGF-LC-aTf"/>
                         <outlet property="splitView" destination="qto-lP-25p" id="o9a-Tk-1Dc"/>
                         <outlet property="starButton" destination="GcC-rx-ETz" id="pkM-Ro-qDK"/>
+                        <outlet property="syncSpinner" destination="7gt-Mi-gC4" id="CJT-Dh-ySw"/>
                         <outlet property="webView" destination="RmO-ru-tq4" id="Rum-XY-JYu"/>
                     </connections>
                 </viewController>

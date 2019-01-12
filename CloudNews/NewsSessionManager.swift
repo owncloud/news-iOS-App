@@ -46,6 +46,7 @@ class NewsManager {
             default: timeInterval = 15 * 60
             }
             self.syncTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { (_) in
+                NotificationCenter.default.post(name: NSNotification.Name("SyncInitiated"), object: nil)
                 self.sync(completion: {
                     NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
                 })
@@ -67,6 +68,31 @@ class NewsManager {
         NewsSessionManager.shared.request(router).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
             debugPrint(response)
         })
+    }
+
+    func markRead(itemIds: [Int32], state: Bool, completion: @escaping SyncCompletionBlock) {
+        CDItem.markRead(itemIds: itemIds, state: state) {
+            completion()
+            let parameters: Parameters = ["items": itemIds]
+            var router: Router
+            if state {
+                router = Router.itemsUnread(parameters: parameters)
+            } else {
+                router = Router.itemsRead(parameters: parameters)
+            }
+            NewsSessionManager.shared.request(router).responseData { response in
+                switch response.result {
+                case .success:
+                    if state {
+                        CDUnread.deleteItemIds(itemIds: itemIds, in: NewsData.mainThreadContext)
+                    } else {
+                        CDRead.deleteItemIds(itemIds: itemIds, in: NewsData.mainThreadContext)
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
 
     /*

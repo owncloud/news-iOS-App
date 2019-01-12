@@ -22,6 +22,7 @@ class ViewController: NSViewController {
     @IBOutlet var articleSegmentedControl: NSSegmentedControl!
     @IBOutlet weak var starButton: NSButton!
     @IBOutlet weak var shareButton: NSButton!
+    @IBOutlet weak var syncSpinner: NSProgressIndicator!
 
     @IBOutlet var itemsArrayController: NSArrayController!
 
@@ -42,12 +43,17 @@ class ViewController: NSViewController {
         self.centerTopView.wantsLayer = true
         self.rightTopView.wantsLayer = true
         self.splitView.delegate = self
-        
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncInitiated"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
+            self?.syncSpinner.startAnimation(self)
+        }
+
         NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
             self?.itemsArrayController.fetch(nil)
             self?.rebuildFoldersAndFeedsList()
             self?.feedOutlineView.reloadData()
             self?.itemsTableView.reloadData()
+            self?.syncSpinner.stopAnimation(self)
         }
 
         self.rebuildFoldersAndFeedsList()
@@ -69,6 +75,7 @@ class ViewController: NSViewController {
     }
 
     @IBAction func onSync(_ sender: Any) {
+        NotificationCenter.default.post(name: NSNotification.Name("SyncInitiated"), object: nil)
         NewsManager.shared.sync {
             NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
         }
@@ -145,10 +152,8 @@ class ViewController: NSViewController {
             let changingIds = items.map { $0.id }
             if unread {
                 CDUnread.update(items: changingIds)
-                CDRead.deleteItemIds(itemIds: changingIds, in: NewsData.mainThreadContext)
             } else {
                 CDRead.update(items: changingIds)
-                CDUnread.deleteItemIds(itemIds: changingIds, in: NewsData.mainThreadContext)
             }
             for item in items {
                 if var feed = CDFeed.feed(id: item.feedId) {
@@ -172,7 +177,7 @@ class ViewController: NSViewController {
                     }
                 }
             }
-            CDItem.markRead(itemIds: changingIds, state: unread) { [weak self] in
+            NewsManager.shared.markRead(itemIds: changingIds, state: unread) { [weak self] in
                 let selectedRowIndexes = self?.feedOutlineView.selectedRowIndexes
                 self?.feedOutlineView.reloadData()
                 self?.feedOutlineView.selectRowIndexes(selectedRowIndexes!, byExtendingSelection: false)
