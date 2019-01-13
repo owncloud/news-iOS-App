@@ -111,8 +111,8 @@ class ViewController: NSViewController {
                 CDUnstarred.update(items: [currentItem.id])
                 CDFeeds.adjustStarredCount(increment: false)
             }
-            CDItem.markStarred(itemId: currentItem.id, state: newState) { [weak self] in
-                self?.feedOutlineView.reloadData()
+            NewsManager.shared.markStarred(item: currentItem, starred: newState) { [weak self] in
+                self?.feedOutlineView.reloadItem(self?.toplevelArray[1])
             }
         }
     }

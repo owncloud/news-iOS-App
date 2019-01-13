@@ -95,6 +95,33 @@ class NewsManager {
         }
     }
 
+    func markStarred(item: CDItem, starred: Bool, completion: @escaping SyncCompletionBlock) {
+        CDItem.markStarred(itemId: item.id, state: starred) {
+            completion()
+            let parameters: Parameters = ["items": [["feedId": item.feedId,
+                                                     "guidHash": item.guidHash as Any]]]
+            var router: Router
+            if starred {
+                router = Router.itemsStarred(parameters: parameters)
+            } else {
+                router = Router.itemsUnstarred(parameters: parameters)
+            }
+            NewsSessionManager.shared.request(router).responseData { response in
+                switch response.result {
+                case .success:
+                    if starred {
+                        CDStarred.deleteItemIds(itemIds: [item.id], in: NewsData.mainThreadContext)
+                    } else {
+                        CDUnstarred.deleteItemIds(itemIds: [item.id], in: NewsData.mainThreadContext)
+                    }
+                default:
+                    break
+                }
+                completion()
+            }
+        }
+    }
+
     /*
      Initial sync
      
