@@ -11,10 +11,6 @@ import CoreImage
 
 class ArticleCellNoThumbnail: BaseArticleCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     override func configureView() {
         super.configureView()
         guard let item = self.item else {
