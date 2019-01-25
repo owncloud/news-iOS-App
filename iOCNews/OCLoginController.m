@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2013 Peter Hedlund peter.hedlund@me.com
+ Copyright 2013-2019 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -40,6 +40,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 @interface OCLoginController ()
 
 @property (strong, nonatomic) IBOutlet UILabel *connectLabel;
+@property (assign) BOOL length1;
+@property (assign) BOOL length2;
+@property (assign) BOOL length3;
 
 @end
 
@@ -64,6 +67,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     self.usernameTextField.delegate = self;
     self.passwordTextField.delegate = self;
     self.certificateCell.accessoryView = self.certificateSwitch;
+    self.length1 = NO;
+    self.length2 = NO;
+    self.length3 = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,8 +77,12 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     [super viewWillAppear:animated];
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     self.serverTextField.text = [prefs stringForKey:@"Server"];
+    self.length1 = (self.serverTextField.text.length > 0);
     self.usernameTextField.text = [[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)];
+    self.length2 = (self.usernameTextField.text.length > 0);
     self.passwordTextField.text = [[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)];
+    self.length3 = (self.passwordTextField.text.length > 0);
+    self.connectLabel.enabled = (self.length1 && self.length2 && self.length3);
     self.certificateSwitch.on = [prefs boolForKey:@"AllowInvalidSSLCertificate"];
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         self.connectLabel.text = NSLocalizedString(@"Reconnect", @"A button title");
@@ -101,136 +111,142 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
     return 44.0f;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         if (!self.connectLabel.enabled) {
             return;
         }
         [tableView deselectRowAtIndexPath:indexPath animated:true];
-        [self.connectionActivityIndicator startAnimating];
-
+        
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
         [prefs synchronize];
-
-        OCAPIClient *client = [[OCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.serverTextField.text, rootPath]]];
-        [client setRequestSerializer:[AFJSONRequestSerializer serializer]];
-        [client.requestSerializer setAuthorizationHeaderFieldWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
         
-        [client GET:@"version" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-            NSDictionary *jsonDict = nil;
-            if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
-            {
-                jsonDict = (NSDictionary*)responseObject;
+        NSMutableString *serverInput = [NSMutableString stringWithString: self.serverTextField.text];
+        if (serverInput.length > 0) {
+            if ([serverInput hasSuffix:@"/"]) {
+                NSUInteger lastCharIndex = serverInput.length - 1;
+                NSRange rangeOfLastChar = [serverInput rangeOfComposedCharacterSequenceAtIndex: lastCharIndex];
+                serverInput = [NSMutableString stringWithString: [serverInput substringToIndex: rangeOfLastChar.location]];
             }
-            else
-            {
-                id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
-                if (json && [json isKindOfClass:[NSDictionary class]]) {
-                    jsonDict = (NSDictionary*)json;
+            [self.connectionActivityIndicator startAnimating];
+            OCAPIClient *client = [[OCAPIClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", serverInput, rootPath]]];
+            [client setRequestSerializer:[AFJSONRequestSerializer serializer]];
+            [client.requestSerializer setAuthorizationHeaderFieldWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
+            
+            [client GET:@"version" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSDictionary *jsonDict = nil;
+                if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
+                {
+                    jsonDict = (NSDictionary*)responseObject;
                 }
-            }
-            if (jsonDict) {
-                __unused NSString *version = [jsonDict valueForKey:@"version"];
-                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                [prefs setObject:self.serverTextField.text forKey:@"Server"];
-                [[PDKeychainBindings sharedKeychainBindings] setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
-                [[PDKeychainBindings sharedKeychainBindings] setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
-                [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
-                [prefs synchronize];
-                [OCAPIClient setSharedClient:nil];
-                __unused int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
-                [self.connectionActivityIndicator stopAnimating];
-                [RMessage showNotificationInViewController:self
-                                                      title:NSLocalizedString(@"Success", @"A message title")
-                                                   subtitle:NSLocalizedString(@"You are now connected to News on your server", @"A message")
-                                                      iconImage:nil
-                                                       type:RMessageTypeSuccess
-                                            customTypeName:nil
-                                                   duration:RMessageDurationAutomatic
-                                                   callback:^{
-                                                       self.connectLabel.enabled = YES;
-                                                       [RMessage dismissActiveNotification];
-                                                   }
-                                                buttonTitle:NSLocalizedString(@"Close & Sync", @"A button title")
-                                             buttonCallback:^{
-                                                 self.connectLabel.enabled = YES;
-                                                 [RMessage dismissActiveNotification];
-                                                 [self dismissViewControllerAnimated:YES completion:nil];
-                                                 [[NSNotificationCenter defaultCenter] postNotificationName:@"SyncNews" object:self];
-                                             }
-                                                 atPosition:RMessagePositionTop
-                                       canBeDismissedByUser:YES];
-            } else {
-                [self.connectionActivityIndicator stopAnimating];
-                [RMessage showNotificationInViewController:self
-                                                      title:NSLocalizedString(@"Connection failure", @"An error message title")
-                                                   subtitle:NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message")
-                                                      iconImage:nil
-                                                       type:RMessageTypeError
-                                             customTypeName:nil
-                                                   duration:RMessageDurationEndless
-                                                   callback:^{
-                                                       self.connectLabel.enabled = YES;
-                                                       [RMessage dismissActiveNotification];
-                                                   }
-                                                buttonTitle:nil
-                                             buttonCallback:^{
-                                                 //
-                                             }
-                                                 atPosition:RMessagePositionTop
-                                       canBeDismissedByUser:YES];
-
-            }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            self.connectLabel.enabled = NO;
-            NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
-            NSString *message = @"";
-            NSString *title = @"";
-//            NSLog(@"Status code: %ld", (long)response.statusCode);
-            switch (response.statusCode) {
-                case 200:
-                    title = NSLocalizedString(@"News not found", @"An error message title");
-                    message = NSLocalizedString(@"News could not be found on your server. Make sure it is installed and enabled", @"An error message");
-                    break;
-                case 401:
-                    title = NSLocalizedString(@"Unauthorized", @"An error message title");
-                    message = NSLocalizedString(@"Check username and password.", @"An error message");
-                    break;
-                case 404:
-                    title = NSLocalizedString(@"Server not found", @"An error message title");
-                    message = NSLocalizedString(@"A server installation could not be found. Check the server address.", @"An error message");
-                    break;
-                default:
-                    title = NSLocalizedString(@"Connection failure", @"An error message title");
-                    if (error) {
-                        message = error.localizedDescription;
-                    } else {
-                        message = NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message");
+                else
+                {
+                    id json = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                    if (json && [json isKindOfClass:[NSDictionary class]]) {
+                        jsonDict = (NSDictionary*)json;
                     }
-                    break;
-            }
-            [self.connectionActivityIndicator stopAnimating];
-            [RMessage showNotificationInViewController:self
-                                                 title:title
-                                              subtitle:message
-                                             iconImage:nil
-                                                  type:RMessageTypeError
-                                        customTypeName:nil
-                                              duration:RMessageDurationEndless
-                                              callback:^{
-                                                  self.connectLabel.enabled = YES;
-                                                  [RMessage dismissActiveNotification];
-                                              } buttonTitle:nil
-                                        buttonCallback:nil
-                                            atPosition:RMessagePositionTop
-                                  canBeDismissedByUser:YES];
-        }];
+                }
+                if (jsonDict) {
+                    __unused NSString *version = [jsonDict valueForKey:@"version"];
+                    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                    [prefs setObject:self.serverTextField.text forKey:@"Server"];
+                    [[PDKeychainBindings sharedKeychainBindings] setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
+                    [[PDKeychainBindings sharedKeychainBindings] setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
+                    [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
+                    [prefs synchronize];
+                    [OCAPIClient setSharedClient:nil];
+                    __unused int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
+                    [self.connectionActivityIndicator stopAnimating];
+                    [RMessage showNotificationInViewController:self
+                                                         title:NSLocalizedString(@"Success", @"A message title")
+                                                      subtitle:NSLocalizedString(@"You are now connected to News on your server", @"A message")
+                                                     iconImage:nil
+                                                          type:RMessageTypeSuccess
+                                                customTypeName:nil
+                                                      duration:RMessageDurationAutomatic
+                                                      callback:^{
+                                                          self.connectLabel.enabled = YES;
+                                                          [RMessage dismissActiveNotification];
+                                                      }
+                                                   buttonTitle:NSLocalizedString(@"Close & Sync", @"A button title")
+                                                buttonCallback:^{
+                                                    self.connectLabel.enabled = YES;
+                                                    [RMessage dismissActiveNotification];
+                                                    [self dismissViewControllerAnimated:YES completion:nil];
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"SyncNews" object:self];
+                                                }
+                                                    atPosition:RMessagePositionTop
+                                          canBeDismissedByUser:YES];
+                } else {
+                    [self.connectionActivityIndicator stopAnimating];
+                    [RMessage showNotificationInViewController:self
+                                                         title:NSLocalizedString(@"Connection failure", @"An error message title")
+                                                      subtitle:NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message")
+                                                     iconImage:nil
+                                                          type:RMessageTypeError
+                                                customTypeName:nil
+                                                      duration:RMessageDurationEndless
+                                                      callback:^{
+                                                          self.connectLabel.enabled = YES;
+                                                          [RMessage dismissActiveNotification];
+                                                      }
+                                                   buttonTitle:nil
+                                                buttonCallback:^{
+                                                    //
+                                                }
+                                                    atPosition:RMessagePositionTop
+                                          canBeDismissedByUser:YES];
+                    
+                }
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                self.connectLabel.enabled = NO;
+                NSHTTPURLResponse *response = (NSHTTPURLResponse *)task.response;
+                NSString *message = @"";
+                NSString *title = @"";
+                //            NSLog(@"Status code: %ld", (long)response.statusCode);
+                switch (response.statusCode) {
+                    case 200:
+                        title = NSLocalizedString(@"News not found", @"An error message title");
+                        message = NSLocalizedString(@"News could not be found on your server. Make sure it is installed and enabled", @"An error message");
+                        break;
+                    case 401:
+                        title = NSLocalizedString(@"Unauthorized", @"An error message title");
+                        message = NSLocalizedString(@"Check username and password.", @"An error message");
+                        break;
+                    case 404:
+                        title = NSLocalizedString(@"Server not found", @"An error message title");
+                        message = NSLocalizedString(@"A server installation could not be found. Check the server address.", @"An error message");
+                        break;
+                    default:
+                        title = NSLocalizedString(@"Connection failure", @"An error message title");
+                        if (error) {
+                            message = error.localizedDescription;
+                        } else {
+                            message = NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message");
+                        }
+                        break;
+                }
+                [self.connectionActivityIndicator stopAnimating];
+                [RMessage showNotificationInViewController:self
+                                                     title:title
+                                                  subtitle:message
+                                                 iconImage:nil
+                                                      type:RMessageTypeError
+                                            customTypeName:nil
+                                                  duration:RMessageDurationEndless
+                                                  callback:^{
+                                                      self.connectLabel.enabled = YES;
+                                                      [RMessage dismissActiveNotification];
+                                                  } buttonTitle:nil
+                                            buttonCallback:nil
+                                                atPosition:RMessagePositionTop
+                                      canBeDismissedByUser:YES];
+            }];
+        }
     }
 }
 
@@ -250,19 +266,22 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSString *labelText = @"Reconnect";
     BOOL textHasChanged = NO;
-    
+
     NSMutableString *proposedNewString = [NSMutableString stringWithString:textField.text];
     [proposedNewString replaceCharactersInRange:range withString:string];
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if ([textField isEqual:self.serverTextField]) {
         textHasChanged = (![proposedNewString isEqualToString:[prefs stringForKey:@"Server"]]);
+        self.length1 = (proposedNewString.length > 0);
     }
     if ([textField isEqual:self.usernameTextField]) {
         textHasChanged = (![proposedNewString isEqualToString:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]]);
+        self.length2 = (proposedNewString.length > 0);
     }
     if ([textField isEqual:self.passwordTextField]) {
         textHasChanged = (![proposedNewString isEqualToString:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]]);
+        self.length3 = (proposedNewString.length > 0);
     }
     if (!textHasChanged) {
         textHasChanged = (self.certificateSwitch.on != [prefs boolForKey:@"AllowInvalidSSLCertificate"]);
@@ -271,6 +290,21 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         labelText = @"Connect";
     }
     self.connectLabel.text = labelText;
+    self.connectLabel.enabled = (self.length1 && self.length2 && self.length3);
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    if ([textField isEqual:self.serverTextField]) {
+        self.length1 = NO;
+    }
+    if ([textField isEqual:self.usernameTextField]) {
+        self.length2 = NO;
+    }
+    if ([textField isEqual:self.passwordTextField]) {
+        self.length3 = NO;
+    }
+    self.connectLabel.enabled = NO;
     return YES;
 }
 
