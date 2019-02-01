@@ -1023,20 +1023,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eyg-5R-30c">
-                                <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                                <rect key="frame" x="0.0" y="70" width="834" height="1042"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" sectionInsetReference="safeArea" id="g9w-95-zKs">
-                                    <size key="itemSize" width="348" height="572"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" sectionInsetReference="safeArea" id="g9w-95-zKs" customClass="ArticleFlowLayout" customModule="iOCNews" customModuleProvider="target">
+                                    <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ArticleCell" id="5NP-pa-UX2">
-                                        <rect key="frame" x="0.0" y="305" width="348" height="572"/>
-                                        <autoresizingMask key="autoresizingMask"/>
+                                    <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ArticleCell" id="5NP-pa-UX2">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="348" height="572"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </view>
                                     </collectionViewCell>
@@ -1049,10 +1049,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Eyg-5R-30c" firstAttribute="height" secondItem="eVB-F7-ce0" secondAttribute="height" id="JgZ-vZ-Tfw"/>
-                            <constraint firstItem="Eyg-5R-30c" firstAttribute="width" secondItem="eVB-F7-ce0" secondAttribute="width" id="O6h-pg-uap"/>
-                            <constraint firstItem="Eyg-5R-30c" firstAttribute="centerY" secondItem="eVB-F7-ce0" secondAttribute="centerY" id="SQb-G3-UvU"/>
-                            <constraint firstItem="Eyg-5R-30c" firstAttribute="centerX" secondItem="GtX-zp-2ND" secondAttribute="centerX" id="UhB-YW-b0x"/>
+                            <constraint firstItem="Eyg-5R-30c" firstAttribute="leading" secondItem="GtX-zp-2ND" secondAttribute="leading" id="P5D-S5-Tq3"/>
+                            <constraint firstItem="GtX-zp-2ND" firstAttribute="trailing" secondItem="Eyg-5R-30c" secondAttribute="trailing" id="ZLe-qn-y4e"/>
+                            <constraint firstItem="GtX-zp-2ND" firstAttribute="top" secondItem="Eyg-5R-30c" secondAttribute="top" id="aF7-JH-cVa"/>
+                            <constraint firstItem="GtX-zp-2ND" firstAttribute="bottom" secondItem="Eyg-5R-30c" secondAttribute="bottom" id="hoX-Gt-Hv4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GtX-zp-2ND"/>
                     </view>
@@ -1105,7 +1105,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jrj-RM-PlE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="182" y="508"/>
+            <point key="canvasLocation" x="181.294964028777" y="507.73381294964031"/>
         </scene>
         <!--Pref View Controller-->
         <scene sceneID="GbA-Io-fFE">

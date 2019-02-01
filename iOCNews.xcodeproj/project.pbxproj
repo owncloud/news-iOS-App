@@ -52,6 +52,7 @@
 		D0735DC31F83378A002D3AB3 /* KSCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC01F83378A002D3AB3 /* KSCrash.framework */; };
 		D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC11F83378A002D3AB3 /* AFNetworking.framework */; };
 		D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */; };
+		D07F5E8321FEA01E00528E90 /* ArticleFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */; };
 		D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D096143C21EED4AF000BD5D2 /* ArticleListFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D096143B21EED4AF000BD5D2 /* ArticleListFlowLayout.swift */; };
@@ -154,6 +155,7 @@
 		D0735DC21F83378A002D3AB3 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
 		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
+		D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFlowLayout.swift; sourceTree = "<group>"; };
 		D0809718210AAF3C00EDF207 /* iOCNews-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOCNews-Bridging-Header.h"; sourceTree = "<group>"; };
 		D08D832C18108D9B005A75F0 /* OCFolderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFolderTableViewController.h; sourceTree = "<group>"; };
 		D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFolderTableViewController.m; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 				D05A6FB8213DEC31006D3AB8 /* ArticleCellWithThumbnail.xib */,
 				D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */,
 				D096143B21EED4AF000BD5D2 /* ArticleListFlowLayout.swift */,
+				D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */,
 				D0BCAA6B177909A500C965F4 /* ArticleListController.h */,
 				D0BCAA6C177909A500C965F4 /* ArticleListController.m */,
 				D0B95D13211144A200D1A2B8 /* ArticleController.h */,
@@ -713,6 +716,7 @@
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
+				D07F5E8321FEA01E00528E90 /* ArticleFlowLayout.swift in Sources */,
 				D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */,
 				D05A6FB7213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift in Sources */,
 				D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */,
