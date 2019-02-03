@@ -14,7 +14,7 @@ class ArticleCellWithWebView: BaseArticleCell {
     var webConfig: WKWebViewConfiguration {
         let result = WKWebViewConfiguration()
         result.allowsInlineMediaPlayback = true
-        result.requiresUserActionForMediaPlayback = true
+        result.mediaTypesRequiringUserActionForPlayback = [.all]
         return result
     }
 
@@ -26,7 +26,7 @@ class ArticleCellWithWebView: BaseArticleCell {
     }
     
     private var internalWebView: WKWebView?
-    var webView: WKWebView? {
+    @objc var webView: WKWebView? {
         get {
             if internalWebView == nil {
                 internalWebView = WKWebView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), configuration: self.webConfig)
@@ -43,7 +43,7 @@ class ArticleCellWithWebView: BaseArticleCell {
         }
     }
     
-    func addWebView() {
+    @objc func addWebView() {
         if let webView = self.webView {
             self.contentView.addSubview(webView)
             webView.translatesAutoresizingMaskIntoConstraints = false

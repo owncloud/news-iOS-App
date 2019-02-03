@@ -13,10 +13,6 @@ class ArticleCellWithThumbnail: ArticleCellNoThumbnail {
     @IBOutlet var thumbnailContainerView: UIView!
     @IBOutlet var articleImage: UIImageView!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     override func configureView() {
         super.configureView()
         guard let item = self.item else {

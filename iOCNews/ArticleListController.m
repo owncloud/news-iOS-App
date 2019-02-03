@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2012-2016 Peter Hedlund peter.hedlund@me.com
+ Copyright 2012-2019 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -169,14 +169,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [self.collectionView registerNib:[UINib nibWithNibName:@"NoThumbnailArticleCell" bundle:nil] forCellWithReuseIdentifier:@"NoThumbnailArticleCell"];
     self.collectionView.scrollsToTop = NO;
     [self.collectionView addGestureRecognizer:self.markGesture];
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
     [self.collectionView addGestureRecognizer:self.sideGestureRecognizer];
     
     comingFromDetail = NO;
     markingAllItemsRead = NO;
     aboutToFetch = NO;
-    cellContentWidth = 700;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkCompleted:) name:@"NetworkCompleted" object:nil];
     
@@ -249,19 +246,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         result = [sectionInfo numberOfObjects];
     }
     return result;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 154.0;
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGRect bounds = collectionView.bounds;
-    if (indexPath.section == 0) {
-        return CGSizeMake(bounds.size.width, 154.0);
-    } else {
-        return CGSizeZero;
-    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -384,42 +368,32 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [self updateUnreadCount:idsToMarkRead];
 }
 
-- (void) markRowsRead {
-    @try {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
-            long unreadCount = [self unreadCount];
-            
-            if (unreadCount > 0) {
-                NSArray *visibleCells = self.collectionView.indexPathsForVisibleItems;
-                if (visibleCells.count > 0) {
-                    NSInteger topVisibleRow = [[visibleCells valueForKeyPath:@"@min.item"] integerValue];
-                    NSLog(@"Top row: %ld", (long)topVisibleRow);
-                    if (self.fetchedResultsController.fetchedObjects.count > 0) {
-                        NSMutableArray *idsToMarkRead = [NSMutableArray new];
-                        NSInteger index = 0;
-                        for (Item *item in self.fetchedResultsController.fetchedObjects) {
-                            if (index > topVisibleRow) {
-                                break;
-                            }
-                            if (item.unread) {
-                                item.unread = NO;
-                                [idsToMarkRead addObject:@(item.myId)];
-                            }
-                            index += 1;
+- (void)markRowsRead {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MarkWhileScrolling"]) {
+        long unreadCount = [self unreadCount];
+        if (unreadCount > 0) {
+            NSArray *visibleCells = self.collectionView.indexPathsForVisibleItems;
+            if (visibleCells.count > 0) {
+                NSInteger topVisibleRow = [[visibleCells valueForKeyPath:@"@min.item"] integerValue];
+                if (self.fetchedResultsController.fetchedObjects.count > 0) {
+                    NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                    NSInteger index = 0;
+                    for (Item *item in self.fetchedResultsController.fetchedObjects) {
+                        if (index > topVisibleRow) {
+                            break;
                         }
-                        unreadCount = unreadCount - [idsToMarkRead count];
-                        [self updateUnreadCount:idsToMarkRead];
-                        self.markBarButtonItem.enabled = (unreadCount > 0);
+                        if (item.unread) {
+                            item.unread = NO;
+                            [idsToMarkRead addObject:@(item.myId)];
+                        }
+                        index += 1;
                     }
+                    unreadCount = unreadCount - idsToMarkRead.count;
+                    [self updateUnreadCount:idsToMarkRead];
+                    self.markBarButtonItem.enabled = (unreadCount > 0);
                 }
             }
         }
-    }
-    @catch (NSException *exception) {
-        //
-    }
-    @finally {
-        //
     }
 }
 

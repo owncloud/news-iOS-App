@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad10_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" reuseIdentifier="ArticleCellWithThumbnail" id="2" customClass="ArticleCellWithThumbnail" customModule="iOCNews" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="944" height="271"/>
-            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="ArticleCellWithThumbnail" id="2" customClass="ArticleCellWithThumbnail" customModule="iOCNews" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="726" height="271"/>
+            <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="944" height="271"/>
+                <rect key="frame" x="0.0" y="0.0" width="726" height="271"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQP-3C-1Dr">
-                        <rect key="frame" x="122" y="69.5" width="700" height="152"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQP-3C-1Dr" userLabel="ThumbnailMainSubview">
+                        <rect key="frame" x="15" y="69.5" width="696" height="152"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lty-Lj-23R" userLabel="ThumbnailContainer">
                                 <rect key="frame" x="0.0" y="20" width="112" height="112"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6" userLabel="ThumbnailImage">
                                         <rect key="frame" x="0.0" y="0.0" width="112" height="112"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="112" id="KQc-Fu-PPm">
@@ -56,10 +56,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fl2-Me-Ib6" userLabel="ContentContainer">
-                                <rect key="frame" x="122" y="0.0" width="578" height="152"/>
+                                <rect key="frame" x="122" y="0.0" width="574" height="152"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" text="This is a long title to see what happens when it goes over more than one line" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3">
-                                        <rect key="frame" x="5" y="5" width="557" height="48"/>
+                                        <rect key="frame" x="5" y="5" width="553" height="42.5"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" priority="750" constant="48" id="NpP-4r-yTC"/>
@@ -68,8 +68,8 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </label>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXF-mX-KAd">
-                                        <rect key="frame" x="5" y="63" width="573" height="16"/>
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXF-mX-KAd" userLabel="DateLabelContainer">
+                                        <rect key="frame" x="5" y="57.5" width="569" height="16"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ENK-Fa-lo4">
                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -79,7 +79,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" text="Author &amp; Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                                                <rect key="frame" x="21" y="-1" width="552" height="18"/>
+                                                <rect key="frame" x="21" y="-1" width="548" height="18"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="czU-T8-OBG"/>
@@ -124,8 +124,8 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                                        <rect key="frame" x="5" y="89" width="557" height="58"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5" userLabel="SummaryLabel">
+                                        <rect key="frame" x="5" y="83.5" width="553" height="63.5"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="82" id="HRx-p9-9tv">
@@ -140,7 +140,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="152" id="2lI-Hw-KZz"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="152" id="2lI-Hw-KZz"/>
                                     <constraint firstItem="5" firstAttribute="leading" secondItem="fl2-Me-Ib6" secondAttribute="leading" constant="5" id="4Wy-7p-w8Q">
                                         <variation key="widthClass=compact" constant="-74"/>
                                     </constraint>
@@ -158,7 +158,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="peC-zy-JQ2" userLabel="StarContainer">
-                                <rect key="frame" x="684" y="0.0" width="16" height="152"/>
+                                <rect key="frame" x="680" y="0.0" width="16" height="152"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uAr-hd-b6i">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -190,47 +190,28 @@
                             <constraint firstItem="lty-Lj-23R" firstAttribute="top" secondItem="LQP-3C-1Dr" secondAttribute="top" constant="20" id="WUj-gi-wMD">
                                 <variation key="widthClass=compact" constant="5"/>
                             </constraint>
-                            <constraint firstAttribute="width" constant="700" id="a72-gx-Rj4"/>
-                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="700" id="bUq-LX-ZzB"/>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="700" id="a72-gx-Rj4"/>
                             <constraint firstItem="fl2-Me-Ib6" firstAttribute="top" secondItem="peC-zy-JQ2" secondAttribute="top" id="hXJ-WH-oeu"/>
-                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="152" id="s37-Wf-rlL"/>
+                            <constraint firstAttribute="height" constant="152" id="s37-Wf-rlL"/>
                             <constraint firstItem="fl2-Me-Ib6" firstAttribute="top" secondItem="LQP-3C-1Dr" secondAttribute="top" id="tZ9-Fd-s0H"/>
                             <constraint firstItem="lty-Lj-23R" firstAttribute="leading" secondItem="LQP-3C-1Dr" secondAttribute="leading" id="zon-sY-SpE"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="bUq-LX-ZzB"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=compact">
-                            <mask key="constraints">
-                                <exclude reference="a72-gx-Rj4"/>
-                                <include reference="bUq-LX-ZzB"/>
+                                <exclude reference="ESP-bv-TKt"/>
                             </mask>
                         </variation>
                     </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="LQP-3C-1Dr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7B6-m1-aMr" secondAttribute="leading" constant="10" id="G4z-mc-ek7"/>
-                <constraint firstItem="7B6-m1-aMr" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LQP-3C-1Dr" secondAttribute="trailing" constant="10" id="Pxf-PG-sKx"/>
+                <constraint firstItem="LQP-3C-1Dr" firstAttribute="leading" secondItem="7B6-m1-aMr" secondAttribute="leading" priority="751" constant="15" id="G4z-mc-ek7"/>
+                <constraint firstItem="7B6-m1-aMr" firstAttribute="trailing" secondItem="LQP-3C-1Dr" secondAttribute="trailing" priority="751" constant="15" id="Pxf-PG-sKx"/>
                 <constraint firstItem="LQP-3C-1Dr" firstAttribute="centerY" secondItem="7B6-m1-aMr" secondAttribute="centerY" id="WhE-Ov-ogy"/>
                 <constraint firstItem="LQP-3C-1Dr" firstAttribute="centerX" secondItem="7B6-m1-aMr" secondAttribute="centerX" id="d8T-hW-NVx"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="7B6-m1-aMr"/>
-            <size key="customSize" width="1886" height="286"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="Pxf-PG-sKx"/>
-                    <exclude reference="G4z-mc-ek7"/>
-                </mask>
-            </variation>
-            <variation key="widthClass=compact">
-                <mask key="constraints">
-                    <include reference="Pxf-PG-sKx"/>
-                    <include reference="G4z-mc-ek7"/>
-                </mask>
-            </variation>
+            <viewLayoutGuide key="safeArea" id="7B6-m1-aMr" userLabel="ThumbnailSafeArea"/>
+            <size key="customSize" width="1668" height="286"/>
             <connections>
                 <outlet property="articleImage" destination="6" id="6dm-Ab-uBp"/>
                 <outlet property="contentContainerView" destination="fl2-Me-Ib6" id="hhj-R4-Xs6"/>
@@ -244,7 +225,7 @@
                 <outlet property="thumbnailContainerView" destination="lty-Lj-23R" id="CHx-DB-89d"/>
                 <outlet property="titleLabel" destination="3" id="ZVP-us-of7"/>
             </connections>
-            <point key="canvasLocation" x="846" y="243"/>
+            <point key="canvasLocation" x="670.39999999999998" y="242.42878560719643"/>
         </collectionViewCell>
     </objects>
 </document>

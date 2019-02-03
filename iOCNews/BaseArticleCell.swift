@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ArticleCellProtocol {
+@objc protocol ArticleCellProtocol {
     var item: Item? {get set}
     func configureView()
 }
@@ -27,13 +27,6 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
     
     @IBOutlet var dateLabelLeadingConstraint: NSLayoutConstraint!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        //        self.contentView.autoresizingMask.insert(.flexibleHeight)
-        self.contentView.autoresizingMask.insert(.flexibleWidth)
-        self.contentView.translatesAutoresizingMaskIntoConstraints = true
-    }
-
     var item: Item? {
         didSet {
             self.configureView()
@@ -58,6 +51,10 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
         self.layer.addSublayer(bottomBorder)
     }
     
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
+        self.contentView.frame.size.width = layoutAttributes.frame.size.width
+    }
     
     func makeItalic(font: UIFont) -> UIFont {
         let desc = font.fontDescriptor

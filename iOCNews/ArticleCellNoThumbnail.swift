@@ -11,10 +11,6 @@ import CoreImage
 
 class ArticleCellNoThumbnail: BaseArticleCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     override func configureView() {
         super.configureView()
         guard let item = self.item else {
@@ -72,10 +68,10 @@ class ArticleCellNoThumbnail: BaseArticleCell {
         if var summary = item.body {
             if summary.range(of: "<style>", options: .caseInsensitive) != nil {
                 if summary.range(of: "</style>", options: .caseInsensitive) != nil {
-                    let start = summary.range(of:"<style>", options: .caseInsensitive)?.lowerBound
-                    let end = summary.range(of: "</style>", options: .caseInsensitive)?.upperBound
-                    let sub = summary.substring(with: start..<end)
-                    summary = summary.replacingOccurrences(of: sub, with: "")
+                    if let start = summary.range(of:"<style>", options: .caseInsensitive)?.lowerBound , let end = summary.range(of: "</style>", options: .caseInsensitive)?.upperBound {
+                        let sub = summary[start..<end]
+                        summary = summary.replacingOccurrences(of: sub, with: "")
+                    }
                 }
             }
             self.summaryLabel.text = summary.convertingHTMLToPlainText()

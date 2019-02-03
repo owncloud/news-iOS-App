@@ -33,7 +33,6 @@
 @property (nonatomic, strong, readonly) PHPrefViewController *settingsViewController;
 @property (nonatomic, strong, readonly) UIPopoverPresentationController *settingsPresentationController;
 @property (nonatomic, strong) ArticleCellWithWebView *currentCell;
-@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 @end
 
@@ -43,7 +42,6 @@
 @synthesize settingsViewController;
 @synthesize settingsPresentationController;
 @synthesize currentCell;
-@synthesize currentIndexPath;
 
 static NSString * const reuseIdentifier = @"ArticleCell";
 
@@ -51,42 +49,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
-    UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-        CGFloat width = self.view.frame.size.width;
-        CGFloat height = self.view.frame.size.height;
-        layout.itemSize = CGSizeMake(width, height);
-        [layout invalidateLayout];
-    } else if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
-        CGFloat width = self.view.frame.size.width;
-        CGFloat height = self.view.frame.size.height - self.collectionView.contentInset.top - 1;
-        layout.itemSize = CGSizeMake(width, height);
-    }
     [self.fetchedResultsController performFetch:nil];
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    CGFloat offsetWidth = 0.0;
-    
-    UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
-        CGFloat width = self.view.frame.size.height;
-        CGFloat height = self.view.frame.size.width;
-        layout.itemSize = CGSizeMake(width, height);
-        offsetWidth = width;
-    } else if (UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) {
-        CGFloat width = self.view.frame.size.height;
-        CGFloat height = self.view.frame.size.width - self.collectionView.contentInset.top - 1;
-        layout.itemSize = CGSizeMake(width, height);
-        offsetWidth = width;
-    }
-    [layout invalidateLayout];
-
-    if (currentCell) {
-        self.currentIndexPath = [self.collectionView indexPathForCell:currentCell];
-    }
-    self.collectionView.contentOffset = CGPointMake(offsetWidth * self.currentIndexPath.item, 0);
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -121,15 +84,10 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     if (shouldScrollToInitialArticle) {
         if (self.selectedArticle) {
             NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:self.selectedArticle];
-            NSLog(@"Content insets: %f, %f", self.collectionView.contentInset.top, self.collectionView.contentInset.bottom);
-            NSLog(@"Collection view height: %f", self.collectionView.frame.size.height);
-            UICollectionViewFlowLayout *layout =  (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-            NSLog(@"Item height: %f", layout.itemSize.height);
-            NSLog(@"Section insets: %f, %f", layout.sectionInset.top, layout.sectionInset.bottom);
-
+            ArticleFlowLayout *layout = (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
+            layout.currentIndexPath = indexPath;
             [self.collectionView scrollToItemIfAvailable:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-            self.currentIndexPath = indexPath;
-            self.collectionView.contentOffset = CGPointMake(layout.itemSize.width * self.currentIndexPath.item, 0);
+            self.collectionView.contentOffset = [layout targetContentOffsetForProposedContentOffset:CGPointZero];
             if (self.selectedArticle.unread) {
                 self.selectedArticle.unread = NO;
                 NSMutableSet *set = [NSMutableSet setWithObject:@(self.selectedArticle.myId)];
@@ -148,7 +106,8 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:currentPage inSection:0];
         ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
         self.currentCell = cell;
-        self.currentIndexPath = indexPath;
+        ArticleFlowLayout *layout =  (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
+        layout.currentIndexPath = indexPath;
         Item *item = cell.item;
         if (item.unread) {
             item.unread = NO;
@@ -167,7 +126,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 {
     if ([webView.URL.scheme isEqualToString:@"file"] || [webView.URL.scheme hasPrefix:@"itms"]) {
         if ([navigationAction.request.URL.absoluteString rangeOfString:@"itunes.apple.com"].location != NSNotFound) {
-            [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+            [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
             decisionHandler(WKNavigationActionPolicyCancel);
             return;
         }

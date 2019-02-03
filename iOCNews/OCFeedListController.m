@@ -456,7 +456,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     if (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular) {
         self.collapseDetailViewController = NO; //Plus-size iPhones
     }
-    if ([[segue identifier] isEqualToString:DetailSegueIdentifier]) {      
+    if ([[segue identifier] isEqualToString:DetailSegueIdentifier]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         currentIndex = indexPath.row;
         NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:currentIndex inSection:0];
@@ -908,6 +908,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     return feedRefreshControl;
 }
 
+#pragma mark - UISplitViewControllerDelegate
 
 - (UISplitViewControllerDisplayMode)targetDisplayModeForActionInSplitViewController:(UISplitViewController *)svc {
     if (svc.displayMode == UISplitViewControllerDisplayModePrimaryHidden) {
@@ -928,10 +929,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
-    NSLog(@"My display mode = %ld", (long)displayMode);
-//    if (self.detailViewController) {
-//        [(OCArticleListController *)self.detailViewController willUpdateToDisplayMode:displayMode];
-//    }
+//    NSLog(@"My display mode = %ld", (long)displayMode);
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {

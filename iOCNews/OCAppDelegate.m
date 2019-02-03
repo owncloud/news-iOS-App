@@ -38,6 +38,7 @@
 #import <KSCrash/KSCrashInstallation+Alert.h>
 #import "PDKeychainBindings.h"
 #import "PHThemeManager.h"
+@import UserNotifications;
 
 @implementation OCAppDelegate
 
@@ -102,8 +103,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:UNAuthorizationOptionBadge completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        //
+    }];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

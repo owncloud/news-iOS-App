@@ -36,6 +36,7 @@
 #import "Feeds+CoreDataClass.h"
 #import "NSDictionary+HandleNull.h"
 #import <AFNetworking/AFNetworking.h>
+@import UserNotifications;
 
 @interface OCNewsHelper () {
     NSMutableSet *foldersToAdd;
@@ -1032,14 +1033,18 @@
 - (void)updateTotalUnreadCount {
     [self.feedRequest setPredicate:[NSPredicate predicateWithFormat:@"myId > 0"]];
     NSArray *feeds = [self.context executeFetchRequest:self.feedRequest error:nil];
-    int totalUnreadCount = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
+    __block int totalUnreadCount = (int)[[feeds valueForKeyPath:@"@sum.unreadCount"] integerValue];
     [self feedWithId:-2].unreadCount = totalUnreadCount;
     [self feedWithId:-2].articleCount = (int)[self itemCount];
     
-    UIUserNotificationSettings *currentSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-    if (currentSettings.types & UIUserNotificationTypeBadge) {
-        [UIApplication sharedApplication].applicationIconBadgeNumber = totalUnreadCount;
-    }
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        if (settings.badgeSetting == UNNotificationSettingEnabled) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIApplication sharedApplication].applicationIconBadgeNumber = totalUnreadCount;
+            });
+        }
+    }];
+    
     [self updateFolderUnreadCount];
     [self saveContext];
 }
