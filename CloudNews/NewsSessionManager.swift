@@ -283,15 +283,20 @@ class NewsManager {
             NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
                 //            debugPrint(response)
                 if let folders = response.value?.folders {
-                    CDFolder.update(folders: folders)
+                    var addedFolders = [Int32]()
+                    var deletedFolders = [Int32]()
                     let ids = folders.map({ $0.id })
                     if let knownFolders = CDFolder.all() {
                         let knownIds = knownFolders.map({ $0.id })
-                        let deletedFolders = knownIds.filter({
+                        addedFolders = ids.filter({
+                            return !knownIds.contains($0)
+                        })
+                        deletedFolders = knownIds.filter({
                             return !ids.contains($0)
                         })
-                        CDFolder.delete(ids: deletedFolders, in: NewsData.mainThreadContext)
                     }
+                    CDFolder.delete(ids: deletedFolders, in: NewsData.mainThreadContext)
+                    CDFolder.update(folders: folders)
                 }
                 completion()
             })
@@ -305,22 +310,29 @@ class NewsManager {
                     CDFeeds.update(starredCount: starredCount, newestItemId: newestItemId)
                 }
                 if let feeds = response.value?.feeds {
-                    CDFeed.update(feeds: feeds)
-                    let ids = feeds.map({ $0.id })
+                    var addedFeeds = [FeedSync]()
+                    var deletedFeeds = [FeedSync]()
+                    let ids = feeds.map({ FeedSync.init(id: $0.id, title: $0.title ?? "Untitled", folderId: $0.folderId) })
                     if let knownFeeds = CDFeed.all() {
-                        let knownIds = knownFeeds.map({ $0.id })
-                        let deletedFeeds = knownIds.filter({
+                        let knownIds = knownFeeds.map({ FeedSync.init(id: $0.id, title: $0.title ?? "Untitled", folderId: $0.folderId) })
+                        addedFeeds = ids.filter({
+                            return !knownIds.contains($0)
+                        })
+                        deletedFeeds = knownIds.filter({
                             return !ids.contains($0)
                         })
-                        CDFeed.delete(ids: deletedFeeds, in: NewsData.mainThreadContext)
-                        if let allItems = CDItem.all() {
-                            let deletedFeedItems = allItems.filter({
-                                return deletedFeeds.contains($0.feedId)
-                            })
-                            let deletedFeedItemIds = deletedFeedItems.map({ $0.id })
-                            CDItem.delete(ids: deletedFeedItemIds, in: NewsData.mainThreadContext)
-                        }
                     }
+                    CDFeed.delete(ids: deletedFeeds.map( { $0.id }), in: NewsData.mainThreadContext)
+                    if let allItems = CDItem.all() {
+                        let deletedFeedItems = allItems.filter({
+                            return deletedFeeds.map( { $0.id } ).contains($0.feedId) &&
+                                !addedFeeds.map( { $0.id }).contains($0.feedId)
+                        })
+                        let deletedFeedItemIds = deletedFeedItems.map({ $0.id })
+                        CDItem.delete(ids: deletedFeedItemIds, in: NewsData.mainThreadContext)
+                    }
+                    CDFeed.update(feeds: feeds)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FeedSync"), object: self, userInfo: ["added": addedFeeds, "deleted": deletedFeeds])
                 }
                 completion()
             })

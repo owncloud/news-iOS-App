@@ -625,6 +625,9 @@
                                                                                         <constraint firstAttribute="height" constant="16" id="jmR-A3-45Q"/>
                                                                                     </constraints>
                                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="x41-5M-uAr"/>
+                                                                                    <connections>
+                                                                                        <binding destination="loZ-ea-Rwh" name="value" keyPath="objectValue.faviconImage" id="Rjn-W6-8HG"/>
+                                                                                    </connections>
                                                                                 </imageView>
                                                                                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="4pd-Td-nyj">
                                                                                     <rect key="frame" x="24" y="6" width="303" height="17"/>
@@ -633,6 +636,9 @@
                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textFieldCell>
+                                                                                    <connections>
+                                                                                        <binding destination="loZ-ea-Rwh" name="value" keyPath="objectValue.title" id="Eeb-6m-7dK"/>
+                                                                                    </connections>
                                                                                 </textField>
                                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DT5-Xy-YmJ">
                                                                                     <rect key="frame" x="333" y="5" width="33" height="17"/>
@@ -640,6 +646,14 @@
                                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                                         <font key="font" metaFont="smallSystemBold"/>
                                                                                     </buttonCell>
+                                                                                    <connections>
+                                                                                        <binding destination="loZ-ea-Rwh" name="hidden" keyPath="objectValue.unreadCount" id="WWk-Zs-XJg">
+                                                                                            <dictionary key="options">
+                                                                                                <string key="NSValueTransformerName">NSIsNil</string>
+                                                                                            </dictionary>
+                                                                                        </binding>
+                                                                                        <binding destination="loZ-ea-Rwh" name="title" keyPath="objectValue.unreadCount" id="XaQ-S1-QgB"/>
+                                                                                    </connections>
                                                                                 </button>
                                                                             </subviews>
                                                                             <constraints>
@@ -659,6 +673,9 @@
                                                                             </connections>
                                                                         </tableCellView>
                                                                     </prototypeCellViews>
+                                                                    <connections>
+                                                                        <binding destination="cZl-jt-1U1" name="value" keyPath="arrangedObjects" id="Smf-hW-3KJ"/>
+                                                                    </connections>
                                                                 </tableColumn>
                                                             </tableColumns>
                                                             <connections>
@@ -1031,6 +1048,7 @@
                         <outlet property="articleSegmentedControl" destination="HRz-bW-hNR" id="9fu-TW-55N"/>
                         <outlet property="centerTopView" destination="zO6-jo-ybz" id="W5b-sj-1C3"/>
                         <outlet property="feedOutlineView" destination="Phx-fX-rhh" id="dFB-5n-sKn"/>
+                        <outlet property="feedsTreeController" destination="cZl-jt-1U1" id="7s5-91-Jxv"/>
                         <outlet property="itemsArrayController" destination="gn2-OO-znS" id="2Fc-Ky-QFW"/>
                         <outlet property="itemsTableView" destination="MzK-VK-t4c" id="We9-mN-BKg"/>
                         <outlet property="leftTopView" destination="70o-WG-6WI" id="AEy-0C-4RR"/>
@@ -1051,6 +1069,11 @@
                         <binding destination="XfG-lQ-9wD" name="sortDescriptors" keyPath="self.sortDescriptors" previousBinding="cf1-38-is6" id="e6W-8C-Elf"/>
                     </connections>
                 </arrayController>
+                <treeController objectClassName="FeedTreeNode" editable="NO" childrenKeyPath="children" countKeyPath="childCount" leafKeyPath="isLeaf" id="cZl-jt-1U1">
+                    <connections>
+                        <binding destination="XfG-lQ-9wD" name="contentArray" keyPath="self.nodeArray" id="zRg-aI-MOS"/>
+                    </connections>
+                </treeController>
             </objects>
             <point key="canvasLocation" x="21.5" y="791.5"/>
         </scene>

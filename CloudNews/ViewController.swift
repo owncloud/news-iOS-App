@@ -25,12 +25,12 @@ class ViewController: NSViewController {
     @IBOutlet weak var syncSpinner: NSProgressIndicator!
 
     @IBOutlet var itemsArrayController: NSArrayController!
+    @IBOutlet var feedsTreeController: NSTreeController!
 
     @objc dynamic let managedContext: NSManagedObjectContext = NewsData.mainThreadContext
     @objc dynamic let sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
     @objc dynamic var itemsFilterPredicate: NSPredicate? = nil
-
-    var toplevelArray = [Any]()
+    @objc dynamic var nodeArray = [FeedTreeNode]()
 
     private var currentItemId: Int32 = -1
     private var currentFeedRowIndex: Int = 0
@@ -50,16 +50,45 @@ class ViewController: NSViewController {
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
             self?.itemsArrayController.fetch(nil)
-            self?.rebuildFoldersAndFeedsList()
-            self?.feedOutlineView.reloadData()
-            self?.itemsTableView.reloadData()
-            self?.syncSpinner.stopAnimation(self)
+            self?.feedsTreeController.rearrangeObjects()
+            DispatchQueue.main.async {
+                self?.feedOutlineView.reloadData()
+                self?.itemsTableView.reloadData()
+                self?.syncSpinner.stopAnimation(self)
+            }
         }
 
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("FeedSync"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
+            if let added = notification.userInfo?["added"] as? [FeedSync] {
+                for addition in added {
+                    if addition.folderId == 0 {
+                        if let feed = CDFeed.feed(id: addition.id) {
+                            self?.nodeArray.append(FeedNode(feed: feed))
+                        }
+                    }
+                }
+            }
+            if let deleted = notification.userInfo?["deleted"] as? [FeedSync] {
+                for deletion in deleted {
+                    if let feed = CDFeed.feed(id: deletion.id) {
+                        let index = self?.nodeArray.firstIndex(where: { (node) -> Bool in
+                            if let node = node as? FeedNode {
+                                return node.feed.id == feed.id && feed.folderId != 0
+                            }
+                            return false
+                        })
+                        if let index = index {
+                            self?.nodeArray.remove(at: index)
+                        }
+                    }
+                }
+            }
+        }
+        
         self.rebuildFoldersAndFeedsList()
         self.feedOutlineView.selectRowIndexes(IndexSet(integer: self.currentFeedRowIndex), byExtendingSelection: false)
     }
-
+    
     override func viewWillAppear() {
         super.viewWillAppear()
         self.leftTopView.layer?.backgroundColor = NSColor(calibratedRed: 0.886, green: 0.890, blue: 0.894, alpha: 1.00).cgColor
@@ -112,7 +141,7 @@ class ViewController: NSViewController {
                 CDFeeds.adjustStarredCount(increment: false)
             }
             NewsManager.shared.markStarred(item: currentItem, starred: newState) { [weak self] in
-                self?.feedOutlineView.reloadItem(self?.toplevelArray[1])
+                self?.feedOutlineView.reloadItem(self?.nodeArray[1])
             }
         }
     }
@@ -135,16 +164,19 @@ class ViewController: NSViewController {
     }
     
     func rebuildFoldersAndFeedsList() {
-        self.toplevelArray.removeAll()
-        self.toplevelArray.append("All Articles")
-        self.toplevelArray.append("Starred Articles")
+        self.nodeArray.removeAll()
+        self.nodeArray.append(AllFeedNode())
+        self.nodeArray.append(StarredFeedNode())
         if let folders = CDFolder.all() {
-            self.toplevelArray.append(contentsOf: folders)
+            for folder in folders {
+                self.nodeArray.append(FolderFeedNode(folder: folder))
+            }
         }
         if let feeds = CDFeed.inFolder(folder: 0) {
-            self.toplevelArray.append(contentsOf: feeds)
+            for feed in feeds {
+                self.nodeArray.append(FeedNode(feed: feed))
+            }
         }
-        self.feedOutlineView.reloadData()
     }
 
     func markItems(items: [CDItem], unread: Bool) {
@@ -156,7 +188,7 @@ class ViewController: NSViewController {
                 CDRead.update(items: changingIds)
             }
             for item in items {
-                if var feed = CDFeed.feed(id: item.feedId) {
+                if let feed = CDFeed.feed(id: item.feedId) {
                     var feedUnreadCount = feed.unreadCount
                     if unread {
                         feedUnreadCount += 1
@@ -236,48 +268,10 @@ class ViewController: NSViewController {
 
 }
 
-extension ViewController: NSOutlineViewDataSource {
-    
-    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if let folder = item as? FolderProtocol {
-            return CDFeed.inFolder(folder: folder.id)?.count ?? 0
-        }
-        return self.toplevelArray.count
-    }
-    
-    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        if let _ = item as? FolderProtocol {
-            return true
-        }
-        return false
-    }
-    
-    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let folder = item as? FolderProtocol {
-            if let feedArray = CDFeed.inFolder(folder: folder.id) {
-                return feedArray[index]
-            }
-        }
-        return self.toplevelArray[index]
-    }
-
-}
-
 extension ViewController: NSOutlineViewDelegate {
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         if let feedView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FeedCell"), owner: self) as? FeedCellView {
-            if let special = item as? String {
-                if special == "All Articles" {
-                    feedView.special(name: special, starred: false)
-                } else {
-                    feedView.special(name: special, starred: true)
-                }
-            } else if let folder = item as? FolderProtocol {              
-                feedView.folder = folder
-            } else if let feed = item as? FeedProtocol {
-                feedView.feed = feed
-            }
             return feedView
         }
         return nil
@@ -290,35 +284,42 @@ extension ViewController: NSOutlineViewDelegate {
 
         let selectedIndex = outlineView.selectedRow
         self.currentFeedRowIndex = selectedIndex
-        if selectedIndex == 0 {
-            print("All articles selected")
-            if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
-                self.itemsFilterPredicate = NSPredicate(format: "unread == true")
-            } else {
-                self.itemsFilterPredicate = nil
-            }
-        } else if selectedIndex == 1 {
-            print("Starred articles selected")
-            self.itemsFilterPredicate = NSPredicate(format: "starred == true")
-        } else if let folder = outlineView.item(atRow: selectedIndex) as? CDFolder {
-            print("Folder: \(folder.name ?? "") selected")
-            if let feedIds = CDFeed.idsInFolder(folder: folder.id) {
+
+        if let selectedObject = self.feedsTreeController.selectedObjects.first as? FeedTreeNode {
+
+            switch selectedObject {
+            case _ as AllFeedNode:
+                if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
+                    self.itemsFilterPredicate = NSPredicate(format: "unread == true")
+                } else {
+                    self.itemsFilterPredicate = nil
+                }
+            case _ as StarredFeedNode:
+                print("Starred articles selected")
+                self.itemsFilterPredicate = NSPredicate(format: "starred == true")
+            case let folderNode as FolderFeedNode:
+                print("Folder: \(folderNode.folder.name ?? "") selected")
+                if let feedIds = CDFeed.idsInFolder(folder: folderNode.folder.id) {
+                    if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
+                        let unreadPredicate = NSPredicate(format: "unread == true")
+                        let feedPredicate = NSPredicate(format:"feedId IN %@", feedIds)
+                        self.itemsFilterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [unreadPredicate, feedPredicate])
+                    } else {
+                        self.itemsFilterPredicate = NSPredicate(format:"feedId IN %@", feedIds)
+                    }
+                }
+
+            case let feedNode as FeedNode:
+                print("Feed: \(feedNode.feed.title ?? "") selected")
                 if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
                     let unreadPredicate = NSPredicate(format: "unread == true")
-                    let feedPredicate = NSPredicate(format:"feedId IN %@", feedIds)
+                    let feedPredicate = NSPredicate(format: "feedId == %d", feedNode.feed.id)
                     self.itemsFilterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [unreadPredicate, feedPredicate])
                 } else {
-                    self.itemsFilterPredicate = NSPredicate(format:"feedId IN %@", feedIds)
+                    self.itemsFilterPredicate = NSPredicate(format: "feedId == %d", feedNode.feed.id)
                 }
-            }
-        } else if let feed = outlineView.item(atRow: selectedIndex) as? CDFeed {
-            print("Feed: \(feed.title ?? "") selected")
-            if NSUserDefaultsController.shared.defaults.integer(forKey: "hideRead") == 0 {
-                let unreadPredicate = NSPredicate(format: "unread == true")
-                let feedPredicate = NSPredicate(format: "feedId == %d", feed.id)
-                self.itemsFilterPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [unreadPredicate, feedPredicate])
-            } else {
-                self.itemsFilterPredicate = NSPredicate(format: "feedId == %d", feed.id)
+            default:
+                break
             }
         }
         self.itemsTableView.scrollRowToVisible(0)

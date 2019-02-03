@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CDFeed" representedClassName="CDFeed" versionHashModifier="Add index" syncable="YES" codeGenerationType="category">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D42" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDFeed" representedClassName="CDFeed" versionHashModifier="Add index" syncable="YES">
         <attribute name="added" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="articleCount" optional="YES" attributeType="Integer 32" defaultValueString="250" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="faviconLink" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,17 +24,17 @@
             <fetchIndexElement property="folderId" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="CDFeeds" representedClassName="CDFeeds" syncable="YES" codeGenerationType="category">
+    <entity name="CDFeeds" representedClassName="CDFeeds" syncable="YES">
         <attribute name="newestItemId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="starredCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="CDFolder" representedClassName="CDFolder" syncable="YES" codeGenerationType="category">
+    <entity name="CDFolder" representedClassName="CDFolder" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastModified" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="unreadCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="CDItem" representedClassName="CDItem" versionHashModifier="Add index" syncable="YES" codeGenerationType="category">
+    <entity name="CDItem" representedClassName="CDItem" versionHashModifier="Add index" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="enclosureLink" optional="YES" attributeType="String" syncable="YES"/>
@@ -65,26 +65,26 @@
             <fetchIndexElement property="unread" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="CDRead" representedClassName="CDRead" syncable="YES" codeGenerationType="category">
+    <entity name="CDRead" representedClassName="CDRead" syncable="YES">
         <attribute name="itemId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="CDStarred" representedClassName="CDStarred" syncable="YES" codeGenerationType="category">
+    <entity name="CDStarred" representedClassName="CDStarred" syncable="YES">
         <attribute name="itemId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="CDUnread" representedClassName="CDUnread" syncable="YES" codeGenerationType="category">
+    <entity name="CDUnread" representedClassName="CDUnread" syncable="YES">
         <attribute name="itemId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="CDUnstarred" representedClassName="CDUnstarred" syncable="YES" codeGenerationType="category">
+    <entity name="CDUnstarred" representedClassName="CDUnstarred" syncable="YES">
         <attribute name="itemId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDFeed" positionX="-342" positionY="-18" width="128" height="285"/>
-        <element name="CDFeeds" positionX="-612" positionY="-18" width="128" height="75"/>
-        <element name="CDFolder" positionX="-479" positionY="-18" width="128" height="105"/>
-        <element name="CDItem" positionX="-200" positionY="-16" width="128" height="300"/>
-        <element name="CDRead" positionX="-405" positionY="108" width="128" height="60"/>
-        <element name="CDStarred" positionX="-387" positionY="126" width="128" height="60"/>
-        <element name="CDUnread" positionX="-396" positionY="117" width="128" height="60"/>
-        <element name="CDUnstarred" positionX="-378" positionY="135" width="128" height="60"/>
+        <element name="CDFeed" positionX="-342" positionY="-16.40625" width="128" height="283"/>
+        <element name="CDFeeds" positionX="-612" positionY="-18" width="128" height="73"/>
+        <element name="CDFolder" positionX="-479" positionY="-18" width="128" height="103"/>
+        <element name="CDItem" positionX="-100.8203125" positionY="-14.671875" width="128" height="298"/>
+        <element name="CDRead" positionX="-625.546875" positionY="348.36328125" width="128" height="58"/>
+        <element name="CDStarred" positionX="-623.70703125" positionY="278.30859375" width="128" height="58"/>
+        <element name="CDUnread" positionX="-621.51953125" positionY="207.77734375" width="128" height="58"/>
+        <element name="CDUnstarred" positionX="-621.93359375" positionY="128.94921875" width="128" height="58"/>
     </elements>
 </model>

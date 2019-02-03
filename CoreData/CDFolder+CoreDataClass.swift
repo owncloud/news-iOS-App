@@ -15,12 +15,12 @@ public class CDFolder: NSManagedObject, FolderProtocol {
 
     static private let entityName = "CDFolder"
     
-    static func all() -> [FolderProtocol]? {
+    static func all() -> [CDFolder]? {
         let request : NSFetchRequest<CDFolder> = self.fetchRequest()
         //        let sortDescription = NSSortDescriptor(key: sortBy, ascending: ascending)
         //        request.sortDescriptors = [sortDescription]
         
-        var folderList = [FolderProtocol]()
+        var folderList = [CDFolder]()
         do {
             let results  = try NewsData.mainThreadContext.fetch(request)
             for record in results {

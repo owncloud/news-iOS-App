@@ -15,9 +15,9 @@ public class CDFeed: NSManagedObject, FeedProtocol {
 
     static private let entityName = "CDFeed"
     
-    static func all() -> [FeedProtocol]? {
+    static func all() -> [CDFeed]? {
         let request: NSFetchRequest<CDFeed> = self.fetchRequest()
-        var feedList = [FeedProtocol]()
+        var feedList = [CDFeed]()
         do {
             let results  = try NewsData.mainThreadContext.fetch(request)
             for record in results {
@@ -29,7 +29,7 @@ public class CDFeed: NSManagedObject, FeedProtocol {
         return feedList
     }
 
-    static func feed(id: Int32) -> FeedProtocol? {
+    static func feed(id: Int32) -> CDFeed? {
         let request: NSFetchRequest<CDFeed> = self.fetchRequest()
         let predicate = NSPredicate(format: "id == %d", id)
         request.predicate = predicate
@@ -59,11 +59,11 @@ public class CDFeed: NSManagedObject, FeedProtocol {
         return feedList
     }
 
-    static func inFolder(folder: Int32) -> [FeedProtocol]? {
+    static func inFolder(folder: Int32) -> [CDFeed]? {
         let request: NSFetchRequest<CDFeed> = self.fetchRequest()
         let predicate = NSPredicate(format: "folderId == %d", folder)
         request.predicate = predicate
-        var feedList = [FeedProtocol]()
+        var feedList = [CDFeed]()
         do {
             let results  = try NewsData.mainThreadContext.fetch(request)
             for record in results {
