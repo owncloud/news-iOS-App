@@ -1072,6 +1072,7 @@
                 <treeController objectClassName="FeedTreeNode" editable="NO" childrenKeyPath="children" countKeyPath="childCount" leafKeyPath="isLeaf" id="cZl-jt-1U1">
                     <connections>
                         <binding destination="XfG-lQ-9wD" name="contentArray" keyPath="self.nodeArray" id="zRg-aI-MOS"/>
+                        <binding destination="XfG-lQ-9wD" name="sortDescriptors" keyPath="self.feedSortDescriptors" id="fkj-J9-p12"/>
                     </connections>
                 </treeController>
             </objects>

@@ -29,6 +29,7 @@ class ViewController: NSViewController {
 
     @objc dynamic let managedContext: NSManagedObjectContext = NewsData.mainThreadContext
     @objc dynamic let sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+    @objc dynamic let feedSortDescriptors = [NSSortDescriptor(key: "sortId", ascending: true)]
     @objc dynamic var itemsFilterPredicate: NSPredicate? = nil
     @objc dynamic var nodeArray = [FeedTreeNode]()
 
@@ -58,6 +59,31 @@ class ViewController: NSViewController {
             }
         }
 
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("FolderSync"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
+            if let added = notification.userInfo?["added"] as? [FolderSync] {
+                for addition in added {
+                    if let folder = CDFolder.folder(id: addition.id) {
+                        self?.nodeArray.append(FolderFeedNode(folder: folder))
+                    }
+                }
+            }
+            if let deleted = notification.userInfo?["deleted"] as? [FolderSync] {
+                for deletion in deleted {
+                    if let folder = CDFolder.folder(id: deletion.id) {
+                        let index = self?.nodeArray.firstIndex(where: { (node) -> Bool in
+                            if let node = node as? FolderFeedNode {
+                                return node.folder.id == folder.id
+                            }
+                            return false
+                        })
+                        if let index = index {
+                            self?.nodeArray.remove(at: index)
+                        }
+                    }
+                }
+            }
+        }
+
         NotificationCenter.default.addObserver(forName: NSNotification.Name("FeedSync"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
             if let added = notification.userInfo?["added"] as? [FeedSync] {
                 for addition in added {
@@ -84,11 +110,11 @@ class ViewController: NSViewController {
                 }
             }
         }
-        
+
         self.rebuildFoldersAndFeedsList()
         self.feedOutlineView.selectRowIndexes(IndexSet(integer: self.currentFeedRowIndex), byExtendingSelection: false)
     }
-    
+
     override func viewWillAppear() {
         super.viewWillAppear()
         self.leftTopView.layer?.backgroundColor = NSColor(calibratedRed: 0.886, green: 0.890, blue: 0.894, alpha: 1.00).cgColor

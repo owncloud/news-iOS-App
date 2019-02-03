@@ -17,9 +17,15 @@ import Cocoa
     var title: String { get }
     var unreadCount: String? { get }
     var faviconImage: NSImage? { get }
+
+    var sortId: Int { get }
 }
 
 class AllFeedNode: NSObject, FeedTreeNode {
+
+    var sortId: Int {
+        return 0
+    }
     
     var isLeaf: Bool {
             return true
@@ -53,6 +59,11 @@ class AllFeedNode: NSObject, FeedTreeNode {
 }
 
 class StarredFeedNode: NSObject, FeedTreeNode {
+
+    var sortId: Int {
+        return 1
+    }
+
     
     var isLeaf: Bool {
         get {
@@ -97,6 +108,11 @@ class StarredFeedNode: NSObject, FeedTreeNode {
 }
 
 class FolderFeedNode: NSObject, FeedTreeNode {
+
+    var sortId: Int {
+        return Int(self.folder.id) + 100
+    }
+
     
     let folder: CDFolder
     
@@ -158,7 +174,11 @@ class FolderFeedNode: NSObject, FeedTreeNode {
 }
 
 class FeedNode: NSObject, FeedTreeNode {
-    
+
+    var sortId: Int {
+        return Int(self.feed.id) + 1000
+    }
+
     let feed: CDFeed
     
     init(feed: CDFeed){

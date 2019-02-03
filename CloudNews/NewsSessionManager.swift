@@ -140,7 +140,6 @@ class NewsManager {
         
         let unreadItemRouter = Router.items(parameters: unreadParameters)
         NewsSessionManager.shared.request(unreadItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
-//            debugPrint(response)
             if let items = response.value?.items {
                 CDItem.update(items: items, completion: nil)
                 self.updateBadge()
@@ -154,7 +153,6 @@ class NewsManager {
         
         let starredItemRouter = Router.items(parameters: starredParameters)
         NewsSessionManager.shared.request(starredItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
-//            debugPrint(response)
             if let items = response.value?.items {
                 CDItem.update(items: items, completion: nil)
                 self.updateBadge()
@@ -163,7 +161,6 @@ class NewsManager {
 
         // 3.
         NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
-//            debugPrint(response)
             if let folders = response.value?.folders {
                 CDFolder.update(folders: folders)
             }
@@ -171,7 +168,6 @@ class NewsManager {
 
         // 4.
         NewsSessionManager.shared.request(Router.feeds).responseDecodable(completionHandler: { (response: DataResponse<Feeds>) in
-//            debugPrint(response)
             if let newestItemId = response.value?.newestItemId, let starredCount = response.value?.starredCount {
                 CDFeeds.update(starredCount: starredCount, newestItemId: newestItemId)
             }
@@ -281,13 +277,12 @@ class NewsManager {
         //5
         func folders(completion: @escaping SyncCompletionBlock) {
             NewsSessionManager.shared.request(Router.folders).responseDecodable(completionHandler: { (response: DataResponse<Folders>) in
-                //            debugPrint(response)
                 if let folders = response.value?.folders {
-                    var addedFolders = [Int32]()
-                    var deletedFolders = [Int32]()
-                    let ids = folders.map({ $0.id })
+                    var addedFolders = [FolderSync]()
+                    var deletedFolders = [FolderSync]()
+                    let ids = folders.map({ FolderSync.init(id: $0.id, name: $0.name ?? "Untitled") })
                     if let knownFolders = CDFolder.all() {
-                        let knownIds = knownFolders.map({ $0.id })
+                        let knownIds = knownFolders.map({ FolderSync.init(id: $0.id, name: $0.name ?? "Untitled") })
                         addedFolders = ids.filter({
                             return !knownIds.contains($0)
                         })
@@ -295,8 +290,9 @@ class NewsManager {
                             return !ids.contains($0)
                         })
                     }
-                    CDFolder.delete(ids: deletedFolders, in: NewsData.mainThreadContext)
                     CDFolder.update(folders: folders)
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FolderSync"), object: self, userInfo: ["added": addedFolders, "deleted": deletedFolders])
+                    CDFolder.delete(ids: deletedFolders.map( { $0.id }), in: NewsData.mainThreadContext)
                 }
                 completion()
             })
@@ -305,7 +301,6 @@ class NewsManager {
         //6
         func feeds(completion: @escaping SyncCompletionBlock) {
             NewsSessionManager.shared.request(Router.feeds).responseDecodable(completionHandler: { (response: DataResponse<Feeds>) in
-                //            debugPrint(response)
                 if let newestItemId = response.value?.newestItemId, let starredCount = response.value?.starredCount {
                     CDFeeds.update(starredCount: starredCount, newestItemId: newestItemId)
                 }
@@ -346,7 +341,6 @@ class NewsManager {
             
             let updatedItemRouter = Router.updatedItems(parameters: updatedParameters)
             NewsSessionManager.shared.request(updatedItemRouter).responseDecodable(completionHandler: { (response: DataResponse<Items>) in
-                //            debugPrint(response)
                 if let items = response.value?.items {
                     CDItem.update(items: items, completion: { (newItems) in
                         for newItem in newItems {
