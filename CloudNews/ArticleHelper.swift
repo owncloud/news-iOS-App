@@ -61,16 +61,14 @@ class ArticleHelper {
             if let title = item.title {
                 htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleTitle$", with: title)
             }
-//            if let url = item.url {
-                htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleLink$", with: "")
-//            }
+            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleLink$", with: "")
             var author = ""
             if let itemAuthor = item.author, itemAuthor.count > 0 {
                 author = "By \(itemAuthor)"
             }
             
             htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleAuthor$", with: author)
-            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleSummary$", with: summary ?? html)
+            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleSummary$", with: summary)
             
             do {
                 if let saveUrl = ArticleHelper.documentsFolderURL?
