@@ -12,6 +12,10 @@ import WebKit
 class ViewController: NSViewController {
 
     @IBOutlet var splitView: NSSplitView!
+    @IBOutlet weak var leftView: NSView!
+    @IBOutlet weak var centerView: NSView!
+    @IBOutlet weak var rightView: NSView!
+
     @IBOutlet var leftTopView: NSView!
     @IBOutlet var centerTopView: NSView!
     @IBOutlet var rightTopView: NSView!
@@ -43,7 +47,6 @@ class ViewController: NSViewController {
         self.leftTopView.wantsLayer = true
         self.centerTopView.wantsLayer = true
         self.rightTopView.wantsLayer = true
-        self.splitView.delegate = self
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncInitiated"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
             self?.syncSpinner.startAnimation(self)
@@ -405,7 +408,7 @@ extension ViewController: NSSplitViewDelegate {
         case 0:
             result = 400.0
         case 1:
-            result = self.leftTopView.frame.width + 700.0
+            result = self.leftView.frame.width + 700.0
         default:
             result = 5000.0
         }
@@ -418,7 +421,7 @@ extension ViewController: NSSplitViewDelegate {
         case 0:
             result = 100.0
         case 1:
-            result = self.leftTopView.frame.width + 100.0
+            result = self.leftView.frame.width + 200.0
         default:
             result = 300.0
         }
@@ -426,7 +429,7 @@ extension ViewController: NSSplitViewDelegate {
     }
     
     func splitView(_ splitView: NSSplitView, shouldAdjustSizeOfSubview view: NSView) -> Bool {
-        if view == self.leftTopView || view == self.centerTopView {
+        if view == self.leftView || view == self.centerView {
             return false
         }
         return true
