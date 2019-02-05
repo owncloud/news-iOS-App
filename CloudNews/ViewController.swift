@@ -52,11 +52,7 @@ class ViewController: NSViewController {
         NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
             self?.itemsArrayController.fetch(nil)
             self?.feedsTreeController.rearrangeObjects()
-            DispatchQueue.main.async {
-                self?.feedOutlineView.reloadData()
-                self?.itemsTableView.reloadData()
-                self?.syncSpinner.stopAnimation(self)
-            }
+            self?.syncSpinner.stopAnimation(self)
         }
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name("FolderSync"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
