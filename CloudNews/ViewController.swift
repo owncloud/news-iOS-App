@@ -356,6 +356,9 @@ extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ItemCell"), owner: nil) as? ArticleCellView {
+                if let items = self.itemsArrayController.arrangedObjects as? [CDItem] {
+                    cell.item = items[row]
+                }
                 return cell
             }
         return nil

@@ -92,6 +92,21 @@ public class CDItem: NSManagedObject, ItemProtocol {
         return nil
     }
 
+    @objc dynamic var thumbnail: NSImage? {
+        var result: NSImage?
+        guard let imageURL = self.thumbnailURL else {
+            return result
+        }
+
+        let resource = ImageResource(downloadURL: imageURL)
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { (image, error, cacheType, url) in
+            if let image = image {
+                result = image
+            }
+        }
+        return result
+    }
+
     @objc dynamic var labelTextColor: NSColor {
         var result: NSColor = .labelColor
         if !unread {
@@ -111,9 +126,9 @@ public class CDItem: NSManagedObject, ItemProtocol {
         case "starIcon" :
             return Set(["starred"])
         case "thumbnail" :
-            return Set(["body", "unread"])
+            return Set(["body"])
         case "thumbnailURL" :
-            return Set(["body", "unread"])
+            return Set(["body"])
         case "labelTextColor" :
             return Set(["unread"])
         default :
@@ -253,6 +268,7 @@ public class CDItem: NSManagedObject, ItemProtocol {
                         existingRecord.title = item.title
                         existingRecord.unread = item.unread
                         existingRecord.url = item.url
+                        let _ = existingRecord.thumbnail
                     } else {
                         let newRecord = NSEntityDescription.insertNewObject(forEntityName: CDItem.entityName, into: NewsData.mainThreadContext) as! CDItem
                         newRecord.author = item.author
@@ -272,6 +288,7 @@ public class CDItem: NSManagedObject, ItemProtocol {
                         newRecord.url = item.url
                         newItems.append(newRecord)
                         newItemsCount += 1
+                        let _ = newRecord.thumbnail
                     }
                 }
                 try NewsData.mainThreadContext.save()
