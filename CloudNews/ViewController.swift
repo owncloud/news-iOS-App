@@ -220,32 +220,8 @@ class ViewController: NSViewController {
             } else {
                 CDRead.update(items: changingIds)
             }
-            for item in items {
-                if let feed = CDFeed.feed(id: item.feedId) {
-                    var feedUnreadCount = feed.unreadCount
-                    if unread {
-                        feedUnreadCount += 1
-                    } else {
-                        feedUnreadCount -= 1
-                    }
-                    feed.unreadCount = feedUnreadCount
-                    CDFeed.update(feeds: [feed])
-                    if let folder = CDFolder.folder(id: feed.folderId) {
-                        var folderUnreadCount = folder.unreadCount
-                        if unread {
-                            folderUnreadCount += 1
-                        } else {
-                            folderUnreadCount -= 1
-                        }
-                        folder.unreadCount = folderUnreadCount
-                        CDFolder.update(folders: [folder])
-                    }
-                }
-            }
             NewsManager.shared.markRead(itemIds: changingIds, state: unread) { [weak self] in
-                let selectedRowIndexes = self?.feedOutlineView.selectedRowIndexes
-                self?.feedOutlineView.reloadData()
-                self?.feedOutlineView.selectRowIndexes(selectedRowIndexes!, byExtendingSelection: false)
+                self?.feedsTreeController.rearrangeObjects()
                 NewsManager.shared.updateBadge()
             }
         }

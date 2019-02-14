@@ -153,23 +153,34 @@ public class CDItem: NSManagedObject, ItemProtocol {
         return itemList
     }
 
-    static func items(feed: Int32) -> [ItemProtocol]? {
+    static func unreadCount(feed: Int32) -> Int {
         let request : NSFetchRequest<CDItem> = self.fetchRequest()
-        let sortDescription = NSSortDescriptor(key: "id", ascending: false)
-        request.sortDescriptors = [sortDescription]
         let predicate = NSPredicate(format: "feedId == %d", feed)
         request.predicate = predicate
 
-        var itemList = [ItemProtocol]()
         do {
             let results  = try NewsData.mainThreadContext.fetch(request)
-            for record in results {
-                itemList.append(record)
-            }
+            return results.filter( { $0.unread } ).count
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
-        return itemList
+        return 0
+    }
+
+    static func unreadCount(folder: Int32) -> Int {
+        if let feedIds = CDFeed.idsInFolder(folder: folder) {
+            let request : NSFetchRequest<CDItem> = self.fetchRequest()
+            let predicate = NSPredicate(format: "feedId IN %@", feedIds)
+            request.predicate = predicate
+
+            do {
+                let results  = try NewsData.mainThreadContext.fetch(request)
+                return results.filter( { $0.unread } ).count
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
+        }
+        return 0
     }
 
     static func items(itemIds: [Int32]) -> [ItemProtocol]? {

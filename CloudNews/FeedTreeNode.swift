@@ -156,10 +156,9 @@ class FolderFeedNode: NSObject, FeedTreeNode {
     
     var unreadCount: String? {
         get {
-            let folderFeeds = CDFeed.inFolder(folder: self.folder.id)
-            let unreadCount = folderFeeds?.map { $0.unreadCount }.reduce(0) { $0 + $1 } ?? 0
-            if unreadCount > 0 {
-                return "\(unreadCount)"
+            let count = CDItem.unreadCount(folder: self.folder.id)
+            if count > 0 {
+                return "\(count)"
             }
             return nil
         }
@@ -211,7 +210,7 @@ class FeedNode: NSObject, FeedTreeNode {
     
     var unreadCount: String? {
         get {
-            let count = self.feed.unreadCount
+            let count = CDItem.unreadCount(feed: self.feed.id)
             if count > 0 {
                 return "\(count)"
             }
