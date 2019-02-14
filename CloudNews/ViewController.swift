@@ -181,13 +181,21 @@ class ViewController: NSViewController {
                     if let url = URL(string: currentItem.url ?? "") {
                         let shareItems = [url]
                         let sharingPicker:NSSharingServicePicker = NSSharingServicePicker.init(items: shareItems)
+                        sharingPicker.delegate = self
                         sharingPicker.show(relativeTo: self.shareButton.bounds, of: self.shareButton, preferredEdge: .minY)
                     }
                 }
             }
         }
     }
-    
+
+    func setClipboard(url: URL) {
+        let clipboard = NSPasteboard.general
+        clipboard.clearContents()
+        clipboard.writeObjects([url as NSPasteboardWriting])
+        clipboard.setString(url.absoluteString, forType: .string)
+    }
+
     func rebuildFoldersAndFeedsList() {
         self.nodeArray.removeAll()
         self.nodeArray.append(AllFeedNode())
@@ -514,4 +522,28 @@ extension ViewController: NSUserInterfaceValidations {
 
     }
 
+}
+
+extension ViewController: NSSharingServicePickerDelegate {
+    func sharingServicePicker(_ sharingServicePicker: NSSharingServicePicker, sharingServicesForItems items: [Any], proposedSharingServices proposedServices: [NSSharingService]) -> [NSSharingService] {
+        guard let image = NSImage(named: NSImage.Name("copy")), let image2 = NSImage(named: NSImage.Name("web")) else {
+            return proposedServices
+        }
+
+        var share = proposedServices
+        let customService = NSSharingService(title: "Copy Link", image: image, alternateImage: image, handler: {
+            if let url = items.first as? URL {
+                self.setClipboard(url: url)
+            }
+        })
+        share.insert(customService, at: 0)
+        let customService2 = NSSharingService(title: "Open in Browser", image: image2, alternateImage: image2, handler: {
+            if let url = items.first as? URL {
+                NSWorkspace.shared.open(url)
+            }
+        })
+        share.insert(customService2, at: 0)
+
+        return share
+    }
 }
