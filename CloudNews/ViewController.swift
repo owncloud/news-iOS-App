@@ -221,7 +221,10 @@ class ViewController: NSViewController {
                 CDRead.update(items: changingIds)
             }
             NewsManager.shared.markRead(itemIds: changingIds, state: unread) { [weak self] in
-                self?.feedsTreeController.rearrangeObjects()
+                if let currentIndex = self?.currentFeedRowIndex {
+                    self?.feedsTreeController.rearrangeObjects()
+                    self?.feedOutlineView.selectRowIndexes(IndexSet(integer: currentIndex), byExtendingSelection: false)
+                }
                 NewsManager.shared.updateBadge()
             }
         }
