@@ -770,9 +770,9 @@
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q4S-NQ-5bX" customClass="AspectFillImageView" customModule="CloudNews" customModuleProvider="target">
-                                                                                    <rect key="frame" x="10" y="29" width="72" height="72"/>
+                                                                                    <rect key="frame" x="10" y="29" width="17" height="72"/>
                                                                                     <constraints>
-                                                                                        <constraint firstAttribute="width" constant="72" id="2ig-df-NgT"/>
+                                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="72" id="2ig-df-NgT"/>
                                                                                         <constraint firstAttribute="height" constant="72" id="jtf-2j-31B"/>
                                                                                     </constraints>
                                                                                     <imageCell key="cell" scrollable="YES" lineBreakMode="clipping" refusesFirstResponder="YES" alignment="left" image="All Articles" id="6c5-xu-kw5"/>
@@ -781,7 +781,7 @@
                                                                                     </userDefinedRuntimeAttributes>
                                                                                 </imageView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juY-k3-pes">
-                                                                                    <rect key="frame" x="90" y="87" width="225" height="38"/>
+                                                                                    <rect key="frame" x="35" y="87" width="280" height="38"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" priority="750" constant="38" id="1V1-Sz-V0u"/>
                                                                                     </constraints>
@@ -800,7 +800,7 @@
                                                                                     </connections>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="G2X-LV-rJG">
-                                                                                    <rect key="frame" x="92" y="62" width="221" height="17"/>
+                                                                                    <rect key="frame" x="37" y="62" width="276" height="17"/>
                                                                                     <subviews>
                                                                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Db-Ftb">
                                                                                             <rect key="frame" x="0.0" y="1" width="16" height="16"/>
@@ -814,7 +814,7 @@
                                                                                             </connections>
                                                                                         </imageView>
                                                                                         <textField translatesAutoresizingMaskIntoConstraints="NO" id="IFW-uP-aw0">
-                                                                                            <rect key="frame" x="17" y="0.0" width="213" height="17"/>
+                                                                                            <rect key="frame" x="17" y="0.0" width="268" height="17"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="height" constant="17" id="hdw-wd-AaK"/>
                                                                                             </constraints>
@@ -840,7 +840,7 @@
                                                                                     </constraints>
                                                                                 </customView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="MVS-vC-wBs">
-                                                                                    <rect key="frame" x="90" y="37" width="225" height="17"/>
+                                                                                    <rect key="frame" x="35" y="37" width="280" height="17"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="62" id="jP6-hC-uOZ"/>
                                                                                     </constraints>
@@ -924,7 +924,7 @@
                                                     </subviews>
                                                     <nil key="backgroundColor"/>
                                                 </clipView>
-                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.16666666666666666" horizontal="YES" id="1N7-PF-Zyk">
+                                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1N7-PF-Zyk">
                                                     <rect key="frame" x="0.0" y="463" width="331" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>

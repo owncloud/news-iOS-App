@@ -34,8 +34,10 @@ class ArticleCellView: NSTableCellView {
                 if let imageURL = item.thumbnailURL {
                     let processor = ResizingImageProcessor(referenceSize: CGSize(width: 72, height: 72), mode: .aspectFill)
                     self.thumbnailImage.kf.setImage(with: imageURL, placeholder: nil, options: [.processor(processor)])
+                    self.thumbnailImage.isHidden = false
+                } else {
+                    self.thumbnailImage.isHidden = true
                 }
-
             }
         }
     }
