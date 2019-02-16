@@ -17,6 +17,7 @@ class ArticleCellView: NSTableCellView {
     @IBOutlet var faviconImage: NSImageView!
     @IBOutlet var summaryLabel: NSTextField!
     @IBOutlet var starImage: NSImageView!
+    @IBOutlet weak var thumbnailImageWidthContraint: NSLayoutConstraint!
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
@@ -35,8 +36,10 @@ class ArticleCellView: NSTableCellView {
                     let processor = ResizingImageProcessor(referenceSize: CGSize(width: 72, height: 72), mode: .aspectFill)
                     self.thumbnailImage.kf.setImage(with: imageURL, placeholder: nil, options: [.processor(processor)])
                     self.thumbnailImage.isHidden = false
+                    self.thumbnailImageWidthContraint.constant = 72
                 } else {
                     self.thumbnailImage.isHidden = true
+                    self.thumbnailImageWidthContraint.constant = 0
                 }
             }
         }
