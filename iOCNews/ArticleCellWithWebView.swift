@@ -69,67 +69,65 @@ class ArticleCellWithWebView: BaseArticleCell {
             return
         }
         self.addWebView()
-        if let feed = OCNewsHelper.shared().feed(withId: Int(item.feedId)) {
-            if feed.preferWeb == true {
-                if feed.useReader == true {
-                    if let readable = item.readable, readable.count > 0 {
-                        self.writeAndLoadHtml(html: readable, feedTitle: feed.title)
-                    } else {
-                        if let urlString = item.url {
-                            OCAPIClient.shared().requestSerializer = OCAPIClient.httpRequestSerializer()
-                            OCAPIClient.shared().get(urlString, parameters: nil, progress: nil, success: { (task, responseObject) in
-                                var html: String
-                                if let response = responseObject as? Data, let source = String.init(data: response, encoding: .utf8), let url = task.response?.url {
-                                    if let article = SummaryHelper.readble(source, url: url) {
-                                        html = article
-                                    } else {
-                                        html = "<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>"
-                                        if let body = item.body {
-                                            html = html + body
-                                        }
-                                    }
-                                    item.readable = html
-                                    OCNewsHelper.shared().saveContext()
+        if item.item.feedPreferWeb == true {
+            if item.item.feedUseReader == true {
+                if let readable = item.item.readable, readable.count > 0 {
+                    self.writeAndLoadHtml(html: readable, feedTitle: item.feedTitle)
+                } else {
+                    if let urlString = item.url {
+                        OCAPIClient.shared().requestSerializer = OCAPIClient.httpRequestSerializer()
+                        OCAPIClient.shared().get(urlString, parameters: nil, progress: nil, success: { (task, responseObject) in
+                            var html: String
+                            if let response = responseObject as? Data, let source = String.init(data: response, encoding: .utf8), let url = task.response?.url {
+                                if let article = SummaryHelper.readble(source, url: url) {
+                                    html = article
                                 } else {
                                     html = "<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>"
-                                    if let body = item.body {
+                                    if let body = item.item.body {
                                         html = html + body
                                     }
                                 }
-                                self.writeAndLoadHtml(html: html, feedTitle: feed.title)
-                            }) { (task, error) in
-                                var html = "<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>"
-                                if let body = item.body {
+                                //                                    item.readable = html
+                                //                                    OCNewsHelper.shared().saveContext()
+                            } else {
+                                html = "<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>"
+                                if let body = item.item.body {
                                     html = html + body
                                 }
-                                self.writeAndLoadHtml(html: html, feedTitle: feed.title)
                             }
+                            self.writeAndLoadHtml(html: html, feedTitle: item.feedTitle)
+                        }) { (task, error) in
+                            var html = "<p style='color: #CC6600;'><i>(There was an error downloading the article. Showing summary instead.)</i></p>"
+                            if let body = item.item.body {
+                                html = html + body
+                            }
+                            self.writeAndLoadHtml(html: html, feedTitle: item.feedTitle)
                         }
-                    }
-                } else {
-                    if let url = URL(string: item.url ?? "") {
-                        self.webView?.load(URLRequest(url: url))
                     }
                 }
             } else {
-                if var html = item.body {
-                    if let url = URL(string: item.url ?? "") {
-                        let baseString = "\(url.scheme ?? "")://\(url.host ?? "")"
-                        if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
-                            if html.range(of: "iframe", options: .caseInsensitive) != nil {
-                                html = SummaryHelper.createYoutubeItem(item)
-                            }
+                if let url = URL(string: item.url ?? "") {
+                    self.webView?.load(URLRequest(url: url))
+                }
+            }
+        } else {
+            if var html = item.item.body {
+                if let url = URL(string: item.url ?? "") {
+                    let baseString = "\(url.scheme ?? "")://\(url.host ?? "")"
+                    if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
+                        if html.range(of: "iframe", options: .caseInsensitive) != nil {
+                            html = SummaryHelper.createYoutubeItem(item.item.body, andLink: item.url)
                         }
-                        html = SummaryHelper.fixRelativeUrl(html, baseUrlString: baseString)
-                        self.writeAndLoadHtml(html: html, feedTitle: feed.title)
                     }
+                    html = SummaryHelper.fixRelativeUrl(html, baseUrlString: baseString)
+                    self.writeAndLoadHtml(html: html, feedTitle: item.feedTitle)
                 }
             }
         }
     }
     
     func writeAndLoadHtml(html: String, feedTitle: String? = nil) {
-        guard let item = self.item else {
+        guard let item = self.item?.item else {
             return
         }
         let summary = SummaryHelper.replaceYTIframe(html)
@@ -200,8 +198,7 @@ class ArticleCellWithWebView: BaseArticleCell {
                 "}"
     }
     
-    func fileUrlInDocumentsDirectory(_ fileName: String, fileExtension: String) -> URL
-    {
+    func fileUrlInDocumentsDirectory(_ fileName: String, fileExtension: String) -> URL {
         do {
             var containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             containerURL = containerURL.appendingPathComponent(fileName)

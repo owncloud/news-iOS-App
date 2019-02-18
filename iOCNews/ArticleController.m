@@ -71,7 +71,26 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [articleCell addWebView];
     articleCell.webView.navigationDelegate = self;
     articleCell.webView.UIDelegate = self;
-    articleCell.item = cellItem;
+    
+    Feed *feed = [OCNewsHelper.sharedHelper feedWithId:cellItem.feedId];
+    ItemProviderStruct *itemData = [[ItemProviderStruct alloc] init];
+    itemData.title = cellItem.title;
+    itemData.myID = cellItem.myId;
+    itemData.author = cellItem.author;
+    itemData.pubDate = cellItem.pubDate;
+    itemData.body = cellItem.body;
+    itemData.feedId = cellItem.feedId;
+    itemData.starred = cellItem.starred;
+    itemData.unread = cellItem.unread;
+    itemData.imageLink = cellItem.imageLink;
+    itemData.readable = cellItem.readable;
+    itemData.url = cellItem.url;
+    itemData.favIconLink = feed.faviconLink;
+    itemData.feedTitle = feed.title;
+    itemData.feedPreferWeb = feed.preferWeb;
+    itemData.feedUseReader = feed.useReader;
+    ItemProvider *provider = [[ItemProvider alloc] initWithItem:itemData];
+    articleCell.item = provider;
     if (!currentCell) {
         self.currentCell = articleCell;
     }

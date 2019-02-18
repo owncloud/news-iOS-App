@@ -80,10 +80,10 @@
                         NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:self.folderId];
                         __block NSInteger fetchLimit = 0;
                         [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", @(feed.myId)]];
+                            [feedsArray addObject:@(feed.myId)];
                             fetchLimit += feed.articleCount;
                         }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                        fetchPredicate = [NSPredicate predicateWithFormat:@"feedId IN %@", feedsArray];
                         _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
                     } else {
                         fetchPredicate = nil;
