@@ -104,7 +104,10 @@ class ItemProvider: NSObject {
                 AFImageDownloader.defaultInstance().downloadImage(for: request, success: { [weak self] (_, _, image) in
                     self?.favIcon = image
                     self?.favIconHidden = false
-                    }, failure: nil)
+                    }, failure: { [weak self] (_, _, _) in
+                        self?.favIconHidden = false
+                        self?.favIcon = UIImage(named: "favicon")
+                })
             } else {
                 self.favIconHidden = false
                 self.favIcon = UIImage(named: "favicon")
