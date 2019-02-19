@@ -285,6 +285,10 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     currentIndex = indexPath.row;
     Item *selectedItem = [self.fetchedResultsController.fetchedObjects objectAtIndex: currentIndex];
     if (selectedItem && selectedItem.myId) {
+        if (selectedItem.unread) {
+            selectedItem.unread = NO;
+        }
+        [self updateUnreadCount:@[@(selectedItem.myId)] atIndexPaths:@[indexPath]];
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
         [self performSegueWithIdentifier:@"showArticleSegue" sender:selectedItem];
@@ -365,6 +369,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (IBAction)onMarkRead:(id)sender {
     markingAllItemsRead = YES;
     NSMutableArray *idsToMarkRead = [NSMutableArray new];
+    NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray new];
     long unreadCount = [self unreadCount];
     if (unreadCount > 0) {
         if (self.fetchedResultsController.fetchedObjects.count > 0) {
@@ -373,6 +378,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                 if (item.unread) {
                     item.unread = NO;
                     [idsToMarkRead addObject:@(item.myId)];
+                    [indexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
                 }
                 index += 1;
             }
@@ -399,7 +405,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             }
         }];
     }
-    [self updateUnreadCount:idsToMarkRead];
+    [self updateUnreadCount:idsToMarkRead atIndexPaths:indexPaths];
 }
 
 - (void)markRowsRead {

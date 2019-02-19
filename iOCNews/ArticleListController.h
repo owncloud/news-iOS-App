@@ -41,4 +41,6 @@
 - (IBAction)doRefresh:(id)sender;
 - (IBAction)onMarkRead:(id)sender;
 
+- (void)performCellPrefetchForIndexPath:(NSIndexPath *)indexPath;
+
 @end

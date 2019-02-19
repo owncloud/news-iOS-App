@@ -127,11 +127,12 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         self.currentCell = cell;
         ArticleFlowLayout *layout =  (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
         layout.currentIndexPath = indexPath;
-        Item *item = cell.item;
+        Item *item = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.item];
         if (item.unread) {
             item.unread = NO;
             NSMutableSet *set = [NSMutableSet setWithObject:@(item.myId)];
             [[OCNewsHelper sharedHelper] markItemsReadOffline:set];
+            [self.articleListcontroller performCellPrefetchForIndexPath:indexPath];
         }
         [self.articleListcontroller.collectionView scrollToItemIfAvailable:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         [self updateNavigationItemTitle];
