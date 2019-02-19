@@ -411,6 +411,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                 NSInteger topVisibleRow = [[visibleCells valueForKeyPath:@"@min.item"] integerValue];
                 if (self.fetchedResultsController.fetchedObjects.count > 0) {
                     NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                    NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray new];
                     NSInteger index = 0;
                     for (Item *item in self.fetchedResultsController.fetchedObjects) {
                         if (index > topVisibleRow) {
@@ -418,12 +419,13 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                         }
                         if (item.unread) {
                             item.unread = NO;
+                            [indexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
                             [idsToMarkRead addObject:@(item.myId)];
                         }
                         index += 1;
                     }
                     unreadCount = unreadCount - idsToMarkRead.count;
-                    [self updateUnreadCount:idsToMarkRead];
+                    [self updateUnreadCount:idsToMarkRead atIndexPaths:indexPaths];
                     self.markBarButtonItem.enabled = (unreadCount > 0);
                 }
             }
@@ -431,8 +433,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
 }
 
-- (void)updateUnreadCount:(NSArray *)itemsToUpdate {
+- (void)updateUnreadCount:(NSArray *)itemsToUpdate atIndexPaths:(NSArray *)indexPaths {
     [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithArray:itemsToUpdate]];
+    for (NSIndexPath *indexPath in indexPaths) {
+        [self performCellPrefetchForIndexPath:indexPath];
+    }
     [self refresh];
 }
 
