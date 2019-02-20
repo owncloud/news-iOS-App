@@ -15,7 +15,6 @@ import UIKit
 
 class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
 
-    @IBOutlet var mainView: UIView!
     @IBOutlet var mainSubView: UIView!
     @IBOutlet var contentContainerView: UIView!
     @IBOutlet var starContainerView: UIView!
@@ -32,6 +31,8 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
             self.configureView()
         }
     }
+
+    var bottomBorder = CALayer()
     
     func configureView() {
         //
@@ -50,15 +51,15 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
     private func setup() {
         self.selectedBackgroundView = UIView()
         self.selectedBackgroundView?.backgroundColor = UIColor.cellBackground()
-        let bottomBorder = CALayer()
-        bottomBorder.frame = CGRect(x: 0, y: 153.0, width: 10000.0, height: 0.5)
         bottomBorder.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
         self.layer.addSublayer(bottomBorder)
     }
-    
+
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
-        self.contentView.frame.size.width = layoutAttributes.frame.size.width
+        let width = layoutAttributes.frame.size.width
+        self.contentView.frame.size.width = width
+        bottomBorder.frame = CGRect(x: 15, y: 153.0, width: width - 30, height: 0.5)
     }
-    
+
 }

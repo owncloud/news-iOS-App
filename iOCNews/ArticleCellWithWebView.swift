@@ -68,6 +68,7 @@ class ArticleCellWithWebView: BaseArticleCell {
         guard let item = self.item else {
             return
         }
+        self.bottomBorder.removeFromSuperlayer()
         self.addWebView()
         if item.item.feedPreferWeb == true {
             if item.item.feedUseReader == true {
