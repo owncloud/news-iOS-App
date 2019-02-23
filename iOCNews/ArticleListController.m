@@ -41,6 +41,7 @@
 #import "UIColor+PHColor.h"
 #import "ArticleController.h"
 #import "iOCNews-Swift.h"
+#import "UICollectionView+ValidIndexPath.h"
 
 @interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching> {
     long currentIndex;
@@ -574,6 +575,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 #pragma mark - Prefetching Functions
 
 - (void)performCellPrefetchForIndexPath:(NSIndexPath *)indexPath {
+    if (![self.collectionView isIndexPathAvailable:indexPath]) {
+        return;
+    }
     Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (!item) {
         return;
