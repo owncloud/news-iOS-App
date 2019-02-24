@@ -49,7 +49,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
-    [self.fetchedResultsController performFetch:nil];
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -59,7 +58,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    [self.fetchedResultsController performFetch:nil];
     NSInteger count = self.fetchedResultsController.fetchedObjects.count;
     return count;
 }
@@ -94,7 +92,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     if (!currentCell) {
         self.currentCell = articleCell;
     }
-
     return articleCell;
 }
 
@@ -127,7 +124,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         self.currentCell = cell;
         ArticleFlowLayout *layout =  (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
         layout.currentIndexPath = indexPath;
-        Item *item = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.item];
+        Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
         if (item.unread) {
             item.unread = NO;
             NSMutableSet *set = [NSMutableSet setWithObject:@(item.myId)];

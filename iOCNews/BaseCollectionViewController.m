@@ -10,7 +10,6 @@
 #import "OCNewsHelper.h"
 
 @interface BaseCollectionViewController () <NSFetchedResultsControllerDelegate> {
-    BOOL hideRead;
     NSMutableArray<NSBlockOperation *> *blockOperations;
 }
 
@@ -22,6 +21,7 @@
 @synthesize fetchRequest = _fetchRequest;
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize folderId;
+@synthesize aboutToFetch;
 
 - (NSFetchRequest *)fetchRequest {
     if (_fetchRequest == nil) {
@@ -41,16 +41,16 @@
                                                                         managedObjectContext:[OCNewsHelper sharedHelper].context
                                                                           sectionNameKeyPath:nil
                                                                                    cacheName:nil];
-// TODO       if (!aboutToFetch) {
-//            return _fetchedResultsController;
-//        }
+        if (!self.aboutToFetch) {
+            return _fetchedResultsController;
+        }
         
         NSPredicate *fetchPredicate;
         if (self.feed.myId == -1) {
             fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
             self.fetchRequest.fetchLimit = self.feed.unreadCount;
         } else {
-            if (hideRead) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
                 if (self.feed.myId == -2) {
                     if (self.folderId > 0) {
                         NSMutableArray *feedsArray = [NSMutableArray new];
@@ -110,7 +110,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
 }
 
 - (void)didReceiveMemoryWarning {

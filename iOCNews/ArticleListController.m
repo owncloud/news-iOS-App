@@ -48,7 +48,6 @@
     BOOL markingAllItemsRead;
     BOOL hideRead;
     NSArray *fetchedItems;
-    BOOL aboutToFetch;
     CGFloat cellContentWidth;
     BOOL comingFromDetail;
 }
@@ -101,9 +100,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             self.navigationItem.title = self.feed.title;
         }
         hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
-        aboutToFetch = YES;
+        self.aboutToFetch = YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
-        aboutToFetch = NO;
+        self.aboutToFetch = NO;
         if (success) {
             fetchedItems = self.fetchedResultsController.fetchedObjects;
             __block long unreadCount = [self unreadCount];
@@ -183,7 +182,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     
     comingFromDetail = NO;
     markingAllItemsRead = NO;
-    aboutToFetch = NO;
+    self.aboutToFetch = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkCompleted:) name:@"NetworkCompleted" object:nil];
     
@@ -216,7 +215,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self configureView];
+    if (!comingFromDetail) {
+        [self configureView];
+    }
     comingFromDetail = NO;
 }
 
@@ -224,9 +225,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
         hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
-        aboutToFetch= YES;
+        self.aboutToFetch= YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
-        aboutToFetch = NO;
+        self.aboutToFetch = NO;
         if (success) {
             fetchedItems = self.fetchedResultsController.fetchedObjects;
         }
@@ -283,16 +284,16 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 #pragma mark - Table view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    currentIndex = indexPath.row;
-    Item *selectedItem = [self.fetchedResultsController.fetchedObjects objectAtIndex: currentIndex];
+    currentIndex = indexPath.item;
+    Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (selectedItem && selectedItem.myId) {
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
+        [self performSegueWithIdentifier:@"showArticleSegue" sender:selectedItem];
         if (selectedItem.unread) {
             selectedItem.unread = NO;
         }
         [self updateUnreadCount:@[@(selectedItem.myId)] atIndexPaths:@[indexPath]];
-        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
-        [self performSegueWithIdentifier:@"showArticleSegue" sender:selectedItem];
     }
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
@@ -302,6 +303,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         ArticleController *articleController = (ArticleController *)segue.destinationViewController;
         articleController.feed = self.feed;
         articleController.folderId = self.folderId;
+        articleController.aboutToFetch = YES;
+        [articleController.fetchedResultsController performFetch:nil];
+        articleController.aboutToFetch = NO;
         articleController.selectedArticle = (Item *)sender;
         articleController.articleListcontroller = self;
         comingFromDetail = YES;
