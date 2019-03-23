@@ -46,9 +46,9 @@ class NewsManager {
             default: timeInterval = 15 * 60
             }
             self.syncTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { (_) in
-                NotificationCenter.default.post(name: NSNotification.Name("SyncInitiated"), object: nil)
+                NotificationCenter.default.post(name: .syncInitiated, object: nil)
                 self.sync(completion: {
-                    NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
+                    NotificationCenter.default.post(name: .syncComplete, object: nil)
                 })
             }
         }
@@ -291,7 +291,7 @@ class NewsManager {
                         })
                     }
                     CDFolder.update(folders: folders)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FolderSync"), object: self, userInfo: ["added": addedFolders, "deleted": deletedFolders])
+                    NotificationCenter.default.post(name: .folderSync, object: self, userInfo: ["added": addedFolders, "deleted": deletedFolders])
                     CDFolder.delete(ids: deletedFolders.map( { $0.id }), in: NewsData.mainThreadContext)
                 }
                 completion()
@@ -327,7 +327,7 @@ class NewsManager {
                         CDItem.delete(ids: deletedFeedItemIds, in: NewsData.mainThreadContext)
                     }
                     CDFeed.update(feeds: feeds)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FeedSync"), object: self, userInfo: ["added": addedFeeds, "deleted": deletedFeeds])
+                    NotificationCenter.default.post(name: .feedSync, object: self, userInfo: ["added": addedFeeds, "deleted": deletedFeeds])
                 }
                 completion()
             })

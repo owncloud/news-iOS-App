@@ -74,7 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func onRefresh(_ sender: Any) {
         NewsManager.shared.sync {
-            NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
+            NotificationCenter.default.post(name: .syncComplete, object: nil)
         }
     }
 

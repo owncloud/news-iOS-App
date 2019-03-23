@@ -20,6 +20,7 @@
 		BD5C4E7A21D6D1FC00AFCD54 /* AspectFillImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5C4E7921D6D1FC00AFCD54 /* AspectFillImageView.swift */; };
 		BD60947E21ED69D0001841C5 /* FeedTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD60947D21ED69D0001841C5 /* FeedTreeNode.swift */; };
 		BD7BBDCC21FBEC87008B694D /* SyncHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7BBDCB21FBEC87008B694D /* SyncHelper.swift */; };
+		BD7E1B472246BE8E00349282 /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7E1B462246BE8E00349282 /* NotificationNames.swift */; };
 		BD816AA821B5CAE6001C41DF /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */; };
 		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
 		D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */; };
@@ -173,6 +174,7 @@
 		BD5C4E7921D6D1FC00AFCD54 /* AspectFillImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectFillImageView.swift; sourceTree = "<group>"; };
 		BD60947D21ED69D0001841C5 /* FeedTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTreeNode.swift; sourceTree = "<group>"; };
 		BD7BBDCB21FBEC87008B694D /* SyncHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncHelper.swift; sourceTree = "<group>"; };
+		BD7E1B462246BE8E00349282 /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSharingProvider.h; sourceTree = "<group>"; };
 		D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSharingProvider.m; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				BD5C4E7921D6D1FC00AFCD54 /* AspectFillImageView.swift */,
 				BD60947D21ED69D0001841C5 /* FeedTreeNode.swift */,
 				BD7BBDCB21FBEC87008B694D /* SyncHelper.swift */,
+				BD7E1B462246BE8E00349282 /* NotificationNames.swift */,
 				D0171ABB217BE6D800D2D34B /* Assets.xcassets */,
 				D0171ABD217BE6D800D2D34B /* Main.storyboard */,
 				D0171AC0217BE6D800D2D34B /* Info.plist */,
@@ -983,6 +986,7 @@
 				BD7BBDCC21FBEC87008B694D /* SyncHelper.swift in Sources */,
 				D05795A721A90941009F618A /* PrefsViewController.swift in Sources */,
 				BD816AA821B5CAE6001C41DF /* CoreDataExtension.swift in Sources */,
+				BD7E1B472246BE8E00349282 /* NotificationNames.swift in Sources */,
 				D0171AB8217BE6D600D2D34B /* AppDelegate.swift in Sources */,
 				BD2410F621F66AAA00B25D8D /* CDItem+CoreDataProperties.swift in Sources */,
 				D0171AE621852D9800D2D34B /* User.swift in Sources */,

@@ -40,7 +40,13 @@ class ViewController: NSViewController {
     private var currentItemId: Int32 = -1
     private var currentFeedRowIndex: Int = 0
 
-    private var selectionObserver: Any? = nil
+    private var observers = [NSObjectProtocol]()
+
+    deinit {
+        for observer in self.observers {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,17 +54,26 @@ class ViewController: NSViewController {
         self.centerTopView.wantsLayer = true
         self.rightTopView.wantsLayer = true
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncInitiated"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
+        self.observers.append(NotificationCenter.default.addObserver(forName: .syncInitiated,
+                                                                     object: nil,
+                                                                     queue: OperationQueue.main)
+        { [weak self] (_) in
             self?.syncSpinner.startAnimation(self)
-        }
+        })
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("SyncComplete"), object: nil, queue: OperationQueue.main) { [weak self] (_) in
+        self.observers.append(NotificationCenter.default.addObserver(forName: .syncComplete,
+                                                                     object: nil,
+                                                                     queue: OperationQueue.main)
+        { [weak self] (_) in
             self?.itemsArrayController.fetch(nil)
             self?.feedsTreeController.rearrangeObjects()
             self?.syncSpinner.stopAnimation(self)
-        }
+        })
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("FolderSync"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
+        self.observers.append(NotificationCenter.default.addObserver(forName: .folderSync,
+                                                                     object: nil,
+                                                                     queue: OperationQueue.main)
+        { [weak self] (notification) in
             if let added = notification.userInfo?["added"] as? [FolderSync] {
                 for addition in added {
                     if let folder = CDFolder.folder(id: addition.id) {
@@ -81,9 +96,12 @@ class ViewController: NSViewController {
                     }
                 }
             }
-        }
+        })
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("FeedSync"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
+        self.observers.append(NotificationCenter.default.addObserver(forName: .feedSync,
+                                                                     object: nil,
+                                                                     queue: OperationQueue.main)
+        { [weak self] (notification) in
             if let added = notification.userInfo?["added"] as? [FeedSync] {
                 for addition in added {
                     if addition.folderId == 0 {
@@ -108,7 +126,7 @@ class ViewController: NSViewController {
                     }
                 }
             }
-        }
+        })
 
         self.rebuildFoldersAndFeedsList()
         self.feedOutlineView.selectRowIndexes(IndexSet(integer: self.currentFeedRowIndex), byExtendingSelection: false)
@@ -129,9 +147,9 @@ class ViewController: NSViewController {
     }
 
     @IBAction func onSync(_ sender: Any) {
-        NotificationCenter.default.post(name: NSNotification.Name("SyncInitiated"), object: nil)
+        NotificationCenter.default.post(name: .syncInitiated, object: nil)
         NewsManager.shared.sync {
-            NotificationCenter.default.post(name: NSNotification.Name("SyncComplete"), object: nil)
+            NotificationCenter.default.post(name: .syncComplete, object: nil)
         }
     }
 
