@@ -166,7 +166,10 @@ class ViewController: NSViewController {
                 CDFeeds.adjustStarredCount(increment: false)
             }
             NewsManager.shared.markStarred(item: currentItem, starred: newState) { [weak self] in
-                self?.feedOutlineView.reloadItem(self?.nodeArray[1])
+                if let currentIndex = self?.currentFeedRowIndex {
+                    self?.feedsTreeController.rearrangeObjects()
+                    self?.feedOutlineView.selectRowIndexes(IndexSet(integer: currentIndex), byExtendingSelection: false)
+                }
             }
         }
     }
