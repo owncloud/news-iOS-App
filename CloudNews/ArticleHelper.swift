@@ -189,8 +189,8 @@ class ArticleHelper {
         do {
             let regex = try NSRegularExpression(pattern: regexString, options: [.caseInsensitive])
             let firstMatchingRange = regex.rangeOfFirstMatch(in: urlYoutube, options: [], range: NSRange(location: 0, length: urlYoutube.count))
-            let startIndex = String.Index(encodedOffset: firstMatchingRange.lowerBound)
-            let endIndex = String.Index(encodedOffset: firstMatchingRange.upperBound)
+            let startIndex = String.Index(utf16Offset: firstMatchingRange.lowerBound, in: urlYoutube)
+            let endIndex = String.Index(utf16Offset: firstMatchingRange.upperBound, in: urlYoutube)
             return String(urlYoutube[startIndex..<endIndex])
         } catch { }
         return nil;

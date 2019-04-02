@@ -1,9 +1,9 @@
 {
-  "commitish" : "1.15.18",
+  "commitish" : "1.15.19",
   "Mac" : [
     {
       "name" : "KSCrash",
-      "hash" : "f1ed337f4c636d084041fcb4abdd967a935af6f24a3f68f9c4e5b331b8f68904"
+      "hash" : "85757210aa0356cf83f1a6b454a5248e4eedbb6ddfd196aedf8f1a89f941460c"
     }
   ]
 }
