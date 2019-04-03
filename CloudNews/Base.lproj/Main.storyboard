@@ -765,7 +765,7 @@
                                                                     </textFieldCell>
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     <prototypeCellViews>
-                                                                        <tableCellView identifier="ItemCell" misplaced="YES" id="HdU-aD-B5l" customClass="ArticleCellView" customModule="CloudNews" customModuleProvider="target">
+                                                                        <tableCellView identifier="ItemCell" id="HdU-aD-B5l" customClass="ArticleCellView" customModule="CloudNews" customModuleProvider="target">
                                                                             <rect key="frame" x="1" y="1" width="334" height="130"/>
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
@@ -781,7 +781,7 @@
                                                                                     </userDefinedRuntimeAttributes>
                                                                                 </imageView>
                                                                                 <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juY-k3-pes">
-                                                                                    <rect key="frame" x="90" y="87" width="275" height="38"/>
+                                                                                    <rect key="frame" x="90" y="87" width="225" height="38"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" priority="750" constant="38" id="1V1-Sz-V0u"/>
                                                                                     </constraints>
@@ -800,7 +800,7 @@
                                                                                     </connections>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="G2X-LV-rJG">
-                                                                                    <rect key="frame" x="92" y="62" width="271" height="17"/>
+                                                                                    <rect key="frame" x="92" y="62" width="221" height="17"/>
                                                                                     <subviews>
                                                                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Db-Ftb">
                                                                                             <rect key="frame" x="0.0" y="1" width="16" height="16"/>
@@ -814,7 +814,7 @@
                                                                                             </connections>
                                                                                         </imageView>
                                                                                         <textField translatesAutoresizingMaskIntoConstraints="NO" id="IFW-uP-aw0">
-                                                                                            <rect key="frame" x="17" y="0.0" width="263" height="17"/>
+                                                                                            <rect key="frame" x="17" y="0.0" width="213" height="17"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="height" constant="17" id="hdw-wd-AaK"/>
                                                                                             </constraints>
@@ -839,8 +839,8 @@
                                                                                         <constraint firstAttribute="height" constant="17" id="wnF-Be-oSC"/>
                                                                                     </constraints>
                                                                                 </customView>
-                                                                                <textField verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="MVS-vC-wBs">
-                                                                                    <rect key="frame" x="90" y="37" width="275" height="17"/>
+                                                                                <textField verticalHuggingPriority="999" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="MVS-vC-wBs">
+                                                                                    <rect key="frame" x="90" y="37" width="225" height="17"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="62" id="jP6-hC-uOZ"/>
                                                                                     </constraints>
@@ -859,7 +859,7 @@
                                                                                     </connections>
                                                                                 </textField>
                                                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="EH7-d9-nQ6">
-                                                                                    <rect key="frame" x="363" y="0.0" width="21" height="130"/>
+                                                                                    <rect key="frame" x="313" y="0.0" width="21" height="130"/>
                                                                                     <subviews>
                                                                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZHV-Yd-ZQB">
                                                                                             <rect key="frame" x="0.0" y="109" width="21" height="21"/>
