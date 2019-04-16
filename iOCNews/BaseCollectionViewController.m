@@ -22,6 +22,7 @@
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize folderId;
 @synthesize aboutToFetch;
+@synthesize reloadItemsOnUpdate;
 
 - (NSFetchRequest *)fetchRequest {
     if (_fetchRequest == nil) {
@@ -110,6 +111,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.reloadItemsOnUpdate = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -189,16 +191,12 @@
         [blockOperations addObject:operation];
     }
     if (type == NSFetchedResultsChangeUpdate) {
-//        for (NSIndexPath *visibleIndexPath in weakSelf.collectionView.indexPathsForVisibleItems) {
-//            if ([visibleIndexPath isEqual:indexPath]) {
-//                //
-//            } else {
-                NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-                    [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                }];
-                [blockOperations addObject:operation];
-//            }
-//        }
+        if (self.reloadItemsOnUpdate) {
+            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            }];
+            [blockOperations addObject:operation];
+        }
     }
     if (type == NSFetchedResultsChangeMove) {
         NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{

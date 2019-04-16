@@ -48,6 +48,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
+    self.reloadItemsOnUpdate = NO;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
 }
 
