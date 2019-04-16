@@ -35,7 +35,6 @@ class ArticleFlowLayout: UICollectionViewFlowLayout {
         for section in 0 ..< cv.numberOfSections {
             for item in 0 ..< cv.numberOfItems(inSection: section) {
                 let itemFrame = CGRect(x: CGFloat(item) * itemWidth, y: 0, width: itemWidth, height: itemHeight)
-                print(String(describing: itemFrame))
                 let indexPath = IndexPath(item: item, section: section)
                 let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
                 attributes.frame = itemFrame

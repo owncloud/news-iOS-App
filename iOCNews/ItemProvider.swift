@@ -82,7 +82,9 @@ class ItemProvider: NSObject {
     init(item: ItemProviderStruct) {
         self.item = item
         super.init()
-        
+    }
+    
+    func configure() {
         self.url = item.url
         self.starred = item.starred
         self.unread = item.unread

@@ -354,7 +354,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     BOOL result = YES;
     if ([gestureRecognizer isEqual:self.markGesture]) {
         if (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact) {
-            NSLog(@"Display Mode: %ld", (long)self.splitViewController.displayMode);
             if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden) {
                 result = NO;
             }
@@ -605,30 +604,34 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     itemData.feedPreferWeb = feed.preferWeb;
     itemData.feedUseReader = feed.useReader;
 
+    ItemProvider *provider = [[ItemProvider alloc] initWithItem:itemData];
+
     NSBlockOperation *blockOperation = [[NSBlockOperation alloc] init];
     __weak NSBlockOperation *weakBlockOperation = blockOperation;
     __weak typeof(self) weakSelf = self;
+    __weak ItemProvider *weakProvider = provider;
+    __weak NSIndexPath *weakIndexPath = indexPath;
     
     [blockOperation addExecutionBlock:^{
         if (weakBlockOperation.isCancelled) {
-            weakSelf.operations[indexPath] = nil;
+            weakSelf.operations[weakIndexPath] = nil;
             return;
         }
-        ItemProvider *provider = [[ItemProvider alloc] initWithItem:itemData];
-        
-        weakSelf.fetchedItemProviders[indexPath] = provider;
-        weakSelf.operations[indexPath] = nil;
+        [weakProvider configure];
+//        weakSelf.fetchedItemProviders[indexPath] = weakProvider;
+//        weakSelf.operations[indexPath] = nil;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSArray *visibleCellIndexPaths = [weakSelf.collectionView indexPathsForVisibleItems];
-            if ([visibleCellIndexPaths containsObject:indexPath]) {
-                UICollectionViewCell *cell = [weakSelf.collectionView cellForItemAtIndexPath:indexPath];
-                ((BaseArticleCell *)cell).item = provider;
+            if ([visibleCellIndexPaths containsObject:weakIndexPath]) {
+                UICollectionViewCell *cell = [weakSelf.collectionView cellForItemAtIndexPath:weakIndexPath];
+                ((BaseArticleCell *)cell).item = weakProvider;
             }
         });
     }];
     [self.itemProviderOperationQueue addOperation:blockOperation];
     self.operations[indexPath] = blockOperation;
+    self.fetchedItemProviders[indexPath] = provider;
 }
 
 - (void)cancelCellPrefetchForIndexPath:(NSIndexPath *)indexPath {

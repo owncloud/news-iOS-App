@@ -89,6 +89,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     itemData.feedPreferWeb = feed.preferWeb;
     itemData.feedUseReader = feed.useReader;
     ItemProvider *provider = [[ItemProvider alloc] initWithItem:itemData];
+    [provider configure];
     articleCell.item = provider;
     if (!currentCell) {
         self.currentCell = articleCell;
