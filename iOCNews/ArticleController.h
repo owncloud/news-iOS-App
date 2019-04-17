@@ -13,7 +13,6 @@
 @interface ArticleController : BaseCollectionViewController
 
 @property (nonatomic, strong) Item *selectedArticle;
-@property (nonatomic, assign) NSUInteger itemIndex;
 @property (nonatomic, strong) ArticleListController *articleListcontroller;
 
 @end

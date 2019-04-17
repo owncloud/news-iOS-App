@@ -120,8 +120,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if ([scrollView isKindOfClass:[UICollectionView class]]) {
-        CGFloat currentPage = self.collectionView.contentOffset.x / self.collectionView.frame.size.width;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:currentPage inSection:0];
+        NSIndexPath *indexPath = [self currentIndexPath];
         ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
         self.currentCell = cell;
         ArticleFlowLayout *layout =  (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
@@ -321,6 +320,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     BOOL starred = [[NSUserDefaults standardUserDefaults] boolForKey:@"Starred"];
     if (starred != currentCell.item.starred) {
         currentCell.item.starred = starred;
+        Item *currentItem = [self currentItem];
+        if (currentItem) {
+            currentItem.starred = starred;
+            [self.articleListcontroller performCellPrefetchForIndexPath:[self currentIndexPath]];
+        }
         if (starred) {
             [[OCNewsHelper sharedHelper] starItemOffline:currentCell.item.myId];
         } else {
@@ -331,6 +335,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     BOOL unread = [[NSUserDefaults standardUserDefaults] boolForKey:@"Unread"];
     if (unread != currentCell.item.unread) {
         currentCell.item.unread = unread;
+        Item *currentItem = [self currentItem];
+        if (currentItem) {
+            currentItem.unread = unread;
+            [self.articleListcontroller performCellPrefetchForIndexPath:[self currentIndexPath]];
+        }
         if (unread) {
             [[OCNewsHelper sharedHelper] markItemUnreadOffline:currentCell.item.myId];
         } else {
@@ -338,7 +347,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         }
     }
     
-    if (currentCell.webView != nil) {
+    if (currentCell.webView != nil && [setting isEqualToString:@"true"]) {
         [currentCell prepareForReuse];
         [currentCell configureView];
     }
@@ -375,6 +384,16 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         settingsViewController.delegate = self;
     }
     return settingsViewController;
+}
+
+- (NSIndexPath *)currentIndexPath {
+    CGFloat currentPage = self.collectionView.contentOffset.x / self.collectionView.frame.size.width;
+    return [NSIndexPath indexPathForItem:currentPage inSection:0];
+}
+
+- (Item *)currentItem {
+    Item *item = [self.fetchedResultsController objectAtIndexPath:[self currentIndexPath]];
+    return item;
 }
 
 @end
