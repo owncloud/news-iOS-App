@@ -545,10 +545,10 @@
                                                 <rect key="frame" x="0.0" y="479" width="376" height="40"/>
                                                 <subviews>
                                                     <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="7gt-Mi-gC4">
-                                                        <rect key="frame" x="249" y="12" width="16" height="16"/>
+                                                        <rect key="frame" x="248" y="12" width="16" height="16"/>
                                                     </progressIndicator>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="biR-6D-P8K">
-                                                        <rect key="frame" x="270" y="10" width="21" height="21"/>
+                                                        <rect key="frame" x="269" y="10" width="21" height="21"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="21" id="Lol-F7-hQ8"/>
                                                             <constraint firstAttribute="width" constant="21" id="bv0-fK-r90"/>
@@ -562,7 +562,7 @@
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="snD-gk-rSP">
-                                                        <rect key="frame" x="295.5" y="8" width="71" height="23"/>
+                                                        <rect key="frame" x="295" y="8" width="71" height="23"/>
                                                         <segmentedCell key="cell" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="cyL-WC-oNr">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
@@ -982,7 +982,7 @@
                                                         </connections>
                                                     </button>
                                                     <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HRz-bW-hNR">
-                                                        <rect key="frame" x="262.5" y="8" width="71" height="23"/>
+                                                        <rect key="frame" x="262" y="8" width="71" height="23"/>
                                                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="nk8-Im-b1A">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
@@ -1016,14 +1016,28 @@
                                                     <outlet property="navigationDelegate" destination="XfG-lQ-9wD" id="hwP-W4-dQo"/>
                                                 </connections>
                                             </wkWebView>
+                                            <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KkD-Pn-PfO">
+                                                <rect key="frame" x="0.0" y="20" width="348" height="459"/>
+                                                <wkWebViewConfiguration key="configuration">
+                                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                                    <wkPreferences key="preferences"/>
+                                                </wkWebViewConfiguration>
+                                                <connections>
+                                                    <outlet property="navigationDelegate" destination="XfG-lQ-9wD" id="5lz-om-3ey"/>
+                                                </connections>
+                                            </wkWebView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="hBZ-Jx-h7L" firstAttribute="top" secondItem="fXI-6d-J7A" secondAttribute="top" id="8mC-2W-B79"/>
+                                            <constraint firstAttribute="bottom" secondItem="KkD-Pn-PfO" secondAttribute="bottom" constant="20" id="FOF-aq-bvD"/>
                                             <constraint firstAttribute="trailing" secondItem="RmO-ru-tq4" secondAttribute="trailing" id="JdV-6D-fD9"/>
                                             <constraint firstItem="hBZ-Jx-h7L" firstAttribute="width" secondItem="fXI-6d-J7A" secondAttribute="width" id="Q9u-bh-huU"/>
                                             <constraint firstAttribute="bottom" secondItem="RmO-ru-tq4" secondAttribute="bottom" id="Rgo-Xl-de4"/>
                                             <constraint firstItem="hBZ-Jx-h7L" firstAttribute="centerX" secondItem="fXI-6d-J7A" secondAttribute="centerX" id="aXI-Cy-bez"/>
                                             <constraint firstItem="RmO-ru-tq4" firstAttribute="leading" secondItem="fXI-6d-J7A" secondAttribute="leading" id="ex2-je-AGV"/>
+                                            <constraint firstAttribute="trailing" secondItem="KkD-Pn-PfO" secondAttribute="trailing" id="ksc-QQ-eZw"/>
+                                            <constraint firstItem="KkD-Pn-PfO" firstAttribute="top" secondItem="hBZ-Jx-h7L" secondAttribute="bottom" id="t7S-xv-3Hu"/>
+                                            <constraint firstItem="KkD-Pn-PfO" firstAttribute="leading" secondItem="fXI-6d-J7A" secondAttribute="leading" id="vc3-NA-aay"/>
                                             <constraint firstItem="RmO-ru-tq4" firstAttribute="top" secondItem="hBZ-Jx-h7L" secondAttribute="bottom" id="zVc-Yz-J93"/>
                                         </constraints>
                                     </customView>
@@ -1049,6 +1063,7 @@
                         <outlet property="articleSegmentedControl" destination="HRz-bW-hNR" id="9fu-TW-55N"/>
                         <outlet property="centerTopView" destination="zO6-jo-ybz" id="W5b-sj-1C3"/>
                         <outlet property="centerView" destination="Z5N-Jg-vaD" id="Gts-5s-cjB"/>
+                        <outlet property="externalWebView" destination="KkD-Pn-PfO" id="1tK-18-T5n"/>
                         <outlet property="feedOutlineView" destination="Phx-fX-rhh" id="dFB-5n-sKn"/>
                         <outlet property="feedsTreeController" destination="cZl-jt-1U1" id="7s5-91-Jxv"/>
                         <outlet property="itemsArrayController" destination="gn2-OO-znS" id="2Fc-Ky-QFW"/>
@@ -1060,8 +1075,8 @@
                         <outlet property="shareButton" destination="gV3-xP-BfO" id="CGF-LC-aTf"/>
                         <outlet property="splitView" destination="qto-lP-25p" id="o9a-Tk-1Dc"/>
                         <outlet property="starButton" destination="GcC-rx-ETz" id="pkM-Ro-qDK"/>
+                        <outlet property="summaryWebView" destination="RmO-ru-tq4" id="Rum-XY-JYu"/>
                         <outlet property="syncSpinner" destination="7gt-Mi-gC4" id="CJT-Dh-ySw"/>
-                        <outlet property="webView" destination="RmO-ru-tq4" id="Rum-XY-JYu"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

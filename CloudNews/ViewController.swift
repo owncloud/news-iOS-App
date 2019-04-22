@@ -22,7 +22,8 @@ class ViewController: NSViewController {
     
     @IBOutlet var feedOutlineView: NSOutlineView!
     @IBOutlet var itemsTableView: NSTableView!
-    @IBOutlet var webView: WKWebView!
+    @IBOutlet var summaryWebView: WKWebView!
+    @IBOutlet weak var externalWebView: WKWebView!
     @IBOutlet var articleSegmentedControl: NSSegmentedControl!
     @IBOutlet weak var starButton: NSButton!
     @IBOutlet weak var shareButton: NSButton!
@@ -391,7 +392,9 @@ extension ViewController: NSTableViewDelegate {
                         let feed = CDFeed.feed(id: item.feedId)
                         if let url = ArticleHelper.writeAndLoadHtml(html: summary, item: item as ItemProtocol, feedTitle: feed?.title) {
                             if let containerURL = ArticleHelper.documentsFolderURL {
-                                self.webView.loadFileURL(url, allowingReadAccessTo: containerURL)
+                                self.externalWebView.isHidden = true
+                                self.summaryWebView.isHidden = false
+                                self.summaryWebView.loadFileURL(url, allowingReadAccessTo: containerURL)
                             }
                         }
                     }
@@ -399,7 +402,9 @@ extension ViewController: NSTableViewDelegate {
                     if let itemUrl = item.url {
                         let url = URL(string: itemUrl)
                         if let url = url {
-                            self.webView.load(URLRequest(url: url))
+                            self.externalWebView.isHidden = false
+                            self.summaryWebView.isHidden = true
+                            self.externalWebView.load(URLRequest(url: url))
                         }
                     }
                 default:
@@ -451,7 +456,7 @@ extension ViewController: NSSplitViewDelegate {
 extension ViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if webView != self.webView {
+        guard webView == summaryWebView else {
             decisionHandler(.allow)
             return
         }
@@ -470,10 +475,27 @@ extension ViewController: WKNavigationDelegate {
             if let url = navigationAction.request.url {
                 let showingSummary = (webView.url?.scheme == "file" || webView.url?.scheme == "about")
                 if showingSummary {
-                    self.webView?.load(URLRequest(url: url))
+                    if url.absoluteString.contains("summary.html") {
+                        self.externalWebView.isHidden = true
+                        self.summaryWebView.isHidden = false
+                        self.articleSegmentedControl.setSelected(true, forSegment: 0)
+                        self.summaryWebView.load(URLRequest(url: url))
+                        decisionHandler(.cancel)
+                    } else {
+                        self.externalWebView.isHidden = false
+                        self.summaryWebView.isHidden = true
+                        self.articleSegmentedControl.setSelected(true, forSegment: 1)
+                        self.externalWebView.load(URLRequest(url: url))
+                        decisionHandler(.cancel)
+                    }
+                } else {
+                    self.externalWebView.isHidden = false
+                    self.summaryWebView.isHidden = true
+                    self.articleSegmentedControl.setSelected(true, forSegment: 1)
+                    self.externalWebView.load(URLRequest(url: url))
                     decisionHandler(.cancel)
-                    return
                 }
+                return
             }
         }
         decisionHandler(.allow)
