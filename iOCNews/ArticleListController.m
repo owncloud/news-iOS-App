@@ -44,11 +44,9 @@
 #import "UICollectionView+ValidIndexPath.h"
 
 @interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching> {
-    long currentIndex;
     BOOL markingAllItemsRead;
     BOOL hideRead;
     NSArray *fetchedItems;
-    CGFloat cellContentWidth;
     BOOL comingFromDetail;
 }
 
@@ -62,7 +60,6 @@
 
 
 - (void) configureView;
-- (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 - (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
 - (IBAction)handleCellSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
@@ -284,7 +281,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 #pragma mark - Table view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    currentIndex = indexPath.item;
     Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (selectedItem && selectedItem.myId) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
@@ -307,6 +303,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         [articleController.fetchedResultsController performFetch:nil];
         articleController.aboutToFetch = NO;
         articleController.selectedArticle = (Item *)sender;
+        articleController.items = self.fetchedResultsController.fetchedObjects;
         articleController.articleListcontroller = self;
         comingFromDetail = YES;
     }
@@ -487,7 +484,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                     if (item && item.myId) {
                         if (item.unread) {
                             item.unread = NO;
-                            [self updateUnreadCount:@[@(item.myId)]];
+                            [self updateUnreadCount:@[@(item.myId)] atIndexPaths:@[indexPath]];
                         } else {
                             if (item.starred) {
                                 item.starred = NO;

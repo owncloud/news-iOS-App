@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) Item *selectedArticle;
 @property (nonatomic, strong) ArticleListController *articleListcontroller;
+@property (nonatomic, strong) NSArray<Item *> *items;
 
 @end

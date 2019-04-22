@@ -42,6 +42,7 @@
 @synthesize settingsViewController;
 @synthesize settingsPresentationController;
 @synthesize currentCell;
+@synthesize items;
 
 static NSString * const reuseIdentifier = @"ArticleCell";
 
@@ -59,14 +60,13 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSInteger count = self.fetchedResultsController.fetchedObjects.count;
-    return count;
+    return self.items.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ArticleCellWithWebView *articleCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithWebView" forIndexPath:indexPath];
     // Configure the cell
-    Item *cellItem = (Item *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    Item *cellItem = (Item *)[self.items objectAtIndex:indexPath.item];
     [articleCell addWebView];
     articleCell.webView.navigationDelegate = self;
     articleCell.webView.UIDelegate = self;
@@ -101,7 +101,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [super viewDidLayoutSubviews];
     if (shouldScrollToInitialArticle) {
         if (self.selectedArticle) {
-            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:self.selectedArticle];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.items indexOfObject:self.selectedArticle] inSection:0];
             ArticleFlowLayout *layout = (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
             layout.currentIndexPath = indexPath;
             [self.collectionView scrollToItemIfAvailable:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
@@ -125,7 +125,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         self.currentCell = cell;
         ArticleFlowLayout *layout =  (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
         layout.currentIndexPath = indexPath;
-        Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        Item *item = [self.items objectAtIndex:indexPath.item];
         if (item.unread) {
             item.unread = NO;
             NSMutableSet *set = [NSMutableSet setWithObject:@(item.myId)];
@@ -138,7 +138,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
 }
 
-#pragma mark - WKWbView delegate
+#pragma mark - WKWebView delegate
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
@@ -392,7 +392,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (Item *)currentItem {
-    Item *item = [self.fetchedResultsController objectAtIndexPath:[self currentIndexPath]];
+    Item *item = [self.items objectAtIndex:[self currentIndexPath].item];
     return item;
 }
 
