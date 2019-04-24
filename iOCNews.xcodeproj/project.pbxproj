@@ -573,7 +573,7 @@
 			};
 			buildConfigurationList = D0BCAA1D177900C300C965F4 /* Build configuration list for PBXProject "iOCNews" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
