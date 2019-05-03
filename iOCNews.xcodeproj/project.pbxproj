@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BDDFE91E221B495D00E0E82A /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034D53322164AB100566A13 /* ItemProvider.swift */; };
 		BD16EAFF21CDC981003F562E /* SummaryValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD16EAFE21CDC981003F562E /* SummaryValueTransformer.swift */; };
 		BD2410F321F66AAA00B25D8D /* CDUnread+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2410EB21F66AA900B25D8D /* CDUnread+CoreDataProperties.swift */; };
 		BD2410F421F66AAA00B25D8D /* CDFeeds+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2410EC21F66AA900B25D8D /* CDFeeds+CoreDataProperties.swift */; };
@@ -211,6 +212,7 @@
 		D023001A1A58C0E800B354E0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
 		D02CCAF31CE7E27300F6CCEC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		D034D53322164AB100566A13 /* ItemProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProvider.swift; sourceTree = "<group>"; };
 		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
 		D035160519DA403E0016573F /* PDKeychainBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindings.m; sourceTree = "<group>"; };
 		D035160619DA403E0016573F /* PDKeychainBindingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindingsController.h; sourceTree = "<group>"; };
@@ -605,6 +607,7 @@
 				D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */,
 				D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */,
 				D05A6FB0213B914E006D3AB8 /* BaseArticleCell.swift */,
+				D034D53322164AB100566A13 /* ItemProvider.swift */,
 				D0171AAE2179596100D2D34B /* UICollectionView+ValidIndexPath.h */,
 				D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */,
 				D05A6FB2213B9508006D3AB8 /* ArticleCellNoThumbnail.swift */,
@@ -1042,6 +1045,7 @@
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
+				BDDFE91E221B495D00E0E82A /* ItemProvider.swift in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
 				D0F94F9220AA791300833A7F /* HexColors.m in Sources */,

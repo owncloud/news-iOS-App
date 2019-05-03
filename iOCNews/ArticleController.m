@@ -42,14 +42,15 @@
 @synthesize settingsViewController;
 @synthesize settingsPresentationController;
 @synthesize currentCell;
+@synthesize items;
 
 static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     shouldScrollToInitialArticle = YES;
+    self.reloadItemsOnUpdate = NO;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
-    [self.fetchedResultsController performFetch:nil];
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -59,23 +60,40 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    [self.fetchedResultsController performFetch:nil];
-    NSInteger count = self.fetchedResultsController.fetchedObjects.count;
-    return count;
+    return self.items.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ArticleCellWithWebView *articleCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithWebView" forIndexPath:indexPath];
     // Configure the cell
-    Item *cellItem = (Item *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    Item *cellItem = (Item *)[self.items objectAtIndex:indexPath.item];
     [articleCell addWebView];
     articleCell.webView.navigationDelegate = self;
     articleCell.webView.UIDelegate = self;
-    articleCell.item = cellItem;
+    
+    Feed *feed = [OCNewsHelper.sharedHelper feedWithId:cellItem.feedId];
+    ItemProviderStruct *itemData = [[ItemProviderStruct alloc] init];
+    itemData.title = cellItem.title;
+    itemData.myID = cellItem.myId;
+    itemData.author = cellItem.author;
+    itemData.pubDate = cellItem.pubDate;
+    itemData.body = cellItem.body;
+    itemData.feedId = cellItem.feedId;
+    itemData.starred = cellItem.starred;
+    itemData.unread = cellItem.unread;
+    itemData.imageLink = cellItem.imageLink;
+    itemData.readable = cellItem.readable;
+    itemData.url = cellItem.url;
+    itemData.favIconLink = feed.faviconLink;
+    itemData.feedTitle = feed.title;
+    itemData.feedPreferWeb = feed.preferWeb;
+    itemData.feedUseReader = feed.useReader;
+    ItemProvider *provider = [[ItemProvider alloc] initWithItem:itemData];
+    [provider configure];
+    articleCell.item = provider;
     if (!currentCell) {
         self.currentCell = articleCell;
     }
-
     return articleCell;
 }
 
@@ -83,7 +101,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [super viewDidLayoutSubviews];
     if (shouldScrollToInitialArticle) {
         if (self.selectedArticle) {
-            NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:self.selectedArticle];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.items indexOfObject:self.selectedArticle] inSection:0];
             ArticleFlowLayout *layout = (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
             layout.currentIndexPath = indexPath;
             [self.collectionView scrollToItemIfAvailable:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
@@ -102,17 +120,17 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if ([scrollView isKindOfClass:[UICollectionView class]]) {
-        CGFloat currentPage = self.collectionView.contentOffset.x / self.collectionView.frame.size.width;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:currentPage inSection:0];
+        NSIndexPath *indexPath = [self currentIndexPath];
         ArticleCellWithWebView *cell = (ArticleCellWithWebView *)[self.collectionView cellForItemAtIndexPath:indexPath];
         self.currentCell = cell;
         ArticleFlowLayout *layout =  (ArticleFlowLayout *)self.collectionView.collectionViewLayout;
         layout.currentIndexPath = indexPath;
-        Item *item = cell.item;
+        Item *item = [self.items objectAtIndex:indexPath.item];
         if (item.unread) {
             item.unread = NO;
             NSMutableSet *set = [NSMutableSet setWithObject:@(item.myId)];
             [[OCNewsHelper sharedHelper] markItemsReadOffline:set];
+            [self.articleListcontroller performCellPrefetchForIndexPath:indexPath];
         }
         [self.articleListcontroller.collectionView scrollToItemIfAvailable:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         [self updateNavigationItemTitle];
@@ -120,7 +138,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
 }
 
-#pragma mark - WKWbView delegate
+#pragma mark - WKWebView delegate
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
@@ -302,6 +320,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     BOOL starred = [[NSUserDefaults standardUserDefaults] boolForKey:@"Starred"];
     if (starred != currentCell.item.starred) {
         currentCell.item.starred = starred;
+        Item *currentItem = [self currentItem];
+        if (currentItem) {
+            currentItem.starred = starred;
+            [self.articleListcontroller performCellPrefetchForIndexPath:[self currentIndexPath]];
+        }
         if (starred) {
             [[OCNewsHelper sharedHelper] starItemOffline:currentCell.item.myId];
         } else {
@@ -312,6 +335,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     BOOL unread = [[NSUserDefaults standardUserDefaults] boolForKey:@"Unread"];
     if (unread != currentCell.item.unread) {
         currentCell.item.unread = unread;
+        Item *currentItem = [self currentItem];
+        if (currentItem) {
+            currentItem.unread = unread;
+            [self.articleListcontroller performCellPrefetchForIndexPath:[self currentIndexPath]];
+        }
         if (unread) {
             [[OCNewsHelper sharedHelper] markItemUnreadOffline:currentCell.item.myId];
         } else {
@@ -319,7 +347,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         }
     }
     
-    if (currentCell.webView != nil) {
+    if (currentCell.webView != nil && [setting isEqualToString:@"true"]) {
         [currentCell prepareForReuse];
         [currentCell configureView];
     }
@@ -356,6 +384,16 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         settingsViewController.delegate = self;
     }
     return settingsViewController;
+}
+
+- (NSIndexPath *)currentIndexPath {
+    CGFloat currentPage = self.collectionView.contentOffset.x / self.collectionView.frame.size.width;
+    return [NSIndexPath indexPathForItem:currentPage inSection:0];
+}
+
+- (Item *)currentItem {
+    Item *item = [self.items objectAtIndex:[self currentIndexPath].item];
+    return item;
 }
 
 @end

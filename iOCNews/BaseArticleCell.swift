@@ -9,13 +9,12 @@
 import UIKit
 
 @objc protocol ArticleCellProtocol {
-    var item: Item? {get set}
+    var item: ItemProvider? {get set}
     func configureView()
 }
 
 class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
 
-    @IBOutlet var mainView: UIView!
     @IBOutlet var mainSubView: UIView!
     @IBOutlet var contentContainerView: UIView!
     @IBOutlet var starContainerView: UIView!
@@ -27,11 +26,13 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
     
     @IBOutlet var dateLabelLeadingConstraint: NSLayoutConstraint!
     
-    var item: Item? {
+    var item: ItemProvider? {
         didSet {
             self.configureView()
         }
     }
+
+    var bottomBorder = CALayer()
     
     func configureView() {
         //
@@ -39,35 +40,26 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.setup()
+    }
+    
+    private func setup() {
         self.selectedBackgroundView = UIView()
         self.selectedBackgroundView?.backgroundColor = UIColor.cellBackground()
-        let bottomBorder = CALayer()
-        bottomBorder.frame = CGRect(x: 0, y: 153.0, width: 10000.0, height: 0.5)
         bottomBorder.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
         self.layer.addSublayer(bottomBorder)
     }
-    
+
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
-        self.contentView.frame.size.width = layoutAttributes.frame.size.width
-    }
-    
-    func makeItalic(font: UIFont) -> UIFont {
-        let desc = font.fontDescriptor
-        if let italic = desc.withSymbolicTraits(.traitItalic) {
-            return UIFont(descriptor: italic, size: 0.0)
-        }
-        return font
-    }
-
-    func makeSmaller(font: UIFont) -> UIFont {
-        let desc = font.fontDescriptor
-        let smaller = desc.withSize(desc.pointSize - 1)
-        return UIFont(descriptor: smaller, size: 0.0)
+        let width = layoutAttributes.frame.size.width
+        self.contentView.frame.size.width = width
+        bottomBorder.frame = CGRect(x: 15, y: 153.0, width: width - 30, height: 0.5)
     }
 
 }

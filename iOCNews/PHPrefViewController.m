@@ -136,6 +136,7 @@
 }
 
 - (IBAction)onButtonTap:(UIButton *)sender {
+    NSString *reload = @"true";
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     
     if (sender == self.starButton) {
@@ -146,6 +147,7 @@
         } else {
             [self.starButton setImage:[UIImage imageNamed:@"unstarred"] forState:UIControlStateNormal];
         }
+        reload = @"false";
     }
 
     if (sender == self.markUnreadButton) {
@@ -156,6 +158,7 @@
         } else {
             [self.markUnreadButton setImage:[UIImage imageNamed:@"read"] forState:UIControlStateNormal];
         }
+        reload = @"false";
     }
 
     if (sender == self.decreaseFontSizeButton) {
@@ -226,7 +229,7 @@
     [prefs synchronize];
 
     if (_delegate != nil) {
-		[_delegate settingsChanged:@"" newValue:0];
+		[_delegate settingsChanged:reload newValue:0];
 	}
 }
 

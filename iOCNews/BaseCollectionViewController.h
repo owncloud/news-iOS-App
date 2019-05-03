@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) Feed *feed;
 @property (nonatomic, assign) NSInteger folderId;
+@property (nonatomic, assign) BOOL aboutToFetch;
+@property (nonatomic, assign) BOOL reloadItemsOnUpdate;
 @property (nonatomic, strong, readonly) NSFetchRequest *fetchRequest;
 @property (nonatomic, strong, readonly) NSFetchedResultsController *fetchedResultsController;
 

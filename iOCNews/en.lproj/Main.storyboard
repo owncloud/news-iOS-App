@@ -978,6 +978,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="FkQ-sC-AN6" id="VKM-7Y-MCw"/>
                                     <outlet property="delegate" destination="FkQ-sC-AN6" id="QTY-yi-hAQ"/>
+                                    <outlet property="prefetchDataSource" destination="FkQ-sC-AN6" id="qXW-UT-Xq5"/>
                                     <outletCollection property="gestureRecognizers" destination="48A-Ka-8BA" appends="YES" id="0CW-3p-SeX"/>
                                 </connections>
                             </collectionView>

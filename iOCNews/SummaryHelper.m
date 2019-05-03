@@ -73,13 +73,13 @@
     return result;
 }
 
-+ (NSString *)createYoutubeItem:(Item *)item {
-    __block NSString *result = item.body;
++ (NSString *)createYoutubeItem:(NSString *)body andLink:(NSString *)link {
+    __block NSString *result = body;
     NSError *error = nil;
-    HTMLParser *parser = [[HTMLParser alloc] initWithString:item.body error:&error];
+    HTMLParser *parser = [[HTMLParser alloc] initWithString:body error:&error];
     
     if (error) {
-        return item.body;
+        return body;
     }
     
     //parse body
@@ -88,7 +88,7 @@
     NSArray *inputNodes = [bodyNode findChildTags:@"iframe"];
     [inputNodes enumerateObjectsUsingBlock:^(id<HTMLNode> inputNode, NSUInteger idx, BOOL *stop) {
         if (inputNode) {
-            NSString *videoID = [SummaryHelper extractYoutubeVideoID:item.url];
+            NSString *videoID = [SummaryHelper extractYoutubeVideoID:link];
             if (videoID) {
                 CGSize screenSize = [UIScreen mainScreen].nativeBounds.size;
                 NSInteger margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"MarginPortrait"];

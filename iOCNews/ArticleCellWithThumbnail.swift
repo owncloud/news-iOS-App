@@ -19,14 +19,19 @@ class ArticleCellWithThumbnail: ArticleCellNoThumbnail {
             return
         }
         
-        if let link = item.imageLink, let url = URL(string: link) {
-            self.articleImage.setImageWith(url)
-            if item.unread == true {
-                self.articleImage.alpha = 1.0
-            } else {
-                self.articleImage.alpha = 0.4
+        if (item.thumbnail != nil) {
+            self.articleImage.image = item.thumbnail
+        } else {
+            if let link = item.imageLink, let url = URL(string: link) {
+                let request = URLRequest(url: url)
+                AFImageDownloader.defaultInstance().downloadImage(for: request, success: { [weak self] (_, _, image) in
+                    self?.articleImage.image = image
+                    }, failure: nil)
             }
+
         }
+
+        self.articleImage.alpha = item.imageAlpha
     }
 
 }

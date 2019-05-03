@@ -41,14 +41,12 @@
 #import "UIColor+PHColor.h"
 #import "ArticleController.h"
 #import "iOCNews-Swift.h"
+#import "UICollectionView+ValidIndexPath.h"
 
-@interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource> {
-    long currentIndex;
+@interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching> {
     BOOL markingAllItemsRead;
     BOOL hideRead;
     NSArray *fetchedItems;
-    BOOL aboutToFetch;
-    CGFloat cellContentWidth;
     BOOL comingFromDetail;
 }
 
@@ -56,8 +54,12 @@
 @property (strong, nonatomic) IBOutlet UIScreenEdgePanGestureRecognizer *sideGestureRecognizer;
 @property (nonatomic, strong, readonly) UISwipeGestureRecognizer *markGesture;
 
+@property (strong, nonatomic) NSOperationQueue *itemProviderOperationQueue;
+@property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, NSBlockOperation *> *operations;
+@property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, ItemProvider *> *fetchedItemProviders;
+
+
 - (void) configureView;
-- (void) updateUnreadCount:(NSArray*)itemsToUpdate;
 - (void) networkCompleted:(NSNotification*)n;
 - (void) networkError:(NSNotification*)n;
 - (IBAction)handleCellSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
@@ -95,9 +97,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             self.navigationItem.title = self.feed.title;
         }
         hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
-        aboutToFetch = YES;
+        self.aboutToFetch = YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
-        aboutToFetch = NO;
+        self.aboutToFetch = NO;
         if (success) {
             fetchedItems = self.fetchedResultsController.fetchedObjects;
             __block long unreadCount = [self unreadCount];
@@ -171,9 +173,13 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [self.collectionView addGestureRecognizer:self.markGesture];
     [self.collectionView addGestureRecognizer:self.sideGestureRecognizer];
     
+    self.itemProviderOperationQueue = [[NSOperationQueue alloc] init];
+    self.operations = [NSMutableDictionary dictionary];
+    self.fetchedItemProviders = [NSMutableDictionary dictionary];
+    
     comingFromDetail = NO;
     markingAllItemsRead = NO;
-    aboutToFetch = NO;
+    self.aboutToFetch = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkCompleted:) name:@"NetworkCompleted" object:nil];
     
@@ -206,7 +212,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self configureView];
+    if (!comingFromDetail) {
+        [self configureView];
+    }
     comingFromDetail = NO;
 }
 
@@ -214,9 +222,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
         hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
-        aboutToFetch= YES;
+        self.aboutToFetch= YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
-        aboutToFetch = NO;
+        self.aboutToFetch = NO;
         if (success) {
             fetchedItems = self.fetchedResultsController.fetchedObjects;
         }
@@ -249,27 +257,39 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    __block Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowThumbnails"] == YES) && item.imageLink) {
         ArticleCellWithThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ArticleCellWithThumbnail" forIndexPath:indexPath];
-        cell.item = item;
+        if (self.fetchedItemProviders[indexPath]) {
+            cell.item = self.fetchedItemProviders[indexPath];
+        } else {
+            [self performCellPrefetchForIndexPath:indexPath];
+        }
+        return cell;
+    } else {
+        ArticleCellNoThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"NoThumbnailArticleCell" forIndexPath:indexPath];
+        if (self.fetchedItemProviders[indexPath]) {
+            cell.item = self.fetchedItemProviders[indexPath];
+        } else {
+            [self performCellPrefetchForIndexPath:indexPath];
+        }
         return cell;
     }
-    ArticleCellNoThumbnail *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"NoThumbnailArticleCell" forIndexPath:indexPath];
-    cell.item = item;
-    return cell;
 }
 
 
 #pragma mark - Table view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    currentIndex = indexPath.row;
-    Item *selectedItem = [self.fetchedResultsController.fetchedObjects objectAtIndex: currentIndex];
+    Item *selectedItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if (selectedItem && selectedItem.myId) {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage new] style:UIBarButtonItemStylePlain target:nil action:nil];
         [self performSegueWithIdentifier:@"showArticleSegue" sender:selectedItem];
+        if (selectedItem.unread) {
+            selectedItem.unread = NO;
+        }
+        [self updateUnreadCount:@[@(selectedItem.myId)] atIndexPaths:@[indexPath]];
     }
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
 }
@@ -279,9 +299,29 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         ArticleController *articleController = (ArticleController *)segue.destinationViewController;
         articleController.feed = self.feed;
         articleController.folderId = self.folderId;
+        articleController.aboutToFetch = YES;
+        [articleController.fetchedResultsController performFetch:nil];
+        articleController.aboutToFetch = NO;
         articleController.selectedArticle = (Item *)sender;
+        articleController.items = self.fetchedResultsController.fetchedObjects;
         articleController.articleListcontroller = self;
         comingFromDetail = YES;
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+    for (NSIndexPath *indexPath in indexPaths) {
+        if (!self.fetchedItemProviders[indexPath]) {
+            [self performCellPrefetchForIndexPath:indexPath];
+        }
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
+    for (NSIndexPath *indexPath in indexPaths) {
+        if (self.operations[indexPath]) {
+            [self cancelCellPrefetchForIndexPath:indexPath];
+        }
     }
 }
 
@@ -311,7 +351,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     BOOL result = YES;
     if ([gestureRecognizer isEqual:self.markGesture]) {
         if (self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassCompact) {
-            NSLog(@"Display Mode: %ld", (long)self.splitViewController.displayMode);
             if (self.splitViewController.displayMode != UISplitViewControllerDisplayModePrimaryHidden) {
                 result = NO;
             }
@@ -331,6 +370,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (IBAction)onMarkRead:(id)sender {
     markingAllItemsRead = YES;
     NSMutableArray *idsToMarkRead = [NSMutableArray new];
+    NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray new];
     long unreadCount = [self unreadCount];
     if (unreadCount > 0) {
         if (self.fetchedResultsController.fetchedObjects.count > 0) {
@@ -339,6 +379,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                 if (item.unread) {
                     item.unread = NO;
                     [idsToMarkRead addObject:@(item.myId)];
+                    [indexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
                 }
                 index += 1;
             }
@@ -365,7 +406,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
             }
         }];
     }
-    [self updateUnreadCount:idsToMarkRead];
+    [self updateUnreadCount:idsToMarkRead atIndexPaths:indexPaths];
 }
 
 - (void)markRowsRead {
@@ -377,6 +418,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                 NSInteger topVisibleRow = [[visibleCells valueForKeyPath:@"@min.item"] integerValue];
                 if (self.fetchedResultsController.fetchedObjects.count > 0) {
                     NSMutableArray *idsToMarkRead = [NSMutableArray new];
+                    NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray new];
                     NSInteger index = 0;
                     for (Item *item in self.fetchedResultsController.fetchedObjects) {
                         if (index > topVisibleRow) {
@@ -384,12 +426,13 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                         }
                         if (item.unread) {
                             item.unread = NO;
+                            [indexPaths addObject:[NSIndexPath indexPathForItem:index inSection:0]];
                             [idsToMarkRead addObject:@(item.myId)];
                         }
                         index += 1;
                     }
                     unreadCount = unreadCount - idsToMarkRead.count;
-                    [self updateUnreadCount:idsToMarkRead];
+                    [self updateUnreadCount:idsToMarkRead atIndexPaths:indexPaths];
                     self.markBarButtonItem.enabled = (unreadCount > 0);
                 }
             }
@@ -397,8 +440,11 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     }
 }
 
-- (void)updateUnreadCount:(NSArray *)itemsToUpdate {
+- (void)updateUnreadCount:(NSArray *)itemsToUpdate atIndexPaths:(NSArray *)indexPaths {
     [[OCNewsHelper sharedHelper] markItemsReadOffline:[NSMutableSet setWithArray:itemsToUpdate]];
+    for (NSIndexPath *indexPath in indexPaths) {
+        [self performCellPrefetchForIndexPath:indexPath];
+    }
     [self refresh];
 }
 
@@ -438,7 +484,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                     if (item && item.myId) {
                         if (item.unread) {
                             item.unread = NO;
-                            [self updateUnreadCount:@[@(item.myId)]];
+                            [self updateUnreadCount:@[@(item.myId)] atIndexPaths:@[indexPath]];
                         } else {
                             if (item.starred) {
                                 item.starred = NO;
@@ -522,6 +568,74 @@ static NSString * const reuseIdentifier = @"ArticleCell";
                 [self.collectionView reloadData];
             }
         }];
+    }
+}
+
+
+#pragma mark - Prefetching Functions
+
+- (void)performCellPrefetchForIndexPath:(NSIndexPath *)indexPath {
+    if (![self.collectionView isIndexPathAvailable:indexPath]) {
+        return;
+    }
+    Item *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if (!item) {
+        return;
+    }
+    
+    Feed *feed = [OCNewsHelper.sharedHelper feedWithId:item.feedId];
+    ItemProviderStruct *itemData = [[ItemProviderStruct alloc] init];
+    itemData.title = item.title;
+    itemData.myID = item.myId;
+    itemData.author = item.author;
+    itemData.pubDate = item.pubDate;
+    itemData.body = item.body;
+    itemData.feedId = item.feedId;
+    itemData.starred = item.starred;
+    itemData.unread = item.unread;
+    itemData.imageLink = item.imageLink;
+    itemData.readable = item.readable;
+    itemData.url = item.url;
+    itemData.favIconLink = feed.faviconLink;
+    itemData.feedTitle = feed.title;
+    itemData.feedPreferWeb = feed.preferWeb;
+    itemData.feedUseReader = feed.useReader;
+
+    ItemProvider *provider = [[ItemProvider alloc] initWithItem:itemData];
+
+    NSBlockOperation *blockOperation = [[NSBlockOperation alloc] init];
+    __weak NSBlockOperation *weakBlockOperation = blockOperation;
+    __weak typeof(self) weakSelf = self;
+    __weak ItemProvider *weakProvider = provider;
+    __weak NSIndexPath *weakIndexPath = indexPath;
+    
+    [blockOperation addExecutionBlock:^{
+        if (weakBlockOperation.isCancelled) {
+            weakSelf.operations[weakIndexPath] = nil;
+            return;
+        }
+        [weakProvider configure];
+//        weakSelf.fetchedItemProviders[indexPath] = weakProvider;
+//        weakSelf.operations[indexPath] = nil;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSArray *visibleCellIndexPaths = [weakSelf.collectionView indexPathsForVisibleItems];
+            if ([visibleCellIndexPaths containsObject:weakIndexPath]) {
+                UICollectionViewCell *cell = [weakSelf.collectionView cellForItemAtIndexPath:weakIndexPath];
+                ((BaseArticleCell *)cell).item = weakProvider;
+            }
+        });
+    }];
+    [self.itemProviderOperationQueue addOperation:blockOperation];
+    self.operations[indexPath] = blockOperation;
+    self.fetchedItemProviders[indexPath] = provider;
+}
+
+- (void)cancelCellPrefetchForIndexPath:(NSIndexPath *)indexPath {
+    if (self.operations[indexPath]) {
+        NSBlockOperation *blockOperation = self.operations[indexPath];
+        [blockOperation cancel];
+        self.operations[indexPath] = nil;
     }
 }
 

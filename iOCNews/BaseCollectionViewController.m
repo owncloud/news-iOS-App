@@ -10,7 +10,6 @@
 #import "OCNewsHelper.h"
 
 @interface BaseCollectionViewController () <NSFetchedResultsControllerDelegate> {
-    BOOL hideRead;
     NSMutableArray<NSBlockOperation *> *blockOperations;
 }
 
@@ -22,6 +21,8 @@
 @synthesize fetchRequest = _fetchRequest;
 @synthesize fetchedResultsController = _fetchedResultsController;
 @synthesize folderId;
+@synthesize aboutToFetch;
+@synthesize reloadItemsOnUpdate;
 
 - (NSFetchRequest *)fetchRequest {
     if (_fetchRequest == nil) {
@@ -41,16 +42,16 @@
                                                                         managedObjectContext:[OCNewsHelper sharedHelper].context
                                                                           sectionNameKeyPath:nil
                                                                                    cacheName:nil];
-// TODO       if (!aboutToFetch) {
-//            return _fetchedResultsController;
-//        }
+        if (!self.aboutToFetch) {
+            return _fetchedResultsController;
+        }
         
         NSPredicate *fetchPredicate;
         if (self.feed.myId == -1) {
             fetchPredicate = [NSPredicate predicateWithFormat:@"starred == 1"];
             self.fetchRequest.fetchLimit = self.feed.unreadCount;
         } else {
-            if (hideRead) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"]) {
                 if (self.feed.myId == -2) {
                     if (self.folderId > 0) {
                         NSMutableArray *feedsArray = [NSMutableArray new];
@@ -80,10 +81,10 @@
                         NSArray *folderFeeds = [[OCNewsHelper sharedHelper] feedsInFolderWithId:self.folderId];
                         __block NSInteger fetchLimit = 0;
                         [folderFeeds enumerateObjectsUsingBlock:^(Feed *feed, NSUInteger idx, BOOL *stop) {
-                            [feedsArray addObject:[NSPredicate predicateWithFormat:@"feedId == %@", @(feed.myId)]];
+                            [feedsArray addObject:@(feed.myId)];
                             fetchLimit += feed.articleCount;
                         }];
-                        fetchPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:feedsArray];
+                        fetchPredicate = [NSPredicate predicateWithFormat:@"feedId IN %@", feedsArray];
                         _fetchedResultsController.fetchRequest.fetchLimit = fetchLimit;
                     } else {
                         fetchPredicate = nil;
@@ -110,7 +111,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
+    self.reloadItemsOnUpdate = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -190,16 +191,12 @@
         [blockOperations addObject:operation];
     }
     if (type == NSFetchedResultsChangeUpdate) {
-//        for (NSIndexPath *visibleIndexPath in weakSelf.collectionView.indexPathsForVisibleItems) {
-//            if ([visibleIndexPath isEqual:indexPath]) {
-//                //
-//            } else {
-                NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-                    [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                }];
-                [blockOperations addObject:operation];
-//            }
-//        }
+        if (self.reloadItemsOnUpdate) {
+            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                [weakSelf.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            }];
+            [blockOperations addObject:operation];
+        }
     }
     if (type == NSFetchedResultsChangeMove) {
         NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{

@@ -12,7 +12,7 @@
 @interface SummaryHelper : NSObject
 
 + (NSString *)fixRelativeUrl:(NSString *)htmlString baseUrlString:(NSString*)base;
-+ (NSString *)createYoutubeItem:(Item *)item;
++ (NSString *)createYoutubeItem:(NSString *)body andLink:(NSString *)link;
 + (NSString *)extractYoutubeVideoID:(NSString *)urlYoutube;
 + (NSString *)replaceYTIframe:(NSString *)html;
 + (NSString *)extractVimeoVideoID:(NSString *)urlVimeo;
