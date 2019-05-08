@@ -61,7 +61,7 @@ class ArticleHelper {
             if let title = item.title {
                 htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleTitle$", with: title)
             }
-            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleLink$", with: "")
+            htmlTemplate = htmlTemplate.replacingOccurrences(of: "$ArticleLink$", with: item.url ?? "")
             var author = ""
             if let itemAuthor = item.author, itemAuthor.count > 0 {
                 author = "By \(itemAuthor)"
