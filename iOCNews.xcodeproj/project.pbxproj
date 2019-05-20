@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BDDFE91E221B495D00E0E82A /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034D53322164AB100566A13 /* ItemProvider.swift */; };
 		BD16EAFF21CDC981003F562E /* SummaryValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD16EAFE21CDC981003F562E /* SummaryValueTransformer.swift */; };
 		BD2410F321F66AAA00B25D8D /* CDUnread+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2410EB21F66AA900B25D8D /* CDUnread+CoreDataProperties.swift */; };
 		BD2410F421F66AAA00B25D8D /* CDFeeds+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2410EC21F66AA900B25D8D /* CDFeeds+CoreDataProperties.swift */; };
@@ -23,6 +22,7 @@
 		BD7BBDCC21FBEC87008B694D /* SyncHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7BBDCB21FBEC87008B694D /* SyncHelper.swift */; };
 		BD7E1B472246BE8E00349282 /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7E1B462246BE8E00349282 /* NotificationNames.swift */; };
 		BD816AA821B5CAE6001C41DF /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD816AA721B5CAE6001C41DF /* CoreDataExtension.swift */; };
+		BDDFE91E221B495D00E0E82A /* ItemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034D53322164AB100566A13 /* ItemProvider.swift */; };
 		D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A956219E6226D00B9B8E4 /* OCSharingProvider.m */; };
 		D0171AB02179596100D2D34B /* UICollectionView+ValidIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D0171AAF2179596100D2D34B /* UICollectionView+ValidIndexPath.m */; };
 		D0171AB8217BE6D600D2D34B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0171AB7217BE6D600D2D34B /* AppDelegate.swift */; };
@@ -786,6 +786,9 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
 							com.apple.Sandbox = {
 								enabled = 1;
 							};
@@ -1107,6 +1110,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 73AQJ77PZ5;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
@@ -1150,6 +1154,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 73AQJ77PZ5;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
