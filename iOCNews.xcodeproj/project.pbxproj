@@ -46,7 +46,6 @@
 		D05A6FBE213E35A8006D3AB8 /* ArticleCellWithWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05A6FBD213E35A8006D3AB8 /* ArticleCellWithWebView.swift */; };
 		D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */ = {isa = PBXBuildFile; fileRef = D0622FE918C4EBEC0032E622 /* News.xcmappingmodel */; };
 		D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = D06CB220179C8E7500A1310B /* defaults~iphone.plist */; };
-		D06CB22B179F5FCE00A1310B /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC61178104FC00C965F4 /* script.js */; };
 		D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
 		D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06CB23517A074AA00A1310B /* CoreData.framework */; };
 		D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23817A0A0A900A1310B /* OCNewsHelper.m */; };
@@ -82,7 +81,6 @@
 		D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC301780E97200C965F4 /* OCArticleImage.m */; };
 		D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC42178104FC00C965F4 /* defaults.plist */; };
 		D0BCAC8A178104FC00C965F4 /* rss.css in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC5F178104FC00C965F4 /* rss.css */; };
-		D0BCAC8B178104FC00C965F4 /* rss.html in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC60178104FC00C965F4 /* rss.html */; };
 		D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
 		D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F571836E03A005F8CAF /* OCSettingsController.m */; };
 		D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F181251782585100F719D9 /* SystemConfiguration.framework */; };
@@ -205,8 +203,6 @@
 		D0BCAC301780E97200C965F4 /* OCArticleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCArticleImage.m; sourceTree = "<group>"; };
 		D0BCAC42178104FC00C965F4 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = defaults.plist; sourceTree = "<group>"; };
 		D0BCAC5F178104FC00C965F4 /* rss.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = rss.css; sourceTree = "<group>"; };
-		D0BCAC60178104FC00C965F4 /* rss.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rss.html; sourceTree = "<group>"; };
-		D0BCAC61178104FC00C965F4 /* script.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = script.js; sourceTree = "<group>"; };
 		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 2.xcdatamodel"; sourceTree = "<group>"; };
 		D0CFE5A8188F43EF00165839 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KSCrash.framework; sourceTree = "<group>"; };
@@ -464,8 +460,6 @@
 				D0BCAC42178104FC00C965F4 /* defaults.plist */,
 				D06CB220179C8E7500A1310B /* defaults~iphone.plist */,
 				D0BCAC5F178104FC00C965F4 /* rss.css */,
-				D0BCAC60178104FC00C965F4 /* rss.html */,
-				D0BCAC61178104FC00C965F4 /* script.js */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -628,7 +622,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D06CB22B179F5FCE00A1310B /* script.js in Resources */,
 				D05A6FB9213DED1D006D3AB8 /* ArticleCellWithThumbnail.xib in Resources */,
 				D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */,
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
@@ -642,7 +635,6 @@
 				D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */,
 				D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */,
 				D0BCAC8A178104FC00C965F4 /* rss.css in Resources */,
-				D0BCAC8B178104FC00C965F4 /* rss.html in Resources */,
 				D06CB221179C8E7500A1310B /* defaults~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
