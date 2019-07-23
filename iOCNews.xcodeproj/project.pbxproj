@@ -29,6 +29,13 @@
 		D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
 		D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D023001A1A58C0E800B354E0 /* Launch Screen.xib */; };
 		D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02CCAF31CE7E27300F6CCEC /* WebKit.framework */; };
+		D03493AB22E6A2A400E1A9B0 /* RMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493A222E6A2A300E1A9B0 /* RMessage.m */; };
+		D03493AC22E6A2A400E1A9B0 /* RMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03493A422E6A2A300E1A9B0 /* RMessageView.xib */; };
+		D03493AD22E6A2A400E1A9B0 /* RMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493A522E6A2A300E1A9B0 /* RMessageView.m */; };
+		D03493AE22E6A2A400E1A9B0 /* RMessageDefaultDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = D03493A822E6A2A300E1A9B0 /* RMessageDefaultDesign.json */; };
+		D03493AF22E6A2A400E1A9B0 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D03493A922E6A2A300E1A9B0 /* Icons.xcassets */; };
+		D03493B222E6A30000E1A9B0 /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493B022E6A30000E1A9B0 /* HexColors.m */; };
+		D03493B522E6A34500E1A9B0 /* UIViewController+PPTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493B322E6A34500E1A9B0 /* UIViewController+PPTopMostController.m */; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
 		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
@@ -89,13 +96,6 @@
 		D0F1812F178502D500F719D9 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F1812D178502D500F719D9 /* NSString+HTML.m */; };
 		D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F1813E17850CAF00F719D9 /* Security.framework */; };
 		D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */; };
-		D0F94F8B20AA777300833A7F /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0F94F8320AA777200833A7F /* Icons.xcassets */; };
-		D0F94F8C20AA777300833A7F /* RMessageDefaultDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = D0F94F8420AA777200833A7F /* RMessageDefaultDesign.json */; };
-		D0F94F8D20AA777300833A7F /* RMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0F94F8620AA777200833A7F /* RMessageView.xib */; };
-		D0F94F8E20AA777300833A7F /* RMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F8820AA777200833A7F /* RMessage.m */; };
-		D0F94F8F20AA777300833A7F /* RMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F8A20AA777200833A7F /* RMessageView.m */; };
-		D0F94F9220AA791300833A7F /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F9020AA791200833A7F /* HexColors.m */; };
-		D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F94F9420AA793600833A7F /* UIViewController+PPTopMostController.m */; };
 		D0F94F9720AA90DA00833A7F /* TUSafariActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */; };
 		D0FB29611FA6A20D00578C29 /* PHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FB29601FA6A20D00578C29 /* PHThemeManager.m */; };
 /* End PBXBuildFile section */
@@ -116,6 +116,17 @@
 		D023001A1A58C0E800B354E0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
 		D02CCAF31CE7E27300F6CCEC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		D03493A222E6A2A300E1A9B0 /* RMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMessage.m; sourceTree = "<group>"; };
+		D03493A422E6A2A300E1A9B0 /* RMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RMessageView.xib; sourceTree = "<group>"; };
+		D03493A522E6A2A300E1A9B0 /* RMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMessageView.m; sourceTree = "<group>"; };
+		D03493A622E6A2A300E1A9B0 /* RMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMessage.h; sourceTree = "<group>"; };
+		D03493A822E6A2A300E1A9B0 /* RMessageDefaultDesign.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RMessageDefaultDesign.json; sourceTree = "<group>"; };
+		D03493A922E6A2A300E1A9B0 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
+		D03493AA22E6A2A300E1A9B0 /* RMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMessageView.h; sourceTree = "<group>"; };
+		D03493B022E6A30000E1A9B0 /* HexColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HexColors.m; path = RMessage/Example/Pods/HexColors/Classes/HexColors.m; sourceTree = SOURCE_ROOT; };
+		D03493B122E6A30000E1A9B0 /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HexColors.h; path = RMessage/Example/Pods/HexColors/Classes/HexColors.h; sourceTree = SOURCE_ROOT; };
+		D03493B322E6A34500E1A9B0 /* UIViewController+PPTopMostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+PPTopMostController.m"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.m"; sourceTree = SOURCE_ROOT; };
+		D03493B422E6A34500E1A9B0 /* UIViewController+PPTopMostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+PPTopMostController.h"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.h"; sourceTree = SOURCE_ROOT; };
 		D034D53322164AB100566A13 /* ItemProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProvider.swift; sourceTree = "<group>"; };
 		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
 		D035160519DA403E0016573F /* PDKeychainBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindings.m; sourceTree = "<group>"; };
@@ -218,17 +229,6 @@
 		D0F1813E17850CAF00F719D9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D0F8274E17B2D83400BE84D7 /* OCFeedSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCFeedSettingsController.h; sourceTree = "<group>"; };
 		D0F8274F17B2D83400BE84D7 /* OCFeedSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCFeedSettingsController.m; sourceTree = "<group>"; };
-		D0F94F8320AA777200833A7F /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
-		D0F94F8420AA777200833A7F /* RMessageDefaultDesign.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RMessageDefaultDesign.json; sourceTree = "<group>"; };
-		D0F94F8620AA777200833A7F /* RMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RMessageView.xib; sourceTree = "<group>"; };
-		D0F94F8720AA777200833A7F /* RMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMessage.h; sourceTree = "<group>"; };
-		D0F94F8820AA777200833A7F /* RMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMessage.m; sourceTree = "<group>"; };
-		D0F94F8920AA777200833A7F /* RMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMessageView.h; sourceTree = "<group>"; };
-		D0F94F8A20AA777200833A7F /* RMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMessageView.m; sourceTree = "<group>"; };
-		D0F94F9020AA791200833A7F /* HexColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HexColors.m; path = RMessage/Example/Pods/HexColors/Classes/HexColors.m; sourceTree = SOURCE_ROOT; };
-		D0F94F9120AA791300833A7F /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HexColors.h; path = RMessage/Example/Pods/HexColors/Classes/HexColors.h; sourceTree = SOURCE_ROOT; };
-		D0F94F9320AA793600833A7F /* UIViewController+PPTopMostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+PPTopMostController.h"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.h"; sourceTree = SOURCE_ROOT; };
-		D0F94F9420AA793600833A7F /* UIViewController+PPTopMostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+PPTopMostController.m"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.m"; sourceTree = SOURCE_ROOT; };
 		D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TUSafariActivity.framework; path = Carthage/Build/iOS/TUSafariActivity.framework; sourceTree = "<group>"; };
 		D0FB295F1FA6A20D00578C29 /* PHThemeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHThemeManager.h; sourceTree = "<group>"; };
 		D0FB29601FA6A20D00578C29 /* PHThemeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHThemeManager.m; sourceTree = "<group>"; };
@@ -276,6 +276,41 @@
 				D01ACABC17B83637005D1463 /* readable.c */,
 			);
 			path = readable;
+			sourceTree = "<group>";
+		};
+		D03493A122E6A2A300E1A9B0 /* RMessage */ = {
+			isa = PBXGroup;
+			children = (
+				D03493B422E6A34500E1A9B0 /* UIViewController+PPTopMostController.h */,
+				D03493B322E6A34500E1A9B0 /* UIViewController+PPTopMostController.m */,
+				D03493B122E6A30000E1A9B0 /* HexColors.h */,
+				D03493B022E6A30000E1A9B0 /* HexColors.m */,
+				D03493A222E6A2A300E1A9B0 /* RMessage.m */,
+				D03493A322E6A2A300E1A9B0 /* Resources */,
+				D03493A522E6A2A300E1A9B0 /* RMessageView.m */,
+				D03493A622E6A2A300E1A9B0 /* RMessage.h */,
+				D03493A722E6A2A300E1A9B0 /* Assets */,
+				D03493AA22E6A2A300E1A9B0 /* RMessageView.h */,
+			);
+			name = RMessage;
+			path = RMessage/RMessage;
+			sourceTree = "<group>";
+		};
+		D03493A322E6A2A300E1A9B0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D03493A422E6A2A300E1A9B0 /* RMessageView.xib */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D03493A722E6A2A300E1A9B0 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				D03493A822E6A2A300E1A9B0 /* RMessageDefaultDesign.json */,
+				D03493A922E6A2A300E1A9B0 /* Icons.xcassets */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		D035160319DA403E0016573F /* PDKeychainBindingsController */ = {
@@ -327,7 +362,7 @@
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
-				D0F94F8120AA777200833A7F /* RMessage */,
+				D03493A122E6A2A300E1A9B0 /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
@@ -484,41 +519,6 @@
 			name = HTMLString;
 			sourceTree = "<group>";
 		};
-		D0F94F8120AA777200833A7F /* RMessage */ = {
-			isa = PBXGroup;
-			children = (
-				D0F94F9320AA793600833A7F /* UIViewController+PPTopMostController.h */,
-				D0F94F9420AA793600833A7F /* UIViewController+PPTopMostController.m */,
-				D0F94F9120AA791300833A7F /* HexColors.h */,
-				D0F94F9020AA791200833A7F /* HexColors.m */,
-				D0F94F8220AA777200833A7F /* Assets */,
-				D0F94F8520AA777200833A7F /* Resources */,
-				D0F94F8720AA777200833A7F /* RMessage.h */,
-				D0F94F8820AA777200833A7F /* RMessage.m */,
-				D0F94F8920AA777200833A7F /* RMessageView.h */,
-				D0F94F8A20AA777200833A7F /* RMessageView.m */,
-			);
-			name = RMessage;
-			path = RMessage/RMessage;
-			sourceTree = "<group>";
-		};
-		D0F94F8220AA777200833A7F /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				D0F94F8320AA777200833A7F /* Icons.xcassets */,
-				D0F94F8420AA777200833A7F /* RMessageDefaultDesign.json */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
-		D0F94F8520AA777200833A7F /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				D0F94F8620AA777200833A7F /* RMessageView.xib */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -622,15 +622,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03493AE22E6A2A400E1A9B0 /* RMessageDefaultDesign.json in Resources */,
 				D05A6FB9213DED1D006D3AB8 /* ArticleCellWithThumbnail.xib in Resources */,
+				D03493AF22E6A2A400E1A9B0 /* Icons.xcassets in Resources */,
 				D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */,
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
-				D0F94F8B20AA777300833A7F /* Icons.xcassets in Resources */,
+				D03493AC22E6A2A400E1A9B0 /* RMessageView.xib in Resources */,
 				D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */,
-				D0F94F8C20AA777300833A7F /* RMessageDefaultDesign.json in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
-				D0F94F8D20AA777300833A7F /* RMessageView.xib in Resources */,
 				D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */,
 				D05A6FB5213B9508006D3AB8 /* NoThumbnailArticleCell.xib in Resources */,
 				D0622FEA18C4EBEC0032E622 /* News.xcmappingmodel in Resources */,
@@ -706,7 +706,6 @@
 				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
-				D0F94F8F20AA777300833A7F /* RMessageView.m in Sources */,
 				D05A6FB4213B9508006D3AB8 /* ArticleCellNoThumbnail.swift in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
@@ -720,20 +719,21 @@
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
 				D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */,
 				D0FB29611FA6A20D00578C29 /* PHThemeManager.m in Sources */,
-				D0F94F8E20AA777300833A7F /* RMessage.m in Sources */,
+				D03493B522E6A34500E1A9B0 /* UIViewController+PPTopMostController.m in Sources */,
 				D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */,
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D05A6FBE213E35A8006D3AB8 /* ArticleCellWithWebView.swift in Sources */,
-				D0F94F9520AA793600833A7F /* UIViewController+PPTopMostController.m in Sources */,
 				D096143C21EED4AF000BD5D2 /* ArticleListFlowLayout.swift in Sources */,
+				D03493AB22E6A2A400E1A9B0 /* RMessage.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
+				D03493B222E6A30000E1A9B0 /* HexColors.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				BDDFE91E221B495D00E0E82A /* ItemProvider.swift in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
-				D0F94F9220AA791300833A7F /* HexColors.m in Sources */,
 				D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */,
+				D03493AD22E6A2A400E1A9B0 /* RMessageView.m in Sources */,
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
