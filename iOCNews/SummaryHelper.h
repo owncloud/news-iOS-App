@@ -11,11 +11,11 @@
 
 @interface SummaryHelper : NSObject
 
-+ (NSString *)fixRelativeUrl:(NSString *)htmlString baseUrlString:(NSString*)base;
-+ (NSString *)createYoutubeItem:(NSString *)body andLink:(NSString *)link;
-+ (NSString *)extractYoutubeVideoID:(NSString *)urlYoutube;
-+ (NSString *)replaceYTIframe:(NSString *)html;
-+ (NSString *)extractVimeoVideoID:(NSString *)urlVimeo;
-+ (nullable NSString *)readble:(NSString *)html url:(NSURL *)url;
++ (NSString *_Nonnull)fixRelativeUrl:(NSString *_Nonnull)htmlString baseUrlString:(NSString*_Nonnull)base;
++ (NSString *_Nonnull)createYoutubeItem:(NSString *_Nonnull)body andLink:(NSString *_Nonnull)link;
++ (NSString *_Nonnull)extractYoutubeVideoID:(NSString *_Nonnull)urlYoutube;
++ (NSString *_Nonnull)replaceYTIframe:(NSString *_Nonnull)html;
++ (NSString *_Nonnull)extractVimeoVideoID:(NSString *_Nonnull)urlVimeo;
++ (nullable NSString *)readble:(NSString *_Nonnull)html url:(NSURL *_Nonnull)url;
 
 @end

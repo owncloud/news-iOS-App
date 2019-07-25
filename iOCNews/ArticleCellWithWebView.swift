@@ -103,28 +103,28 @@ class ArticleCellWithWebView: BaseArticleCell {
                 }
             }
         } else {
-            if var html = item.item.body {
-                if let url = URL(string: item.url ?? "") {
-                    let baseString = "\(url.scheme ?? "")://\(url.host ?? "")"
-                    if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
-                        if html.range(of: "iframe", options: .caseInsensitive) != nil {
-                            html = SummaryHelper.createYoutubeItem(item.item.body, andLink: item.url)
-                        } else if let urlString = item.url, urlString.contains("watch?v="), let equalIndex = urlString.index(of: "=") {
-                            let videoIdStartIndex = urlString.index(after: equalIndex)
-                            let videoId = String(urlString[videoIdStartIndex...])
-                            let screenSize = UIScreen.main.nativeBounds.size
-                            let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
-                            let currentWidth = Double(screenSize.width / UIScreen.main.scale) * (Double(margin) / 100.0)
-                            let newheight = currentWidth * 0.5625
-                            let embed = "<embed id=\"yt\" src=\"http://www.youtube.com/embed/\(videoId)?playsinline=1\" type=\"text/html\" frameborder=\"0\" width=\"\(Int(currentWidth))px\" height=\"\(Int(newheight))px\"></embed>"                           
-                            html = embed
-                        }
+            if var html = item.item.body,
+                let urlString = item.url,
+                let url = URL(string: urlString) {
+                let baseString = "\(url.scheme ?? "")://\(url.host ?? "")"
+                if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
+                    if html.range(of: "iframe", options: .caseInsensitive) != nil {
+                        html = SummaryHelper.createYoutubeItem(html, andLink: urlString)
+                    } else if let urlString = item.url, urlString.contains("watch?v="), let equalIndex = urlString.index(of: "=") {
+                        let videoIdStartIndex = urlString.index(after: equalIndex)
+                        let videoId = String(urlString[videoIdStartIndex...])
+                        let screenSize = UIScreen.main.nativeBounds.size
+                        let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
+                        let currentWidth = Double(screenSize.width / UIScreen.main.scale) * (Double(margin) / 100.0)
+                        let newheight = currentWidth * 0.5625
+                        let embed = "<embed id=\"yt\" src=\"http://www.youtube.com/embed/\(videoId)?playsinline=1\" type=\"text/html\" frameborder=\"0\" width=\"\(Int(currentWidth))px\" height=\"\(Int(newheight))px\"></embed>"
+                        html = embed
                     }
-                    html = SummaryHelper.fixRelativeUrl(html, baseUrlString: baseString)
-                    self.writeAndLoadHtml(html: html, feedTitle: item.feedTitle)
                 }
+                html = SummaryHelper.fixRelativeUrl(html, baseUrlString: baseString)
+                self.writeAndLoadHtml(html: html, feedTitle: item.feedTitle)
             }
-        }
+        }      
     }
     
     func writeAndLoadHtml(html: String, feedTitle: String? = nil) {
@@ -146,7 +146,6 @@ class ArticleCellWithWebView: BaseArticleCell {
         if let itemAuthor = item.author, itemAuthor.count > 0 {
             author = "By \(itemAuthor)"
         }
-        let body = summary ?? html
 
         let htmlTemplate = """
         <?xml version="1.0" encoding="utf-8"?>
@@ -191,7 +190,7 @@ class ArticleCellWithWebView: BaseArticleCell {
                     </div>
                     <div class="content">
                         <p>
-                            \(body)
+                            \(summary)
                         </p>
                     </div>
                     <div class="footer">
