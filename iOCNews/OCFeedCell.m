@@ -86,8 +86,14 @@
         self.imageView.frame = CGRectZero;
     }
     int accessoryOffset = 15;
+    if (@available(iOS 13, *)) {
+        accessoryOffset = 10;
+    }
     if (self.accessoryType == UITableViewCellAccessoryNone) {
-        accessoryOffset = -18;
+        accessoryOffset = -23;
+        if (@available(iOS 13, *)) {
+            accessoryOffset = -27;
+        }
     }
     self.countBadge.frame = CGRectMake(self.contentView.frame.size.width - self.countBadge.frame.size.width + accessoryOffset,
                                        self.countBadge.frame.origin.y,
