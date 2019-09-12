@@ -26,14 +26,7 @@ typedef NS_ENUM(NSInteger, PHTheme) {
 + (PHThemeManager *)sharedManager;
 
 @property(assign) PHTheme currentTheme;
-@property(strong, readonly) UIColor *unreadTextColor;
-@property(strong, readonly) UIColor *readTextColor;
 @property(strong, readonly) NSString *themeName;
-
-@property(strong, readonly) NSString *backgroundHex;
-@property(strong, readonly) NSString *textHex;
-@property(strong, readonly) NSString *linkHex;
-@property(strong, readonly) NSString *footerLinkHex;
 
 - (void)applyCurrentTheme;
 

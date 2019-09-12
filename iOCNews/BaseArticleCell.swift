@@ -50,7 +50,7 @@ class BaseArticleCell: UICollectionViewCell, ArticleCellProtocol {
     
     private func setup() {
         self.selectedBackgroundView = UIView()
-        self.selectedBackgroundView?.backgroundColor = UIColor.cellBackground()
+        self.selectedBackgroundView?.backgroundColor = UIColor.ph_cellBackground
         bottomBorder.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
         self.layer.addSublayer(bottomBorder)
     }

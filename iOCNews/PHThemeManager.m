@@ -13,6 +13,7 @@
 #import "OCFeedListController.h"
 #import "OCFeedCell.h"
 #import "ArticleController.h"
+#import "OCSettingsController.h"
 
 @implementation UILabel (ThemeColor)
 
@@ -25,25 +26,6 @@
 @end
 
 @implementation PHThemeManager
-
-#define kPHBackgroundColorArray        @[kPHWhiteBackgroundColor, kPHSepiaBackgroundColor, kPHNightBackgroundColor]
-#define kPHCellBackgroundColorArray    @[kPHWhiteCellBackgroundColor, kPHSepiaCellBackgroundColor, kPHNightCellBackgroundColor]
-#define kPHIconColorArray              @[kPHWhiteIconColor, kPHSepiaIconColor, kPHNightIconColor]
-#define kPHTextColorArray              @[kPHWhiteTextColor, kPHSepiaTextColor, kPHNightTextColor]
-#define kPHLinkColorArray              @[kPHWhiteLinkColor, kPHSepiaLinkColor, kPHNightLinkColor]
-#define kPHPopoverBackgroundColorArray @[kPHWhitePopoverBackgroundColor, kPHSepiaPopoverBackgroundColor, kPHNightPopoverBackgroundColor]
-#define kPHPopoverButtonColorArray     @[kPHWhitePopoverButtonColor, kPHSepiaPopoverButtonColor, kPHNightPopoverButtonColor]
-#define kPHPopoverBorderColorArray     @[kPHWhitePopoverBorderColor, kPHSepiaPopoverBorderColor, kPHNightPopoverBorderColor]
-
-#define kPHUnreadTextColorArray        @[[UIColor darkTextColor], [UIColor darkTextColor], [UIColor lightTextColor]]
-#define kPHReadTextColorArray          @[[UIColor colorWithWhite:0.0 alpha:0.40], [UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0]]
-
-#define kPHSwitchTintColorArray        @[kPHWhitePopoverBorderColor, kPHSepiaPopoverBorderColor, kPHNightIconColor]
-
-#define kPHBackgroundHexArray          @[@"#FFFFFF", @"#F5EFDC", @"#000000"]
-#define kPHTextHexArray                @[@"#000000", @"#000000", @"#999999"]
-#define kPHLinkArray                   @[@"#1F31B9", @"#416596", @"#9BB9F2"]
-#define kPHFooterLinkHex               @[@"#F0F2F0", @"#F1EDE7", @"#1F1F1F"]
 
 + (PHThemeManager*)sharedManager {
     static dispatch_once_t once_token;
@@ -67,50 +49,44 @@
 
 - (void)setCurrentTheme:(PHTheme)currentTheme {
     [[NSUserDefaults standardUserDefaults] setInteger:currentTheme forKey:@"CurrentTheme"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[kPHIconColorArray objectAtIndex:currentTheme]];
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:UIColor.ph_iconColor];
     
-    [UINavigationBar appearance].barTintColor = [kPHPopoverButtonColorArray objectAtIndex:currentTheme];
+    [UINavigationBar appearance].barTintColor = UIColor.ph_popoverButtonColor;
     NSMutableDictionary<NSAttributedStringKey, id> *newTitleAttributes = [NSMutableDictionary<NSAttributedStringKey, id> new];
-    newTitleAttributes[NSForegroundColorAttributeName] = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
+    newTitleAttributes[NSForegroundColorAttributeName] = UIColor.ph_textColor;
     [UINavigationBar appearance].titleTextAttributes = newTitleAttributes;
-    [UINavigationBar appearance].tintColor = [kPHIconColorArray objectAtIndex:currentTheme];
+    [UINavigationBar appearance].tintColor = UIColor.ph_iconColor;
 
-    [UIBarButtonItem appearance].tintColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
+    [UIBarButtonItem appearance].tintColor = UIColor.ph_textColor;
 
-    [UITableViewCell appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
+    [UITableViewCell appearance].backgroundColor = UIColor.ph_cellBackgroundColor;
 
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewHeaderFooterView class]]] setBackgroundColor:UIColor.ph_popoverButtonColor];
 
-    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
-    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[[ArticleController class]]] setBackgroundColor:[kPHCellBackgroundColorArray objectAtIndex:currentTheme]];
-    [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:[kPHPopoverBackgroundColorArray objectAtIndex:currentTheme]];
-
-    [UIScrollView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
-    [UIScrollView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]].backgroundColor = [kPHPopoverBackgroundColorArray objectAtIndex:currentTheme];
-
-    [[UILabel appearance] setThemeTextColor:[kPHTextColorArray objectAtIndex:currentTheme]];
-
-    [[UISwitch appearance] setOnTintColor:[kPHSwitchTintColorArray objectAtIndex:currentTheme]];
-    [[UISwitch appearance] setTintColor:[kPHSwitchTintColorArray objectAtIndex:currentTheme]];
-
-    [WKWebView appearance].backgroundColor = [kPHCellBackgroundColorArray objectAtIndex:currentTheme];
-
-    _backgroundHex = [kPHBackgroundHexArray objectAtIndex:currentTheme];
-    _textHex = [kPHTextHexArray objectAtIndex:currentTheme];
-    _linkHex = [kPHLinkArray objectAtIndex:currentTheme];
-    _footerLinkHex = [kPHFooterLinkHex objectAtIndex:currentTheme];
+    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
+    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[[ArticleController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
+    [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
+    [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCSettingsController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     
-    _unreadTextColor = [kPHUnreadTextColorArray objectAtIndex:currentTheme];
-    _readTextColor = [kPHReadTextColorArray objectAtIndex:currentTheme];
-    [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[UITextField class]]] setThemeTextColor:_readTextColor];
-    [[UITextField appearance] setTextColor:_unreadTextColor];
-    [[UITextView appearance] setTextColor:_unreadTextColor];
-    [[UIStepper appearance] setTintColor:_unreadTextColor];
+    [UIScrollView appearance].backgroundColor = UIColor.ph_cellBackgroundColor;
+    [UIScrollView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]].backgroundColor = UIColor.ph_popoverBackgroundColor;
+
+    [[UILabel appearance] setThemeTextColor:UIColor.ph_textColor];
+
+    [[UISwitch appearance] setOnTintColor:UIColor.ph_switchTintColor];
+    [[UISwitch appearance] setTintColor:UIColor.ph_switchTintColor];
+
+    [WKWebView appearance].backgroundColor = UIColor.ph_cellBackgroundColor;
+
+    [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[UITextField class]]] setThemeTextColor:UIColor.ph_readTextColor];
+    [[UITextField appearance] setTextColor:UIColor.ph_textColor];
+    [[UITextView appearance] setTextColor:UIColor.ph_textColor];
+    [[UIStepper appearance] setTintColor:UIColor.ph_textColor];
 
     NSArray * windows = [UIApplication sharedApplication].windows;
     
@@ -133,7 +109,7 @@
 - (NSString *)themeName {
     switch (self.currentTheme) {
         case PHThemeDefault:
-            return NSLocalizedString(@"Default", @"Name of the defualt theme");
+            return NSLocalizedString(@"Default", @"Name of the default theme");
             break;
         case PHThemeSepia:
             return NSLocalizedString(@"Sepia", @"Name of the sepia theme");

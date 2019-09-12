@@ -170,14 +170,14 @@ class ItemProvider: NSObject {
                 self.starIcon = UIImage(named: "star_icon")
             }
             if item.unread == true {
-                self.summaryColor = PHThemeManager.shared().unreadTextColor
-                self.titleColor = PHThemeManager.shared().unreadTextColor
-                self.dateColor = PHThemeManager.shared().unreadTextColor
+                self.summaryColor = UIColor.ph_text
+                self.titleColor = UIColor.ph_text
+                self.dateColor = UIColor.ph_text
                 self.imageAlpha = 1.0
             } else {
-                self.summaryColor = UIColor.readText()
-                self.titleColor = UIColor.readText()
-                self.dateColor = UIColor.readText()
+                self.summaryColor = UIColor.ph_readText
+                self.titleColor = UIColor.ph_readText
+                self.dateColor = UIColor.ph_readText
                 self.imageAlpha = 0.4
             }
         }

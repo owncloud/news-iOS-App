@@ -304,7 +304,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     settingsPresentationController.delegate = self;
     settingsPresentationController.barButtonItem = self.menuBarButton;
     settingsPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    settingsPresentationController.backgroundColor = [UIColor popoverBackgroundColor];
+    settingsPresentationController.backgroundColor = [UIColor ph_popoverBackgroundColor];
     [self presentViewController:self.settingsViewController animated:YES completion:nil];
 }
 

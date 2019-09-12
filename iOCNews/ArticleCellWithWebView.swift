@@ -11,6 +11,16 @@ import WebKit
 
 class ArticleCellWithWebView: BaseArticleCell {
     
+    var htmlUrl: URL? {
+        do {
+            let containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            var saveUrl = containerURL.appendingPathComponent("summary")
+            saveUrl = saveUrl.appendingPathExtension("html")
+            return saveUrl
+        } catch { }
+        return nil
+    }
+    
     var webConfig: WKWebViewConfiguration {
         let result = WKWebViewConfiguration()
         result.allowsInlineMediaPlayback = true
@@ -54,6 +64,17 @@ class ArticleCellWithWebView: BaseArticleCell {
         self.webView?.navigationDelegate = nil
         self.webView?.uiDelegate = nil
         self.webView = nil
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 12.0, *) {
+            if (self.traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle) {
+                configureView()
+            }
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     override func configureView() {
@@ -204,15 +225,11 @@ class ArticleCellWithWebView: BaseArticleCell {
         """
         print(htmlTemplate)
         do {
-            let containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            var saveUrl = containerURL.appendingPathComponent("summary")
-            saveUrl = saveUrl.appendingPathExtension("html")
-            try htmlTemplate.write(to: saveUrl, atomically: true, encoding: .utf8)
-            self.webView?.loadFileURL(saveUrl, allowingReadAccessTo: containerURL)
-            
-        } catch {
-            //
-        }
+            if let url = htmlUrl {
+                try htmlTemplate.write(to: url, atomically: true, encoding: .utf8)
+                self.webView?.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+            }
+        } catch { }
     }
 
     func updateCss() -> String {
@@ -228,14 +245,14 @@ class ArticleCellWithWebView: BaseArticleCell {
         let lineHeight = UserDefaults.standard.double(forKey: "LineHeight")
        
         return ":root {" +
-                    "--bg-color: \(PHThemeManager.shared()?.backgroundHex ?? "#FFFFFF");" +
-                    "--text-color: \(PHThemeManager.shared()?.textHex ?? "#000000");" +
+                    "--bg-color: \(UIColor.ph_background.hexString);" +
+                    "--text-color: \(UIColor.ph_text.hexString);" +
                     "--font-size: \(fontSize)px;" +
                     "--body-width-portrait: \(currentWidth)px;" +
                     "--body-width-landscape: \(currentWidthLandscape)px;" +
                     "--line-height: \(lineHeight)em;" +
-                    "--link-color: \(PHThemeManager.shared()?.linkHex ?? "#1F31B9");" +
-                    "--footer-link: \(PHThemeManager.shared()?.footerLinkHex ?? "#1F31B9");" +
+                    "--link-color: \(UIColor.ph_link.hexString);" +
+                    "--footer-link: \(UIColor.ph_popoverBackground.hexString);" +
                 "}"
     }
     
@@ -250,4 +267,27 @@ class ArticleCellWithWebView: BaseArticleCell {
         }
     }
 
+}
+
+extension UIColor {
+    var hexString: String {
+        let colorRef = cgColor.components
+        let r = colorRef?[0] ?? 0
+        let g = colorRef?[1] ?? 0
+        let b = ((colorRef?.count ?? 0) > 2 ? colorRef?[2] : g) ?? 0
+        let a = cgColor.alpha
+        
+        var color = String(
+            format: "#%02lX%02lX%02lX",
+            lroundf(Float(r * 255)),
+            lroundf(Float(g * 255)),
+            lroundf(Float(b * 255))
+        )
+        
+        if a < 1 {
+            color += String(format: "%02lX", lroundf(Float(a)))
+        }
+        
+        return color
+    }
 }

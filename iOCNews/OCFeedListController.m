@@ -305,16 +305,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                     cell.textLabel.text = feed.title;
                 }
             }
-//            cell.backgroundColor = [UIColor clearColor];
-            cell.textLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
-            
-//            cell.backgroundColor = [UIColor backgroundColor];
-            cell.contentView.backgroundColor = [UIColor clearColor];
-//            cell.contentView.opaque = YES;
-//            cell.imageView.backgroundColor = [UIColor popoverBackgroundColor];
-//            cell.labelContainerView.backgroundColor = [UIColor cellBackgroundColor];
-//            cell.buttonContainerView.backgroundColor = [UIColor cellBackgroundColor];
 
+            cell.textLabel.textColor = UIColor.ph_textColor;
+            cell.contentView.backgroundColor = [UIColor clearColor];
         }
     }
     @catch (NSException *exception) {
@@ -326,26 +319,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 }
 
-//- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    return 0.01f;
-//}
-//
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-//    if (section == 2) {
-//        CGFloat height = tableView.frame.size.height - tableView.contentSize.height;
-//        return [[ThemeView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, height)];
-//    }
-//    return nil;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-//    if (section == 2) {
-//        CGRect tvFrame = tableView.frame;
-//        return tvFrame.size.height - tableView.contentSize.height;
-//    }
-//    return 0.01f;
-//}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     OCFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -355,7 +328,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         UIView * selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         [selectedBackgroundView setBackgroundColor:[UIColor colorWithRed:0.87f green:0.87f blue:0.87f alpha:1.0f]]; // set color here
         [cell setSelectedBackgroundView:selectedBackgroundView];
-//        cell.backgroundColor = [UIColor clearColor];
     }
     cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
@@ -595,7 +567,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     {
         popover.barButtonItem = (UIBarButtonItem *)sender;
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        popover.backgroundColor = [UIColor cellBackgroundColor];
+        popover.backgroundColor = [UIColor ph_cellBackgroundColor];
     }
     
     [self.navigationController presentViewController:alert animated:YES completion:^{
