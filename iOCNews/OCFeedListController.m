@@ -179,10 +179,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     
     self.refreshControl = self.feedRefreshControl;
     
-    self.splitViewController.presentsWithGesture = YES;
     self.splitViewController.delegate = self;
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
     } else {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     }
