@@ -87,7 +87,7 @@
     }
     int accessoryOffset = 15;
     if (@available(iOS 13, *)) {
-        accessoryOffset = 10;
+        accessoryOffset = 0;
     }
     if (self.accessoryType == UITableViewCellAccessoryNone) {
         accessoryOffset = -23;
