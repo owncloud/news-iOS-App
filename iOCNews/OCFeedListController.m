@@ -481,9 +481,10 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 case 2:
                     @try {
                         if (self.splitViewController.displayMode == UISplitViewControllerDisplayModeAllVisible || self.splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryOverlay) {
-                            [UIView animateWithDuration:0.3 animations:^{
-                                self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
-                            } completion: nil];
+                            [[UIApplication sharedApplication] sendAction:self.splitViewController.displayModeButtonItem.action
+                                                                       to:self.splitViewController.displayModeButtonItem.target
+                                                                     from:nil
+                                                                 forEvent:nil];
                         }
                         feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                         self.detailViewController.feed = feed;
