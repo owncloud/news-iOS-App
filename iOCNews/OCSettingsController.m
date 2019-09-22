@@ -32,8 +32,17 @@
 #import "OCSettingsController.h"
 #import "OCAPIClient.h"
 #import "PHThemeManager.h"
+#import "UIColor+PHColor.h"
 
 @implementation OCSettingsController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    }];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -49,6 +58,7 @@
         self.statusLabel.text =  NSLocalizedString(@"Not Logged In", @"A status label indicating that the user is not logged in");
     }
     self.themeLabel.text = PHThemeManager.sharedManager.themeName;
+    self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

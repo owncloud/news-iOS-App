@@ -8,6 +8,7 @@
 
 #import "OCThemeSettingsController.h"
 #import "PHThemeManager.h"
+#import "UIColor+PHColor.h"
 
 @interface OCThemeSettingsController ()
 
@@ -21,6 +22,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    }];
     [self update];
 }
 

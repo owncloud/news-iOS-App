@@ -34,6 +34,7 @@
 #import "OCAPIClient.h"
 #import "PDKeychainBindings.h"
 #import "RMessage.h"
+#import "UIColor+PHColor.h"
 
 static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 
@@ -70,6 +71,10 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     self.length1 = NO;
     self.length2 = NO;
     self.length3 = NO;
+    self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

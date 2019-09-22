@@ -14,6 +14,7 @@
 #import "OCFeedCell.h"
 #import "ArticleController.h"
 #import "OCSettingsController.h"
+#import "OCThemeSettingsController.h"
 
 @implementation UILabel (ThemeColor)
 
@@ -64,6 +65,7 @@
 
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewHeaderFooterView class]]] setBackgroundColor:UIColor.ph_popoverButtonColor];
@@ -72,7 +74,8 @@
     [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[[ArticleController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
     [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCSettingsController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
-    
+    [[UITableView appearanceWhenContainedInInstancesOfClasses:@[[OCThemeSettingsController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
+
     [UIScrollView appearance].backgroundColor = UIColor.ph_cellBackgroundColor;
     [UIScrollView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]].backgroundColor = UIColor.ph_popoverBackgroundColor;
 

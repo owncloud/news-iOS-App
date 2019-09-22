@@ -264,7 +264,7 @@
         <!--Theme-->
         <scene sceneID="wUV-cg-IiS">
             <objects>
-                <tableViewController title="Theme" id="tMk-6b-BmX" customClass="OCThemeSettingsController" sceneMemberID="viewController">
+                <tableViewController title="Theme" modalPresentationStyle="formSheet" id="tMk-6b-BmX" customClass="OCThemeSettingsController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="i30-Wn-q3L">
                         <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
