@@ -5,7 +5,7 @@
 
 /************************************************************************
  
- Copyright 2013-2014 Peter Hedlund peter.hedlund@me.com
+ Copyright 2013-2019 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -33,6 +33,7 @@
 #import "OCFeedSettingsController.h"
 #import "OCNewsHelper.h"
 #import "OCFolderTableViewController.h"
+#import "UIColor+PHColor.h"
 
 @interface OCFeedSettingsController () {
     NSArray *_cells;
@@ -52,13 +53,11 @@
     [super viewDidLoad];
     self.tableView.tableFooterView = [UIView new];
     self.tableView.estimatedRowHeight = 44;
+    self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        self.tableView.backgroundColor = UIColor.ph_popoverBackgroundColor;
+    }];
     [self refresh];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
