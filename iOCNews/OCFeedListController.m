@@ -579,15 +579,31 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 - (UIAlertController*)addFolderAlertView {
     static UIAlertController *alertController;
+    static UIView *container;
+    static UITextField *theTextField;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
         alertController = [UIAlertController alertControllerWithTitle:@"Add New Folder" message:@"Enter the name of the folder to add." preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.keyboardType = UIKeyboardTypeDefault;
-            textField.placeholder = @"Folder name";
+            theTextField = textField;
+            theTextField.keyboardType = UIKeyboardTypeDefault;
+            theTextField.placeholder = @"Folder name";
         }];
-        
+        id fieldEditor = [theTextField valueForKey:@"fieldEditor"];
+        UIView *fieldEditorAsView = (UIView *)fieldEditor;
+        fieldEditorAsView.backgroundColor = UIColor.clearColor;
+        for (UIView* textField in alertController.textFields) {
+            container = textField.superview;
+            UIView *effectView = container.superview.subviews[0].subviews[0];
+
+            if (effectView && [effectView class] == [UIVisualEffectView class]) {
+                container.backgroundColor = [UIColor clearColor];
+                container.layer.borderWidth = 1;
+                [effectView removeFromSuperview];
+            }
+        }
+
         UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *addButton = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[OCNewsHelper sharedHelper] addFolderOffline:[[alertController.textFields objectAtIndex:0] text]];
@@ -595,20 +611,42 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         [alertController addAction:cancelButton];
         [alertController addAction:addButton];
     });
+    container.layer.borderColor = UIColor.ph_iconColor.CGColor;
+    NSDictionary *titleAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSDictionary *messageAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13 weight:UIFontWeightRegular], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Add New Folder" attributes:titleAttributes];
+    NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Enter the name of the folder to add." attributes:messageAttributes];
+    [alertController setValue: title forKey: @"attributedTitle"];
+    [alertController setValue: message forKey: @"attributedMessage"];
     return alertController;
 }
 
 - (UIAlertController*)renameFolderAlertView {
     static UIAlertController *alertController;
+    static UIView *container;
+    static UITextField *theTextField;
     static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         alertController = [UIAlertController alertControllerWithTitle:@"Rename Folder" message:@"Enter the new name of the folder." preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.keyboardType = UIKeyboardTypeDefault;
-            textField.placeholder = @"Folder name";
+            theTextField = textField;
+            theTextField.keyboardType = UIKeyboardTypeDefault;
+            theTextField.placeholder = @"Folder name";
         }];
-        
+        id fieldEditor = [theTextField valueForKey:@"fieldEditor"];
+        UIView *fieldEditorAsView = (UIView *)fieldEditor;
+        fieldEditorAsView.backgroundColor = UIColor.clearColor;
+        for (UIView* textField in alertController.textFields) {
+            container = textField.superview;
+            UIView *effectView = container.superview.subviews[0].subviews[0];
+
+            if (effectView && [effectView class] == [UIVisualEffectView class]) {
+                container.backgroundColor = [UIColor clearColor];
+                container.layer.borderWidth = 1;
+                [effectView removeFromSuperview];
+            }
+        }
+
         UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [self.tableView setEditing:NO animated:YES];
         }];
@@ -619,20 +657,44 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         [alertController addAction:cancelButton];
         [alertController addAction:renameButton];
     });
+    container.layer.borderColor = UIColor.ph_iconColor.CGColor;
+    NSDictionary *placeholderAttributes = @{NSFontAttributeName: theTextField.font, NSForegroundColorAttributeName: UIColor.ph_textColor};
+    theTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Folder name" attributes:placeholderAttributes];
+    NSDictionary *titleAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSDictionary *messageAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13 weight:UIFontWeightRegular], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Rename Folder" attributes:titleAttributes];
+    NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Enter the new name of the folder." attributes:messageAttributes];
+    [alertController setValue: title forKey: @"attributedTitle"];
+    [alertController setValue: message forKey: @"attributedMessage"];
     return alertController;
 }
 
 - (UIAlertController*)addFeedAlertView {
     static UIAlertController *alertController;
+    static UIView *container;
+    static UITextField *theTextField;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
         alertController = [UIAlertController alertControllerWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.keyboardType = UIKeyboardTypeURL;
-            textField.placeholder = @"http://example.com/feed";
+            theTextField = textField;
+            theTextField.keyboardType = UIKeyboardTypeURL;
+            theTextField.placeholder = @"http://example.com/feed";
         }];
-        
+        id fieldEditor = [theTextField valueForKey:@"fieldEditor"];
+        UIView *fieldEditorAsView = (UIView *)fieldEditor;
+        fieldEditorAsView.backgroundColor = UIColor.clearColor;
+        for (UIView* textField in alertController.textFields) {
+            container = textField.superview;
+            UIView *effectView = container.superview.subviews[0].subviews[0];
+
+            if (effectView && [effectView class] == [UIVisualEffectView class]) {
+                container.backgroundColor = [UIColor clearColor];
+                container.layer.borderWidth = 1;
+                [effectView removeFromSuperview];
+            }
+        }
         UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *addButton = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[OCNewsHelper sharedHelper] addFeedOffline:[[alertController.textFields objectAtIndex:0] text]];
@@ -640,6 +702,14 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         [alertController addAction:cancelButton];
         [alertController addAction:addButton];
     });
+    container.layer.borderColor = UIColor.ph_iconColor.CGColor;
+    NSDictionary *titleAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSDictionary *messageAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13 weight:UIFontWeightRegular], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Add New Feed" attributes:titleAttributes];
+    NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Enter the url of the feed to add." attributes:messageAttributes];
+    [alertController setValue: title forKey: @"attributedTitle"];
+    [alertController setValue: message forKey: @"attributedMessage"];
+
     return alertController;
 }
 
