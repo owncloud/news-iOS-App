@@ -63,9 +63,7 @@
 
     [UITableViewCell appearance].backgroundColor = UIColor.ph_cellBackgroundColor;
 
-//    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setTintColor:[UINavigationBar appearance].tintColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewHeaderFooterView class]]] setBackgroundColor:UIColor.ph_popoverButtonColor];
@@ -86,7 +84,6 @@
 
     [WKWebView appearance].backgroundColor = UIColor.ph_cellBackgroundColor;
 
-//    [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[UIAlertController class]]] setThemeTextColor:UIColor.ph_textColor];
     [[UILabel appearanceWhenContainedInInstancesOfClasses:@[[UITextField class]]] setThemeTextColor:UIColor.ph_readTextColor];
     [[UITextField appearance] setTextColor:UIColor.ph_textColor];
     [[UITextView appearance] setTextColor:UIColor.ph_textColor];

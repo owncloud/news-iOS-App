@@ -16,6 +16,7 @@
 #import <TUSafariActivity/TUSafariActivity.h>
 #import "iOCNews-Swift.h"
 #import "UICollectionView+ValidIndexPath.h"
+#import "UIColor+PHColor.h"
 
 @interface ArticleController () <UICollectionViewDelegateFlowLayout, WKUIDelegate, WKNavigationDelegate, PHPrefViewControllerDelegate, UIPopoverPresentationControllerDelegate> {
     BOOL shouldScrollToInitialArticle;
@@ -51,6 +52,10 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     shouldScrollToInitialArticle = YES;
     self.reloadItemsOnUpdate = NO;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
+    self.view.backgroundColor =  UIColor.ph_cellBackgroundColor;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        self.view.backgroundColor =  UIColor.ph_cellBackgroundColor;
+    }];
 }
 
 #pragma mark <UICollectionViewDataSource>
