@@ -912,6 +912,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/pcre/lib",
 				);
+				MARKETING_VERSION = 3.9.0;
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-ObjC",
@@ -953,6 +954,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/pcre/lib",
 				);
+				MARKETING_VERSION = 3.9.0;
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-ObjC",
