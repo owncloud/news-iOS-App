@@ -304,13 +304,14 @@
 
 - (void)deleteFeed:(Feed*)feed {
     if (feed && feed.myId) {
-        NSError *error = nil;
         [self.itemRequest setPredicate:[NSPredicate predicateWithFormat:@"feedId == %@", @(feed.myId)]];
-        
-        NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:&error];
-        for (Item *item in feedItems) {
-            [self.context deleteObject:item];
+        NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:self.itemRequest];
+        NSError *deleteError = nil;
+        [self.coordinator executeRequest:deleteRequest withContext:self.context error:&deleteError];
+        if (deleteError) {
+            NSLog(@"Error deleting items in feed: %@", deleteError.localizedDescription);
         }
+
         [self.context deleteObject:feed];
         [self updateTotalUnreadCount];
     }
@@ -647,25 +648,36 @@
         //NSLog(@"New Items: %@", itemDict);
         NSArray *newItems = [NSArray arrayWithArray:[itemDict objectForKey:@"items"]];
         if (newItems.count > 0) {
-            __block NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
+            NSMutableSet *possibleDuplicateItems = [NSMutableSet new];
             [possibleDuplicateItems addObjectsFromArray:[newItems valueForKey:@"id"]];
             [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
             
-            [self.itemRequest setResultType:NSManagedObjectResultType];
-            
-            NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:nil];
-            
-            for (NSManagedObject *item in duplicateItems) {
-                [self.context deleteObject:item];
+//            [self.itemRequest setResultType:NSManagedObjectResultType];
+            NSBatchDeleteRequest *duplicateRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:self.itemRequest];
+            NSError *deleteError = nil;
+            [self.coordinator executeRequest:duplicateRequest withContext:self.context error:&deleteError];
+            if (deleteError) {
+                NSLog(@"Error deleting duplicates feed: %@", deleteError.localizedDescription);
             }
-            [self saveContext];
+
+//            NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:nil];
+//
+//            for (NSManagedObject *item in duplicateItems) {
+//                [self.context deleteObject:item];
+//            }
+//            [self saveContext];
             
-            __block NSMutableSet *feedsWithNewItems = [[NSMutableSet alloc] init];
-            [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+            NSMutableSet *feedsWithNewItems = [[NSMutableSet alloc] init];
+            for (NSDictionary *item in newItems) {
                 NSNumber *myFeedId = [item objectForKey:@"feedId"];
                 [feedsWithNewItems addObject:myFeedId];
                 [self addItemFromDictionary:item];
-            }];
+            }
+//            [newItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
+//                NSNumber *myFeedId = [item objectForKey:@"feedId"];
+//                [feedsWithNewItems addObject:myFeedId];
+//                [self addItemFromDictionary:item];
+//            }];
             [self saveContext];
             
             NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
@@ -674,23 +686,48 @@
             
             for (NSNumber *feedWithNewItems in feedsWithNewItems) {
                 Feed *feed = [self feedWithId:[feedWithNewItems integerValue]];
-                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedWithNewItems]];
-                NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:nil];
-                NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
-                filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
-                while (filteredArray.count > feed.articleCount) {
-                    Item *itemToRemove = [filteredArray lastObject];
-                    [self.context deleteObject:itemToRemove];
-                    [filteredArray removeLastObject];
+                
+                [self.itemRequest setPredicate: [self unreadPredicateForFeed:feedWithNewItems]];
+                self.itemRequest.fetchOffset = 0;
+                NSInteger count = [self.context countForFetchRequest:self.itemRequest error:nil];
+                if (count != NSNotFound) {
+                    feed.unreadCount = (int32_t)count;
                 }
+                
+                [self.itemRequest setPredicate:[self trimPredicateForFeed:feedWithNewItems]];
+                self.itemRequest.fetchOffset = feed.articleCount;
+                NSBatchDeleteRequest *trimRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:self.itemRequest];
+                NSError *deleteError = nil;
+                [self.coordinator executeRequest:trimRequest withContext:self.context error:&deleteError];
+                if (deleteError) {
+                    NSLog(@"Error trimming feed: %@", deleteError.localizedDescription);
+                }
+                
+//                NSArray *feedItems = [self.context executeFetchRequest:self.itemRequest error:nil];
+//                NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
+//                //                NSLog(@"Unread item count: %lu", (unsigned long)unreadItems.count);
+//                if (feed.unreadCount != unreadItems.count) {
+//                    ++errorCount;
+//                }
+//                feed.unreadCount = (int)unreadItems.count;
+//                NSMutableArray *filteredArray = [NSMutableArray arrayWithArray:[feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]]]];
+//                filteredArray = [NSMutableArray arrayWithArray:[filteredArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]]]];
+//                if (feedItems.count > feed.articleCount) {
+//                    NSRange trimRange = NSMakeRange(feed.articleCount - 1, feedItems.count - feed.articleCount);
+//                    NSArray *trimArray = [feedItems subarrayWithRange:trimRange];
+//                    for (Item *item in trimArray) {
+//                        [self.context deleteObject:item];
+//                    }
+//                }
+                
+//                while (filteredArray.count > feed.articleCount) {
+//                    Item *itemToRemove = [filteredArray lastObject];
+//                    [self.context deleteObject:itemToRemove];
+//                    [filteredArray removeLastObject];
+//                }
                 [self saveContext];
-                NSArray *unreadItems = [feedItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]]];
-                //                NSLog(@"Unread item count: %lu", (unsigned long)unreadItems.count);
-                if (feed.unreadCount != unreadItems.count) {
-                    ++errorCount;
-                }
-                feed.unreadCount = (int)unreadItems.count;
             }
+            self.itemRequest.fetchOffset = 0;
         }
         
         switch (aType) {
@@ -844,15 +881,22 @@
             [possibleDuplicateItems addObjectsFromArray:[addedItems valueForKey:@"id"]];
 //            NSLog(@"Item count: %lu; possibleDuplicateItems count: %lu", (unsigned long)addedItems.count, (unsigned long)possibleDuplicateItems.count);
             [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"myId IN %@", possibleDuplicateItems]];
-            [self.itemRequest setResultType:NSManagedObjectResultType];
-            NSError *error = nil;
-            NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:&error];
-//            NSLog(@"duplicateItems Count: %lu", (unsigned long)duplicateItems.count);
-            
-            for (NSManagedObject *item in duplicateItems) {
-                //NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
-                [self.context deleteObject:item];
+//            [self.itemRequest setResultType:NSManagedObjectResultType];
+            NSBatchDeleteRequest *duplicateRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:self.itemRequest];
+            NSError *deleteError = nil;
+            [self.coordinator executeRequest:duplicateRequest withContext:self.context error:&deleteError];
+            if (deleteError) {
+                NSLog(@"Error deleting duplicates: %@", deleteError.localizedDescription);
             }
+
+//            NSError *error = nil;
+//            NSArray *duplicateItems = [self.context executeFetchRequest:self.itemRequest error:&error];
+////            NSLog(@"duplicateItems Count: %lu", (unsigned long)duplicateItems.count);
+//
+//            for (NSManagedObject *item in duplicateItems) {
+//                //NSLog(@"Deleting duplicate with title: %@", ((Item*)item).title);
+//                [self.context deleteObject:item];
+//            }
             
             [addedItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop ) {
                 [self addItemFromDictionary:item];
@@ -865,24 +909,34 @@
             [feedsWithNewItems enumerateObjectsUsingBlock:^(NSNumber *feedId, BOOL *stop) {
                 
                 Feed *feed = [self feedWithId:[feedId integerValue]];
-                
-                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
-                
-                NSError *error = nil;
-                NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
-                
-                while (feedItems.count > feed.articleCount) {
-                    Item *itemToRemove = [feedItems lastObject];
-                    if (!itemToRemove.starred) {
-                        if (!itemToRemove.unread) {
-//                            NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
-                            [self.context deleteObject:itemToRemove];
-                            [feedItems removeLastObject];
-                        }
-                    }
+                [self.itemRequest setPredicate:[self trimPredicateForFeed:feedId]];
+                self.itemRequest.fetchOffset = feed.articleCount;
+                NSBatchDeleteRequest *trimRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:self.itemRequest];
+                NSError *deleteError = nil;
+                [self.coordinator executeRequest:trimRequest withContext:self.context error:&deleteError];
+                if (deleteError) {
+                    NSLog(@"Error trimming feed: %@", deleteError.localizedDescription);
                 }
+
+//                [self.itemRequest setPredicate:[NSPredicate predicateWithFormat: @"feedId == %@", feedId]];
+//
+//                NSError *error = nil;
+//                NSMutableArray *feedItems = [NSMutableArray arrayWithArray:[self.context executeFetchRequest:self.itemRequest error:&error]];
+//
+//                while (feedItems.count > feed.articleCount) {
+//                    Item *itemToRemove = [feedItems lastObject];
+//                    if (!itemToRemove.starred) {
+//                        if (!itemToRemove.unread) {
+////                            NSLog(@"Deleting item with id %i and title %@", itemToRemove.myIdValue, itemToRemove.title);
+//                            [self.context deleteObject:itemToRemove];
+//                            [feedItems removeLastObject];
+//                        }
+//                    }
+//                }
                 [self saveContext];
             }];
+            self.itemRequest.fetchOffset = 0;
+
             if (aType == OCUpdateTypeAll) {
                 [self markItemsReadOffline:[self->itemsToMarkRead mutableCopy]];
                 for (NSNumber *itemId in self->itemsToMarkUnread) {
@@ -1478,6 +1532,19 @@
 
 - (NSURL*) documentsDirectoryURL {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (NSPredicate *)unreadPredicateForFeed:(NSNumber *)feedId {
+    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", feedId];
+    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:YES]];
+    return [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2]];
+}
+
+- (NSPredicate *)trimPredicateForFeed:(NSNumber *)feedId {
+    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"feedId == %@", feedId];
+    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"unread == %@", [NSNumber numberWithBool:NO]];
+    NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"starred == %@", [NSNumber numberWithBool:NO]];
+    return [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1, pred2, pred3]];
 }
 
 @end
