@@ -8,6 +8,7 @@
 
 #import "BaseCollectionViewController.h"
 #import "OCNewsHelper.h"
+#import "UICollectionView+ValidIndexPath.h"
 
 @interface BaseCollectionViewController () <NSFetchedResultsControllerDelegate> {
     NSMutableArray<NSBlockOperation *> *blockOperations;
@@ -179,16 +180,20 @@
     __weak typeof(self) weakSelf = self;
 
     if (type == NSFetchedResultsChangeInsert) {
-        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-            [weakSelf.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-        }];
-        [blockOperations addObject:operation];
+        if ([weakSelf.collectionView isIndexPathAvailable:newIndexPath]) {
+            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                [weakSelf.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+            }];
+            [blockOperations addObject:operation];
+        }
     }
     if (type == NSFetchedResultsChangeDelete) {
-        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-            [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-        }];
-        [blockOperations addObject:operation];
+        if ([weakSelf.collectionView isIndexPathAvailable:indexPath]) {
+            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                [weakSelf.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            }];
+            [blockOperations addObject:operation];
+        }
     }
     if (type == NSFetchedResultsChangeUpdate) {
         if (self.reloadItemsOnUpdate) {
