@@ -179,10 +179,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     
     self.refreshControl = self.feedRefreshControl;
     
-    self.splitViewController.presentsWithGesture = YES;
     self.splitViewController.delegate = self;
     if (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-    self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
+        self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAutomatic;
     } else {
         self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
     }
@@ -305,16 +304,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                     cell.textLabel.text = feed.title;
                 }
             }
-//            cell.backgroundColor = [UIColor clearColor];
-            cell.textLabel.textColor = PHThemeManager.sharedManager.unreadTextColor;
-            
-//            cell.backgroundColor = [UIColor backgroundColor];
-            cell.contentView.backgroundColor = [UIColor clearColor];
-//            cell.contentView.opaque = YES;
-//            cell.imageView.backgroundColor = [UIColor popoverBackgroundColor];
-//            cell.labelContainerView.backgroundColor = [UIColor cellBackgroundColor];
-//            cell.buttonContainerView.backgroundColor = [UIColor cellBackgroundColor];
 
+            cell.textLabel.textColor = UIColor.ph_textColor;
+            cell.contentView.backgroundColor = [UIColor clearColor];
         }
     }
     @catch (NSException *exception) {
@@ -326,26 +318,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 }
 
-//- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    return 0.01f;
-//}
-//
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-//    if (section == 2) {
-//        CGFloat height = tableView.frame.size.height - tableView.contentSize.height;
-//        return [[ThemeView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, height)];
-//    }
-//    return nil;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-//    if (section == 2) {
-//        CGRect tvFrame = tableView.frame;
-//        return tvFrame.size.height - tableView.contentSize.height;
-//    }
-//    return 0.01f;
-//}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     OCFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -355,7 +327,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         UIView * selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         [selectedBackgroundView setBackgroundColor:[UIColor colorWithRed:0.87f green:0.87f blue:0.87f alpha:1.0f]]; // set color here
         [cell setSelectedBackgroundView:selectedBackgroundView];
-//        cell.backgroundColor = [UIColor clearColor];
     }
     cell.tag = indexPath.row;
     [self configureCell:cell atIndexPath:indexPath];
@@ -510,9 +481,10 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 case 2:
                     @try {
                         if (self.splitViewController.displayMode == UISplitViewControllerDisplayModeAllVisible || self.splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryOverlay) {
-                            [UIView animateWithDuration:0.3 animations:^{
-                                self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModePrimaryHidden;
-                            } completion: nil];
+                            [[UIApplication sharedApplication] sendAction:self.splitViewController.displayModeButtonItem.action
+                                                                       to:self.splitViewController.displayModeButtonItem.target
+                                                                     from:nil
+                                                                 forEvent:nil];
                         }
                         feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
                         self.detailViewController.feed = feed;
@@ -595,7 +567,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     {
         popover.barButtonItem = (UIBarButtonItem *)sender;
         popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        popover.backgroundColor = [UIColor cellBackgroundColor];
+        popover.backgroundColor = [UIColor ph_cellBackgroundColor];
     }
     
     [self.navigationController presentViewController:alert animated:YES completion:^{
@@ -607,15 +579,31 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 - (UIAlertController*)addFolderAlertView {
     static UIAlertController *alertController;
+    static UIView *container;
+    static UITextField *theTextField;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
         alertController = [UIAlertController alertControllerWithTitle:@"Add New Folder" message:@"Enter the name of the folder to add." preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.keyboardType = UIKeyboardTypeDefault;
-            textField.placeholder = @"Folder name";
+            theTextField = textField;
+            theTextField.keyboardType = UIKeyboardTypeDefault;
+            theTextField.placeholder = @"Folder name";
         }];
-        
+        id fieldEditor = [theTextField valueForKey:@"fieldEditor"];
+        UIView *fieldEditorAsView = (UIView *)fieldEditor;
+        fieldEditorAsView.backgroundColor = UIColor.clearColor;
+        for (UIView* textField in alertController.textFields) {
+            container = textField.superview;
+            UIView *effectView = container.superview.subviews[0].subviews[0];
+
+            if (effectView && [effectView class] == [UIVisualEffectView class]) {
+                container.backgroundColor = [UIColor clearColor];
+                container.layer.borderWidth = 1;
+                [effectView removeFromSuperview];
+            }
+        }
+
         UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *addButton = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[OCNewsHelper sharedHelper] addFolderOffline:[[alertController.textFields objectAtIndex:0] text]];
@@ -623,20 +611,42 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         [alertController addAction:cancelButton];
         [alertController addAction:addButton];
     });
+    container.layer.borderColor = UIColor.ph_iconColor.CGColor;
+    NSDictionary *titleAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSDictionary *messageAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13 weight:UIFontWeightRegular], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Add New Folder" attributes:titleAttributes];
+    NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Enter the name of the folder to add." attributes:messageAttributes];
+    [alertController setValue: title forKey: @"attributedTitle"];
+    [alertController setValue: message forKey: @"attributedMessage"];
     return alertController;
 }
 
 - (UIAlertController*)renameFolderAlertView {
     static UIAlertController *alertController;
+    static UIView *container;
+    static UITextField *theTextField;
     static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         alertController = [UIAlertController alertControllerWithTitle:@"Rename Folder" message:@"Enter the new name of the folder." preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.keyboardType = UIKeyboardTypeDefault;
-            textField.placeholder = @"Folder name";
+            theTextField = textField;
+            theTextField.keyboardType = UIKeyboardTypeDefault;
+            theTextField.placeholder = @"Folder name";
         }];
-        
+        id fieldEditor = [theTextField valueForKey:@"fieldEditor"];
+        UIView *fieldEditorAsView = (UIView *)fieldEditor;
+        fieldEditorAsView.backgroundColor = UIColor.clearColor;
+        for (UIView* textField in alertController.textFields) {
+            container = textField.superview;
+            UIView *effectView = container.superview.subviews[0].subviews[0];
+
+            if (effectView && [effectView class] == [UIVisualEffectView class]) {
+                container.backgroundColor = [UIColor clearColor];
+                container.layer.borderWidth = 1;
+                [effectView removeFromSuperview];
+            }
+        }
+
         UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [self.tableView setEditing:NO animated:YES];
         }];
@@ -647,20 +657,44 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         [alertController addAction:cancelButton];
         [alertController addAction:renameButton];
     });
+    container.layer.borderColor = UIColor.ph_iconColor.CGColor;
+    NSDictionary *placeholderAttributes = @{NSFontAttributeName: theTextField.font, NSForegroundColorAttributeName: UIColor.ph_textColor};
+    theTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Folder name" attributes:placeholderAttributes];
+    NSDictionary *titleAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSDictionary *messageAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13 weight:UIFontWeightRegular], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Rename Folder" attributes:titleAttributes];
+    NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Enter the new name of the folder." attributes:messageAttributes];
+    [alertController setValue: title forKey: @"attributedTitle"];
+    [alertController setValue: message forKey: @"attributedMessage"];
     return alertController;
 }
 
 - (UIAlertController*)addFeedAlertView {
     static UIAlertController *alertController;
+    static UIView *container;
+    static UITextField *theTextField;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
         alertController = [UIAlertController alertControllerWithTitle:@"Add New Feed" message:@"Enter the url of the feed to add." preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.keyboardType = UIKeyboardTypeURL;
-            textField.placeholder = @"http://example.com/feed";
+            theTextField = textField;
+            theTextField.keyboardType = UIKeyboardTypeURL;
+            theTextField.placeholder = @"http://example.com/feed";
         }];
-        
+        id fieldEditor = [theTextField valueForKey:@"fieldEditor"];
+        UIView *fieldEditorAsView = (UIView *)fieldEditor;
+        fieldEditorAsView.backgroundColor = UIColor.clearColor;
+        for (UIView* textField in alertController.textFields) {
+            container = textField.superview;
+            UIView *effectView = container.superview.subviews[0].subviews[0];
+
+            if (effectView && [effectView class] == [UIVisualEffectView class]) {
+                container.backgroundColor = [UIColor clearColor];
+                container.layer.borderWidth = 1;
+                [effectView removeFromSuperview];
+            }
+        }
         UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *addButton = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[OCNewsHelper sharedHelper] addFeedOffline:[[alertController.textFields objectAtIndex:0] text]];
@@ -668,6 +702,14 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         [alertController addAction:cancelButton];
         [alertController addAction:addButton];
     });
+    container.layer.borderColor = UIColor.ph_iconColor.CGColor;
+    NSDictionary *titleAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightSemibold], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSDictionary *messageAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13 weight:UIFontWeightRegular], NSForegroundColorAttributeName: UIColor.ph_textColor};
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Add New Feed" attributes:titleAttributes];
+    NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Enter the url of the feed to add." attributes:messageAttributes];
+    [alertController setValue: title forKey: @"attributedTitle"];
+    [alertController setValue: message forKey: @"attributedMessage"];
+
     return alertController;
 }
 

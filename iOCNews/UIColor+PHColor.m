@@ -1,82 +1,85 @@
 //
 //  UIColor+PHColor.m
-//  PMC Reader
 //
 //  Created by Peter Hedlund on 9/29/13.
-//  Copyright (c) 2013 Peter Hedlund. All rights reserved.
+//  Copyright (c) 2013-2019 Peter Hedlund. All rights reserved.
 //
 
 #import "UIColor+PHColor.h"
 
-#define kPHBackgroundColorArray        @[kPHWhiteBackgroundColor, kPHSepiaBackgroundColor, kPHNightBackgroundColor]
-#define kPHCellBackgroundColorArray    @[kPHWhiteCellBackgroundColor, kPHSepiaCellBackgroundColor, kPHNightCellBackgroundColor]
-#define kPHCellSelectionColorArray     @[kPHWhiteCellSelectionColor, kPHSepiaCellSelectionColor, kPHNightCellSelectionColor]
-#define kPHIconColorArray              @[kPHWhiteIconColor, kPHSepiaIconColor, kPHNightIconColor]
-#define kPHTextColorArray              @[kPHWhiteTextColor, kPHSepiaTextColor, kPHNightTextColor]
-#define kPHReadTextColorArray          @[[UIColor colorWithWhite:0.0 alpha:0.40], [UIColor colorWithWhite:0.41 alpha:1.0], [UIColor colorWithWhite:0.41 alpha:1.0]]
-#define kPHLinkColorArray              @[kPHWhiteLinkColor, kPHSepiaLinkColor, kPHNightLinkColor]
-#define kPHPopoverBackgroundColorArray @[kPHWhitePopoverBackgroundColor, kPHSepiaPopoverBackgroundColor, kPHNightPopoverBackgroundColor]
-#define kPHPopoverButtonColorArray     @[kPHWhitePopoverButtonColor, kPHSepiaPopoverButtonColor, kPHNightPopoverButtonColor]
-#define kPHPopoverBorderColorArray     @[kPHWhitePopoverBorderColor, kPHSepiaPopoverBorderColor, kPHNightPopoverBorderColor]
-
 @implementation UIColor (PHColor)
 
-+ (UIColor *)backgroundColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHBackgroundColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_backgroundColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteBackground"], [UIColor colorNamed:@"PHSepiaBackground"], [UIColor colorNamed:@"PHDarkBackground"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)cellBackgroundColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHCellBackgroundColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_cellBackgroundColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteCellBackground"], [UIColor colorNamed:@"PHSepiaCellBackground"], [UIColor colorNamed:@"PHDarkCellBackground"]];
+    return [colors objectAtIndex:backgroundIndex];
+
 }
 
-+ (UIColor *)cellSelectionColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHCellSelectionColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_cellSelectionColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteCellSelection"], [UIColor colorNamed:@"PHSepiaCellSelection"], [UIColor colorNamed:@"PHDarkCellSelection"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)iconColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHIconColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_iconColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteIcon"], [UIColor colorNamed:@"PHSepiaIcon"], [UIColor colorNamed:@"PHDarkIcon"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)textColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHTextColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_textColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteText"], [UIColor colorNamed:@"PHSepiaText"], [UIColor colorNamed:@"PHDarkText"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)readTextColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHReadTextColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_readTextColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteReadText"], [UIColor colorNamed:@"PHSepiaReadText"], [UIColor colorNamed:@"PHDarkReadText"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)linkColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHLinkColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_linkColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteLink"], [UIColor colorNamed:@"PHSepiaLink"], [UIColor colorNamed:@"PHDarkLink"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)popoverBackgroundColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHPopoverBackgroundColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_popoverBackgroundColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhitePopoverBackground"], [UIColor colorNamed:@"PHSepiaPopoverBackground"], [UIColor colorNamed:@"PHDarkPopoverBackground"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)popoverButtonColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHPopoverButtonColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_popoverButtonColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhitePopoverButton"], [UIColor colorNamed:@"PHSepiaPopoverButton"], [UIColor colorNamed:@"PHDarkPopoverButton"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)popoverBorderColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    return [kPHPopoverBorderColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_popoverBorderColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhitePopoverBorder"], [UIColor colorNamed:@"PHSepiaPopoverBorder"], [UIColor colorNamed:@"PHDarkPopoverBorder"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
-+ (UIColor *)popoverIconColor {
-    NSInteger backgroundIndex =[[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
-    if (backgroundIndex == 2) {
-        return kPHNightTextColor;
-    }
-    return [kPHIconColorArray objectAtIndex:backgroundIndex];
++ (UIColor *)ph_popoverIconColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhiteIcon"], [UIColor colorNamed:@"PHSepiaIcon"], [UIColor colorNamed:@"PHDarkIcon"]];
+    return [colors objectAtIndex:backgroundIndex];
+}
+
++ (UIColor *)ph_switchTintColor {
+    NSInteger backgroundIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentTheme"];
+    NSArray *colors = @[[UIColor colorNamed:@"PHWhitePopoverBorder"], [UIColor colorNamed:@"PHSepiaPopoverBorder"], [UIColor colorNamed:@"PHDarkPopoverButton"]];
+    return [colors objectAtIndex:backgroundIndex];
 }
 
 @end

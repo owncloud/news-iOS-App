@@ -102,9 +102,9 @@
 }
 
 - (void)updateBackgrounds {
-    self.view.backgroundColor = [UIColor popoverBackgroundColor];
+    self.view.backgroundColor = [UIColor ph_popoverBackgroundColor];
     
-    UIColor *buttonColor = [UIColor popoverButtonColor];
+    UIColor *buttonColor = [UIColor ph_popoverButtonColor];
     self.starButton.backgroundColor = buttonColor;
     self.markUnreadButton.backgroundColor = buttonColor;
     self.decreaseFontSizeButton.backgroundColor = buttonColor;
@@ -114,7 +114,7 @@
     self.decreaseMarginButton.backgroundColor = buttonColor;
     self.increaseMarginButton.backgroundColor = buttonColor;
  
-    CGColorRef borderColor = [[UIColor popoverBorderColor] CGColor];
+    CGColorRef borderColor = [[UIColor ph_popoverBorderColor] CGColor];
     self.starButton.layer.borderColor = borderColor;
     self.markUnreadButton.layer.borderColor = borderColor;
     self.decreaseFontSizeButton.layer.borderColor = borderColor;
@@ -124,7 +124,7 @@
     self.decreaseMarginButton.layer.borderColor = borderColor;
     self.increaseMarginButton.layer.borderColor = borderColor;
     
-    UIColor *iconColor = [UIColor popoverIconColor];
+    UIColor *iconColor = [UIColor ph_popoverIconColor];
     self.starButton.tintColor = iconColor;
     self.markUnreadButton.tintColor = iconColor;
     self.decreaseFontSizeButton.tintColor = iconColor;
