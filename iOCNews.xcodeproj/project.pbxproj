@@ -38,7 +38,6 @@
 		D03493B522E6A34500E1A9B0 /* UIViewController+PPTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493B322E6A34500E1A9B0 /* UIViewController+PPTopMostController.m */; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
-		D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */; };
 		D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */; };
 		D04BBB8A20ABC87900D770DA /* BRYHTMLParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */; };
 		D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D04C7DCB1BABBEFC000FB342 /* libpcre.a */; };
@@ -68,6 +67,7 @@
 		D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
 		D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
 		D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F5F18876CF700C6DA92 /* OCTextView.m */; };
+		D0AAB685255CE93E00F4FC5F /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAB684255CE93E00F4FC5F /* CoreServices.framework */; };
 		D0B95D1221100A6200D1A2B8 /* BaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */; };
 		D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B95D14211144A200D1A2B8 /* ArticleController.m */; };
 		D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA25177900C300C965F4 /* UIKit.framework */; };
@@ -183,6 +183,7 @@
 		D0A33F571885B91B00C6DA92 /* OCBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCBadgeView.m; sourceTree = "<group>"; };
 		D0A33F5E18876CF700C6DA92 /* OCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTextView.h; sourceTree = "<group>"; };
 		D0A33F5F18876CF700C6DA92 /* OCTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTextView.m; sourceTree = "<group>"; };
+		D0AAB684255CE93E00F4FC5F /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseCollectionViewController.h; sourceTree = "<group>"; };
 		D0B95D1121100A6200D1A2B8 /* BaseCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseCollectionViewController.m; sourceTree = "<group>"; };
 		D0B95D13211144A200D1A2B8 /* ArticleController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleController.h; sourceTree = "<group>"; };
@@ -246,7 +247,7 @@
 				D0735DC31F83378A002D3AB3 /* KSCrash.framework in Frameworks */,
 				D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */,
 				D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */,
-				D03689D019087A2800EE4BAA /* MobileCoreServices.framework in Frameworks */,
+				D0AAB685255CE93E00F4FC5F /* CoreServices.framework in Frameworks */,
 				D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */,
 				D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */,
 				D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */,
@@ -386,6 +387,7 @@
 		D0BCAA24177900C300C965F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0AAB684255CE93E00F4FC5F /* CoreServices.framework */,
 				D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */,
 				D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */,
 				D0735DC11F83378A002D3AB3 /* AFNetworking.framework */,
