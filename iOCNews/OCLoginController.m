@@ -164,7 +164,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                     [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
                     [prefs synchronize];
                     [OCAPIClient setSharedClient:nil];
-                    __unused int status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
+                    __unused AFNetworkReachabilityStatus status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
                     [self.connectionActivityIndicator stopAnimating];
                     [RMessage showNotificationInViewController:self
                                                          title:NSLocalizedString(@"Success", @"A message title")

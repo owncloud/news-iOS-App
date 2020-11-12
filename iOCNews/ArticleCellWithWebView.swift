@@ -131,7 +131,7 @@ class ArticleCellWithWebView: BaseArticleCell {
                 if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
                     if html.range(of: "iframe", options: .caseInsensitive) != nil {
                         html = SummaryHelper.createYoutubeItem(html, andLink: urlString)
-                    } else if let urlString = item.url, urlString.contains("watch?v="), let equalIndex = urlString.index(of: "=") {
+                    } else if let urlString = item.url, urlString.contains("watch?v="), let equalIndex = urlString.firstIndex(of: "=") {
                         let videoIdStartIndex = urlString.index(after: equalIndex)
                         let videoId = String(urlString[videoIdStartIndex...])
                         let screenSize = UIScreen.main.nativeBounds.size
