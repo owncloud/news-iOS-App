@@ -558,7 +558,7 @@
 				TargetAttributes = {
 					D0BCAA21177900C300C965F4 = {
 						DevelopmentTeam = 73AQJ77PZ5;
-						LastSwiftMigration = "";
+						LastSwiftMigration = 1220;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -927,7 +927,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "iOCNews/iOCNews-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
@@ -969,7 +969,7 @@
 				STRIP_STYLE = debugging;
 				SWIFT_OBJC_BRIDGING_HEADER = "iOCNews/iOCNews-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/iOSPorts/include";
 				WRAPPER_EXTENSION = app;
