@@ -33,7 +33,7 @@
 #import "OCFeedListController.h"
 #import "OCFeedCell.h"
 #import "OCLoginController.h"
-#import "RMessage.h"
+#import "iOCNews-Swift.h"
 #import "OCNewsHelper.h"
 #import "Folder+CoreDataClass.h"
 #import "Feed+CoreDataClass.h"
@@ -830,21 +830,15 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     
     if (status == AFNetworkReachabilityStatusNotReachable) {
         networkHasBeenUnreachable = YES;
-        [RMessage showNotificationInViewController:self.navigationController
-                                             title:@"Unable to Reach Server"
-                                          subtitle:@"Please check network connection and login."
-                                              type:RMessageTypeWarning
-                                    customTypeName:nil
-                                          callback:nil];
+        [Messenger showMessageWithTitle:@"Unable to Reach Server"
+                                   body:@"Please check network connection and login."
+                                  theme: MessageThemeWarning];
     }
     if (status > AFNetworkReachabilityStatusNotReachable) {
         if (networkHasBeenUnreachable) {
-            [RMessage showNotificationInViewController:self.navigationController
-                                                 title:@"Server Reachable"
-                                              subtitle:@"The network connection is working properly."
-                                                  type:RMessageTypeWarning
-                                        customTypeName:nil
-                                              callback:nil];
+            [Messenger showMessageWithTitle:@"Server Reachable"
+                                       body:@"The network connection is working properly."
+                                      theme: MessageThemeWarning];
             networkHasBeenUnreachable = NO;
         }
     }
@@ -864,20 +858,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 NSArray *feedURLStrings = [self.feedsFetchedResultsController.fetchedObjects valueForKey:@"url"];
                 if ([feedURLStrings indexOfObject:[board.URL absoluteString]] == NSNotFound) {
                     NSString *message = [NSString stringWithFormat:@"Would you like to add the feed: '%@'?", [board.URL absoluteString]];
-                    [RMessage showNotificationInViewController:self.navigationController
-                                                          title:@"Add Feed"
-                                                       subtitle:message
-                                                          iconImage:nil
-                                                           type:RMessageTypeNormal
-                                                 customTypeName:nil
-                                                       duration:RMessageDurationAutomatic
-                                                       callback:nil
-                                                    buttonTitle:@"Add"
-                                                 buttonCallback:^{
-                                                 [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
-                                             }
-                                                     atPosition:RMessagePositionTop
-                                            canBeDismissedByUser:YES];
+                    [Messenger showAddMessageWithMessage:message viewController:self.navigationController callback:^{
+                        [[OCNewsHelper sharedHelper] addFeedOffline:[board.URL absoluteString]];
+                    }];
                 }
             }
         }
@@ -904,18 +887,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 }
 
 - (void)networkError:(NSNotification *)n {
-    [RMessage showNotificationInViewController:self.navigationController
-                                          title:[n.userInfo objectForKey:@"Title"]
-                                       subtitle:[n.userInfo objectForKey:@"Message"]
-                                          iconImage:nil
-                                           type:RMessageTypeError
-                                 customTypeName:nil
-                                       duration:RMessageDurationEndless
-                                       callback:nil
-                                    buttonTitle:nil
-                                 buttonCallback:nil
-                                     atPosition:RMessagePositionTop
-                            canBeDismissedByUser:YES];
+    [Messenger showMessageWithTitle:[n.userInfo objectForKey:@"Title"]
+                               body:[n.userInfo objectForKey:@"Message"]
+                              theme:MessageThemeError];
 }
 
 #pragma mark - Toolbar Buttons

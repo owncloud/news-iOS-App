@@ -34,7 +34,7 @@
 #import "NSString+HTML.h"
 #import <AFNetworking/AFNetworking.h>
 #import "OCArticleImage.h"
-#import "RMessage.h"
+#import "iOCNews-Swift.h"
 #import "OCNewsHelper.h"
 #import "Item+CoreDataClass.h"
 #import "PHThemeManager.h"
@@ -532,18 +532,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (void)networkError:(NSNotification *)n {
-    [RMessage showNotificationInViewController:self.navigationController
-                                         title:[n.userInfo objectForKey:@"Title"]
-                                      subtitle:[n.userInfo objectForKey:@"Message"]
-                                     iconImage:nil
-                                          type:RMessageTypeError
-                                customTypeName:nil
-                                      duration:RMessageDurationEndless
-                                      callback:nil
-                                   buttonTitle:nil
-                                buttonCallback:nil
-                                    atPosition:RMessagePositionTop
-                          canBeDismissedByUser:YES];
+    [Messenger showMessageWithTitle:[n.userInfo objectForKey:@"Title"]
+                               body:[n.userInfo objectForKey:@"Message"]
+                              theme:MessageThemeError];
 }
 
 - (NSInteger)unreadCount {

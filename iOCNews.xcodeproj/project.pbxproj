@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -29,13 +29,6 @@
 		D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */ = {isa = PBXBuildFile; fileRef = D01ACAFB17B969FE005D1463 /* NSDictionary+HandleNull.m */; };
 		D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D023001A1A58C0E800B354E0 /* Launch Screen.xib */; };
 		D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D02CCAF31CE7E27300F6CCEC /* WebKit.framework */; };
-		D03493AB22E6A2A400E1A9B0 /* RMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493A222E6A2A300E1A9B0 /* RMessage.m */; };
-		D03493AC22E6A2A400E1A9B0 /* RMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03493A422E6A2A300E1A9B0 /* RMessageView.xib */; };
-		D03493AD22E6A2A400E1A9B0 /* RMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493A522E6A2A300E1A9B0 /* RMessageView.m */; };
-		D03493AE22E6A2A400E1A9B0 /* RMessageDefaultDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = D03493A822E6A2A300E1A9B0 /* RMessageDefaultDesign.json */; };
-		D03493AF22E6A2A400E1A9B0 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D03493A922E6A2A300E1A9B0 /* Icons.xcassets */; };
-		D03493B222E6A30000E1A9B0 /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493B022E6A30000E1A9B0 /* HexColors.m */; };
-		D03493B522E6A34500E1A9B0 /* UIViewController+PPTopMostController.m in Sources */ = {isa = PBXBuildFile; fileRef = D03493B322E6A34500E1A9B0 /* UIViewController+PPTopMostController.m */; };
 		D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160519DA403E0016573F /* PDKeychainBindings.m */; };
 		D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D035160719DA403E0016573F /* PDKeychainBindingsController.m */; };
 		D042A9A320842E340086FBE9 /* OCThemeSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */; };
@@ -90,6 +83,8 @@
 		D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC42178104FC00C965F4 /* defaults.plist */; };
 		D0BCAC8A178104FC00C965F4 /* rss.css in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC5F178104FC00C965F4 /* rss.css */; };
 		D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
+		D0DD7BC1255E222700B124C9 /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = D0DD7BC0255E222700B124C9 /* SwiftMessages */; };
+		D0DD7BC5255E225500B124C9 /* SwiftMessagesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DD7BC4255E225500B124C9 /* SwiftMessagesHelper.swift */; };
 		D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F571836E03A005F8CAF /* OCSettingsController.m */; };
 		D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F181251782585100F719D9 /* SystemConfiguration.framework */; };
 		D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F181281783B12C00F719D9 /* OCLoginController.m */; };
@@ -117,17 +112,6 @@
 		D023001A1A58C0E800B354E0 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D02B13141B40BBF700D99EA2 /* News 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 6.xcdatamodel"; sourceTree = "<group>"; };
 		D02CCAF31CE7E27300F6CCEC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		D03493A222E6A2A300E1A9B0 /* RMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMessage.m; sourceTree = "<group>"; };
-		D03493A422E6A2A300E1A9B0 /* RMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RMessageView.xib; sourceTree = "<group>"; };
-		D03493A522E6A2A300E1A9B0 /* RMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMessageView.m; sourceTree = "<group>"; };
-		D03493A622E6A2A300E1A9B0 /* RMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMessage.h; sourceTree = "<group>"; };
-		D03493A822E6A2A300E1A9B0 /* RMessageDefaultDesign.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RMessageDefaultDesign.json; sourceTree = "<group>"; };
-		D03493A922E6A2A300E1A9B0 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
-		D03493AA22E6A2A300E1A9B0 /* RMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMessageView.h; sourceTree = "<group>"; };
-		D03493B022E6A30000E1A9B0 /* HexColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HexColors.m; path = RMessage/Example/Pods/HexColors/Classes/HexColors.m; sourceTree = SOURCE_ROOT; };
-		D03493B122E6A30000E1A9B0 /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HexColors.h; path = RMessage/Example/Pods/HexColors/Classes/HexColors.h; sourceTree = SOURCE_ROOT; };
-		D03493B322E6A34500E1A9B0 /* UIViewController+PPTopMostController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+PPTopMostController.m"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.m"; sourceTree = SOURCE_ROOT; };
-		D03493B422E6A34500E1A9B0 /* UIViewController+PPTopMostController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+PPTopMostController.h"; path = "RMessage/Example/Pods/PPTopMostController/PPTopMostController-Files/UIViewController+PPTopMostController.h"; sourceTree = SOURCE_ROOT; };
 		D034D53322164AB100566A13 /* ItemProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemProvider.swift; sourceTree = "<group>"; };
 		D035160419DA403E0016573F /* PDKeychainBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDKeychainBindings.h; sourceTree = "<group>"; };
 		D035160519DA403E0016573F /* PDKeychainBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDKeychainBindings.m; sourceTree = "<group>"; };
@@ -220,6 +204,7 @@
 		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 2.xcdatamodel"; sourceTree = "<group>"; };
 		D0CFE5A8188F43EF00165839 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KSCrash.framework; sourceTree = "<group>"; };
+		D0DD7BC4255E225500B124C9 /* SwiftMessagesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMessagesHelper.swift; sourceTree = "<group>"; };
 		D0E89F561836E03A005F8CAF /* OCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSettingsController.h; sourceTree = "<group>"; };
 		D0E89F571836E03A005F8CAF /* OCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSettingsController.m; sourceTree = "<group>"; };
 		D0F181251782585100F719D9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -260,6 +245,7 @@
 				D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */,
 				D0BCAA681779091000C965F4 /* QuartzCore.framework in Frameworks */,
 				D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */,
+				D0DD7BC1255E222700B124C9 /* SwiftMessages in Frameworks */,
 				D0BCAA28177900C300C965F4 /* Foundation.framework in Frameworks */,
 				D0BCAA2A177900C300C965F4 /* CoreGraphics.framework in Frameworks */,
 				D04C7DD71BABBEFC000FB342 /* libpcrecpp.a in Frameworks */,
@@ -279,41 +265,6 @@
 				D01ACABC17B83637005D1463 /* readable.c */,
 			);
 			path = readable;
-			sourceTree = "<group>";
-		};
-		D03493A122E6A2A300E1A9B0 /* RMessage */ = {
-			isa = PBXGroup;
-			children = (
-				D03493B422E6A34500E1A9B0 /* UIViewController+PPTopMostController.h */,
-				D03493B322E6A34500E1A9B0 /* UIViewController+PPTopMostController.m */,
-				D03493B122E6A30000E1A9B0 /* HexColors.h */,
-				D03493B022E6A30000E1A9B0 /* HexColors.m */,
-				D03493A222E6A2A300E1A9B0 /* RMessage.m */,
-				D03493A322E6A2A300E1A9B0 /* Resources */,
-				D03493A522E6A2A300E1A9B0 /* RMessageView.m */,
-				D03493A622E6A2A300E1A9B0 /* RMessage.h */,
-				D03493A722E6A2A300E1A9B0 /* Assets */,
-				D03493AA22E6A2A300E1A9B0 /* RMessageView.h */,
-			);
-			name = RMessage;
-			path = RMessage/RMessage;
-			sourceTree = "<group>";
-		};
-		D03493A322E6A2A300E1A9B0 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				D03493A422E6A2A300E1A9B0 /* RMessageView.xib */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		D03493A722E6A2A300E1A9B0 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				D03493A822E6A2A300E1A9B0 /* RMessageDefaultDesign.json */,
-				D03493A922E6A2A300E1A9B0 /* Icons.xcassets */,
-			);
-			path = Assets;
 			sourceTree = "<group>";
 		};
 		D035160319DA403E0016573F /* PDKeychainBindingsController */ = {
@@ -365,7 +316,6 @@
 		D0BCAA19177900C300C965F4 = {
 			isa = PBXGroup;
 			children = (
-				D03493A122E6A2A300E1A9B0 /* RMessage */,
 				D04C7DC21BABBEFC000FB342 /* pcre */,
 				D01ACAB317B83637005D1463 /* readable */,
 				D035160319DA403E0016573F /* PDKeychainBindingsController */,
@@ -473,6 +423,7 @@
 				D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */,
 				D0FB295F1FA6A20D00578C29 /* PHThemeManager.h */,
 				D0FB29601FA6A20D00578C29 /* PHThemeManager.m */,
+				D0DD7BC4255E225500B124C9 /* SwiftMessagesHelper.swift */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
 				D08D83B618161453005A75F0 /* Settings.bundle */,
@@ -542,6 +493,9 @@
 			dependencies = (
 			);
 			name = iOCNews;
+			packageProductDependencies = (
+				D0DD7BC0255E222700B124C9 /* SwiftMessages */,
+			);
 			productName = iOCNews;
 			productReference = D0BCAA22177900C300C965F4 /* iOCNews.app */;
 			productType = "com.apple.product-type.application";
@@ -612,6 +566,9 @@
 				Base,
 			);
 			mainGroup = D0BCAA19177900C300C965F4;
+			packageReferences = (
+				D0DD7BBF255E222700B124C9 /* XCRemoteSwiftPackageReference "SwiftMessages" */,
+			);
 			productRefGroup = D0BCAA23177900C300C965F4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -628,12 +585,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D059E9512325C70500932E2B /* Colors.xcassets in Resources */,
-				D03493AE22E6A2A400E1A9B0 /* RMessageDefaultDesign.json in Resources */,
 				D05A6FB9213DED1D006D3AB8 /* ArticleCellWithThumbnail.xib in Resources */,
-				D03493AF22E6A2A400E1A9B0 /* Icons.xcassets in Resources */,
 				D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */,
 				D0BCAA30177900C300C965F4 /* InfoPlist.strings in Resources */,
-				D03493AC22E6A2A400E1A9B0 /* RMessageView.xib in Resources */,
 				D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */,
 				D08D83B718161453005A75F0 /* Settings.bundle in Resources */,
 				D023001B1A58C0E800B354E0 /* Launch Screen.xib in Resources */,
@@ -725,21 +679,18 @@
 				D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */,
 				D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */,
 				D0FB29611FA6A20D00578C29 /* PHThemeManager.m in Sources */,
-				D03493B522E6A34500E1A9B0 /* UIViewController+PPTopMostController.m in Sources */,
+				D0DD7BC5255E225500B124C9 /* SwiftMessagesHelper.swift in Sources */,
 				D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */,
 				D035160A19DA403E0016573F /* PDKeychainBindingsController.m in Sources */,
 				D05A6FBE213E35A8006D3AB8 /* ArticleCellWithWebView.swift in Sources */,
 				D096143C21EED4AF000BD5D2 /* ArticleListFlowLayout.swift in Sources */,
-				D03493AB22E6A2A400E1A9B0 /* RMessage.m in Sources */,
 				D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */,
 				D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */,
-				D03493B222E6A30000E1A9B0 /* HexColors.m in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				BDDFE91E221B495D00E0E82A /* ItemProvider.swift in Sources */,
 				D01ACADB17B83637005D1463 /* rd_list.c in Sources */,
 				D01ACADC17B83637005D1463 /* readable.c in Sources */,
 				D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */,
-				D03493AD22E6A2A400E1A9B0 /* RMessageView.m in Sources */,
 				D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */,
 				D035160819DA403E0016573F /* PDKeychainBindings.m in Sources */,
 				D01ACAFC17B969FE005D1463 /* NSDictionary+HandleNull.m in Sources */,
@@ -910,7 +861,10 @@
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/pcre/lib",
@@ -953,7 +907,10 @@
 				GCC_PREFIX_HEADER = "iOCNews/iOCNews-Prefix.pch";
 				INFOPLIST_FILE = "iOCNews/iOCNews-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/pcre/lib",
@@ -1007,6 +964,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D0DD7BBF255E222700B124C9 /* XCRemoteSwiftPackageReference "SwiftMessages" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftKickMobile/SwiftMessages";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D0DD7BC0255E222700B124C9 /* SwiftMessages */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0DD7BBF255E222700B124C9 /* XCRemoteSwiftPackageReference "SwiftMessages" */;
+			productName = SwiftMessages;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */ = {

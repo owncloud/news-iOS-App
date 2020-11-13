@@ -4,6 +4,3 @@
 [submodule "PDKeychainBindingsController"]
 	path = PDKeychainBindingsController
 	url = https://github.com/carlbrown/PDKeychainBindingsController.git
-[submodule "RMessage"]
-	path = RMessage
-	url = https://github.com/donileo/RMessage.git

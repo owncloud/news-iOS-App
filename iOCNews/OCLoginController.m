@@ -33,7 +33,7 @@
 #import "OCLoginController.h"
 #import "OCAPIClient.h"
 #import "PDKeychainBindings.h"
-#import "RMessage.h"
+#import "iOCNews-Swift.h"
 #import "UIColor+PHColor.h"
 
 static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
@@ -166,46 +166,12 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                     [OCAPIClient setSharedClient:nil];
                     __unused AFNetworkReachabilityStatus status = [[OCAPIClient sharedClient].reachabilityManager networkReachabilityStatus];
                     [self.connectionActivityIndicator stopAnimating];
-                    [RMessage showNotificationInViewController:self
-                                                         title:NSLocalizedString(@"Success", @"A message title")
-                                                      subtitle:NSLocalizedString(@"You are now connected to News on your server", @"A message")
-                                                     iconImage:nil
-                                                          type:RMessageTypeSuccess
-                                                customTypeName:nil
-                                                      duration:RMessageDurationAutomatic
-                                                      callback:^{
-                                                          self.connectLabel.enabled = YES;
-                                                          [RMessage dismissActiveNotification];
-                                                      }
-                                                   buttonTitle:NSLocalizedString(@"Close & Sync", @"A button title")
-                                                buttonCallback:^{
-                                                    self.connectLabel.enabled = YES;
-                                                    [RMessage dismissActiveNotification];
-                                                    [self dismissViewControllerAnimated:YES completion:nil];
-                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"SyncNews" object:self];
-                                                }
-                                                    atPosition:RMessagePositionTop
-                                          canBeDismissedByUser:YES];
+                    [Messenger showSyncMessageWithViewController:self];
                 } else {
                     [self.connectionActivityIndicator stopAnimating];
-                    [RMessage showNotificationInViewController:self
-                                                         title:NSLocalizedString(@"Connection failure", @"An error message title")
-                                                      subtitle:NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message")
-                                                     iconImage:nil
-                                                          type:RMessageTypeError
-                                                customTypeName:nil
-                                                      duration:RMessageDurationEndless
-                                                      callback:^{
-                                                          self.connectLabel.enabled = YES;
-                                                          [RMessage dismissActiveNotification];
-                                                      }
-                                                   buttonTitle:nil
-                                                buttonCallback:^{
-                                                    //
-                                                }
-                                                    atPosition:RMessagePositionTop
-                                          canBeDismissedByUser:YES];
-                    
+                    [Messenger showMessageWithTitle:NSLocalizedString(@"Connection failure", @"An error message title")
+                                                    body:NSLocalizedString(@"Failed to connect to a server. Check your settings.", @"An error message")
+                                                   theme: MessageThemeError];
                 }
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 self.connectLabel.enabled = NO;
@@ -236,20 +202,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                         break;
                 }
                 [self.connectionActivityIndicator stopAnimating];
-                [RMessage showNotificationInViewController:self
-                                                     title:title
-                                                  subtitle:message
-                                                 iconImage:nil
-                                                      type:RMessageTypeError
-                                            customTypeName:nil
-                                                  duration:RMessageDurationEndless
-                                                  callback:^{
-                                                      self.connectLabel.enabled = YES;
-                                                      [RMessage dismissActiveNotification];
-                                                  } buttonTitle:nil
-                                            buttonCallback:nil
-                                                atPosition:RMessagePositionTop
-                                      canBeDismissedByUser:YES];
+                [Messenger showMessageWithTitle:title
+                                           body:message
+                                          theme:MessageThemeError];
             }];
         }
     }
