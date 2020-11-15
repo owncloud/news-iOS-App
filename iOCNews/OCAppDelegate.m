@@ -36,7 +36,7 @@
 #import <KSCrash/KSCrash.h>
 #import <KSCrash/KSCrashInstallationEmail.h>
 #import <KSCrash/KSCrashInstallation+Alert.h>
-#import "PDKeychainBindings.h"
+#import "UICKeyChainStore.h"
 #import "PHThemeManager.h"
 @import UserNotifications;
 
@@ -66,8 +66,8 @@
     }
 
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    [[PDKeychainBindings sharedKeychainBindings] setObject:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
-
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
+    [keychain setString:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
     [self writeCss];
     
     [installation sendAllReportsWithCompletion:^(NSArray* reports, BOOL completed, NSError* error) {

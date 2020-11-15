@@ -31,7 +31,7 @@
  *************************************************************************/
 
 #import "OCAPIClient.h"
-#import "PDKeychainBindings.h"
+#import "UICKeyChainStore.h"
 
 //See http://twobitlabs.com/2013/01/objective-c-singleton-pattern-unit-testing/
 //Being able to reinitialize a singleton is a no no, but should happen so rarely
@@ -83,19 +83,19 @@ static dispatch_once_t oncePredicate = 0;
     return self;
 }
 
-+ (AFHTTPRequestSerializer*)httpRequestSerializer
-{
++ (AFHTTPRequestSerializer*)httpRequestSerializer {
     AFHTTPRequestSerializer *result = [AFHTTPRequestSerializer serializer];
-    [result setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
-                                           password:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]];
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
+    [result setAuthorizationHeaderFieldWithUsername:[keychain stringForKey:(__bridge id)(kSecAttrAccount)]
+                                           password:[keychain stringForKey:(__bridge id)(kSecValueData)]];
     return result;
 }
 
-+ (AFJSONRequestSerializer*)jsonRequestSerializer
-{
++ (AFJSONRequestSerializer*)jsonRequestSerializer {
     AFJSONRequestSerializer *result = [AFJSONRequestSerializer serializer];
-    [result setAuthorizationHeaderFieldWithUsername:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]
-                                           password:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]];
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
+    [result setAuthorizationHeaderFieldWithUsername:[keychain stringForKey:(__bridge id)(kSecAttrAccount)]
+                                           password:[keychain stringForKey:(__bridge id)(kSecValueData)]];
     return result;
 }
 
@@ -105,3 +105,4 @@ static dispatch_once_t oncePredicate = 0;
 }
 
 @end
+    

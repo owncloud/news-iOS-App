@@ -32,7 +32,7 @@
 
 #import "OCLoginController.h"
 #import "OCAPIClient.h"
-#import "PDKeychainBindings.h"
+#import "UICKeyChainStore.h"
 #import "iOCNews-Swift.h"
 #import "UIColor+PHColor.h"
 
@@ -83,9 +83,10 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     self.serverTextField.text = [prefs stringForKey:@"Server"];
     self.length1 = (self.serverTextField.text.length > 0);
-    self.usernameTextField.text = [[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)];
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
+    self.usernameTextField.text = [keychain stringForKey:(__bridge id)(kSecAttrAccount)];
     self.length2 = (self.usernameTextField.text.length > 0);
-    self.passwordTextField.text = [[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)];
+    self.passwordTextField.text = [keychain stringForKey:(__bridge id)(kSecValueData)];
     self.length3 = (self.passwordTextField.text.length > 0);
     self.connectLabel.enabled = (self.length1 && self.length2 && self.length3);
     self.certificateSwitch.on = [prefs boolForKey:@"AllowInvalidSSLCertificate"];
@@ -159,8 +160,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                     __unused NSString *version = [jsonDict valueForKey:@"version"];
                     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
                     [prefs setObject:self.serverTextField.text forKey:@"Server"];
-                    [[PDKeychainBindings sharedKeychainBindings] setObject:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
-                    [[PDKeychainBindings sharedKeychainBindings] setObject:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
+                    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
+                    [keychain setString:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];
+                    [keychain setString:self.passwordTextField.text forKey:(__bridge id)(kSecValueData)];
                     [prefs setBool:self.certificateSwitch.on forKey:@"AllowInvalidSSLCertificate"];
                     [prefs synchronize];
                     [OCAPIClient setSharedClient:nil];
@@ -235,12 +237,13 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
         textHasChanged = (![proposedNewString isEqualToString:[prefs stringForKey:@"Server"]]);
         self.length1 = (proposedNewString.length > 0);
     }
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
     if ([textField isEqual:self.usernameTextField]) {
-        textHasChanged = (![proposedNewString isEqualToString:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecAttrAccount)]]);
+        textHasChanged = (![proposedNewString isEqualToString:[keychain stringForKey:(__bridge id)(kSecAttrAccount)]]);
         self.length2 = (proposedNewString.length > 0);
     }
     if ([textField isEqual:self.passwordTextField]) {
-        textHasChanged = (![proposedNewString isEqualToString:[[PDKeychainBindings sharedKeychainBindings] objectForKey:(__bridge id)(kSecValueData)]]);
+        textHasChanged = (![proposedNewString isEqualToString:[keychain stringForKey:(__bridge id)(kSecValueData)]]);
         self.length3 = (proposedNewString.length > 0);
     }
     if (!textHasChanged) {
