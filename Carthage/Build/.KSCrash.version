@@ -3,7 +3,13 @@
   "iOS" : [
     {
       "name" : "KSCrash",
-      "hash" : "1d610d5dfdf7bae86c0577273bd4f5aa3e29cd6b52a248f30ff490c519c85e8d"
+      "hash" : "98f7c5d90d7dff60f5daad2c4f6e76f9dccc250e3092960299e8e923f581cca8",
+      "linking" : "dynamic"
+    },
+    {
+      "name" : "KSCrash",
+      "hash" : "3105bdaca23533c2a0944678845ab443ba0cabc8e60b03db32e23190c84fa816",
+      "linking" : "static"
     }
   ]
 }

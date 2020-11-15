@@ -45,7 +45,7 @@
 }
 
 - (void)tearDown {
-    [self.downloader.sessionManager invalidateSessionCancelingTasks:YES];
+    [self.downloader.sessionManager invalidateSessionCancelingTasks:YES resetSession:NO];
     self.downloader = nil;
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
@@ -512,6 +512,27 @@
     [self waitForExpectationsWithCommonTimeout];
 }
 
+- (void)testThatCancelImageDownloadItShouldCancelImmediately {
+    [self.downloader.imageCache removeAllImages];
+    
+    NSString *imageURLString = @"https://secure.gravatar.com/avatar/5a105e8b9d40e1329780d62ea2265d8a?d=identicon";
+    AFImageDownloadReceipt *receipt = [self.downloader
+                                       downloadImageForURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:imageURLString]]
+                                       success:nil
+                                       failure:nil];
+    [self.downloader cancelTaskForImageDownloadReceipt:receipt];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Image download should be cancelled immediately"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UIImage *cacheImage = [self.downloader.imageCache imageWithIdentifier:imageURLString];
+        XCTAssertNil(cacheImage);
+        [expectation fulfill];
+    });
+    
+    [self waitForExpectationsWithCommonTimeout];
+}
+
+
 #pragma mark - Threading
 - (void)testThatItAlwaysCallsTheSuccessHandlerOnTheMainQueue {
     XCTestExpectation *expectation = [self expectationWithDescription:@"image download should succeed"];
@@ -561,7 +582,7 @@
 
 @implementation MockAFAutoPurgingImageCache
 
--(BOOL)shouldCacheImage:(UIImage *)image forRequest:(NSURLRequest *)request withAdditionalIdentifier:(NSString *)identifier {
+- (BOOL)shouldCacheImage:(UIImage *)image forRequest:(NSURLRequest *)request withAdditionalIdentifier:(NSString *)identifier {
     if (self.shouldCache) {
         return self.shouldCache(image, request, identifier);
     }
@@ -570,7 +591,7 @@
     }
 }
 
--(void)addImage:(UIImage *)image withIdentifier:(NSString *)identifier{
+- (void)addImage:(UIImage *)image withIdentifier:(NSString *)identifier{
     [super addImage:image withIdentifier:identifier];
     if (self.addCache) {
         self.addCache(image, identifier);

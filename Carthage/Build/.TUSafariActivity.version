@@ -3,7 +3,8 @@
   "iOS" : [
     {
       "name" : "TUSafariActivity",
-      "hash" : "2b7273619ab0a72f8d23ad5797e7692c806d986b90c763d90c9275764e1fc42f"
+      "hash" : "c45c8fadbd8a26120cc628c9fd8aaefd54988f97694017936648146d8839009b",
+      "linking" : "dynamic"
     }
   ]
 }

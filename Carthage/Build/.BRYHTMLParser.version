@@ -3,7 +3,8 @@
   "iOS" : [
     {
       "name" : "BRYHTMLParser",
-      "hash" : "591fc1afd7d5aaece1cba7c0a0bb11180166ef86941cb1350556c97147f24189"
+      "hash" : "219f14a6c426474bd22d871158d7142d8df941038eabd535344cdbdd471ced89",
+      "linking" : "dynamic"
     }
   ]
 }

@@ -1,4 +1,4 @@
-github "AFNetworking/AFNetworking"
+github "AFNetworking/AFNetworking" ~> 4.0
 github "kstenerud/KSCrash"
 github "phedlund/TUSafariActivity" "master"
 github "phedlund/BRYHTMLParser" "carthage_support"

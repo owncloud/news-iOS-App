@@ -1,4 +1,4 @@
-github "AFNetworking/AFNetworking" "3.2.1"
+github "AFNetworking/AFNetworking" "4.0.1"
 github "kstenerud/KSCrash" "1.15.21"
 github "phedlund/BRYHTMLParser" "21ffddfc6b24fe45b7bedac9d344f8fb7ec43766"
 github "phedlund/TUSafariActivity" "48923729bc26d834f9cf9225c8e114586f97ade1"

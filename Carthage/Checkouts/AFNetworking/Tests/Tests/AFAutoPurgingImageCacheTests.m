@@ -211,7 +211,7 @@
         [self.cache addImage:self.testImage withIdentifier:identifier];
     }
 
-    NSString * firstIdentifier = [NSString stringWithFormat:@"image-%ld",(long)0];
+    NSString *firstIdentifier = [NSString stringWithFormat:@"image-%ld",(long)0];
     UIImage *firstImage = [self.cache imageWithIdentifier:firstIdentifier];
     XCTAssertNotNil(firstImage, @"first image should not be nil");
     UInt64 prePurgeMemoryUsage = self.cache.memoryUsage;
@@ -219,7 +219,7 @@
     UInt64 postPurgeMemoryUsage = self.cache.memoryUsage;
     XCTAssertTrue(postPurgeMemoryUsage < prePurgeMemoryUsage);
 
-    for (NSUInteger index = 0; index <= numberOfImages ; index++) {
+    for (NSUInteger index = 0; index <= numberOfImages; index++) {
         NSString * identifier = [NSString stringWithFormat:@"image-%ld",(long)index];
         UIImage *cachedImage = [self.cache imageWithIdentifier:identifier];
         if (index == 0 || index >= 6) {

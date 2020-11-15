@@ -26,23 +26,6 @@
 
 @end
 
-static SecTrustRef AFUTTrustChainForCertsInDirectory(NSString *directoryPath) {
-    NSArray *certFileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:directoryPath error:nil];
-    NSMutableArray *certs  = [NSMutableArray arrayWithCapacity:[certFileNames count]];
-    for (NSString *path in certFileNames) {
-        NSData *certData = [NSData dataWithContentsOfFile:[directoryPath stringByAppendingPathComponent:path]];
-        SecCertificateRef cert = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)(certData));
-        [certs addObject:(__bridge_transfer id)(cert)];
-    }
-
-    SecPolicyRef policy = SecPolicyCreateBasicX509();
-    SecTrustRef trust = NULL;
-    SecTrustCreateWithCertificates((__bridge CFTypeRef)(certs), policy, &trust);
-    CFRelease(policy);
-
-    return trust;
-}
-
 static SecTrustRef AFUTHTTPBinOrgServerTrust() {
     NSString *bundlePath = [[NSBundle bundleForClass:[AFSecurityPolicyTests class]] resourcePath];
     NSString *serverCertDirectoryPath = [bundlePath stringByAppendingPathComponent:@"HTTPBinOrgServerTrustChain"];
@@ -58,23 +41,31 @@ static SecTrustRef AFUTADNNetServerTrust() {
 }
 
 static SecCertificateRef AFUTHTTPBinOrgCertificate() {
-    NSString *certPath = [[NSBundle bundleForClass:[AFSecurityPolicyTests class]] pathForResource:@"httpbinorg_06102018" ofType:@"cer"];
+    NSString *certPath = [[NSBundle bundleForClass:[AFSecurityPolicyTests class]] pathForResource:@"httpbinorg_02182021" ofType:@"cer"];
     NSCAssert(certPath != nil, @"Path for certificate should not be nil");
     NSData *certData = [NSData dataWithContentsOfFile:certPath];
 
     return SecCertificateCreateWithData(NULL, (__bridge CFDataRef)(certData));
 }
 
-static SecCertificateRef AFUTLetsEncryptAuthorityCertificate() {
-    NSString *certPath = [[NSBundle bundleForClass:NSClassFromString(@"AFSecurityPolicyTests")] pathForResource:@"Let's Encrypt Authority X3" ofType:@"cer"];
+static SecCertificateRef AFUTAmazonAuthorityCertificate() {
+    NSString *certPath = [[NSBundle bundleForClass:NSClassFromString(@"AFSecurityPolicyTests")] pathForResource:@"Amazon" ofType:@"cer"];
     NSCAssert(certPath != nil, @"Path for certificate should not be nil");
     NSData *certData = [NSData dataWithContentsOfFile:certPath];
     
     return SecCertificateCreateWithData(NULL, (__bridge CFDataRef)(certData));
 }
 
-static SecCertificateRef AFUTDSTRootCertificate() {
-    NSString *certPath = [[NSBundle bundleForClass:NSClassFromString(@"AFSecurityPolicyTests")] pathForResource:@"DST Root CA X3" ofType:@"cer"];
+static SecCertificateRef AFUTAmazonRootAuthorityCertificate() {
+    NSString *certPath = [[NSBundle bundleForClass:NSClassFromString(@"AFSecurityPolicyTests")] pathForResource:@"Amazon Root CA 1" ofType:@"cer"];
+    NSCAssert(certPath != nil, @"Path for certificate should not be nil");
+    NSData *certData = [NSData dataWithContentsOfFile:certPath];
+
+    return SecCertificateCreateWithData(NULL, (__bridge CFDataRef)(certData));
+}
+
+static SecCertificateRef AFUTStarfieldServicesRootCertificate() {
+    NSString *certPath = [[NSBundle bundleForClass:NSClassFromString(@"AFSecurityPolicyTests")] pathForResource:@"Starfield Services Root Certificate Authority - G2" ofType:@"cer"];
     NSCAssert(certPath != nil, @"Path for certificate should not be nil");
     NSData *certData = [NSData dataWithContentsOfFile:certPath];
     
@@ -204,7 +195,7 @@ static SecTrustRef AFUTTrustWithCertificate(SecCertificateRef certificate) {
 - (void)testPolicyWithPublicKeyPinningAllowsHTTPBinOrgServerTrustWithHTTPBinOrgIntermediateCertificatePinned {
     AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
     
-    SecCertificateRef certificate = AFUTLetsEncryptAuthorityCertificate();
+    SecCertificateRef certificate = AFUTAmazonAuthorityCertificate();
     policy.pinnedCertificates = [NSSet setWithObject:(__bridge_transfer id)SecCertificateCopyData(certificate)];
     XCTAssertTrue([policy evaluateServerTrust:AFUTHTTPBinOrgServerTrust() forDomain:nil], @"Policy should allow server trust");
 }
@@ -212,7 +203,7 @@ static SecTrustRef AFUTTrustWithCertificate(SecCertificateRef certificate) {
 - (void)testPolicyWithPublicKeyPinningAllowsHTTPBinOrgServerTrustWithHTTPBinOrgRootCertificatePinned {
     AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
     
-    SecCertificateRef certificate = AFUTDSTRootCertificate();
+    SecCertificateRef certificate = AFUTAmazonRootAuthorityCertificate();
     policy.pinnedCertificates = [NSSet setWithObject:(__bridge_transfer id)SecCertificateCopyData(certificate)];
     XCTAssertTrue([policy evaluateServerTrust:AFUTHTTPBinOrgServerTrust() forDomain:nil], @"Policy should allow server trust");
 }
@@ -221,10 +212,12 @@ static SecTrustRef AFUTTrustWithCertificate(SecCertificateRef certificate) {
     AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
     
     SecCertificateRef httpBinCertificate = AFUTHTTPBinOrgCertificate();
-    SecCertificateRef intermediateCertificate = AFUTLetsEncryptAuthorityCertificate();
-    SecCertificateRef rootCertificate = AFUTDSTRootCertificate();
+    SecCertificateRef intermediateCertificate = AFUTAmazonAuthorityCertificate();
+    SecCertificateRef intermediateCertificate2 = AFUTAmazonRootAuthorityCertificate();
+    SecCertificateRef rootCertificate = AFUTStarfieldServicesRootCertificate();
     [policy setPinnedCertificates:[NSSet setWithObjects:(__bridge_transfer NSData *)SecCertificateCopyData(httpBinCertificate),
                                    (__bridge_transfer NSData *)SecCertificateCopyData(intermediateCertificate),
+                                   (__bridge_transfer NSData *)SecCertificateCopyData(intermediateCertificate2),
                                    (__bridge_transfer NSData *)SecCertificateCopyData(rootCertificate), nil]];
     XCTAssertTrue([policy evaluateServerTrust:AFUTHTTPBinOrgServerTrust() forDomain:nil], @"Policy should allow HTTPBinOrg server trust because at least one of the pinned certificates is valid");
     
@@ -316,7 +309,7 @@ static SecTrustRef AFUTTrustWithCertificate(SecCertificateRef certificate) {
 - (void)testPolicyWithCertificatePinningAllowsHTTPBinOrgServerTrustWithHTTPBinOrgIntermediateCertificatePinned {
     AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     
-    SecCertificateRef certificate = AFUTLetsEncryptAuthorityCertificate();
+    SecCertificateRef certificate = AFUTAmazonAuthorityCertificate();
     policy.pinnedCertificates = [NSSet setWithObject:(__bridge_transfer id)SecCertificateCopyData(certificate)];
     XCTAssertTrue([policy evaluateServerTrust:AFUTHTTPBinOrgServerTrust() forDomain:nil], @"Policy should allow server trust");
 }
@@ -324,7 +317,7 @@ static SecTrustRef AFUTTrustWithCertificate(SecCertificateRef certificate) {
 - (void)testPolicyWithCertificatePinningAllowsHTTPBinOrgServerTrustWithHTTPBinOrgRootCertificatePinned {
     AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     
-    SecCertificateRef certificate = AFUTDSTRootCertificate();
+    SecCertificateRef certificate = AFUTAmazonRootAuthorityCertificate();
     policy.pinnedCertificates = [NSSet setWithObject:(__bridge_transfer id)SecCertificateCopyData(certificate)];
     XCTAssertTrue([policy evaluateServerTrust:AFUTHTTPBinOrgServerTrust() forDomain:nil], @"Policy should allow server trust");
 }
@@ -333,10 +326,12 @@ static SecTrustRef AFUTTrustWithCertificate(SecCertificateRef certificate) {
     AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     
     SecCertificateRef httpBinCertificate = AFUTHTTPBinOrgCertificate();
-    SecCertificateRef intermediateCertificate = AFUTLetsEncryptAuthorityCertificate();
-    SecCertificateRef rootCertificate = AFUTDSTRootCertificate();
+    SecCertificateRef intermediateCertificate = AFUTAmazonAuthorityCertificate();
+    SecCertificateRef intermediateCertificate2 = AFUTAmazonRootAuthorityCertificate();
+    SecCertificateRef rootCertificate = AFUTStarfieldServicesRootCertificate();
     [policy setPinnedCertificates:[NSSet setWithObjects:(__bridge_transfer NSData *)SecCertificateCopyData(httpBinCertificate),
                                    (__bridge_transfer NSData *)SecCertificateCopyData(intermediateCertificate),
+                                   (__bridge_transfer NSData *)SecCertificateCopyData(intermediateCertificate2),
                                    (__bridge_transfer NSData *)SecCertificateCopyData(rootCertificate), nil]];
     XCTAssertTrue([policy evaluateServerTrust:AFUTHTTPBinOrgServerTrust() forDomain:nil], @"Policy should allow HTTPBinOrg server trust because at least one of the pinned certificates is valid");
     
@@ -540,13 +535,8 @@ static SecTrustRef AFUTTrustWithCertificate(SecCertificateRef certificate) {
     policy.validatesDomainName = NO;
     policy.pinnedCertificates = [NSSet setWithObject:(__bridge_transfer id)SecCertificateCopyData(AFUTHTTPBinOrgCertificate())];
 
-    NSMutableData *archiveData = [NSMutableData new];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:archiveData];
-    [archiver encodeObject:policy forKey:@"policy"];
-    [archiver finishEncoding];
-
-    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:archiveData];
-    AFSecurityPolicy *unarchivedPolicy = [unarchiver decodeObjectOfClass:[AFSecurityPolicy class] forKey:@"policy"];
+    NSData *archive = [self archivedDataWithRootObject:policy];
+    AFSecurityPolicy *unarchivedPolicy = [self unarchivedObjectOfClass:[AFSecurityPolicy class] fromData:archive];
 
     XCTAssertNotEqual(unarchivedPolicy, policy);
     XCTAssertEqual(unarchivedPolicy.allowInvalidCertificates, policy.allowInvalidCertificates);
