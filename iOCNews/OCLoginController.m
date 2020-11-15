@@ -143,7 +143,7 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
             [client setRequestSerializer:[AFJSONRequestSerializer serializer]];
             [client.requestSerializer setAuthorizationHeaderFieldWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
             
-            [client GET:@"version" parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            [client GET:@"version" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSDictionary *jsonDict = nil;
                 if (responseObject && [responseObject isKindOfClass:[NSDictionary class]])
                 {

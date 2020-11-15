@@ -91,7 +91,7 @@ class ArticleCellWithWebView: BaseArticleCell {
                 } else {
                     if let urlString = item.url {
                         OCAPIClient.shared().requestSerializer = OCAPIClient.httpRequestSerializer()
-                        OCAPIClient.shared().get(urlString, parameters: nil, progress: nil, success: { (task, responseObject) in
+                        OCAPIClient.shared().get(urlString, parameters: nil, headers: nil, progress: nil, success: { (task, responseObject) in
                             var html: String
                             if let response = responseObject as? Data, let source = String.init(data: response, encoding: .utf8), let url = task.response?.url {
                                 if let article = SummaryHelper.readble(source, url: url) {
