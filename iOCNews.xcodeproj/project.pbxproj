@@ -54,8 +54,6 @@
 		D08D832E18108D9B005A75F0 /* OCFolderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D832D18108D9B005A75F0 /* OCFolderTableViewController.m */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D096143C21EED4AF000BD5D2 /* ArticleListFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D096143B21EED4AF000BD5D2 /* ArticleListFlowLayout.swift */; };
-		D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F391880987000C6DA92 /* libc++.dylib */; };
-		D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A33F3B1880987C00C6DA92 /* libz.dylib */; };
 		D0A33F581885B91B00C6DA92 /* OCBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F571885B91B00C6DA92 /* OCBadgeView.m */; };
 		D0A33F6018876CF700C6DA92 /* OCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A33F5F18876CF700C6DA92 /* OCTextView.m */; };
 		D0AAB685255CE93E00F4FC5F /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AAB684255CE93E00F4FC5F /* CoreServices.framework */; };
@@ -72,7 +70,6 @@
 		D0BCAA74177909A600C965F4 /* ArticleListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6C177909A500C965F4 /* ArticleListController.m */; };
 		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
-		D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAADA17790C9100C965F4 /* libxml2.dylib */; };
 		D0BCABC8177910C000C965F4 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABC7177910C000C965F4 /* ImageIO.framework */; };
 		D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
 		D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABE21779119300C965F4 /* MessageUI.framework */; };
@@ -144,7 +141,6 @@
 		D06CB23817A0A0A900A1310B /* OCNewsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCNewsHelper.m; sourceTree = "<group>"; };
 		D0735DC01F83378A002D3AB3 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KSCrash.framework; path = Carthage/Build/iOS/KSCrash.framework; sourceTree = "<group>"; };
 		D0735DC11F83378A002D3AB3 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
-		D0735DC21F83378A002D3AB3 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
 		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
 		D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFlowLayout.swift; sourceTree = "<group>"; };
@@ -156,8 +152,6 @@
 		D09B149A1C30D0DB0019DB51 /* pcre_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_internal.h; sourceTree = "<group>"; };
 		D09B149B1C30D0DB0019DB51 /* pcrecpp_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpp_internal.h; sourceTree = "<group>"; };
 		D0A33F2B187F5BF900C6DA92 /* News 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 4.xcdatamodel"; sourceTree = "<group>"; };
-		D0A33F391880987000C6DA92 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		D0A33F3B1880987C00C6DA92 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		D0A33F561885B91B00C6DA92 /* OCBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCBadgeView.h; sourceTree = "<group>"; };
 		D0A33F571885B91B00C6DA92 /* OCBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCBadgeView.m; sourceTree = "<group>"; };
 		D0A33F5E18876CF700C6DA92 /* OCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTextView.h; sourceTree = "<group>"; };
@@ -185,7 +179,6 @@
 		D0BCAA6E177909A600C965F4 /* OCFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA6F177909A600C965F4 /* OCFeedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D0BCAADA17790C9100C965F4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		D0BCABC7177910C000C965F4 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D0BCABD41779112000C965F4 /* PHPrefViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHPrefViewController.h; sourceTree = "<group>"; };
 		D0BCABD51779112000C965F4 /* PHPrefViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHPrefViewController.m; sourceTree = "<group>"; };
@@ -198,7 +191,6 @@
 		D0BCAC5F178104FC00C965F4 /* rss.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = rss.css; sourceTree = "<group>"; };
 		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 2.xcdatamodel"; sourceTree = "<group>"; };
-		D0CFE5A8188F43EF00165839 /* KSCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = KSCrash.framework; sourceTree = "<group>"; };
 		D0DD7BC4255E225500B124C9 /* SwiftMessagesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMessagesHelper.swift; sourceTree = "<group>"; };
 		D0E89F561836E03A005F8CAF /* OCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSettingsController.h; sourceTree = "<group>"; };
 		D0E89F571836E03A005F8CAF /* OCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSettingsController.m; sourceTree = "<group>"; };
@@ -228,16 +220,13 @@
 				D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */,
 				D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */,
 				D0AAB685255CE93E00F4FC5F /* CoreServices.framework in Frameworks */,
-				D0A33F3C1880987C00C6DA92 /* libz.dylib in Frameworks */,
 				D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */,
 				D0DD7BCC255F6FE100B124C9 /* UICKeyChainStore in Frameworks */,
-				D0A33F3A1880987000C6DA92 /* libc++.dylib in Frameworks */,
 				D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */,
 				D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */,
 				D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */,
 				D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */,
 				D0BCABC8177910C000C965F4 /* ImageIO.framework in Frameworks */,
-				D0BCAADB17790C9100C965F4 /* libxml2.dylib in Frameworks */,
 				D04C7DD91BABBEFC000FB342 /* libpcreposix.a in Frameworks */,
 				D0BCAA681779091000C965F4 /* QuartzCore.framework in Frameworks */,
 				D0BCAA26177900C300C965F4 /* UIKit.framework in Frameworks */,
@@ -325,18 +314,13 @@
 				D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */,
 				D0735DC11F83378A002D3AB3 /* AFNetworking.framework */,
 				D0735DC01F83378A002D3AB3 /* KSCrash.framework */,
-				D0735DC21F83378A002D3AB3 /* WebImage.framework */,
 				D02CCAF31CE7E27300F6CCEC /* WebKit.framework */,
 				D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */,
-				D0CFE5A8188F43EF00165839 /* KSCrash.framework */,
-				D0A33F3B1880987C00C6DA92 /* libz.dylib */,
-				D0A33F391880987000C6DA92 /* libc++.dylib */,
 				D06CB23517A074AA00A1310B /* CoreData.framework */,
 				D0F1813E17850CAF00F719D9 /* Security.framework */,
 				D0F181251782585100F719D9 /* SystemConfiguration.framework */,
 				D0BCABE21779119300C965F4 /* MessageUI.framework */,
 				D0BCABC7177910C000C965F4 /* ImageIO.framework */,
-				D0BCAADA17790C9100C965F4 /* libxml2.dylib */,
 				D0BCAA671779091000C965F4 /* QuartzCore.framework */,
 				D0BCAA25177900C300C965F4 /* UIKit.framework */,
 				D0BCAA27177900C300C965F4 /* Foundation.framework */,
@@ -468,7 +452,6 @@
 				D0BCAA1E177900C300C965F4 /* Sources */,
 				D0BCAA1F177900C300C965F4 /* Frameworks */,
 				D0BCAA20177900C300C965F4 /* Resources */,
-				D08D83BA181727C9005A75F0 /* ShellScript */,
 				D0735DC61F8337B0002D3AB3 /* ShellScript */,
 			);
 			buildRules = (
@@ -620,19 +603,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-		D08D83BA181727C9005A75F0 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\n#note: for simplicity, it's assumed that there's already a bundle version (which is an integer) and a version string. set them in the Summary pane!\n\n#get path to the BUILT .plist, NOT the packaged one! this fixes the off-by-one bug\nbuiltInfoPlistPath=${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\necho \"using plist at $builtInfoPlistPath\"\n\nmodifiedFilesExist=false\n#this is the modification date to compare to -- there's a possible bug here, if you edit the built plist directly, for some reason. probably you shouldn't do that anyways.\ncompModDate=$(stat -f \"%m\" \"$builtInfoPlistPath\")\n\nfor filename in *\ndo\nmodDate=$(stat -f \"%m\" \"$filename\")\nif [ \"$modDate\" -gt \"$compModDate\" ]\nthen\nmodifiedFilesExist=true;\necho \"found newly modified file: $filename\"\nbreak\nfi\ndone\n\nif $modifiedFilesExist\nthen\necho \"A file is new, bumping version\"\n\n#increment the build number\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$builtInfoPlistPath\")\necho \"retrieved current build number: $buildNumber\"\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$builtInfoPlistPath\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"\n\n#compose the version number string\nversionString=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleShortVersionString\" \"$builtInfoPlistPath\")\nversionString+=\" (\"\nversionString+=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$builtInfoPlistPath\")\nversionString+=\")\"\n\n#write the version number string to the settings bundle\n#IMPORTANT: this assumes the version number is the second property in the settings bundle!\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue $versionString\" \"$SRCROOT/iOCNews/Settings.bundle/Root.plist\"\nelse\necho \"Version not incremented -- no newly modified files\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
