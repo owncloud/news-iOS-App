@@ -56,6 +56,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     _selectedFolderId = self.feed.folderId;
     [self.tableView reloadData];
 }

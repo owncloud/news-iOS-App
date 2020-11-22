@@ -32,7 +32,7 @@
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         return _subject;
     }
-    return nil;
+    return [NSString string];
 }
 
 @end

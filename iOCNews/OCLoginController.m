@@ -62,8 +62,6 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    NSString *version = @"Version ";
-    version = [version stringByAppendingString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     self.serverTextField.delegate = self;
     self.usernameTextField.delegate = self;
     self.passwordTextField.delegate = self;
