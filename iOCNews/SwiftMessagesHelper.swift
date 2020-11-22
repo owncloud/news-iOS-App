@@ -63,7 +63,7 @@ open class Messenger : NSObject {
             view.configureTheme(.success, iconStyle: .default)
             view.configureDropShadow()
             view.configureContent(title: NSLocalizedString("Success", comment: "A message title"),
-                                  body: NSLocalizedString("You are now connected to Notes on your server", comment: "A message"),
+                                  body: NSLocalizedString("You are now connected to News on your server", comment: "A message"),
                                   iconImage: Icon.success.image,
                                   iconText: nil,
                                   buttonImage: nil,
