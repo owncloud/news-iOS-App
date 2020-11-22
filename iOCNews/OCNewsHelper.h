@@ -56,6 +56,8 @@ typedef NS_ENUM(NSInteger, OCUpdateType) {
 @property (nonatomic, strong, readonly) NSFetchRequest *feedRequest;
 @property (nonatomic, strong, readonly) NSFetchRequest *itemRequest;
 
+@property (nonatomic, strong, readonly) NSObject *rootFolderId;
+
 + (OCNewsHelper *)sharedHelper;
 - (NSManagedObjectContext *)context;
 - (NSURL *)documentsDirectoryURL;

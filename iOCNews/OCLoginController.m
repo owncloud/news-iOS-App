@@ -97,12 +97,6 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)doDone:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -157,8 +151,9 @@ static const NSString *rootPath = @"index.php/apps/news/api/v1-2/";
                     }
                 }
                 if (jsonDict) {
-                    __unused NSString *version = [jsonDict valueForKey:@"version"];
                     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                    NSString *version = [jsonDict valueForKey:@"version"];
+                    [prefs setObject:version forKey:@"Version"];
                     [prefs setObject:self.serverTextField.text forKey:@"Server"];
                     UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
                     [keychain setString:self.usernameTextField.text forKey:(__bridge id)(kSecAttrAccount)];

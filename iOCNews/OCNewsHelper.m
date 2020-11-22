@@ -75,6 +75,7 @@
 @synthesize folderRequest;
 @synthesize feedRequest;
 @synthesize itemRequest;
+@synthesize rootFolderId;
 
 + (OCNewsHelper*)sharedHelper {
     static dispatch_once_t once_token;
@@ -226,7 +227,12 @@
         newFeed.faviconLink = @"favicon";
     }
     newFeed.added = (UInt32)[[dict objectForKey:@"added"] integerValue];
-    newFeed.folderId = (UInt32)[[dict objectForKey:@"folderId"] integerValue];
+    NSObject *folderIdObject = [dict objectForKey:@"folderId"];
+    if (folderIdObject == [NSNull null]) {
+        newFeed.folderId = 0;
+    } else {
+        newFeed.folderId = (UInt32)[(NSNumber *)folderIdObject integerValue];;
+    }
     newFeed.unreadCount = (UInt32)[[dict objectForKey:@"unreadCount"] integerValue];
     newFeed.link = [dict objectForKeyNotNull:@"link" fallback:@""];
     return newFeed.myId;
@@ -521,7 +527,13 @@
             unreadCount = 0;
         }
         feed.unreadCount = unreadCount;
-        feed.folderId = (UInt32)[[feedDict objectForKey:@"folderId"] integerValue];
+        NSObject *folderIdObject = [feedDict objectForKey:@"folderId"];
+        if (folderIdObject == [NSNull null]) {
+            feed.folderId = 0;
+        } else {
+            feed.folderId = (UInt32)[(NSNumber *)folderIdObject integerValue];;
+        }
+        
         [self.context processPendingChanges]; //Prevents crash if a feed has moved to another folder
     }];
     
@@ -1235,7 +1247,7 @@
 - (void)addFeedOffline:(NSString *)urlString {
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:urlString, @"url", [NSNumber numberWithInt:0], @"folderId", nil];
+        NSDictionary *params = @{@"url": urlString, @"folderId": self.rootFolderId};
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] POST:@"feeds" parameters:params headers:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             NSDictionary *feedDict = nil;
@@ -1319,7 +1331,6 @@
         newFeed.folderId = 0;
         newFeed.unreadCount = 0;
         newFeed.link = @"";
-        //[feedsToDelete addObject:[NSNumber numberWithInt:10000 + feedsToAdd.count]]; //should be deleted when we get the real feed
     }
     [self updateTotalUnreadCount];
 }
@@ -1350,12 +1361,13 @@
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         //online
         NSDictionary *params = @{@"folderId": @(aFolderId)};
+        if (aFolderId == 0) {
+            params = @{@"folderId": self.rootFolderId};
+        }
         NSString *path = [NSString stringWithFormat:@"feeds/%ld/move", (long)aFeedId];
         [OCAPIClient sharedClient].requestSerializer = [OCAPIClient jsonRequestSerializer];
         [[OCAPIClient sharedClient] PUT:path parameters:params headers:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-//            NSLog(@"Success");
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//            NSLog(@"Failure");
             NSString *message = [NSString stringWithFormat:@"The error reported was '%@'", [error localizedDescription]];
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Error Moving Feed", @"Title", message, @"Message", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkCompleted" object:self userInfo:nil];
@@ -1528,6 +1540,19 @@
         itemRequest.predicate = nil;
     }
     return itemRequest;
+}
+
+- (NSObject *)rootFolderId {
+    if (!rootFolderId) {
+        NSArray *versionArray = [[[NSUserDefaults standardUserDefaults] stringForKey:@"Version"] componentsSeparatedByString:@"."];
+        rootFolderId = @(0);
+        if (versionArray.count > 1) {
+            if (([versionArray[0] integerValue] > 15) || (([versionArray[0] integerValue] >= 15) && ([versionArray[1] integerValue] >= 1))) {
+                rootFolderId = [NSNull null];
+            }
+        }
+    }
+    return rootFolderId;
 }
 
 - (NSURL*) documentsDirectoryURL {
