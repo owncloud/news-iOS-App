@@ -39,6 +39,7 @@
 @property (strong, nonatomic) IBOutlet UISwitch *showFaviconsSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *showThumbnailsSwitch;
 @property (strong, nonatomic) IBOutlet UISwitch *markWhileScrollingSwitch;
+@property (strong, nonatomic) IBOutlet UISwitch *sortOldestFirstSwitch;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UILabel *themeLabel;
 
@@ -47,6 +48,7 @@
 - (IBAction)showFaviconsChanged:(id)sender;
 - (IBAction)showThumbnailsChanged:(id)sender;
 - (IBAction)markWhileScrollingChanged:(id)sender;
+- (IBAction)sortOldestFirstChanged:(id)sender;
 - (IBAction)onDone:(id)sender;
 
 @end

@@ -31,7 +31,8 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Item" inManagedObjectContext:[OCNewsHelper sharedHelper].context];
         _fetchRequest.entity = entity;
         _fetchRequest.fetchBatchSize = 25;
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
+        BOOL sortOldestFirst = [[NSUserDefaults standardUserDefaults] boolForKey:@"SortOldestFirst"];
+        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:sortOldestFirst];
         _fetchRequest.sortDescriptors = @[sort];
     }
     return _fetchRequest;

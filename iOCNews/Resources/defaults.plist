@@ -1,5 +1,6 @@
 {
 	MarkWhileScrolling = YES;
+	SortOldestFirst = NO;
 	ShowThumbnails = YES;
 	ShowFavicons = YES;
 	SyncInBackground = NO;

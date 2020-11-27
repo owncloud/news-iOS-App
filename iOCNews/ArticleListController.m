@@ -45,7 +45,6 @@
 
 @interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching> {
     BOOL markingAllItemsRead;
-    BOOL hideRead;
     NSArray *fetchedItems;
     BOOL comingFromDetail;
 }
@@ -96,7 +95,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         } else {
             self.navigationItem.title = self.feed.title;
         }
-        hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
         self.aboutToFetch = YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
         self.aboutToFetch = NO;
@@ -153,6 +151,10 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         
         [[NSUserDefaults standardUserDefaults] addObserver:self
                                                 forKeyPath:@"ShowFavicons"
+                                                   options:NSKeyValueObservingOptionNew
+                                                   context:NULL];
+        [[NSUserDefaults standardUserDefaults] addObserver:self
+                                                forKeyPath:@"SortOldestFirst"
                                                    options:NSKeyValueObservingOptionNew
                                                    context:NULL];
     }
@@ -221,7 +223,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 - (void)contextSaved:(NSNotification*)notification {
     if (markingAllItemsRead) {
         markingAllItemsRead = NO;
-        hideRead = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"];
         self.aboutToFetch= YES;
         BOOL success = [self.fetchedResultsController performFetch:nil];
         self.aboutToFetch = NO;
@@ -236,6 +237,7 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"HideRead"];
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowThumbnails"];
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"ShowFavicons"];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"SortOldestFirst"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.fetchedResultsController.delegate = nil;
 }
@@ -326,7 +328,6 @@ static NSString * const reuseIdentifier = @"ArticleCell";
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    hideRead = false;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -453,6 +454,16 @@ static NSString * const reuseIdentifier = @"ArticleCell";
         [self refresh];
     }
     if([keyPath isEqual:@"ShowThumbnails"] || [keyPath isEqual:@"ShowFavicons"]) {
+        [self refresh];
+    }
+    if([keyPath isEqual:@"SortOldestFirst"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SortOldestFirst"]) {
+            NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:YES];
+            [self.fetchedResultsController.fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        } else {
+            NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"myId" ascending:NO];
+            [self.fetchedResultsController.fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+        }
         [self refresh];
     }
 }

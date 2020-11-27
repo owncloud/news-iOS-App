@@ -4,7 +4,7 @@
 
 /************************************************************************
  
- Copyright 2013-2015 Peter Hedlund peter.hedlund@me.com
+ Copyright 2013-2020 Peter Hedlund peter.hedlund@me.com
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
@@ -52,6 +52,7 @@
     self.showFaviconsSwitch.on = [prefs boolForKey:@"ShowFavicons"];
     self.showThumbnailsSwitch.on = [prefs boolForKey:@"ShowThumbnails"];
     self.markWhileScrollingSwitch.on = [prefs boolForKey:@"MarkWhileScrolling"];
+    self.sortOldestFirstSwitch.on = [prefs boolForKey:@"SortOldestFirst"];
     if ([OCAPIClient sharedClient].reachabilityManager.isReachable) {
         self.statusLabel.text = NSLocalizedString(@"Logged In", @"A status label indicating that the user is logged in");
     } else {
@@ -102,27 +103,26 @@
 
 - (IBAction)syncOnStartChanged:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"SyncOnStart"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)syncInBackgroundChanged:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"SyncInBackground"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)showFaviconsChanged:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"ShowFavicons"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)showThumbnailsChanged:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"ShowThumbnails"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)markWhileScrollingChanged:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"MarkWhileScrolling"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)sortOldestFirstChanged:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:[(UISwitch*)sender isOn] forKey:@"SortOldestFirst"];
 }
 
 #pragma mark - Button
