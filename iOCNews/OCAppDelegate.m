@@ -30,15 +30,17 @@
  
  *************************************************************************/
 
+@import KSCrash_Installations;
+@import KSCrash_Reporting_Sinks;
+@import KSCrash_Reporting_Tools;
+@import KSCrash_Reporting_Filters_Tools;
+@import UserNotifications;
+@import UICKeyChainStore;
+
 #import "OCAppDelegate.h"
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import "OCNewsHelper.h"
-#import <KSCrash/KSCrash.h>
-#import <KSCrash/KSCrashInstallationEmail.h>
-#import <KSCrash/KSCrashInstallation+Alert.h>
-#import "UICKeyChainStore.h"
 #import "PHThemeManager.h"
-@import UserNotifications;
 
 @implementation OCAppDelegate
 

@@ -30,9 +30,10 @@
  
  *************************************************************************/
 
+@import UICKeyChainStore;
+
 #import "OCLoginController.h"
 #import "OCAPIClient.h"
-#import "UICKeyChainStore.h"
 #import "iOCNews-Swift.h"
 #import "UIColor+PHColor.h"
 
