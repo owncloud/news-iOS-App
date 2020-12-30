@@ -226,14 +226,9 @@
     if (!newFeed.faviconLink.length) {
         newFeed.faviconLink = @"favicon";
     }
-    newFeed.added = (UInt32)[[dict objectForKey:@"added"] integerValue];
-    NSObject *folderIdObject = [dict objectForKey:@"folderId"];
-    if (folderIdObject == [NSNull null]) {
-        newFeed.folderId = 0;
-    } else {
-        newFeed.folderId = (UInt32)[(NSNumber *)folderIdObject integerValue];;
-    }
-    newFeed.unreadCount = (UInt32)[[dict objectForKey:@"unreadCount"] integerValue];
+    newFeed.added = 0;
+    newFeed.folderId = (UInt32)[[dict objectForKeyNotNull:@"folderId" fallback:@(0)] integerValue];
+    newFeed.unreadCount = (UInt32)[[dict objectForKeyNotNull:@"unreadCount" fallback:@(0)] integerValue];
     newFeed.link = [dict objectForKeyNotNull:@"link" fallback:@""];
     return newFeed.myId;
 }
