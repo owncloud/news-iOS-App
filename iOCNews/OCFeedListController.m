@@ -519,6 +519,14 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * action) {
+                                                              //
+                                                          }];
+    
+    [alert addAction:cancelAction];
+
     UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:@"Settings"
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
