@@ -15,11 +15,6 @@ class ArticleFlowLayout: UICollectionViewFlowLayout {
     
     private var computedContentSize: CGSize = .zero
     private var cellAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
-
-    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        let _ = super.shouldInvalidateLayout(forBoundsChange: newBounds)
-        return true
-    }
     
     override func prepare() {
         guard let cv = self.collectionView else {
@@ -27,7 +22,7 @@ class ArticleFlowLayout: UICollectionViewFlowLayout {
         }
         
         computedContentSize = .zero
-        cellAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
+        cellAttributes.removeAll()
         
         let itemWidth = cv.frame.size.width
         let itemHeight = cv.frame.size.height

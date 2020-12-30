@@ -15,19 +15,14 @@ class ArticleListFlowLayout: UICollectionViewFlowLayout {
     private var cellAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
     
     static let itemHeight: CGFloat = 154
-
-    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        let _ = super.shouldInvalidateLayout(forBoundsChange: newBounds)
-        return true
-    }
     
     override func prepare() {
         guard let cv = self.collectionView else {
             return
         }
-        
+
         computedContentSize = .zero
-        cellAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
+        cellAttributes.removeAll()
         
         let itemWidth = cv.frame.size.width
         
