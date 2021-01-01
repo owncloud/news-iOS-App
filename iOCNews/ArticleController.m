@@ -52,9 +52,9 @@ static NSString * const reuseIdentifier = @"ArticleCell";
     shouldScrollToInitialArticle = YES;
     self.reloadItemsOnUpdate = NO;
     [self.collectionView registerClass:[ArticleCellWithWebView class] forCellWithReuseIdentifier:@"ArticleCellWithWebView"];
-    self.view.backgroundColor =  UIColor.ph_cellBackgroundColor;
+    self.view.backgroundColor =  UIColor.ph_backgroundColor;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ThemeUpdate" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        self.view.backgroundColor =  UIColor.ph_cellBackgroundColor;
+        self.view.backgroundColor =  UIColor.ph_backgroundColor;
     }];
 }
 
