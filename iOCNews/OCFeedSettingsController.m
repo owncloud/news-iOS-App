@@ -32,12 +32,12 @@
 
 #import "OCFeedSettingsController.h"
 #import "OCNewsHelper.h"
-#import "OCFolderTableViewController.h"
+#import "iOCNews-Swift.h"
 #import "UIColor+PHColor.h"
 
 @interface OCFeedSettingsController () {
     NSArray *_cells;
-    int _newFolderId;
+    NSInteger _newFolderId;
 }
 
 @end
@@ -86,7 +86,7 @@
     self.feed.useReader = self.readerSwitch.on;
     self.feed.articleCount = self.keepStepper.value;
     if (self.feed.folderId != _newFolderId) {
-        self.feed.folderId = _newFolderId;
+        self.feed.folderId = (int32_t)_newFolderId;
         [[OCNewsHelper sharedHelper] moveFeedOfflineWithId:self.feed.myId toFolderWithId:self.feed.folderId];
     }
     if (![self.feed.title isEqualToString:self.titleTextField.text] && self.titleTextField.text.length) {
@@ -122,14 +122,16 @@
  // In a story board-based application, you will often want to do a little preparation before navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
      if ([segue.identifier isEqualToString:@"folderSegue"]) {
-         OCFolderTableViewController *folderController = (OCFolderTableViewController*)segue.destinationViewController;
+         FolderTableViewController *folderController = (FolderTableViewController*)segue.destinationViewController;
          folderController.feed = self.feed;
          folderController.folders = [[OCNewsHelper sharedHelper] folders];
          folderController.delegate = self;
+         folderController.navigationItem.leftBarButtonItem = nil;
+         folderController.navigationItem.rightBarButtonItem = nil;
      }
  }
 
-- (void)folderSelected:(int)folder {
+- (void)folderSelectedWithFolder:(NSInteger)folder {
     _newFolderId = folder;
 }
  

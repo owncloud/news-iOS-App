@@ -32,11 +32,11 @@
 
 #import <UIKit/UIKit.h>
 #import "Feed+CoreDataClass.h"
-#import "OCFolderTableViewController.h"
+#import "iOCNews-Swift.h"
 
 @protocol OCFeedSettingsDelegate;
 
-@interface OCFeedSettingsController : UITableViewController <UITextFieldDelegate, OCFolderControllerDelegate>
+@interface OCFeedSettingsController : UITableViewController <UITextFieldDelegate, FolderControllerDelegate>
 
 @property (nonatomic, unsafe_unretained) id <OCFeedSettingsDelegate> delegate;
 

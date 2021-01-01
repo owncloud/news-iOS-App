@@ -43,7 +43,7 @@
 
 static NSString *DetailSegueIdentifier = @"showDetail";
 
-@interface OCFeedListController () <UIActionSheetDelegate, UISplitViewControllerDelegate> {
+@interface OCFeedListController () <UIActionSheetDelegate, UISplitViewControllerDelegate, FolderControllerDelegate> {
     NSInteger currentRenameId;
     long currentIndex;
     BOOL networkHasBeenUnreachable;
@@ -390,9 +390,52 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         self.renameFolderAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
     } else if (indexPath.section == 2) {
         currentIndex = indexPathTemp.row;
-        [self performSegueWithIdentifier:@"feedSettings" sender:self];        
+        [self performSegueWithIdentifier:@"feedSettings" sender:self];
     }
     editingPath = indexPath;
+}
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0)) {
+    if (indexPath.section == 0) {
+        return nil;
+    }
+    
+    NSMutableArray *actions = [NSMutableArray new];
+    
+    UIAction *settingsAction = [UIAction actionWithTitle:@"Settings..." image:[UIImage systemImageNamed:@"gearshape"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [self tableView:self.tableView settingsActionPressedInRowAtIndexPath:indexPath];
+    }];
+    [actions addObject:settingsAction];
+    
+    if (indexPath.section == 2) {
+        UIAction *folderAction = [UIAction actionWithTitle:@"Folder..." image:[UIImage systemImageNamed:@"folder"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+            self->currentIndex = indexPath.row;
+            NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:self->currentIndex inSection:0];
+            Feed *feed = [self.feedsFetchedResultsController objectAtIndexPath:indexPathTemp];
+            
+            UINavigationController *navController = [self.storyboard instantiateViewControllerWithIdentifier:@"FolderNavController"];
+            
+            FolderTableViewController *folderController = (FolderTableViewController *)navController.topViewController;
+            folderController.feed = feed;
+            folderController.folders = [[OCNewsHelper sharedHelper] folders];
+            folderController.delegate = self;
+            [self.navigationController presentViewController:navController animated:YES completion:nil];
+            
+        }];
+        [actions addObject:folderAction];
+    }
+    
+    UIAction *deleteAction = [UIAction actionWithTitle:@"Delete" image:[UIImage systemImageNamed:@"trash"] identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        [self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
+    }];
+    deleteAction.attributes = UIMenuElementAttributesDestructive;
+    [actions addObject:deleteAction];
+    
+    UIContextMenuConfiguration *config = [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+        return [UIMenu menuWithTitle:@"" children:actions];
+    }];
+    return  config;
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
@@ -520,54 +563,54 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * action) {
-                                                              //
-                                                          }];
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {
+        //
+    }];
     
     [alert addAction:cancelAction];
-
-    UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:@"Settings"
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                                                              
-                                                              [self doSettings:action];
-                                                              
-                                                          }];
     
-    [alert addAction:settingsAction];
- 
-    UIAlertAction* addFolderAction = [UIAlertAction actionWithTitle:@"Add Folder"
+    UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:@"Settings"
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
-                                                               
-                                                               [self presentViewController:self.addFolderAlertView animated:YES completion:nil];
-                                                               self.addFolderAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
-                                                           }];
+        
+        [self doSettings:action];
+        
+    }];
     
-    [alert addAction:addFolderAction];
-
-    UIAlertAction* addFeedAction = [UIAlertAction actionWithTitle:@"Add Feed"
+    [alert addAction:settingsAction];
+    
+    UIAlertAction* addFolderAction = [UIAlertAction actionWithTitle:@"Add Folder"
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
-                                                                
-                                                                [self presentViewController:self.addFeedAlertView animated:YES completion:nil];
-                                                                self.addFeedAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
-                                                            }];
+        
+        [self presentViewController:self.addFolderAlertView animated:YES completion:nil];
+        self.addFolderAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
+    }];
     
-    [alert addAction:addFeedAction];
-
-    NSString *hideReadTitle = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read";
-    UIAlertAction* hideReadAction = [UIAlertAction actionWithTitle:hideReadTitle
+    [alert addAction:addFolderAction];
+    
+    UIAlertAction* addFeedAction = [UIAlertAction actionWithTitle:@"Add Feed"
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
-                                                              
-                                                              [self doHideRead];
-                                                              
-                                                          }];
+        
+        [self presentViewController:self.addFeedAlertView animated:YES completion:nil];
+        self.addFeedAlertView.view.tintColor = [UINavigationBar appearance].tintColor;
+    }];
+    
+    [alert addAction:addFeedAction];
+    
+    NSString *hideReadTitle = [[NSUserDefaults standardUserDefaults] boolForKey:@"HideRead"] ? @"Show Read" : @"Hide Read";
+    UIAlertAction* hideReadAction = [UIAlertAction actionWithTitle:hideReadTitle
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+        
+        [self doHideRead];
+        
+    }];
     
     [alert addAction:hideReadAction];
-
+    
     alert.modalPresentationStyle = UIModalPresentationPopover;
     
     UIPopoverPresentationController *popover = alert.popoverPresentationController;
@@ -907,8 +950,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         feedSettingsAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
                                                                 title:@"Settings"
                                                               handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                  [self tableView:self.tableView settingsActionPressedInRowAtIndexPath:indexPath];
-                                                              }];
+            [self tableView:self.tableView settingsActionPressedInRowAtIndexPath:indexPath];
+        }];
     }
     return feedSettingsAction;
 }
@@ -918,8 +961,8 @@ static NSString *DetailSegueIdentifier = @"showDetail";
         feedDeleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
                                                               title:@"Delete"
                                                             handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                [self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
-                                                            }];
+            [self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
+        }];
     }
     return feedDeleteAction;
 }
@@ -928,7 +971,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     if (!feedRefreshControl) {
         feedRefreshControl = [[UIRefreshControl alloc] init];
         [feedRefreshControl addTarget:self action:@selector(doRefresh:) forControlEvents:UIControlEventValueChanged];
-    }    
+    }
     return feedRefreshControl;
 }
 
@@ -953,7 +996,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willChangeToDisplayMode:(UISplitViewControllerDisplayMode)displayMode {
-//    NSLog(@"My display mode = %ld", (long)displayMode);
+    //    NSLog(@"My display mode = %ld", (long)displayMode);
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -1023,10 +1066,13 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     }
 }
 
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
+}
+
+- (void)folderSelectedWithFolder:(NSInteger)folder {
+    //
 }
 
 @end
