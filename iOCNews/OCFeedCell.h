@@ -31,11 +31,11 @@
  *************************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "OCBadgeView.h"
+#import "iOCNews-Swift.h"
 
 @interface OCFeedCell : UITableViewCell
 
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, strong, readonly) OCBadgeView *countBadge;
+@property (nonatomic, strong, readonly) BadgeView *countBadge;
 
 @end

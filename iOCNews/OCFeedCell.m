@@ -31,7 +31,6 @@
  *************************************************************************/
 
 #import "OCFeedCell.h"
-#import <QuartzCore/QuartzCore.h>
 
 @implementation OCFeedCell
 
@@ -45,10 +44,10 @@
     return activityIndicator;
 }
 
-- (OCBadgeView *)countBadge {
+- (BadgeView *)countBadge {
     
     if (!countBadge) {
-        countBadge = [[OCBadgeView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];
+        countBadge = [[BadgeView alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];
         countBadge.value = 888;
     }
     return countBadge;
