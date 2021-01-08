@@ -31,15 +31,14 @@
  *************************************************************************/
 
 #import "OCFeedListController.h"
-#import "OCFeedCell.h"
 #import "OCLoginController.h"
 #import "iOCNews-Swift.h"
 #import "OCNewsHelper.h"
 #import "Folder+CoreDataClass.h"
 #import "Feed+CoreDataClass.h"
-#import <AFNetworking/AFNetworking.h>
 #import "UIColor+PHColor.h"
 #import "PHThemeManager.h"
+@import AFNetworking;
 
 static NSString *DetailSegueIdentifier = @"showDetail";
 
@@ -264,7 +263,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
     return 0;
 }
 
-- (void)configureCell:(OCFeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(FeedCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     @try {
         NSIndexPath *indexPathTemp = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
         if (indexPathTemp.row < [self.tableView numberOfRowsInSection:indexPath.section]) {
@@ -285,7 +284,16 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                 }
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowFavicons"]) {
                     if (cell.tag == indexPathTemp.row) {
-                        [[OCNewsHelper sharedHelper] faviconForFeedWithId:feed.myId imageView:cell.imageView];
+                        if ([feed.faviconLink isEqualToString:@"favicon"]) {
+                            [cell.imageView setImage:[UIImage imageNamed:@"favicon"]];
+                        } else if ([feed.faviconLink isEqualToString:@"star_icon"]) {
+                            [cell.imageView setImage:[UIImage imageNamed:@"star_icon"]];
+                        } else {
+                            NSURL *url = [NSURL URLWithString:feed.faviconLink];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [cell.imageView setImageWith:url];
+                            });
+                        }
                     }
                 }
                 cell.accessoryType = UITableViewCellAccessoryNone;
@@ -299,7 +307,6 @@ static NSString *DetailSegueIdentifier = @"showDetail";
                         cell.textLabel.text = [NSString stringWithFormat:@"All %@ Articles", folder.name];
                     }
                 } else {
-//                    NSLog(@"Unread count: %d", feed.unreadCountValue);
                     cell.countBadge.value = feed.unreadCount;
                     cell.textLabel.text = feed.title;
                 }
@@ -320,9 +327,9 @@ static NSString *DetailSegueIdentifier = @"showDetail";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
-    OCFeedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    FeedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[OCFeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[FeedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         UIView * selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         [selectedBackgroundView setBackgroundColor:[UIColor colorWithRed:0.87f green:0.87f blue:0.87f alpha:1.0f]]; // set color here
@@ -1037,7 +1044,7 @@ static NSString *DetailSegueIdentifier = @"showDetail";
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:(OCFeedCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:(FeedCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:

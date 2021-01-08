@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import AFNetworking
+import Kingfisher
 
 @objcMembers
 class ItemProviderStruct: NSObject {
@@ -94,22 +94,26 @@ class ItemProvider: NSObject {
         self.imageLink = item.imageLink
 
         if let link = item.imageLink, let url = URL(string: link) {
-            let request = URLRequest(url: url)
-            AFImageDownloader.defaultInstance().downloadImage(for: request, success: { [weak self] (_, _, image) in
-                self?.thumbnail = image
-                }, failure: nil)
+            KingfisherManager.shared.retrieveImage(with: url) { result in
+                switch result {
+                case .success(let value):
+                    self.thumbnail = value.image
+                case .failure(let error):
+                    print(error)
+                }
+            }
         }
-
         if UserDefaults.standard.bool(forKey: "ShowFavicons") == true {
             if let link = self.favIconLink, link != "favicon", let url = URL(string: link) {
-                let request = URLRequest(url: url)
-                AFImageDownloader.defaultInstance().downloadImage(for: request, success: { [weak self] (_, _, image) in
-                    self?.favIcon = image
-                    self?.favIconHidden = false
-                    }, failure: { [weak self] (_, _, _) in
-                        self?.favIconHidden = false
-                        self?.favIcon = UIImage(named: "favicon")
-                })
+                KingfisherManager.shared.retrieveImage(with: url) { result in
+                    switch result {
+                    case .success(let value):
+                        self.favIcon = value.image
+                        self.favIconHidden = false
+                    case .failure(_):
+                        self.favIconHidden = false
+                        self.favIcon = UIImage(named: "favicon")
+                    }                }
             } else {
                 self.favIconHidden = false
                 self.favIcon = UIImage(named: "favicon")

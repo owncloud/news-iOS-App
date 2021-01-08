@@ -49,7 +49,6 @@
 		D06CB22E17A06E4F00A1310B /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D06CB22C17A06E4E00A1310B /* News.xcdatamodeld */; };
 		D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06CB23517A074AA00A1310B /* CoreData.framework */; };
 		D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23817A0A0A900A1310B /* OCNewsHelper.m */; };
-		D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0735DC11F83378A002D3AB3 /* AFNetworking.framework */; };
 		D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */; };
 		D07F5E8321FEA01E00528E90 /* ArticleFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
@@ -67,7 +66,6 @@
 		D0BCAA4A177903F500C965F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAA48177903F500C965F4 /* Main.storyboard */; };
 		D0BCAA681779091000C965F4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCAA671779091000C965F4 /* QuartzCore.framework */; };
 		D0BCAA74177909A600C965F4 /* ArticleListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6C177909A500C965F4 /* ArticleListController.m */; };
-		D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA6E177909A600C965F4 /* OCFeedCell.m */; };
 		D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAA70177909A600C965F4 /* OCFeedListController.m */; };
 		D0BCABC8177910C000C965F4 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABC7177910C000C965F4 /* ImageIO.framework */; };
 		D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
@@ -81,6 +79,10 @@
 		D0DD7BC1255E222700B124C9 /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = D0DD7BC0255E222700B124C9 /* SwiftMessages */; };
 		D0DD7BC5255E225500B124C9 /* SwiftMessagesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DD7BC4255E225500B124C9 /* SwiftMessagesHelper.swift */; };
 		D0DD7BCC255F6FE100B124C9 /* UICKeyChainStore in Frameworks */ = {isa = PBXBuildFile; productRef = D0DD7BCB255F6FE100B124C9 /* UICKeyChainStore */; };
+		D0E6C783259FF1D90070317B /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E6C782259FF1D90070317B /* FeedCell.swift */; };
+		D0E6C78A25A6AB690070317B /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D0E6C78925A6AB690070317B /* Kingfisher */; };
+		D0E6C78F25A6B2820070317B /* AFNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = D0E6C78E25A6B2820070317B /* AFNetworking */; };
+		D0E6C79D25A7F85E0070317B /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E6C79C25A7F85E0070317B /* UIImageViewExtension.swift */; };
 		D0E89F581836E03A005F8CAF /* OCSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E89F571836E03A005F8CAF /* OCSettingsController.m */; };
 		D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F181251782585100F719D9 /* SystemConfiguration.framework */; };
 		D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F181281783B12C00F719D9 /* OCLoginController.m */; };
@@ -141,7 +143,6 @@
 		D06CB23517A074AA00A1310B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D06CB23717A0A0A800A1310B /* OCNewsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCNewsHelper.h; sourceTree = "<group>"; };
 		D06CB23817A0A0A900A1310B /* OCNewsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCNewsHelper.m; sourceTree = "<group>"; };
-		D0735DC11F83378A002D3AB3 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
 		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
 		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
 		D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFlowLayout.swift; sourceTree = "<group>"; };
@@ -172,8 +173,6 @@
 		D0BCAA671779091000C965F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0BCAA6B177909A500C965F4 /* ArticleListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ArticleListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA6C177909A500C965F4 /* ArticleListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ArticleListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		D0BCAA6D177909A600C965F4 /* OCFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D0BCAA6E177909A600C965F4 /* OCFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedCell.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCAA6F177909A600C965F4 /* OCFeedListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OCFeedListController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D0BCAA70177909A600C965F4 /* OCFeedListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = OCFeedListController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D0BCABC7177910C000C965F4 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -189,6 +188,8 @@
 		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D0C66C9A17B1935600F0EC7C /* News 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 2.xcdatamodel"; sourceTree = "<group>"; };
 		D0DD7BC4255E225500B124C9 /* SwiftMessagesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMessagesHelper.swift; sourceTree = "<group>"; };
+		D0E6C782259FF1D90070317B /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		D0E6C79C25A7F85E0070317B /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		D0E89F561836E03A005F8CAF /* OCSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSettingsController.h; sourceTree = "<group>"; };
 		D0E89F571836E03A005F8CAF /* OCSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSettingsController.m; sourceTree = "<group>"; };
 		D0F181251782585100F719D9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -213,13 +214,14 @@
 			files = (
 				D04BBB8A20ABC87900D770DA /* BRYHTMLParser.framework in Frameworks */,
 				D0F94F9720AA90DA00833A7F /* TUSafariActivity.framework in Frameworks */,
-				D0735DC41F83378A002D3AB3 /* AFNetworking.framework in Frameworks */,
+				D0E6C78F25A6B2820070317B /* AFNetworking in Frameworks */,
 				D02CCAF41CE7E27300F6CCEC /* WebKit.framework in Frameworks */,
 				D0AAB685255CE93E00F4FC5F /* CoreServices.framework in Frameworks */,
 				D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */,
 				D0DD7BCC255F6FE100B124C9 /* UICKeyChainStore in Frameworks */,
 				D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */,
 				D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */,
+				D0E6C78A25A6AB690070317B /* Kingfisher in Frameworks */,
 				D0F181261782585100F719D9 /* SystemConfiguration.framework in Frameworks */,
 				D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */,
 				D0D39B8C2595245D002C07DD /* KSCrash in Frameworks */,
@@ -309,7 +311,6 @@
 				D0AAB684255CE93E00F4FC5F /* CoreServices.framework */,
 				D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */,
 				D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */,
-				D0735DC11F83378A002D3AB3 /* AFNetworking.framework */,
 				D02CCAF31CE7E27300F6CCEC /* WebKit.framework */,
 				D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */,
 				D06CB23517A074AA00A1310B /* CoreData.framework */,
@@ -345,8 +346,7 @@
 				D0F181281783B12C00F719D9 /* OCLoginController.m */,
 				D0BCABD41779112000C965F4 /* PHPrefViewController.h */,
 				D0BCABD51779112000C965F4 /* PHPrefViewController.m */,
-				D0BCAA6D177909A600C965F4 /* OCFeedCell.h */,
-				D0BCAA6E177909A600C965F4 /* OCFeedCell.m */,
+				D0E6C782259FF1D90070317B /* FeedCell.swift */,
 				D0BCAA6F177909A600C965F4 /* OCFeedListController.h */,
 				D0BCAA70177909A600C965F4 /* OCFeedListController.m */,
 				D0B95D1021100A6200D1A2B8 /* BaseCollectionViewController.h */,
@@ -385,6 +385,7 @@
 				D0FB295F1FA6A20D00578C29 /* PHThemeManager.h */,
 				D0FB29601FA6A20D00578C29 /* PHThemeManager.m */,
 				D0DD7BC4255E225500B124C9 /* SwiftMessagesHelper.swift */,
+				D0E6C79C25A7F85E0070317B /* UIImageViewExtension.swift */,
 				D0BCAA2C177900C300C965F4 /* Supporting Files */,
 				D0BCAC38178104FB00C965F4 /* Resources */,
 				D08D83B618161453005A75F0 /* Settings.bundle */,
@@ -457,6 +458,8 @@
 				D0DD7BC0255E222700B124C9 /* SwiftMessages */,
 				D0DD7BCB255F6FE100B124C9 /* UICKeyChainStore */,
 				D0D39B8B2595245D002C07DD /* KSCrash */,
+				D0E6C78925A6AB690070317B /* Kingfisher */,
+				D0E6C78E25A6B2820070317B /* AFNetworking */,
 			);
 			productName = iOCNews;
 			productReference = D0BCAA22177900C300C965F4 /* iOCNews.app */;
@@ -532,6 +535,8 @@
 				D0DD7BBF255E222700B124C9 /* XCRemoteSwiftPackageReference "SwiftMessages" */,
 				D0DD7BCA255F6FE100B124C9 /* XCRemoteSwiftPackageReference "UICKeyChainStore" */,
 				D0D39B8A2595245D002C07DD /* XCRemoteSwiftPackageReference "KSCrash" */,
+				D0E6C78825A6AB690070317B /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				D0E6C78D25A6B2820070317B /* XCRemoteSwiftPackageReference "AFNetworking" */,
 			);
 			productRefGroup = D0BCAA23177900C300C965F4 /* Products */;
 			projectDirPath = "";
@@ -585,12 +590,10 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/AFNetworking.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/TUSafariActivity.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/BRYHTMLParser.framework",
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/AFNetworking.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/TUSafariActivity.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BRYHTMLParser.framework",
 			);
@@ -612,10 +615,11 @@
 				D0BCAA36177900C400C965F4 /* OCAppDelegate.m in Sources */,
 				D05A6FB1213B914E006D3AB8 /* BaseArticleCell.swift in Sources */,
 				D0BCAA74177909A600C965F4 /* ArticleListController.m in Sources */,
-				D0BCAA75177909A600C965F4 /* OCFeedCell.m in Sources */,
 				D0BCAA76177909A600C965F4 /* OCFeedListController.m in Sources */,
 				D00A956319E6226D00B9B8E4 /* OCSharingProvider.m in Sources */,
 				D05A6FB4213B9508006D3AB8 /* ArticleCellNoThumbnail.swift in Sources */,
+				D0E6C79D25A7F85E0070317B /* UIImageViewExtension.swift in Sources */,
+				D0E6C783259FF1D90070317B /* FeedCell.swift in Sources */,
 				D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */,
 				D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */,
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
@@ -937,6 +941,22 @@
 				minimumVersion = 2.2.1;
 			};
 		};
+		D0E6C78825A6AB690070317B /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.1;
+			};
+		};
+		D0E6C78D25A6B2820070317B /* XCRemoteSwiftPackageReference "AFNetworking" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AFNetworking/AFNetworking";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -954,6 +974,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D0DD7BCA255F6FE100B124C9 /* XCRemoteSwiftPackageReference "UICKeyChainStore" */;
 			productName = UICKeyChainStore;
+		};
+		D0E6C78925A6AB690070317B /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0E6C78825A6AB690070317B /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		D0E6C78E25A6B2820070317B /* AFNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0E6C78D25A6B2820070317B /* XCRemoteSwiftPackageReference "AFNetworking" */;
+			productName = AFNetworking;
 		};
 /* End XCSwiftPackageProductDependency section */
 

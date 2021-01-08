@@ -11,7 +11,7 @@
 #import "PHThemeManager.h"
 #import "UIColor+PHColor.h"
 #import "OCFeedListController.h"
-#import "OCFeedCell.h"
+#import "iOCNews-Swift.h"
 #import "ArticleController.h"
 #import "OCSettingsController.h"
 #import "OCThemeSettingsController.h"
@@ -64,7 +64,7 @@
     [UITableViewCell appearance].backgroundColor = UIColor.ph_cellBackgroundColor;
 
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[ArticleListController class]]] setBackgroundColor:UIColor.ph_cellBackgroundColor];
-    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedCell class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
+    [[UIView appearanceWhenContainedInInstancesOfClasses:@[[FeedCell class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[OCFeedListController class]]] setBackgroundColor:UIColor.ph_popoverBackgroundColor];
     [[UIView appearanceWhenContainedInInstancesOfClasses:@[[UITableViewHeaderFooterView class]]] setBackgroundColor:UIColor.ph_popoverButtonColor];
 

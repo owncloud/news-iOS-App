@@ -32,7 +32,6 @@
 
 #import "ArticleListController.h"
 #import "NSString+HTML.h"
-#import <AFNetworking/AFNetworking.h>
 #import "OCArticleImage.h"
 #import "iOCNews-Swift.h"
 #import "OCNewsHelper.h"
@@ -42,6 +41,7 @@
 #import "ArticleController.h"
 #import "iOCNews-Swift.h"
 #import "UICollectionView+ValidIndexPath.h"
+@import AFNetworking;
 
 @interface ArticleListController () <UIGestureRecognizerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching> {
     BOOL markingAllItemsRead;

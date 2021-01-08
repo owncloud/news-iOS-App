@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ArticleCellWithThumbnail: ArticleCellNoThumbnail {
     
@@ -23,12 +24,8 @@ class ArticleCellWithThumbnail: ArticleCellNoThumbnail {
             self.articleImage.image = item.thumbnail
         } else {
             if let link = item.imageLink, let url = URL(string: link) {
-                let request = URLRequest(url: url)
-                AFImageDownloader.defaultInstance().downloadImage(for: request, success: { [weak self] (_, _, image) in
-                    self?.articleImage.image = image
-                    }, failure: nil)
+                articleImage.kf.setImage(with: url)
             }
-
         }
 
         self.articleImage.alpha = item.imageAlpha

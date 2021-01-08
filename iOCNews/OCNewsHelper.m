@@ -35,7 +35,7 @@
 #import "OCArticleImage.h"
 #import "Feeds+CoreDataClass.h"
 #import "NSDictionary+HandleNull.h"
-#import <AFNetworking/AFNetworking.h>
+@import AFNetworking;
 @import UserNotifications;
 
 @interface OCNewsHelper () {
@@ -231,23 +231,6 @@
     newFeed.unreadCount = (UInt32)[[dict objectForKeyNotNull:@"unreadCount" fallback:@(0)] integerValue];
     newFeed.link = [dict objectForKeyNotNull:@"link" fallback:@""];
     return newFeed.myId;
-}
-
-- (void)faviconForFeedWithId:(NSInteger)feedId imageView:(UIImageView *)imageView
-{
-    Feed *feed = [self feedWithId:feedId];
-    if (feed && feed.myId) {
-        if ([feed.faviconLink isEqualToString:@"favicon"] || [feed.faviconLink isEqualToString:@""]) {
-            imageView.image = [UIImage imageNamed:@"favicon"];
-        }
-        else if ([feed.faviconLink isEqualToString:@"star_icon"] || [feed.faviconLink isEqualToString:@""]) {
-            imageView.image = [UIImage imageNamed:@"star_icon"];
-        }
-        else {
-            NSURL *faviconUrl = [NSURL URLWithString:feed.faviconLink];
-            [imageView setImageWithURL:faviconUrl placeholderImage:[UIImage imageNamed:@"favicon"]];
-        }
-    }
 }
 
 - (void)addItemFromDictionary:(NSDictionary *)dict {

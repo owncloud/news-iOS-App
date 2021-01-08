@@ -30,7 +30,7 @@
  
  *************************************************************************/
 
-#import <AFNetworking/AFHTTPSessionManager.h>
+@import AFNetworking;
 
 @interface OCAPIClient : AFHTTPSessionManager
 

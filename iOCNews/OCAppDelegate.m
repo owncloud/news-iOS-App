@@ -38,7 +38,6 @@
 @import UICKeyChainStore;
 
 #import "OCAppDelegate.h"
-#import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import "OCNewsHelper.h"
 #import "PHThemeManager.h"
 
@@ -67,7 +66,6 @@
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
     }
 
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.peterandlinda.iOCNews"];
     [keychain setString:(__bridge id)(kSecAttrAccessibleAfterFirstUnlock) forKey:(__bridge id)(kSecAttrAccessible)];
     [self writeCss];
