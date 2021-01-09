@@ -50,6 +50,8 @@
 		D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D06CB23517A074AA00A1310B /* CoreData.framework */; };
 		D06CB23917A0A0AA00A1310B /* OCNewsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06CB23817A0A0A900A1310B /* OCNewsHelper.m */; };
 		D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */ = {isa = PBXBuildFile; fileRef = D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */; };
+		D07AD73225A92962005CBCFC /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = D07AD73125A92962005CBCFC /* SwiftSoup */; };
+		D07AD73625A9298B005CBCFC /* ArticleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07AD73525A9298B005CBCFC /* ArticleImage.swift */; };
 		D07F5E8321FEA01E00528E90 /* ArticleFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */; };
 		D08D83B718161453005A75F0 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D08D83B618161453005A75F0 /* Settings.bundle */; };
 		D096143C21EED4AF000BD5D2 /* ArticleListFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D096143B21EED4AF000BD5D2 /* ArticleListFlowLayout.swift */; };
@@ -71,7 +73,6 @@
 		D0BCABDA1779112000C965F4 /* PHPrefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCABD51779112000C965F4 /* PHPrefViewController.m */; };
 		D0BCABE31779119300C965F4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0BCABE21779119300C965F4 /* MessageUI.framework */; };
 		D0BCAC24177F80BC00C965F4 /* OCAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */; };
-		D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D0BCAC301780E97200C965F4 /* OCArticleImage.m */; };
 		D0BCAC6D178104FC00C965F4 /* defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC42178104FC00C965F4 /* defaults.plist */; };
 		D0BCAC8A178104FC00C965F4 /* rss.css in Resources */ = {isa = PBXBuildFile; fileRef = D0BCAC5F178104FC00C965F4 /* rss.css */; };
 		D0BF490D17E4DCF800CB9311 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0BF490C17E4DCF800CB9311 /* Images.xcassets */; };
@@ -145,6 +146,7 @@
 		D06CB23817A0A0A900A1310B /* OCNewsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCNewsHelper.m; sourceTree = "<group>"; };
 		D0735DCA1F905E37002D3AB3 /* UIColor+PHColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+PHColor.m"; sourceTree = "<group>"; };
 		D0735DCB1F905E38002D3AB3 /* UIColor+PHColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+PHColor.h"; sourceTree = "<group>"; };
+		D07AD73525A9298B005CBCFC /* ArticleImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleImage.swift; sourceTree = "<group>"; };
 		D07F5E8221FEA01E00528E90 /* ArticleFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFlowLayout.swift; sourceTree = "<group>"; };
 		D0809718210AAF3C00EDF207 /* iOCNews-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOCNews-Bridging-Header.h"; sourceTree = "<group>"; };
 		D08D83B618161453005A75F0 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -181,8 +183,6 @@
 		D0BCABE21779119300C965F4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D0BCAC22177F80BB00C965F4 /* OCAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCAPIClient.h; sourceTree = "<group>"; };
 		D0BCAC23177F80BC00C965F4 /* OCAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCAPIClient.m; sourceTree = "<group>"; };
-		D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCArticleImage.h; sourceTree = "<group>"; };
-		D0BCAC301780E97200C965F4 /* OCArticleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCArticleImage.m; sourceTree = "<group>"; };
 		D0BCAC42178104FC00C965F4 /* defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = defaults.plist; sourceTree = "<group>"; };
 		D0BCAC5F178104FC00C965F4 /* rss.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = rss.css; sourceTree = "<group>"; };
 		D0BF490C17E4DCF800CB9311 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -219,6 +219,7 @@
 				D0AAB685255CE93E00F4FC5F /* CoreServices.framework in Frameworks */,
 				D04C7DD51BABBEFC000FB342 /* libpcre.a in Frameworks */,
 				D0DD7BCC255F6FE100B124C9 /* UICKeyChainStore in Frameworks */,
+				D07AD73225A92962005CBCFC /* SwiftSoup in Frameworks */,
 				D06CB23617A074AA00A1310B /* CoreData.framework in Frameworks */,
 				D0F1813F17850CAF00F719D9 /* Security.framework in Frameworks */,
 				D0E6C78A25A6AB690070317B /* Kingfisher in Frameworks */,
@@ -366,8 +367,7 @@
 				D0BCAA6C177909A500C965F4 /* ArticleListController.m */,
 				D0B95D13211144A200D1A2B8 /* ArticleController.h */,
 				D0B95D14211144A200D1A2B8 /* ArticleController.m */,
-				D0BCAC2F1780E97200C965F4 /* OCArticleImage.h */,
-				D0BCAC301780E97200C965F4 /* OCArticleImage.m */,
+				D07AD73525A9298B005CBCFC /* ArticleImage.swift */,
 				D05A6FBA213E3247006D3AB8 /* SummaryHelper.h */,
 				D05A6FBB213E3247006D3AB8 /* SummaryHelper.m */,
 				D00A956119E6226D00B9B8E4 /* OCSharingProvider.h */,
@@ -460,6 +460,7 @@
 				D0D39B8B2595245D002C07DD /* KSCrash */,
 				D0E6C78925A6AB690070317B /* Kingfisher */,
 				D0E6C78E25A6B2820070317B /* AFNetworking */,
+				D07AD73125A92962005CBCFC /* SwiftSoup */,
 			);
 			productName = iOCNews;
 			productReference = D0BCAA22177900C300C965F4 /* iOCNews.app */;
@@ -537,6 +538,7 @@
 				D0D39B8A2595245D002C07DD /* XCRemoteSwiftPackageReference "KSCrash" */,
 				D0E6C78825A6AB690070317B /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				D0E6C78D25A6B2820070317B /* XCRemoteSwiftPackageReference "AFNetworking" */,
+				D07AD73025A92962005CBCFC /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = D0BCAA23177900C300C965F4 /* Products */;
 			projectDirPath = "";
@@ -625,7 +627,6 @@
 				D0B95D15211144A200D1A2B8 /* ArticleController.m in Sources */,
 				D02D9D17259FE3B200E243CD /* BadgeView.swift in Sources */,
 				D07F5E8321FEA01E00528E90 /* ArticleFlowLayout.swift in Sources */,
-				D0BCAC311780E97200C965F4 /* OCArticleImage.m in Sources */,
 				D05A6FB7213DEB4B006D3AB8 /* ArticleCellWithThumbnail.swift in Sources */,
 				D0F181291783B12D00F719D9 /* OCLoginController.m in Sources */,
 				D0F1812E178502D500F719D9 /* GTMNSString+HTML.m in Sources */,
@@ -637,6 +638,7 @@
 				D0DD7BC5255E225500B124C9 /* SwiftMessagesHelper.swift in Sources */,
 				D0735DCC1F905E39002D3AB3 /* UIColor+PHColor.m in Sources */,
 				D05A6FBE213E35A8006D3AB8 /* ArticleCellWithWebView.swift in Sources */,
+				D07AD73625A9298B005CBCFC /* ArticleImage.swift in Sources */,
 				D096143C21EED4AF000BD5D2 /* ArticleListFlowLayout.swift in Sources */,
 				D0F8275017B2D83400BE84D7 /* OCFeedSettingsController.m in Sources */,
 				BDDFE91E221B495D00E0E82A /* ItemProvider.swift in Sources */,
@@ -917,6 +919,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D07AD73025A92962005CBCFC /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.2;
+			};
+		};
 		D0D39B8A2595245D002C07DD /* XCRemoteSwiftPackageReference "KSCrash" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kstenerud/KSCrash";
@@ -960,6 +970,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D07AD73125A92962005CBCFC /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D07AD73025A92962005CBCFC /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
 		D0D39B8B2595245D002C07DD /* KSCrash */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D0D39B8A2595245D002C07DD /* XCRemoteSwiftPackageReference "KSCrash" */;

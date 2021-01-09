@@ -32,7 +32,6 @@
 
 #import "ArticleListController.h"
 #import "NSString+HTML.h"
-#import "OCArticleImage.h"
 #import "iOCNews-Swift.h"
 #import "OCNewsHelper.h"
 #import "Item+CoreDataClass.h"

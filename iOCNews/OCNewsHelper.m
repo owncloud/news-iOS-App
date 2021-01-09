@@ -32,9 +32,9 @@
 
 #import "OCNewsHelper.h"
 #import "OCAPIClient.h"
-#import "OCArticleImage.h"
 #import "Feeds+CoreDataClass.h"
 #import "NSDictionary+HandleNull.h"
+#import "iOCNews-Swift.h"
 @import AFNetworking;
 @import UserNotifications;
 
@@ -249,7 +249,7 @@
     newItem.unread = [[dict objectForKey:@"unread"] boolValue];
     newItem.starred = [[dict objectForKey:@"starred"] boolValue];
     newItem.lastModified = (UInt32)[[dict objectForKey:@"lastModified"] integerValue];
-    newItem.imageLink = [OCArticleImage findImage:newItem.body];
+    newItem.imageLink = [ArticleImage imageURLWithSummary: newItem.body];
 }
 
 - (int)addFolder:(id)JSON {
