@@ -7,4 +7,3 @@
 #import "UIColor+PHColor.h"
 #import "NSString+HTML.h"
 #import "PHThemeManager.h"
-#import "SummaryHelper.h"

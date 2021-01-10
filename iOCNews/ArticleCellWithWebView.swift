@@ -11,16 +11,6 @@ import WebKit
 
 class ArticleCellWithWebView: BaseArticleCell {
     
-    var htmlUrl: URL? {
-        do {
-            let containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            var saveUrl = containerURL.appendingPathComponent("summary")
-            saveUrl = saveUrl.appendingPathExtension("html")
-            return saveUrl
-        } catch { }
-        return nil
-    }
-    
     var webConfig: WKWebViewConfiguration {
         let result = WKWebViewConfiguration()
         result.allowsInlineMediaPlayback = true
@@ -95,7 +85,7 @@ class ArticleCellWithWebView: BaseArticleCell {
                         OCAPIClient.shared().get(urlString, parameters: nil, headers: nil, progress: nil, success: { (task, responseObject) in
                             var html: String
                             if let response = responseObject as? Data, let source = String.init(data: response, encoding: .utf8), let url = task.response?.url {
-                                if let article = SummaryHelper.readble(source, url: url) {
+                                if let article = ArticleHelper.readble(html: source, url: url) {
                                     html = article
                                 } else {
                                     html = "<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>"
@@ -131,7 +121,7 @@ class ArticleCellWithWebView: BaseArticleCell {
                 let baseString = "\(url.scheme ?? "")://\(url.host ?? "")"
                 if baseString.range(of: "youtu", options: .caseInsensitive) != nil {
                     if html.range(of: "iframe", options: .caseInsensitive) != nil {
-                        html = SummaryHelper.createYoutubeItem(html, andLink: urlString)
+                        html = ArticleHelper.createYoutubeItem(html: html, urlString: urlString)
                     } else if let urlString = item.url, urlString.contains("watch?v="), let equalIndex = urlString.firstIndex(of: "=") {
                         let videoIdStartIndex = urlString.index(after: equalIndex)
                         let videoId = String(urlString[videoIdStartIndex...])
@@ -143,7 +133,7 @@ class ArticleCellWithWebView: BaseArticleCell {
                         html = embed
                     }
                 }
-                html = SummaryHelper.fixRelativeUrl(html, baseUrlString: baseString)
+                html = ArticleHelper.fixRelativeUrl(html: html, baseUrlString: baseString)
                 self.writeAndLoadHtml(html: html, feedTitle: item.feedTitle)
             }
         }      
@@ -153,142 +143,9 @@ class ArticleCellWithWebView: BaseArticleCell {
         guard let item = self.item?.item else {
             return
         }
-        let summary = SummaryHelper.replaceYTIframe(html)
-        var dateText = "";
-        let dateNumber = TimeInterval(item.pubDate)
-        let date = Date(timeIntervalSince1970: dateNumber)
-        let dateFormat = DateFormatter()
-        dateFormat.dateStyle = .medium;
-        dateFormat.timeStyle = .short;
-        dateText += dateFormat.string(from: date)
-        let feedTitle = feedTitle ?? ""
-        let title = item.title ?? ""
-        let url = item.url ?? ""
-        var author = ""
-        if let itemAuthor = item.author, itemAuthor.count > 0 {
-            author = "By \(itemAuthor)"
-        }
-
-        let htmlTemplate = """
-        <?xml version="1.0" encoding="utf-8"?>
-        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
-                <meta name='viewport' content='width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=2.0; user-scalable=yes' />
-                <style>
-                    \(self.updateCss())
-                </style>
-                <link rel="stylesheet" type="text/css" href="rss.css" />
-                <title>
-                    \(title)
-                </title>
-            </head>
-            <body>
-                <div class="header">
-                    <div class="titleHeader">
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td>
-                                    <div class="feedTitle">
-                                        \(feedTitle)
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="articleDate">
-                                        \(dateText)
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="articleTitle">
-                        <a class="articleTitleLink" href="\(url)">\(title)</a>
-                    </div>
-                    <div class="articleAuthor">
-                        <p>
-                            \(author)
-                        </p>
-                    </div>
-                    <div class="content">
-                        <p>
-                            \(summary)
-                        </p>
-                    </div>
-                    <div class="footer">
-                        <p>
-                            <a class="footerLink" href="\(url)"><br />View Full Article</a>
-                        </p>
-                    </div>
-                </div>
-            </body>
-        </html>
-        """
-        print(htmlTemplate)
-        do {
-            if let url = htmlUrl {
-                try htmlTemplate.write(to: url, atomically: true, encoding: .utf8)
-                self.webView?.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
-            }
-        } catch { }
-    }
-
-    func updateCss() -> String {
-        let fontSize = UserDefaults.standard.integer(forKey: "FontSize")
-        
-        let screenSize = UIScreen.main.nativeBounds.size
-        let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
-        let currentWidth = Int((screenSize.width / UIScreen.main.scale) * CGFloat((Double(margin) / 100.0)))
-        
-        let marginLandscape = UserDefaults.standard.integer(forKey: "MarginLandscape")
-        let currentWidthLandscape = (screenSize.height / UIScreen.main.scale) * CGFloat((Double(marginLandscape) / 100.0))
-        
-        let lineHeight = UserDefaults.standard.double(forKey: "LineHeight")
-       
-        return ":root {" +
-                    "--bg-color: \(UIColor.ph_background.hexString);" +
-                    "--text-color: \(UIColor.ph_text.hexString);" +
-                    "--font-size: \(fontSize)px;" +
-                    "--body-width-portrait: \(currentWidth)px;" +
-                    "--body-width-landscape: \(currentWidthLandscape)px;" +
-                    "--line-height: \(lineHeight)em;" +
-                    "--link-color: \(UIColor.ph_link.hexString);" +
-                    "--footer-link: \(UIColor.ph_popoverBackground.hexString);" +
-                "}"
-    }
-    
-    func fileUrlInDocumentsDirectory(_ fileName: String, fileExtension: String) -> URL {
-        do {
-            var containerURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            containerURL = containerURL.appendingPathComponent(fileName)
-            containerURL = containerURL.appendingPathExtension(fileExtension)
-            return containerURL
-        } catch {
-            return URL.init(string: "")!
+        if let url = ArticleHelper.writeAndLoadHtml(html: html, item: item, feedTitle: feedTitle) {
+            self.webView?.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
         }
     }
 
-}
-
-extension UIColor {
-    var hexString: String {
-        let colorRef = cgColor.components
-        let r = colorRef?[0] ?? 0
-        let g = colorRef?[1] ?? 0
-        let b = ((colorRef?.count ?? 0) > 2 ? colorRef?[2] : g) ?? 0
-        let a = cgColor.alpha
-        
-        var color = String(
-            format: "#%02lX%02lX%02lX",
-            lroundf(Float(r * 255)),
-            lroundf(Float(g * 255)),
-            lroundf(Float(b * 255))
-        )
-        
-        if a < 1 {
-            color += String(format: "%02lX", lroundf(Float(a)))
-        }
-        
-        return color
-    }
 }
