@@ -26,21 +26,17 @@ class ArticleHelper: NSObject {
     }
 
     static func readble(html: String, url: URL) -> String? {
-//        char *article;
-//        article = readable([html cStringUsingEncoding:NSUTF8StringEncoding],
-//                           [url.absoluteString cStringUsingEncoding:NSUTF8StringEncoding],
-//                           "UTF-8",
-//                           READABLE_OPTIONS_DEFAULT);
-//        if (article == NULL) {
-//    //        html = @"<p style='color: #CC6600;'><i>(An article could not be extracted. Showing summary instead.)</i></p>";
-//    //        html = [html stringByAppendingString:self.item.body];
-//            return nil;
-//        } else {
-//            html = [NSString stringWithCString:article encoding:NSUTF8StringEncoding];
-//            html = [SummaryHelper fixRelativeUrl:html baseUrlString:[NSString stringWithFormat:@"%@://%@/%@", url.scheme, url.host, url.path]];
-//            return html;
-//        }
-        return ""
+        let article = readable(html.cString(using: .utf8),
+                               url.absoluteString.cString(using: .utf8),
+                               "UTF-8",
+                               Int32(READABLE_OPTIONS_DEFAULT));
+        guard let readableArticle = article else {
+            return nil
+        }
+        var result = String(cString: readableArticle)
+        result = ArticleHelper.fixRelativeUrl(html: result,
+                                              baseUrlString: String(format: "%@://%@/%@", url.scheme!, url.host!, url.path))
+        return result
     }
 
     static func writeAndLoadHtml(html: String, item: ItemProviderStruct, feedTitle: String? = nil) -> URL? {
