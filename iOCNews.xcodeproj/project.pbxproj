@@ -117,7 +117,6 @@
 		D042A9A120842E340086FBE9 /* OCThemeSettingsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCThemeSettingsController.h; sourceTree = "<group>"; };
 		D042A9A220842E340086FBE9 /* OCThemeSettingsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCThemeSettingsController.m; sourceTree = "<group>"; };
 		D04AD65618070C4800FF6056 /* News 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 3.xcdatamodel"; sourceTree = "<group>"; };
-		D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BRYHTMLParser.framework; path = Carthage/Build/iOS/BRYHTMLParser.framework; sourceTree = "<group>"; };
 		D04C7DC41BABBEFC000FB342 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
 		D04C7DC51BABBEFC000FB342 /* pcre_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_scanner.h; sourceTree = "<group>"; };
 		D04C7DC61BABBEFC000FB342 /* pcre_stringpiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_stringpiece.h; sourceTree = "<group>"; };
@@ -307,7 +306,6 @@
 			isa = PBXGroup;
 			children = (
 				D0AAB684255CE93E00F4FC5F /* CoreServices.framework */,
-				D04BBB8920ABC87900D770DA /* BRYHTMLParser.framework */,
 				D0F94F9620AA90D900833A7F /* TUSafariActivity.framework */,
 				D02CCAF31CE7E27300F6CCEC /* WebKit.framework */,
 				D03689CD19087A1B00EE4BAA /* MobileCoreServices.framework */,

@@ -3,7 +3,7 @@
 //  iOCNews
 //
 //  Created by Peter Hedlund on 9/3/18.
-//  Copyright © 2018 Peter Hedlund. All rights reserved.
+//  Copyright © 2021 Peter Hedlund. All rights reserved.
 //
 
 import UIKit
@@ -143,7 +143,7 @@ class ArticleCellWithWebView: BaseArticleCell {
         guard let item = self.item?.item else {
             return
         }
-        if let url = ArticleHelper.writeAndLoadHtml(html: html, item: item, feedTitle: feedTitle) {
+        if let url = ArticleHelper.saveItemSummary(html: html, item: item, feedTitle: feedTitle) {
             self.webView?.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
         }
     }

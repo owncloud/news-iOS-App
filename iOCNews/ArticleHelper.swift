@@ -3,7 +3,7 @@
 //  CloudNews
 //
 //  Created by Peter Hedlund on 11/25/18.
-//  Copyright © 2018 Peter Hedlund. All rights reserved.
+//  Copyright © 2021 Peter Hedlund. All rights reserved.
 //
 
 import SwiftSoup
@@ -39,11 +39,9 @@ class ArticleHelper: NSObject {
         return result
     }
 
-    static func writeAndLoadHtml(html: String, item: ItemProviderStruct, feedTitle: String? = nil) -> URL? {
+    static func saveItemSummary(html: String, item: ItemProviderStruct, feedTitle: String? = nil) -> URL? {
         var result: URL? = nil
-//        var summary = html
-
-        var summary = ArticleHelper.replaceYTIframe(html: html)
+        var summary = ArticleHelper.replaceVideoIframe(html: html)
         var dateText = "";
         let dateNumber = TimeInterval(item.pubDate)
         let date = Date(timeIntervalSince1970: dateNumber)
@@ -55,7 +53,7 @@ class ArticleHelper: NSObject {
         let title = item.title ?? ""
         let url = item.url ?? ""
         var author = ""
-        if let itemAuthor = item.author, itemAuthor.count > 0 {
+        if let itemAuthor = item.author, !itemAuthor.isEmpty {
             author = "By \(itemAuthor)"
         }
 
@@ -205,7 +203,7 @@ class ArticleHelper: NSObject {
         return result
     }
     
-    static func replaceYTIframe(html: String) -> String {
+    static func replaceVideoIframe(html: String) -> String {
         guard let doc: Document = try? SwiftSoup.parse(html) else {
             return html
         }
@@ -214,7 +212,7 @@ class ArticleHelper: NSObject {
             let iframes: Elements = try doc.select("iframe")
             for iframe in iframes {
                 if let src = try iframe.getElementsByAttribute("src").first()?.attr("src") {
-                    if src.contains("youtu"), let videoId = self.extractYoutubeVideoID(urlYoutube: src) {
+                    if src.contains("youtu"), let videoId = src.youtubeVideoID {
                         let screenSize = UIScreen.main.nativeBounds.size
                         let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
                         let currentWidth = (screenSize.width / UIScreen.main.scale) * CGFloat(margin / 100);
@@ -222,16 +220,14 @@ class ArticleHelper: NSObject {
                         let embed = String(format: "<embed id=\"yt\" src=\"http://www.youtube.com/embed/%@?playsinline=1\" type=\"text/html\" frameborder=\"0\" width=\"%ldpx\" height=\"%ldpdx\"></embed>", videoId, currentWidth, newheight)
                         result = result.replacingOccurrences(of: try iframe.html(), with: embed)
                     }
-                    //                    if (src && [src rangeOfString:@"vimeo"].location != NSNotFound) {
-                    //                        NSString *videoID = [SummaryHelper extractVimeoVideoID:src];
-                    //                        if (videoID) {
-                    //                            CGSize screenSize = [UIScreen mainScreen].nativeBounds.size;
-                    //                            NSInteger margin =[[NSUserDefaults standardUserDefaults] integerForKey:@"MarginPortrait"];
-                    //                            double currentWidth = (screenSize.width / [UIScreen mainScreen].scale) * ((double)margin / 100);
-                    //                            double newheight = currentWidth * 0.5625;
-                    //                            NSString *embed = [NSString stringWithFormat:@"<iframe id=\"vimeo\" src=\"http://player.vimeo.com/video/%@\" type=\"text/html\" frameborder=\"0\" width=\"%ldpx\" height=\"%ldpdx\"></iframe>", videoID, (long)currentWidth, (long)newheight];
-                    //                            result = [result stringByReplacingOccurrencesOfString:[inputNode rawContents] withString:embed];
-                    //                        }
+                    if src.contains("vimeo"), let videoId = src.vimeoID {
+                        let screenSize = UIScreen.main.nativeBounds.size
+                        let margin = UserDefaults.standard.integer(forKey: "MarginPortrait")
+                        let currentWidth = (screenSize.width / UIScreen.main.scale) * CGFloat(margin / 100);
+                        let newheight = currentWidth * 0.5625;
+                        let embed = String(format:"<iframe id=\"vimeo\" src=\"http://player.vimeo.com/video/%@\" type=\"text/html\" frameborder=\"0\" width=\"%ldpx\" height=\"%ldpdx\"></iframe>", videoId, currentWidth, newheight)
+                        result = result.replacingOccurrences(of: try iframe.html(), with: embed)
+                    }
                 }
             }
         } catch { }
@@ -247,7 +243,7 @@ class ArticleHelper: NSObject {
         do {
             let iframes: Elements = try doc.select("iframe")
             for iframe in iframes {
-                if let videoId = ArticleHelper.extractYoutubeVideoID(urlYoutube: urlString) {
+                if let videoId = urlString.youtubeVideoID {
                     let width = 700
                     let height = 700 * 0.5625
                     let embed = "<embed id=\"yt\" src=\"http://www.youtube.com/embed/\(videoId)?playsinline=1\" type=\"text/html\" frameborder=\"0\" width=\"\(width)px\" height=\"\(height)px\"></embed>"
@@ -259,47 +255,7 @@ class ArticleHelper: NSObject {
         return result
     }
     
-    //based on https://gist.github.com/rais38/4683817
-    /**
-     @see https://devforums.apple.com/message/705665#705665
-     extractYoutubeVideoID: works for the following URL formats:
-     www.youtube.com/v/VIDEOID
-     www.youtube.com?v=VIDEOID
-     www.youtube.com/watch?v=WHsHKzYOV2E&feature=youtu.be
-     www.youtube.com/watch?v=WHsHKzYOV2E
-     youtu.be/KFPtWedl7wg_U923
-     www.youtube.com/watch?feature=player_detailpage&v=WHsHKzYOV2E#t=31s
-     youtube.googleapis.com/v/WHsHKzYOV2E
-     www.youtube.com/embed/VIDEOID
-     */
-    
-    private static func extractYoutubeVideoID(urlYoutube: String) -> String? {
-        let regexString = "(?<=v(=|/))([-a-zA-Z0-9_]+)|(?<=youtu.be/)([-a-zA-Z0-9_]+)|(?<=embed/)([-a-zA-Z0-9_]+)"
-        do {
-            let regex = try NSRegularExpression(pattern: regexString, options: [.caseInsensitive])
-            let firstMatchingRange = regex.rangeOfFirstMatch(in: urlYoutube, options: [], range: NSRange(location: 0, length: urlYoutube.count))
-            let startIndex = String.Index(utf16Offset: firstMatchingRange.lowerBound, in: urlYoutube)
-            let endIndex = String.Index(utf16Offset: firstMatchingRange.upperBound, in: urlYoutube)
-            return String(urlYoutube[startIndex..<endIndex])
-        } catch { }
-        return nil;
-    }
-
 }
-
-// based on http://stackoverflow.com/a/16841070/2036378
-// + (NSString *)extractVimeoVideoID:(NSString *)urlVimeo {
-//     NSString *regexString = @"([0-9]{2,11})"; // @"(https?://)?(www.)?(player.)?vimeo.com/([a-z]*/)*([0-9]{6,11})[?]?.*";
-//     NSError *error = nil;
-//     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:NSRegularExpressionCaseInsensitive error:&error];
-//     NSRange rangeOfFirstMatch = [regex rangeOfFirstMatchInString:urlVimeo options:0 range:NSMakeRange(0, [urlVimeo length])];
-//     if(!NSEqualRanges(rangeOfFirstMatch, NSMakeRange(NSNotFound, 0))) {
-//         NSString *substringForFirstMatch = [urlVimeo substringWithRange:rangeOfFirstMatch];
-//         return substringForFirstMatch;
-//     }
-//
-//     return nil;
-// }
 
 extension UIColor {
     var hexString: String {
@@ -326,19 +282,42 @@ extension UIColor {
 
 extension String {
     
-    // Vimeo VideoID from Link(url)
-    
+    //based on https://gist.github.com/rais38/4683817
+    /**
+     @see https://devforums.apple.com/message/705665#705665
+     extractYoutubeVideoID: works for the following URL formats:
+     www.youtube.com/v/VIDEOID
+     www.youtube.com?v=VIDEOID
+     www.youtube.com/watch?v=WHsHKzYOV2E&feature=youtu.be
+     www.youtube.com/watch?v=WHsHKzYOV2E
+     youtu.be/KFPtWedl7wg_U923
+     www.youtube.com/watch?feature=player_detailpage&v=WHsHKzYOV2E#t=31s
+     youtube.googleapis.com/v/WHsHKzYOV2E
+     www.youtube.com/embed/VIDEOID
+     */
+    var youtubeVideoID: String? {
+        let pattern = "(?<=v(=|/))([-a-zA-Z0-9_]+)|(?<=youtu.be/)([-a-zA-Z0-9_]+)|(?<=embed/)([-a-zA-Z0-9_]+)"
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+            let firstMatchingRange = regex.rangeOfFirstMatch(in: self, options: [], range: NSRange(location: 0, length: count))
+            let startIndex = String.Index(utf16Offset: firstMatchingRange.lowerBound, in: self)
+            let endIndex = String.Index(utf16Offset: firstMatchingRange.upperBound, in: self)
+            return String(self[startIndex..<endIndex])
+        } catch { }
+        return nil
+    }
+
     var vimeoID: String? {
-        let pattern = "([0-9]+)"
-        
-        let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-        let range = NSRange(location: 0, length: count)
-        
-        guard let result = regex?.firstMatch(in: self, range: range) else {
-            return nil
-        }
-        
-        return (self as NSString).substring(with: result.range)
+        let pattern = "([0-9]{2,11})"
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+            let range = NSRange(location: 0, length: count)
+            guard let result = regex.firstMatch(in: self, range: range) else {
+                return nil
+            }
+            return (self as NSString).substring(with: result.range)
+        } catch { }
+        return nil
     }
     
 }

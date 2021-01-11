@@ -1,6 +1,0 @@
-framework module BRYHTMLParser {
-  umbrella header "BRYHTMLParser.h"
-
-  export *
-  module * { export * }
-}
